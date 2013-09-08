@@ -52,104 +52,13 @@
     <div class="row">
 
         <div class="span9">
-            <div class='article'>
-        <div class="content-title">
-            <h1>Linux下的用户和用户组小结</h1>
-            2013-09-08
-
-by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
- 
-
-
-        </div>
-	
-        <div><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
-</pre></div>
-
-
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
-</pre></div>
-
-
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
-</pre></div>
-
-
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  </p>
-<h4>/etc/shadow</h4>
-<p>记录 用户名 对应的密码（加密后）  </p>
-<h4>/etc/group</h4>
-<p>记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）</p>
-<h3>3. 概念区分</h3>
-<h4>初始用户组：</h4>
-<p>useradd或usermod，-g参数后的组名。保存在/etc/passwd中。<br />
-实际意义是，/etc/group里少写一个用户名。。。  </p>
-<h4>有效用户组：</h4>
-<p>groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。<br />
-实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。</p>
-<h3>4. 用户分类</h3>
-<p>ubuntu12.04下，根据/etc/login.defs<br />
-UID=0  系统管理员<br />
-UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)<br />
-UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  </p>
-<h3>5. linux命令</h3>
-<h4>1) useradd</h4>
-<div class="highlight"><pre>useradd -u <span class="o">[</span>UID<span class="o">]</span> -g <span class="o">[</span>initial group name<span class="o">]</span> -G <span class="o">[</span>other group name<span class="o">]</span> -d <span class="o">[</span>home dir<span class="o">]</span> -s <span class="o">[</span>shell<span class="o">]</span> -r <span class="o">[</span>用户名<span class="o">]</span>
-</pre></div>
-
-
-<p>没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。<br />
--r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）</p>
-<h4>2) usermod</h4>
-<p>同useradd</p>
-<h4>3) passwd</h4>
-<div class="highlight"><pre>passwd <span class="o">[</span>用户名<span class="o">]</span> 
-passwd
-</pre></div>
-
-
-<p>无参数修改自己的密码</p>
-<h4>4) userdel</h4>
-<div class="highlight"><pre>userdel -r <span class="o">[</span>用户名<span class="o">]</span>
-</pre></div>
-
-
-<p>加上-r，连同主文件夹也一同删除</p>
-<h4>5) groupadd</h4>
-<div class="highlight"><pre>groupadd -g <span class="o">[</span>GID<span class="o">]</span> -r <span class="o">[</span>组名<span class="o">]</span>
-</pre></div>
-
-
-<p>-g 指定GID，-r 创建系统组</p>
-<h4>6) groupdel</h4>
-<div class="highlight"><pre>groupdel <span class="o">[</span>组名<span class="o">]</span>
-</pre></div></div>
-	
-        <hr>
-    	   
-        <h2>Comments</h2>
-		<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'particle128'; 
-    var disqus_title = 'Linux下的用户和用户组小结';
-
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
+                
+<section id="content" class="body">    
+    <h2 class="content-title">About me</h2>
+        <p>我来自大连理工大学，专业是软件工程。目前研二在读。<br />
+语言：C/C++，Python，Shell<br />
+技术方向：linux下C++网络编程，web技术  </p>
+</section>
         </div>
         
         <div class="span3">

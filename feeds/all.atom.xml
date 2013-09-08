@@ -1,5 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-09-08T08:32:29+08:00</updated><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.github.io/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T08:32:29+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-09-08T12:37:35+08:00</updated><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.github.io/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T12:37:35+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
+&lt;h3&gt;1、各种消息机制的使用场合&lt;/h3&gt;
+&lt;p&gt;终端输出来显示一些信息：print()&lt;br /&gt;
+报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，&lt;br /&gt;
+logging.debug()用来诊断错误&lt;br /&gt;
+发布一个警告：logging.warning()或warnings.warn()&lt;br /&gt;
+报告一个错误：raise an exception&lt;br /&gt;
+不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  &lt;/p&gt;
+&lt;p&gt;logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。&lt;/p&gt;
+&lt;p&gt;level由低到高依次是：&lt;br /&gt;
+DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  &lt;/p&gt;
+&lt;h3&gt;2、基础用法&lt;/h3&gt;
+&lt;p&gt;默认日志消息会输出到终端（sys.stderr），用法为：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;  
+&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;warning&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt; before you &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Look&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;leap!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;一次性配置日志消息，用法为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
+&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;basicConfig&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;example.log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;filemode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%(asctime)s&lt;/span&gt;&lt;span class="s"&gt; &lt;/span&gt;&lt;span class="si"&gt;%(levelname)s&lt;/span&gt;&lt;span class="s"&gt; &lt;/span&gt;&lt;span class="si"&gt;%(message)s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;something happends.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;basicConfig参数：
+filename指明日志消息输出到指定的文件中，默认输出到终端&lt;br /&gt;
+filemode指明文件打开方式是只写，每次输出日志都会把原来的日志覆盖。默认是追加('a')&lt;br /&gt;
+level指明追踪(track)的日志等级&lt;br /&gt;
+format指明日志格式，里面的字典参数依次是：日期、等级名、日志消息。format里不支持：和\n。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt; basicConfig只能在调用logging.debug()等任意函数之前调用，否则无效。调用之后，所有的logging行为都按照配置，再次执行basicConfig也不能进一步修改配置。所以称之为one-off（一次性的）。&lt;/p&gt;
+&lt;h3&gt;3、高级用法&lt;/h3&gt;
+&lt;p&gt;比较好的习惯是logger=logging.getLogger(__name__) ，这样每个模块里logger的名字都是以自己模块的名字来命名的，从日志中可以看出是哪里导出的日志。&lt;/p&gt;
+&lt;p&gt;logger=logging.getLogger()相当于获取根logger，即名字为root的logger  &lt;/p&gt;
+&lt;p&gt;Logger常用方法：&lt;br /&gt;
+setLevel()，addHandler()，removeHandler()，addFilter()，removeFilter()&lt;/p&gt;
+&lt;p&gt;Handler常用方法：&lt;br /&gt;
+setLevel()，setFormatter()，addFilter()，removeFilter()&lt;/p&gt;
+&lt;p&gt;例子：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;myFilter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Filter&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="c"&gt;#其实可以不用继承，只要含有filter方法的类都可以&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="c"&gt;# record是LogRecord对象&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;msg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;!=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c"&gt;#使用msg属性或getMessage()方法都可以&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt; &lt;span class="c"&gt;# zero for not logging&lt;/span&gt;
+        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt; &lt;span class="c"&gt;# non-zero for logging&lt;/span&gt;
+
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getLogger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;main.a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c"&gt;# main.a是该logger的name，即所有者，用点来分割命名空间。如果是main.a则是main的子类，继承关系影响level、handler，如果不设置level就按照父类的level进行设置，如果不设置handler，就由父类的handler捕获。&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 过滤该level以下的日志消息&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;myFilter&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="c"&gt;# 比level更细力度的过滤功能&lt;/span&gt;
+
+&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FileHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/home/mashu/log.txt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;StreamHandler&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 文件level是INFO&lt;/span&gt;
+&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 终端level是DEBUG&lt;/span&gt;
+&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Formatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%(asctime)-15s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(name)-10s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(levelname)-10s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(message)s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 设置日志消息的格式&lt;/span&gt;
+&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setFormatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setFormatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;myFilter&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;myFilter&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;first: log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;second:test log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;third: log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="logging"></category></entry><entry><title>Linux权限小结</title><link href="http://particle128.github.io/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T12:37:24+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
+&lt;p&gt;r：可以查看文件内容&lt;br /&gt;
+w：可以修改文件内容&lt;br /&gt;
+x：可以执行文件内容  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt; &lt;br /&gt;
+一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。&lt;/p&gt;
+&lt;h4&gt;2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&amp;lt;文件名，inode号&amp;gt;）&lt;/h4&gt;
+&lt;p&gt;r：可以查看目录结构（ls）&lt;br /&gt;
+w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）&lt;br /&gt;
+x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt;&lt;br /&gt;
+一个目录开放浏览，需要r+x权限。&lt;br /&gt;
+有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号；&lt;br /&gt;
+有x没r，可以cd进去，不能ls查看内容。【所谓不能，是指执行该操作会返回“Permission denied”】&lt;br /&gt;
+仅有w，无法修改目录结构，因为命令进入不进去这个目录，需要x权限配合w才能完成修改目录的作用。&lt;/p&gt;
+&lt;h4&gt;3、umask：初始权限中需要屏蔽的部分，ubuntu12.04下默认是0002，去掉其他用户的写权限。&lt;/h4&gt;
+&lt;p&gt;文件初始权限：-rw-rw-rw- （0666）&lt;br /&gt;
+文件默认权限：初始-umask。0666-0002=0664，即-rw-rw-r--&lt;br /&gt;
+文件夹初始权限：drwxrwxrwx（0777）&lt;br /&gt;
+文件夹默认权限：初始-umask。0777-0002=0775，即drwxrwxr-x  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt;&lt;br /&gt;
+所有者和同组用户权限相同，其他用户剥夺写权限。&lt;br /&gt;
+命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;umask&lt;/span&gt; &lt;span class="mo"&gt;022&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;修改&lt;/span&gt;&lt;span class="n"&gt;umask&lt;/span&gt;&lt;span class="err"&gt;默认值&lt;/span&gt;
+&lt;span class="n"&gt;umask&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;S&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;以字符的形式显示&lt;/span&gt;&lt;span class="n"&gt;umask&lt;/span&gt;&lt;span class="err"&gt;之后的效果，&lt;/span&gt;&lt;span class="mo"&gt;0002&lt;/span&gt;&lt;span class="err"&gt;对应&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rwx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rwx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rx&lt;/span&gt;&lt;span class="err"&gt;。&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;4、三个特殊权限：&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;SUID（SetUID）&lt;/strong&gt;：ls-l显示所有者权限x-&amp;gt;s&lt;br /&gt;
+例子：/usr/bin/passwd。普通用户可以执行passwd修改自己的密码，执行该程序后默认UID变为root（passwd的所有者），因此可以修改仅仅root可读的/etc/shadow&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SGID（SetGID）&lt;/strong&gt;：ls-l显示组权限x-&amp;gt;s&lt;br /&gt;
+例子：/usr/bin/locate。普通用户执行locate定位文件，执行该程序后默认GID变为slocate（locate的所属用户组），因此可以查询仅仅mlocate组内用户可以访问的mlocate.db&lt;br /&gt;
+另：作用于目录时，相当于用户cd进该目录后有效用户组就变成该目录的用户组了，影响此后新建的文件的所属用户组。  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SBIT（Sticky Bit）&lt;/strong&gt;：ls-l显示其他权限x-&amp;gt;t&lt;br /&gt;
+例子：/tmp。用户进入/tmp下新建的文件，只有root和文件所有者可以删除，其他用户即使对/tmp有w权限也没用。&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.github.io/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T12:37:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
 &lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
 chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
@@ -68,32 +170,4 @@ passwd
 &lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
 &lt;h4&gt;6) groupdel&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry><entry><title>'Test Blog'</title><link href="http://particle128.github.io/posts/2013/09/test-blog.html" rel="alternate"></link><updated>2013-09-07T20:47:20+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-07:posts/2013/09/test-blog.html</id><summary type="html">&lt;h1&gt;First MarkDown Document.&lt;/h1&gt;
-&lt;hr /&gt;
-&lt;h2&gt;Head1&lt;/h2&gt;
-&lt;h3&gt;January&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;hello&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;Feburary&lt;/h3&gt;
-&lt;p&gt;&lt;a href="http://www.google.com/"&gt;google&lt;/a&gt;
-&lt;a href="http://www.microsoft.com/"&gt;ms&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;quotation test&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3&gt;March&lt;/h3&gt;
-&lt;blockquote&gt;
-&lt;p&gt;aaa&lt;br /&gt;
-bbb  &lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;annother quotation&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/blockquote&gt;
-&lt;hr /&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Written with &lt;a href="http://benweet.github.io/stackedit/"&gt;StackEdit&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;</summary></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry></feed>
