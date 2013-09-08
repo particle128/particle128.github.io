@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>particle128.github.io/</link><description></description><atom:link href="particle128.github.io/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 07 Sep 2013 21:40:49 +0800</lastBuildDate><item><title>Linux下的用户和用户组小结</title><link>particle128.github.io/posts/2013/09/</link><description>&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.github.io/</link><description></description><atom:link href="http://particle128.github.io/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 08 Sep 2013 08:32:29 +0800</lastBuildDate><item><title>Linux下的用户和用户组小结</title><link>http://particle128.github.io/posts/2013/09/linux_user.html</link><description>&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
 &lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt 或 &lt;span class="c"&gt;# chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
-chown mashu aa.txt 修改所有者
-chown .mashu aa.txt 修改组
+&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
+chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
+chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -13,7 +13,8 @@ chown .mashu aa.txt 修改组
 
 
 &lt;h4&gt;chmod 修改权限&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   &lt;span class="c"&gt;# chmod a+r aa.txt&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
+chmod a+r aa.txt
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -67,7 +68,7 @@ passwd
 &lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
 &lt;h4&gt;6) groupdel&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 07 Sep 2013 21:40:49 +0800</pubDate><guid>tag:particle128.github.io,2013-09-07:posts/2013/09/</guid></item><item><title>'Test Blog'</title><link>particle128.github.io/posts/2013/09/</link><description>&lt;h1&gt;First MarkDown Document.&lt;/h1&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 08 Sep 2013 08:32:29 +0800</pubDate><guid>tag:particle128.github.io,2013-09-08:posts/2013/09/linux_user.html</guid><category>linux</category><category>user</category></item><item><title>'Test Blog'</title><link>http://particle128.github.io/posts/2013/09/test-blog.html</link><description>&lt;h1&gt;First MarkDown Document.&lt;/h1&gt;
 &lt;hr /&gt;
 &lt;h2&gt;Head1&lt;/h2&gt;
 &lt;h3&gt;January&lt;/h3&gt;
@@ -95,4 +96,4 @@ bbb  &lt;/p&gt;
 &lt;hr /&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Written with &lt;a href="http://benweet.github.io/stackedit/"&gt;StackEdit&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 07 Sep 2013 20:47:20 +0800</pubDate><guid>tag:particle128.github.io,2013-09-07:posts/2013/09/</guid></item></channel></rss>
+&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 07 Sep 2013 20:47:20 +0800</pubDate><guid>tag:particle128.github.io,2013-09-07:posts/2013/09/test-blog.html</guid></item></channel></rss>

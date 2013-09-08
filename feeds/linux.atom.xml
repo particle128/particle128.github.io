@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="particle128.github.io/" rel="alternate"></link><link href="particle128.github.io/feeds/linux.atom.xml" rel="self"></link><id>particle128.github.io/</id><updated>2013-09-07T21:40:49+08:00</updated><entry><title>Linux下的用户和用户组小结</title><link href="particle128.github.io/posts/2013/09/" rel="alternate"></link><updated>2013-09-07T21:40:49+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-07:posts/2013/09/</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/linux.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-09-08T08:32:29+08:00</updated><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.github.io/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T08:32:29+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
 &lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt 或 &lt;span class="c"&gt;# chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
-chown mashu aa.txt 修改所有者
-chown .mashu aa.txt 修改组
+&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
+chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
+chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -13,7 +13,8 @@ chown .mashu aa.txt 修改组
 
 
 &lt;h4&gt;chmod 修改权限&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   &lt;span class="c"&gt;# chmod a+r aa.txt&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
+chmod a+r aa.txt
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -67,4 +68,4 @@ passwd
 &lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
 &lt;h4&gt;6) groupdel&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry></feed>

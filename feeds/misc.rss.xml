@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>particle128.github.io/</link><description></description><atom:link href="particle128.github.io/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 07 Sep 2013 20:47:20 +0800</lastBuildDate><item><title>'Test Blog'</title><link>particle128.github.io/posts/2013/09/</link><description>&lt;h1&gt;First MarkDown Document.&lt;/h1&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.github.io/</link><description></description><atom:link href="http://particle128.github.io/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 07 Sep 2013 20:47:20 +0800</lastBuildDate><item><title>'Test Blog'</title><link>http://particle128.github.io/posts/2013/09/test-blog.html</link><description>&lt;h1&gt;First MarkDown Document.&lt;/h1&gt;
 &lt;hr /&gt;
 &lt;h2&gt;Head1&lt;/h2&gt;
 &lt;h3&gt;January&lt;/h3&gt;
@@ -27,4 +27,4 @@ bbb  &lt;/p&gt;
 &lt;hr /&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Written with &lt;a href="http://benweet.github.io/stackedit/"&gt;StackEdit&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 07 Sep 2013 20:47:20 +0800</pubDate><guid>tag:particle128.github.io,2013-09-07:posts/2013/09/</guid></item></channel></rss>
+&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 07 Sep 2013 20:47:20 +0800</pubDate><guid>tag:particle128.github.io,2013-09-07:posts/2013/09/test-blog.html</guid></item></channel></rss>
