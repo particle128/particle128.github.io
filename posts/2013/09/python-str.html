@@ -54,7 +54,7 @@
         <div class="span9">
             <div class='article'>
         <div class="content-title">
-            <h1>Python学习笔记-字符串操作</h1>
+            <h1>Python学习笔记-字符串</h1>
             2013-09-22
 
 by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
@@ -64,7 +64,7 @@ by <a class="url fn" href="http://particle128.github.io/author/particle128.html"
         </div>
 	
         <div><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
-<h4>（一） 具备的操作</h4>
+<h3>（一） 具备的操作</h3>
 <p>str作为序列元素，包含其他序列共同的操作：<br />
 1. “hello” [not] in "hello world"<br />
 2. "hello" + " world"<br />
@@ -72,13 +72,13 @@ by <a class="url fn" href="http://particle128.github.io/author/particle128.html"
 4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
 5. len("hello")  min("hello")  max("hello")<br />
 6. "hello".index('o')   "hello".count('l')  </p>
-<h4>（二） 不具备的操作</h4>
+<h3>（二） 不具备的操作</h3>
 <p>str同tuple一样，属于不可变序列。可变序列包括list和bytearray。因此str不具备可变序列的操作：<br />
 1. s[i] = x    s[i:j] = t 【t是任何可迭代对象】 s[i:j:k] = t 【t需要和s[i:j:k]有相同数量的元素】<br />
 2. del s[i:j]    del s[i:j:k]   s.remove(x) =&gt; del s[x]<br />
 3. s.insert(i, x)  s.append(x)  s.extend(t) 【t是任何可迭代对象】<br />
 4. s.index(x[, i[, j]]) 【匹配x的最小索引，可以给定一个范围i&lt;=idx<j】  s.count(x)<br />5. .reverse()    s.sort([cmp[, key[, reverse]]])<br />6. s.pop([i]) => x = s[i]; del s[i]; return x  </p>
-<h4>（三） 字符串方法</h4>
+<h3>（三） 字符串方法</h3>
 <p>str.capitalize()第一个字母大写 str.title() 每一个单词首字母大写<br />
 str.count(sub[, start[, end]])<br />
 str.endswith(suffix[, start[, end]])返回True或False 同理str.startswith<br />
@@ -93,15 +93,15 @@ str.join(iterable) 把可迭代对象（比如序列）拼接成字符串，用s
 str.translate(string.maketrans(from,to) [,deletechars]) 要么进行字母的替换，要么进行字母的删除（第一个参数为None），要么同时进行<br />
 str.strip([chars]) 默认去掉whitespace 同理str.lstrip str.rstrip <br />
 str.split([sep]) 默认whitespace作为分隔符  </p>
-<h4>（四） string方法</h4>
+<h3>（四） string方法</h3>
 <p>string.maketrans(from,to) 返回translation table（from中的字符被to中同一位置的字符替换），from和to长度要相同<br />
 string.capwords(s[,sep]) 比titile更加准确的首字母大写函数。先split([sep])，再capitalize()，再join()  </p>
-<h4>（五） 格式化字符串</h4>
+<h3>（五） 格式化字符串</h3>
 <div class="highlight"><pre><span class="s">&quot;</span><span class="si">%(language)s</span><span class="s"> has </span><span class="si">%(number)03d</span><span class="s"> quote types.&quot;</span>  <span class="o">%</span>  <span class="p">{</span><span class="s">&quot;language&quot;</span><span class="p">:</span> <span class="s">&quot;Python&quot;</span><span class="p">,</span> <span class="s">&quot;number&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 </pre></div>
 
 
-<h4>（六）字符串常量</h4>
+<h3>（六）字符串常量</h3>
 <p>string.digits<br />
 string.hexdigits<br />
 string.octdigits<br />
@@ -117,7 +117,7 @@ string.printable  </p></div>
 		<div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'particle128'; 
-    var disqus_title = 'Python学习笔记-字符串操作';
+    var disqus_title = 'Python学习笔记-字符串';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -151,6 +151,7 @@ string.printable  </p></div>
                 Categories
                 </li>
                 
+                                <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
                                 <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
                                 <li><a href="http://particle128.github.io/category/python.html">python</a></li>
                                    
