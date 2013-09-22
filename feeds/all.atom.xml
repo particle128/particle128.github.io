@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-09-22T17:46:52+08:00</updated><entry><title>Python学习笔记-字符串操作</title><link href="http://particle128.github.io/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-22T17:46:52+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-22:posts/2013/09/python-logging.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-09-22T17:49:03+08:00</updated><entry><title>Python学习笔记-字符串操作</title><link href="http://particle128.github.io/posts/2013/09/python-str.html" rel="alternate"></link><updated>2013-09-22T17:49:03+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-22:posts/2013/09/python-str.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
 &lt;h4&gt;（一） 具备的操作&lt;/h4&gt;
 &lt;p&gt;str作为序列元素，包含其他序列共同的操作：&lt;br /&gt;
 1. “hello” [not] in "hello world"&lt;br /&gt;
@@ -45,120 +45,7 @@ string.lowercase&lt;br /&gt;
 string.uppercase&lt;br /&gt;
 string.whitespace&lt;br /&gt;
 string.punctuation&lt;br /&gt;
-string.printable  &lt;/p&gt;</summary><category term="python"></category><category term="logging"></category></entry><entry><title>Python学习笔记-字符串操作</title><link href="http://particle128.github.io/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-22T17:46:52+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-22:posts/2013/09/python-logging.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
-&lt;h4&gt;（一） 具备的操作&lt;/h4&gt;
-&lt;p&gt;str作为序列元素，包含其他序列共同的操作：&lt;br /&gt;
-1. “hello” [not] in "hello world"&lt;br /&gt;
-2. "hello" + " world"&lt;br /&gt;
-3. 5&lt;em&gt;"hello" 或 “hello”&lt;/em&gt;5&lt;br /&gt;
-4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]&lt;br /&gt;
-5. len("hello")  min("hello")  max("hello")&lt;br /&gt;
-6. "hello".index('o')   "hello".count('l')  &lt;/p&gt;
-&lt;h4&gt;（二） 不具备的操作&lt;/h4&gt;
-&lt;p&gt;str同tuple一样，属于不可变序列。可变序列包括list和bytearray。因此str不具备可变序列的操作：&lt;br /&gt;
-1. s[i] = x    s[i:j] = t 【t是任何可迭代对象】 s[i:j:k] = t 【t需要和s[i:j:k]有相同数量的元素】&lt;br /&gt;
-2. del s[i:j]    del s[i:j:k]   s.remove(x) =&amp;gt; del s[x]&lt;br /&gt;
-3. s.insert(i, x)  s.append(x)  s.extend(t) 【t是任何可迭代对象】&lt;br /&gt;
-4. s.index(x[, i[, j]]) 【匹配x的最小索引，可以给定一个范围i&amp;lt;=idx&lt;j】  s.count(x)&lt;br /&gt;5. .reverse()    s.sort([cmp[, key[, reverse]]])&lt;br /&gt;6. s.pop([i]) =&gt; x = s[i]; del s[i]; return x  &lt;/p&gt;
-&lt;h4&gt;（三） 字符串方法&lt;/h4&gt;
-&lt;p&gt;str.capitalize()第一个字母大写 str.title() 每一个单词首字母大写&lt;br /&gt;
-str.count(sub[, start[, end]])&lt;br /&gt;
-str.endswith(suffix[, start[, end]])返回True或False 同理str.startswith&lt;br /&gt;
-str.find(sub[, start[, end]]) 找不到返回-1 同理str.rfind&lt;br /&gt;
-str.index(sub[, start[, end]])找不到raise ValueError 同理str.rindex&lt;br /&gt;
-str.format(&lt;em&gt;args, &lt;/em&gt;*kwargs) 同格式化字符串&lt;br /&gt;
-islower isupper isspace isdigit isalpha isalnum&lt;br /&gt;
-str.ljust(width[, fillchar])左对齐，可以选择填充字节，默认空格。 同理str.rjust，str.zfill(width)相当于str.rjust(width,'0')&lt;br /&gt;
-str.lower() str.upper() str.swapcase()交换大小写&lt;br /&gt;
-str.partition(sep) 划分 'what the fuck'.partition('the') =&amp;gt; ('what ','the',' fuck') 同理rpartition&lt;br /&gt;
-str.join(iterable) 把可迭代对象（比如序列）拼接成字符串，用str隔开每一个可迭代对象中的元素&lt;br /&gt;
-str.translate(string.maketrans(from,to) [,deletechars]) 要么进行字母的替换，要么进行字母的删除（第一个参数为None），要么同时进行&lt;br /&gt;
-str.strip([chars]) 默认去掉whitespace 同理str.lstrip str.rstrip &lt;br /&gt;
-str.split([sep]) 默认whitespace作为分隔符  &lt;/p&gt;
-&lt;h4&gt;（四） string方法&lt;/h4&gt;
-&lt;p&gt;string.maketrans(from,to) 返回translation table（from中的字符被to中同一位置的字符替换），from和to长度要相同&lt;br /&gt;
-string.capwords(s[,sep]) 比titile更加准确的首字母大写函数。先split([sep])，再capitalize()，再join()  &lt;/p&gt;
-&lt;h4&gt;（五） 格式化字符串&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;%(language)s&lt;/span&gt;&lt;span class="s"&gt; has &lt;/span&gt;&lt;span class="si"&gt;%(number)03d&lt;/span&gt;&lt;span class="s"&gt; quote types.&amp;quot;&lt;/span&gt;  &lt;span class="o"&gt;%&lt;/span&gt;  &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;language&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Python&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;number&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;（六）字符串常量&lt;/h4&gt;
-&lt;p&gt;string.digits&lt;br /&gt;
-string.hexdigits&lt;br /&gt;
-string.octdigits&lt;br /&gt;
-string.lowercase&lt;br /&gt;
-string.uppercase&lt;br /&gt;
-string.whitespace&lt;br /&gt;
-string.punctuation&lt;br /&gt;
-string.printable  &lt;/p&gt;</summary><category term="python"></category><category term="logging"></category></entry><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.github.io/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T10:10:19+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
-&lt;h3&gt;1、各种消息机制的使用场合&lt;/h3&gt;
-&lt;p&gt;终端输出来显示一些信息：print()&lt;br /&gt;
-报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，&lt;br /&gt;
-logging.debug()用来诊断错误&lt;br /&gt;
-发布一个警告：logging.warning()或warnings.warn()&lt;br /&gt;
-报告一个错误：raise an exception&lt;br /&gt;
-不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  &lt;/p&gt;
-&lt;p&gt;logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。&lt;/p&gt;
-&lt;p&gt;level由低到高依次是：&lt;br /&gt;
-DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  &lt;/p&gt;
-&lt;h3&gt;2、基础用法&lt;/h3&gt;
-&lt;p&gt;默认日志消息会输出到终端（sys.stderr），用法为：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;  
-&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;warning&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt; before you &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Look&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;leap!&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;一次性配置日志消息，用法为：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
-&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;basicConfig&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;example.log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;filemode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%(asctime)s&lt;/span&gt;&lt;span class="s"&gt; &lt;/span&gt;&lt;span class="si"&gt;%(levelname)s&lt;/span&gt;&lt;span class="s"&gt; &lt;/span&gt;&lt;span class="si"&gt;%(message)s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;something happends.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;basicConfig参数：
-filename指明日志消息输出到指定的文件中，默认输出到终端&lt;br /&gt;
-filemode指明文件打开方式是只写，每次输出日志都会把原来的日志覆盖。默认是追加('a')&lt;br /&gt;
-level指明追踪(track)的日志等级&lt;br /&gt;
-format指明日志格式，里面的字典参数依次是：日期、等级名、日志消息。format里不支持：和\n。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt; basicConfig只能在调用logging.debug()等任意函数之前调用，否则无效。调用之后，所有的logging行为都按照配置，再次执行basicConfig也不能进一步修改配置。所以称之为one-off（一次性的）。&lt;/p&gt;
-&lt;h3&gt;3、高级用法&lt;/h3&gt;
-&lt;p&gt;比较好的习惯是logger=logging.getLogger(__name__) ，这样每个模块里logger的名字都是以自己模块的名字来命名的，从日志中可以看出是哪里导出的日志。&lt;/p&gt;
-&lt;p&gt;logger=logging.getLogger()相当于获取根logger，即名字为root的logger  &lt;/p&gt;
-&lt;p&gt;Logger常用方法：&lt;br /&gt;
-setLevel()，addHandler()，removeHandler()，addFilter()，removeFilter()&lt;/p&gt;
-&lt;p&gt;Handler常用方法：&lt;br /&gt;
-setLevel()，setFormatter()，addFilter()，removeFilter()&lt;/p&gt;
-&lt;p&gt;例子：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;myFilter&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Filter&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="c"&gt;#其实可以不用继承，只要含有filter方法的类都可以&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="c"&gt;# record是LogRecord对象&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;record&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;msg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;!=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c"&gt;#使用msg属性或getMessage()方法都可以&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt; &lt;span class="c"&gt;# zero for not logging&lt;/span&gt;
-        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt; &lt;span class="c"&gt;# non-zero for logging&lt;/span&gt;
-
-&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getLogger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;main.a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="c"&gt;# main.a是该logger的name，即所有者，用点来分割命名空间。如果是main.a则是main的子类，继承关系影响level、handler，如果不设置level就按照父类的level进行设置，如果不设置handler，就由父类的handler捕获。&lt;/span&gt;
-&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 过滤该level以下的日志消息&lt;/span&gt;
-&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;myFilter&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="c"&gt;# 比level更细力度的过滤功能&lt;/span&gt;
-
-&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FileHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/home/mashu/log.txt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;StreamHandler&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 文件level是INFO&lt;/span&gt;
-&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 终端level是DEBUG&lt;/span&gt;
-&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Formatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%(asctime)-15s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(name)-10s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(levelname)-10s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(message)s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 设置日志消息的格式&lt;/span&gt;
-&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setFormatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
-&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setFormatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;myFilter&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
-&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addFilter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;myFilter&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
-&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fh&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;first: log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;second:test log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;third: log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="logging"></category></entry><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.github.io/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T10:10:19+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
+string.printable  &lt;/p&gt;</summary><category term="python"></category><category term="str"></category></entry><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.github.io/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T10:10:19+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
 &lt;h3&gt;1、各种消息机制的使用场合&lt;/h3&gt;
 &lt;p&gt;终端输出来显示一些信息：print()&lt;br /&gt;
 报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，&lt;br /&gt;
