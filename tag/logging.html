@@ -59,8 +59,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="http://particle128.github.io/posts/2013/09/python-logging.html"><h1>Python学习笔记-logging模块</h1></a>
-            2013-09-08
+            <a href="http://particle128.github.io/posts/2013/09/python-logging.html"><h1>Python学习笔记-字符串操作</h1></a>
+            2013-09-22
 
 by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
  
@@ -69,7 +69,72 @@ by <a class="url fn" href="http://particle128.github.io/author/particle128.html"
  
         </div>
         
-        <div><h4>Logging is a means of tracking events that happen when some software runs.</h4>
+        <div><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
+<h4>（一） 具备的操作</h4>
+<p>str作为序列元素，包含其他序列共同的操作：<br />
+1. “hello” [not] in "hello world"<br />
+2. "hello" + " world"<br />
+3. 5<em>"hello" 或 “hello”</em>5<br />
+4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
+5. len("hello")  min("hello")  max("hello")<br />
+6. "hello".index('o')   "hello".count('l')  </p>
+<h4>（二） 不具备的操作</h4>
+<p>str同tuple一样，属于不可变序列。可变序列包括list和bytearray。因此str不具备可变序列的操作：<br />
+1. s[i] = x    s[i:j] = t 【t是任何可迭代对象】 s[i:j:k] = t 【t需要和s[i:j:k]有相同数量的元素】<br />
+2. del s[i:j]    del s[i:j:k]   s.remove(x) =&gt; del s[x]<br />
+3. s.insert(i, x)  s.append(x)  s.extend(t) 【t是任何可迭代对象】<br />
+4. s.index(x[, i[, j]]) 【匹配x的最小索引，可以给定一个范围i&lt;=idx<j】  s.count(x)<br />5. .reverse()    s.sort([cmp[, key[, reverse]]])<br />6. s.pop([i]) => x = s[i]; del s[i]; return x  </p>
+<h4>（三） 字符串方法</h4>
+<p>str.capitalize()第一个字母大写 str.title() 每一个单词首字母大写<br />
+str.count(sub[, start[, end]])<br />
+str.endswith(suffix[, start[, end]])返回True或False 同理str.startswith<br />
+str.find(sub[, start[, end]]) 找不到返回-1 同理str.rfind<br />
+str.index(sub[, start[, end]])找不到raise ValueError 同理str.rindex<br />
+str.format(<em>args, </em>*kwargs) 同格式化字符串<br />
+islower isupper isspace isdigit isalpha isalnum<br />
+str.ljust(width[, fillchar])左对齐，可以选择填充字节，默认空格。 同理str.rjust，str.zfill(width)相当于str.rjust(width,'0')<br />
+str.lower() str.upper() str.swapcase()交换大小写<br />
+str.partition(sep) 划分 'what the fuck'.partition('the') =&gt; ('what ','the',' fuck') 同理rpartition<br />
+str.join(iterable) 把可迭代对象（比如序列）拼接成字符串，用str隔开每一个可迭代对象中的元素<br />
+str.translate(string.maketrans(from,to) [,deletechars]) 要么进行字母的替换，要么进行字母的删除（第一个参数为None），要么同时进行<br />
+str.strip([chars]) 默认去掉whitespace 同理str.lstrip str.rstrip <br />
+str.split([sep]) 默认whitespace作为分隔符  </p>
+<h4>（四） string方法</h4>
+<p>string.maketrans(from,to) 返回translation table（from中的字符被to中同一位置的字符替换），from和to长度要相同<br />
+string.capwords(s[,sep]) 比titile更加准确的首字母大写函数。先split([sep])，再capitalize()，再join()  </p>
+<h4>（五） 格式化字符串</h4>
+<div class="highlight"><pre><span class="s">&quot;</span><span class="si">%(language)s</span><span class="s"> has </span><span class="si">%(number)03d</span><span class="s"> quote types.&quot;</span>  <span class="o">%</span>  <span class="p">{</span><span class="s">&quot;language&quot;</span><span class="p">:</span> <span class="s">&quot;Python&quot;</span><span class="p">,</span> <span class="s">&quot;number&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+</pre></div>
+
+
+<h4>（六）字符串常量</h4>
+<p>string.digits<br />
+string.hexdigits<br />
+string.octdigits<br />
+string.lowercase<br />
+string.uppercase<br />
+string.whitespace<br />
+string.punctuation<br />
+string.printable  </p></div>
+        <hr />
+    </div>
+		
+    
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="http://particle128.github.io/posts/2013/09/python-logging.html"><h2>Python学习笔记-logging模块</h2></a>
+        <div class= "well small"> 2013-09-08
+
+by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
+ 
+
+
+ </div>
+        <div class="summary"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
 <h3>1、各种消息机制的使用场合</h3>
 <p>终端输出来显示一些信息：print()<br />
 报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
@@ -80,66 +145,9 @@ logging.debug()用来诊断错误<br />
 <p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
 <p>level由低到高依次是：<br />
 DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
-<h3>2、基础用法</h3>
-<p>默认日志消息会输出到终端（sys.stderr），用法为：  </p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>  
-<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s"> before you </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;Look&#39;</span><span class="p">,</span> <span class="s">&#39;leap!&#39;</span><span class="p">)</span>
-</pre></div>
-
-
-<p>一次性配置日志消息，用法为：</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;example.log&#39;</span><span class="p">,</span><span class="n">filemode</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> </span><span class="si">%(levelname)s</span><span class="s"> </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;something happends.&#39;</span><span class="p">)</span>
-</pre></div>
-
-
-<p>basicConfig参数：
-filename指明日志消息输出到指定的文件中，默认输出到终端<br />
-filemode指明文件打开方式是只写，每次输出日志都会把原来的日志覆盖。默认是追加('a')<br />
-level指明追踪(track)的日志等级<br />
-format指明日志格式，里面的字典参数依次是：日期、等级名、日志消息。format里不支持：和\n。</p>
-<p><strong>注意：</strong> basicConfig只能在调用logging.debug()等任意函数之前调用，否则无效。调用之后，所有的logging行为都按照配置，再次执行basicConfig也不能进一步修改配置。所以称之为one-off（一次性的）。</p>
-<h3>3、高级用法</h3>
-<p>比较好的习惯是logger=logging.getLogger(__name__) ，这样每个模块里logger的名字都是以自己模块的名字来命名的，从日志中可以看出是哪里导出的日志。</p>
-<p>logger=logging.getLogger()相当于获取根logger，即名字为root的logger  </p>
-<p>Logger常用方法：<br />
-setLevel()，addHandler()，removeHandler()，addFilter()，removeFilter()</p>
-<p>Handler常用方法：<br />
-setLevel()，setFormatter()，addFilter()，removeFilter()</p>
-<p>例子：</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
-<span class="k">class</span> <span class="nc">myFilter</span> <span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Filter</span><span class="p">):</span> <span class="c">#其实可以不用继承，只要含有filter方法的类都可以</span>
-    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">record</span><span class="p">):</span> <span class="c"># record是LogRecord对象</span>
-        <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">)</span><span class="o">!=-</span><span class="mi">1</span><span class="p">:</span> <span class="c">#使用msg属性或getMessage()方法都可以</span>
-            <span class="k">return</span> <span class="bp">False</span> <span class="c"># zero for not logging</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span> <span class="c"># non-zero for logging</span>
-
-<span class="n">logger</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;main.a&#39;</span><span class="p">)</span>
-<span class="c"># main.a是该logger的name，即所有者，用点来分割命名空间。如果是main.a则是main的子类，继承关系影响level、handler，如果不设置level就按照父类的level进行设置，如果不设置handler，就由父类的handler捕获。</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span> <span class="c"># 过滤该level以下的日志消息</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">myFilter</span><span class="p">())</span> <span class="c"># 比level更细力度的过滤功能</span>
-
-<span class="n">fh</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="s">&#39;/home/mashu/log.txt&#39;</span><span class="p">)</span>
-<span class="n">sh</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
-<span class="n">fh</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span> <span class="c"># 文件level是INFO</span>
-<span class="n">sh</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span> <span class="c"># 终端level是DEBUG</span>
-<span class="n">form</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%(asctime)-15s</span><span class="s"> - </span><span class="si">%(name)-10s</span><span class="s"> - </span><span class="si">%(levelname)-10s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span> <span class="c"># 设置日志消息的格式</span>
-<span class="n">fh</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">form</span><span class="p">)</span> 
-<span class="n">sh</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
-<span class="n">fh</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">myFilter</span><span class="p">())</span>
-<span class="n">sh</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">myFilter</span><span class="p">())</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">sh</span><span class="p">)</span>
-
-<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;first: log&#39;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;second:test log&#39;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;third: log&#39;</span><span class="p">)</span>
-</pre></div></div>
-        <hr />
-    </div>
-		
+<h3>2 ...</h3> <a class="btn btn-info xsmall" href="http://particle128.github.io/posts/2013/09/python-logging.html">read more</a></div>
+    </div>	
+				
             <div class="pagination">
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
