@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-09-22T18:21:25+08:00</updated><entry><title>Effective_Cpp学习笔记(1)</title><link href="http://particle128.github.io/posts/2013/09/Effective_cpp(1).html" rel="alternate"></link><updated>2013-09-22T18:21:25+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-22:posts/2013/09/Effective_cpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-09-22T22:47:38+08:00</updated><entry><title>Effective_Cpp学习笔记(1)</title><link href="http://particle128.github.io/posts/2013/09/Effective_cpp(1).html" rel="alternate"></link><updated>2013-09-22T22:47:38+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-22:posts/2013/09/Effective_cpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
 &lt;strong&gt;类型安全&lt;/strong&gt;：&lt;br /&gt;
 &lt;em&gt;MSDN上的权威解释&lt;/em&gt;：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。&lt;br /&gt;
 &lt;em&gt;简单理解&lt;/em&gt;：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。&lt;br /&gt;
@@ -101,7 +101,7 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。&lt;br /&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="Effective_Cpp"></category></entry><entry><title>Python学习笔记-字符串</title><link href="http://particle128.github.io/posts/2013/09/python-str.html" rel="alternate"></link><updated>2013-09-22T17:52:45+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-22:posts/2013/09/python-str.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
+&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="Effective_Cpp"></category></entry><entry><title>Python学习笔记-字符串</title><link href="http://particle128.github.io/posts/2013/09/python-str.html" rel="alternate"></link><updated>2013-09-22T22:46:39+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-22:posts/2013/09/python-str.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
 &lt;h3&gt;（一） 具备的操作&lt;/h3&gt;
 &lt;p&gt;str作为序列元素，包含其他序列共同的操作：&lt;br /&gt;
 1. “hello” [not] in "hello world"&lt;br /&gt;
@@ -147,7 +147,7 @@ string.lowercase&lt;br /&gt;
 string.uppercase&lt;br /&gt;
 string.whitespace&lt;br /&gt;
 string.punctuation&lt;br /&gt;
-string.printable  &lt;/p&gt;</summary><category term="python"></category><category term="str"></category></entry><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.github.io/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T10:10:19+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
+string.printable  &lt;/p&gt;</summary><category term="python"></category><category term="str"></category></entry><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.github.io/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T12:37:35+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
 &lt;h3&gt;1、各种消息机制的使用场合&lt;/h3&gt;
 &lt;p&gt;终端输出来显示一些信息：print()&lt;br /&gt;
 报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，&lt;br /&gt;
@@ -214,7 +214,7 @@ setLevel()，setFormatter()，addFilter()，removeFilter()&lt;/p&gt;
 &lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;first: log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;second:test log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;third: log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="logging"></category></entry><entry><title>Linux权限小结</title><link href="http://particle128.github.io/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T10:01:27+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="logging"></category></entry><entry><title>Linux权限小结</title><link href="http://particle128.github.io/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T12:37:24+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
 &lt;p&gt;r：可以查看文件内容&lt;br /&gt;
 w：可以修改文件内容&lt;br /&gt;
 x：可以执行文件内容  &lt;/p&gt;
@@ -249,7 +249,7 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
 例子：/usr/bin/locate。普通用户执行locate定位文件，执行该程序后默认GID变为slocate（locate的所属用户组），因此可以查询仅仅mlocate组内用户可以访问的mlocate.db&lt;br /&gt;
 另：作用于目录时，相当于用户cd进该目录后有效用户组就变成该目录的用户组了，影响此后新建的文件的所属用户组。  &lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;SBIT（Sticky Bit）&lt;/strong&gt;：ls-l显示其他权限x-&amp;gt;t&lt;br /&gt;
-例子：/tmp。用户进入/tmp下新建的文件，只有root和文件所有者可以删除，其他用户即使对/tmp有w权限也没用。&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.github.io/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T08:32:29+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+例子：/tmp。用户进入/tmp下新建的文件，只有root和文件所有者可以删除，其他用户即使对/tmp有w权限也没用。&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.github.io/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T12:37:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
 &lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
 chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
