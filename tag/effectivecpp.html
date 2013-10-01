@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>particle128's Blog</title>
+    <meta name="description" content="">
+    <meta name="author" content="particle128">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="http://particle128.github.io/theme/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="http://particle128.github.io/theme/bootstrap.min.css" rel="stylesheet">
+    <link href="http://particle128.github.io/theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="http://particle128.github.io/theme/local.css" rel="stylesheet">
+    <link href="http://particle128.github.io/theme/pygments.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
+
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
+
+        <a class="brand" href="http://particle128.github.io">particle128's Blog</a>
+
+        <div class="nav-collapse">
+        <ul class="nav">
+                    <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+                    <li><a href="http://particle128.github.io/category/python.html">python</a></li>
+                    <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+                    
+                            <li><a href="http://particle128.github.io/pages/aboutme.html">About me</a></li>
+                        </ul>
+        </div>
+        
+    </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="content">
+    <div class="row">
+
+        <div class="span9">
+                
+
+        
+
+
+    <div class='article'>
+        <div class="content-title">
+            <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html"><h1>Effective C++学习笔记(1)</h1></a>
+            2013-10-01
+
+by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
+ 
+
+
+ 
+        </div>
+        
+        <div><p><strong>【补充概念】</strong><br />
+<strong>类型安全</strong>：<br />
+<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
+<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
+printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
+(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
+(2) SomeClass a;AnotherClass b;<br />
+   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
+(3) #define max(a,b) ((a)&gt;(b)?(a):(b))  <br />
+   max(15,"abc");max(a++,b); 》》》类型安全的template inline函数（同样效率，函数可预料行为，类型安全）  </p>
+<hr />
+<h3>Item 02: Prefer const, enum, and inline to #define</h3>
+<p>1.除非我有一个很好的理由允许构造函数被用于隐式类型转换，否则我会把它声明为explicit。<br />
+2.头文件里定义字符串常量  </p>
+<div class="highlight"><pre><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="k">const</span> <span class="n">str</span><span class="o">=</span><span class="s">&quot;hello&quot;</span><span class="p">;</span> <span class="c1">//或 char const * const str=&quot;hello&quot;;</span>
+</pre></div>
+
+
+<p>缺第1个const，warning： deprecated conversion from string constant to ‘char*’<br />
+缺第2个const，如果两个源文件引用该头文件，会multiple definition的错误<br />
+3.类关键字：<br />
+一般情况，只允许声明处出现一次：explicit,static,virtual,默认实参<br />
+特殊的2个，inline：出现在任一处都行，一般写在定义处；const：两处都要出现。<br />
+4.#define宏定义完全可以被代替。const代替常量宏，template inline函数代替函数宏。<br />
+此外，static const可以定义类属常量，这是#define做不到的。<br />
+5.static const类属常量，如果是整数类型（char，short，int，bool等），可以在声明时直接赋值，只要不取地址都可以直接使用。  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">c</span>  
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>  
+    <span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="n">num</span><span class="p">];</span>  
+<span class="p">}</span>
+</pre></div>
+
+
+<p>如果非整数类型（如double），如果需要取地址，如果编译器比较旧，需要在源文件中定义，给初值。<br />
+如果非要在编译时使用，编译器还不允许，可以使用enum hack的方法  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">c</span>  
+<span class="p">{</span>  
+    <span class="k">enum</span> <span class="p">{</span><span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">};</span>  
+    <span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="n">num</span><span class="p">];</span>  
+<span class="p">}</span>
+</pre></div>
+
+
+<p>6.需要一组常量的时候，可以使用枚举，用法：  </p>
+<div class="highlight"><pre><span class="k">enum</span> <span class="n">Month</span> <span class="p">{</span><span class="n">Jan</span><span class="p">,</span><span class="n">Feb</span><span class="p">,</span><span class="n">March</span><span class="p">,</span><span class="n">April</span><span class="p">};</span> 
+<span class="n">Month</span> <span class="n">m</span><span class="o">=</span><span class="n">Jan</span><span class="p">;</span>  
+<span class="k">enum</span> <span class="p">{</span><span class="n">First</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">Third</span><span class="o">=</span><span class="mi">3</span><span class="p">};</span>
+<span class="kt">int</span> <span class="n">number</span><span class="o">=</span><span class="n">First</span><span class="p">;</span>
+</pre></div>
+
+
+<h3>Item 03: Use const whenever possible</h3>
+<p>1.const可作用于任何作用域范围的对象、函数参数、函数返回类型、成员函数本身。<br />
+2.函数返回类型+const的意义，限制返回值再被赋值：  </p>
+<div class="highlight"><pre><span class="k">const</span> <span class="n">Rational</span> <span class="k">operator</span><span class="o">*</span> <span class="p">(</span><span class="k">const</span> <span class="n">Rational</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Rational</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">){...}</span>
+</pre></div>
+
+
+<p>防止  </p>
+<div class="highlight"><pre><span class="n">Rational</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">;</span>   
+<span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+    <span class="p">{...}</span>
+</pre></div>
+
+
+<p>通过编译<br />
+3.将const作用于成员函数，保证该成员函数可以被const对象调用。<br />
+4.const成员函数可以"重载"非const成员函数。虽然const成员函数也可以被non-const对象调用，但是重载后，定义const和non-const对象，调用的同一个函数原型，效果就不一样了。如果返回引用类型或非内置类型，一个可以被赋值，一个不可以。  </p>
+<div class="highlight"><pre><span class="k">const</span> <span class="kt">char</span><span class="o">&amp;</span> <span class="n">TextBlock</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">position</span><span class="p">)</span> <span class="k">const</span><span class="p">{...}</span>  
+<span class="kt">char</span><span class="o">&amp;</span> <span class="n">TextBlock</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">position</span><span class="p">)</span> <span class="p">{...}</span>
+</pre></div>
+
+
+<p>5.函数返回内置类型，不能做左值；函数返回自定义类型，或引用类型（内置或自定义），可以做左值。<br />
+6.被mutable声明的变量，即使在const成员函数内，也可以修改。这样可以实现概念上的const函数，而不是bitwise上的const函数。<br />
+7.重复代码：编译时间、维护、代码臃肿问题。<br />
+在operator[]函数里调用const operator[]函数：  </p>
+<div class="highlight"><pre><span class="kt">char</span> <span class="o">&amp;</span><span class="k">operator</span><span class="p">[]</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">position</span><span class="p">)</span>  
+<span class="p">{</span>  
+     <span class="k">return</span> <span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&amp;&gt;</span><span class="p">(</span>                      <span class="c1">//C++中仅有这一种方式  </span>
+     <span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">TextBlock</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)[</span><span class="n">position</span><span class="p">]</span>  <span class="c1">//也可以用const_cast代替,不转换成const对象会无限递归调用自己，段错误~  </span>
+     <span class="p">);</span>  
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>Item 04: Make sure that objects are initialized before they're used.</h3>
+<p>1.类成员变量中的自定义类型，在构造函数语句执行之前，已经调用过默认构造函数初始化自身了。所以，为了效率，应该使用初始化列表，然后构造函数语句体为空。代价（默认构造函数+赋值操作）&gt;代价（1个构造函数）。<br />
+类成员变量中的内置类型，构造函数语句执行之前一般不会初始化，而且初始化和赋值效率相同，所以放在哪里一样。代价（1次初始化）=代价（1次赋值）。<br />
+2.内置类型为const或引用，必须初始化，不能赋值。<br />
+3.static对象，包括global对象，namespace作用域内对象，类内对象，函数内对象（local static对象）。<br />
+寿命：从运行中被构造出来，直到main()结束自动调用析构。<br />
+4.<br />
+原理：C++对定义于不同编译单元内的non-local static对象的初始化相对次序，没有明确定义。<br />
+导致的问题：先构造的对象，在构造函数中引用了后构造的对象，此时该对象还没有初始化。<br />
+解决：以函数调用（返回local static对象的引用），替代直接访问non-local static对象。  </p>
+<div class="highlight"><pre><span class="n">C1</span><span class="o">&amp;</span> <span class="n">getobj</span><span class="p">()</span>  
+<span class="p">{</span><span class="k">static</span> <span class="n">C1</span> <span class="n">obj</span><span class="p">;</span><span class="k">return</span> <span class="n">obj</span><span class="p">;}</span>
+</pre></div>
+
+
+<p>原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  </p></div>
+        <hr />
+    </div>
+		
+            <div class="pagination">
+<ul>
+    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+
+    <li class="active"><a href="http://particle128.github.io/tag/effectivecpp.html">1</a></li>
+
+    <li class="next disabled"><a href="#">&rarr; Next</a></li>
+
+</ul>
+</div>    
+ 
+  
+        </div>
+        
+        <div class="span3">
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Site
+                </li>
+            
+                <li><a href="http://particle128.github.io/archives.html">Archives</a>
+                <li><a href="http://particle128.github.io/tags.html">Tags</a>
+                <li><a href="http://particle128.github.io/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
+                                <li><a href="http://particle128.github.io/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+                            </ul>
+            </div>
+
+
+                        <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Categories
+                </li>
+                
+                                <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+                                <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+                                <li><a href="http://particle128.github.io/category/python.html">python</a></li>
+                                   
+            </ul>
+            </div>
+            
+
+                        <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Links
+                </li>
+            
+                            <li><a href="http://python.org">Python</a></li>
+                        </ul>
+            </div>
+            
+
+                        <div class="social">
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Social
+                </li>
+           
+                                <li><a href="https://github.com/particle128">github</a></li>
+                            </ul>
+            </div>
+            </div>
+            
+        </div>  
+    </div>     </div> 
+<footer>
+<br />
+<p><a href="http://particle128.github.io">particle128's Blog</a> &copy; particle128 2012</p>
+</footer>
+
+</div> <!-- /container -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+ 
+</body>
+</html>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/cpp.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-10-01T15:40:00+08:00</updated><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-01T15:40:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-10-01:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/cpp.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-10-01T15:48:31+08:00</updated><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-01T15:48:31+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-10-01:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
 &lt;strong&gt;类型安全&lt;/strong&gt;：&lt;br /&gt;
 &lt;em&gt;MSDN上的权威解释&lt;/em&gt;：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。&lt;br /&gt;
 &lt;em&gt;简单理解&lt;/em&gt;：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。&lt;br /&gt;
@@ -101,4 +101,4 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。&lt;br /&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="C++"></category></entry></feed>
+&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry></feed>
