@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-10-01T15:48:31+08:00</updated><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-01T15:48:31+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-10-01:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-10-03T22:42:44+08:00</updated><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-03T22:42:44+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-10-03:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
 &lt;strong&gt;类型安全&lt;/strong&gt;：&lt;br /&gt;
 &lt;em&gt;MSDN上的权威解释&lt;/em&gt;：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。&lt;br /&gt;
 &lt;em&gt;简单理解&lt;/em&gt;：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。&lt;br /&gt;
@@ -101,7 +101,47 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。&lt;br /&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Python学习笔记-字符串</title><link href="http://particle128.github.io/posts/2013/09/python-str.html" rel="alternate"></link><updated>2013-09-22T17:52:45+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-22:posts/2013/09/python-str.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
+&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(2)</title><link href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html" rel="alternate"></link><updated>2013-10-03T22:42:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-10-03:posts/2013/10/EffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item 05: Know what functions C++ silently writes and calls&lt;/h2&gt;
+&lt;p&gt;1.默认生成的4种函数，都是public+inline类型的。  &lt;br /&gt;
+2.复制构造函数原型：&lt;code&gt;Empty(const Empty&amp;amp;);&lt;/code&gt; 赋值操作符原型：&lt;code&gt;Empty&amp;amp; operator=(const Empty&amp;amp;);&lt;/code&gt; 为了和内置类型的赋值操作意义相同，返回左值的引用  &lt;br /&gt;
+3.唯有这4个函数被调用时，才被产生出来。  &lt;br /&gt;
+4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  &lt;br /&gt;
+5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    &lt;/p&gt;
+&lt;h2&gt;Item 06: Explicitly disallow the use of compiler-generated functions you do not want&lt;/h2&gt;
+&lt;p&gt;1.使拷贝构造函数和赋值操作符不可用，两种方式：&lt;br /&gt;
+(1)声明为private，且不给予实现。 不论类外（编译错误），还是类内或友元（链接错误），都不能访问这些函数。&lt;br /&gt;
+注：此方法可以让任何类成员函数，不能被访问。如果是构造函数，则不能构造对象。&lt;br /&gt;
+(2)父类的成员函数是private的。  不论什么继承方式，都在子类中不可见。而拷贝构造和赋值操作都需要调用父类的同类方法，此时编译器无能为力只能不自动生成。访问这些函数将导致编译错误。&lt;br /&gt;
+注：同上一item的第5点  &lt;/p&gt;
+&lt;h2&gt;Item 07： Declare destructors virtual in polymorphic base classes&lt;/h2&gt;
+&lt;p&gt;1.delete父类指针或引用的时候，如果不是virtual析构函数，结果是未定义的。很可能的结果是，只调用了父类的析构函数，对象局部销毁，会造成内存泄露。&lt;br /&gt;
+因此，多态基类，一定要定义虚析构函数。&lt;br /&gt;
+2.不用于多态基类时，最好不要加上virtual属性，否则会增加一个指针的大小。&lt;br /&gt;
+为实现virtual机制，对象需要携带一个vptr(虚表指针)，指向vtbl（虚表，函数指针的数组），用来在运行期间动态确定哪个virtual函数被真正调用。&lt;br /&gt;
+3.C++不提供“禁止继承”的机制，Java中final class，或C#中sealed class提供此机制。&lt;br /&gt;
+4.尽量不要继承STL容器等包含non-virtual析构函数的类，因为一旦使用多态机制，结果未定义或内存泄露。&lt;br /&gt;
+5.需要抽象基类，并且手头没有纯虚函数时，定义纯虚析构函数。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//声明  &lt;/span&gt;
+&lt;span class="nl"&gt;public:&lt;/span&gt;  
+     &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="c1"&gt;//定义  &lt;/span&gt;
+&lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="o"&gt;::~&lt;/span&gt;&lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;(){}&lt;/span&gt; &lt;span class="c1"&gt;//之所以需要这个，是因为子类析构时需要调用父类析构函数，不定义会链接错误  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Item 08: Prevent exceptions from leaving destructors&lt;/h2&gt;
+&lt;p&gt;1.析构函数抛出异常，可能导致程序终止，或未定义行为，因为用户无法捕获析构函数里抛出的异常，所以一定不要让析构函数抛出异常。&lt;br /&gt;
+2.正确的做法：提供用户调用可能抛出异常的函数，同时在析构函数里调用该函数，但是捕获其异常。这样用户不仅可以自己捕获异常，也能享受万一忘记调用close，析构函数帮助其close的好处。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DBConn&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;(){}&lt;/span&gt;  
+     &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;DBConn&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;  
+          &lt;span class="n"&gt;try&lt;/span&gt;  
+          &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;();}&lt;/span&gt;  
+          &lt;span class="k"&gt;catch&lt;/span&gt;&lt;span class="p"&gt;(...)&lt;/span&gt;  
+          &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="cm"&gt;/*记录该事件；要么结束程序要么吞下异常*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;  
+     &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Python学习笔记-字符串</title><link href="http://particle128.github.io/posts/2013/09/python-str.html" rel="alternate"></link><updated>2013-09-22T17:52:45+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-22:posts/2013/09/python-str.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
 &lt;h3&gt;（一） 具备的操作&lt;/h3&gt;
 &lt;p&gt;str作为序列元素，包含其他序列共同的操作：&lt;br /&gt;
 1. “hello” [not] in "hello world"&lt;br /&gt;

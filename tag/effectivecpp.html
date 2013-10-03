@@ -61,7 +61,7 @@
     <div class='article'>
         <div class="content-title">
             <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html"><h1>Effective C++学习笔记(1)</h1></a>
-            2013-10-01
+            2013-10-03
 
 by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
  
@@ -176,6 +176,30 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
         <hr />
     </div>
 		
+    
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html"><h2>Effective C++学习笔记(2)</h2></a>
+        <div class= "well small"> 2013-10-03
+
+by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
+ 
+
+
+ </div>
+        <div class="summary"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
+<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
+2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
+3.唯有这4个函数被调用时，才被产生出来。  <br />
+4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
+5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
+<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2> <a class="btn btn-info xsmall" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">read more</a></div>
+    </div>	
+				
             <div class="pagination">
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>

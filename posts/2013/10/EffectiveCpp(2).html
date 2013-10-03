@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>particle128's Blog</title>
+    <meta name="description" content="">
+    <meta name="author" content="particle128">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="http://particle128.github.io/theme/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="http://particle128.github.io/theme/bootstrap.min.css" rel="stylesheet">
+    <link href="http://particle128.github.io/theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="http://particle128.github.io/theme/local.css" rel="stylesheet">
+    <link href="http://particle128.github.io/theme/pygments.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
+
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
+
+        <a class="brand" href="http://particle128.github.io">particle128's Blog</a>
+
+        <div class="nav-collapse">
+        <ul class="nav">
+                    <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+                    <li><a href="http://particle128.github.io/category/python.html">python</a></li>
+                    <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+                    
+                            <li><a href="http://particle128.github.io/pages/aboutme.html">About me</a></li>
+                        </ul>
+        </div>
+        
+    </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="content">
+    <div class="row">
+
+        <div class="span9">
+            <div class='article'>
+        <div class="content-title">
+            <h1>Effective C++学习笔记(2)</h1>
+            2013-10-03
+
+by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
+ 
+
+
+        </div>
+	
+        <div><h2>Item 05: Know what functions C++ silently writes and calls</h2>
+<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
+2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
+3.唯有这4个函数被调用时，才被产生出来。  <br />
+4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
+5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
+<h2>Item 06: Explicitly disallow the use of compiler-generated functions you do not want</h2>
+<p>1.使拷贝构造函数和赋值操作符不可用，两种方式：<br />
+(1)声明为private，且不给予实现。 不论类外（编译错误），还是类内或友元（链接错误），都不能访问这些函数。<br />
+注：此方法可以让任何类成员函数，不能被访问。如果是构造函数，则不能构造对象。<br />
+(2)父类的成员函数是private的。  不论什么继承方式，都在子类中不可见。而拷贝构造和赋值操作都需要调用父类的同类方法，此时编译器无能为力只能不自动生成。访问这些函数将导致编译错误。<br />
+注：同上一item的第5点  </p>
+<h2>Item 07： Declare destructors virtual in polymorphic base classes</h2>
+<p>1.delete父类指针或引用的时候，如果不是virtual析构函数，结果是未定义的。很可能的结果是，只调用了父类的析构函数，对象局部销毁，会造成内存泄露。<br />
+因此，多态基类，一定要定义虚析构函数。<br />
+2.不用于多态基类时，最好不要加上virtual属性，否则会增加一个指针的大小。<br />
+为实现virtual机制，对象需要携带一个vptr(虚表指针)，指向vtbl（虚表，函数指针的数组），用来在运行期间动态确定哪个virtual函数被真正调用。<br />
+3.C++不提供“禁止继承”的机制，Java中final class，或C#中sealed class提供此机制。<br />
+4.尽量不要继承STL容器等包含non-virtual析构函数的类，因为一旦使用多态机制，结果未定义或内存泄露。<br />
+5.需要抽象基类，并且手头没有纯虚函数时，定义纯虚析构函数。  </p>
+<div class="highlight"><pre><span class="c1">//声明  </span>
+<span class="nl">public:</span>  
+     <span class="k">virtual</span> <span class="o">~</span><span class="n">Empty</span><span class="p">()</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  
+<span class="c1">//定义  </span>
+<span class="n">Empty</span><span class="o">::~</span><span class="n">Empty</span><span class="p">(){}</span> <span class="c1">//之所以需要这个，是因为子类析构时需要调用父类析构函数，不定义会链接错误  </span>
+</pre></div>
+
+
+<h2>Item 08: Prevent exceptions from leaving destructors</h2>
+<p>1.析构函数抛出异常，可能导致程序终止，或未定义行为，因为用户无法捕获析构函数里抛出的异常，所以一定不要让析构函数抛出异常。<br />
+2.正确的做法：提供用户调用可能抛出异常的函数，同时在析构函数里调用该函数，但是捕获其异常。这样用户不仅可以自己捕获异常，也能享受万一忘记调用close，析构函数帮助其close的好处。  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">DBConn</span><span class="p">{</span>  
+     <span class="kt">void</span> <span class="n">close</span><span class="p">(){}</span>  
+     <span class="o">~</span><span class="n">DBConn</span><span class="p">(){</span>  
+          <span class="n">try</span>  
+          <span class="p">{</span><span class="n">close</span><span class="p">();}</span>  
+          <span class="k">catch</span><span class="p">(...)</span>  
+          <span class="p">{</span><span class="cm">/*记录该事件；要么结束程序要么吞下异常*/</span><span class="p">}</span>  
+     <span class="p">}</span>  
+<span class="p">}</span>  
+</pre></div></div>
+	
+        <hr>
+    	   
+        <h2>Comments</h2>
+		<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'particle128'; 
+    var disqus_title = 'Effective C++学习笔记(2)';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+        </div>
+        
+        <div class="span3">
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Site
+                </li>
+            
+                <li><a href="http://particle128.github.io/archives.html">Archives</a>
+                <li><a href="http://particle128.github.io/tags.html">Tags</a>
+                <li><a href="http://particle128.github.io/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
+                                <li><a href="http://particle128.github.io/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+                            </ul>
+            </div>
+
+
+                        <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Categories
+                </li>
+                
+                                <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+                                <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+                                <li><a href="http://particle128.github.io/category/python.html">python</a></li>
+                                   
+            </ul>
+            </div>
+            
+
+                        <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Links
+                </li>
+            
+                            <li><a href="http://python.org">Python</a></li>
+                        </ul>
+            </div>
+            
+
+                        <div class="social">
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Social
+                </li>
+           
+                                <li><a href="https://github.com/particle128">github</a></li>
+                            </ul>
+            </div>
+            </div>
+            
+        </div>  
+    </div>     </div> 
+<footer>
+<br />
+<p><a href="http://particle128.github.io">particle128's Blog</a> &copy; particle128 2012</p>
+</footer>
+
+</div> <!-- /container -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+ 
+</body>
+</html>
