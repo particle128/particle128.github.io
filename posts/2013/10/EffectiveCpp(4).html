@@ -53,23 +53,17 @@
     <div class="row">
 
         <div class="span9">
-                
-
-        
-
-
-    <div class='article'>
+            <div class='article'>
         <div class="content-title">
-            <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html"><h1>Effective C++学习笔记(4)</h1></a>
+            <h1>Effective C++学习笔记(4)</h1>
             2013-10-04
 
 by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
  
 
 
- 
         </div>
-        
+	
         <div><h2>Item 13: Use objects to manage resources</h2>
 <p>1.资源是指，使用完之后需要归还系统的东西。比如动态分配的内存，文件描述符，互斥锁，数据库连接，sockets。<br />
 2.尽管可以手动释放资源（比如delete），但是程序的修改（delete之前返回了），或客户的忘记，可能导致资源释放不了。<br />
@@ -139,97 +133,23 @@ delete执行过程：在该内存有一个或多个（delete [] arr）析构函�
 <div class="highlight"><pre><span class="nx">std</span><span class="p">::</span><span class="nl">tr1</span><span class="p">::</span><span class="nl">shared_ptr</span><span class="o">&lt;</span><span class="nx">Widget</span><span class="o">&gt;</span> <span class="nx">pw</span><span class="p">(</span><span class="nb">new</span> <span class="nx">Widget</span><span class="p">);</span>  
 <span class="nx">processWidget</span><span class="p">(</span><span class="nx">pw</span><span class="p">,</span><span class="nx">priority</span><span class="p">());</span>   
 </pre></div></div>
-        <hr />
+	
+        <hr>
+    	   
+        <h2>Comments</h2>
+		<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'particle128'; 
+    var disqus_title = 'Effective C++学习笔记(4)';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
-		
-    
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html"><h2>Effective C++学习笔记(3)</h2></a>
-        <div class= "well small"> 2013-10-04
-
-by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
- 
-
-
- </div>
-        <div class="summary"><h2>Item 09: Never call virtual functions in constructions and destructions</h2>
-<p>1.derived class对象构造时，base class构造函数先被调用，在其中调用/间接调用的虚函数是是父类的版本。原因有二：<br />
-（1）父类构造时，子类成员变量尚未初始化，处于未定义状态，C++不允许调用子类virtual函数（几乎必然会访问成员变量）<br />
-（2）父类构造函数执行时，动态类型是父类。<br />
-同理，析构函数。<br />
-2.替代策略：对于每个子类都要调用的函数，不声明virtual<br />
-（1）每个子类构造函数分别调用相应函数。例如logTransaction()<br />
-（2）子类构造函数显示调用父类构造函数，传递参数上去。例如<code>BaseClass(createLogString(para))</code>，其中createLogString是static成员，保证不会访问子类对象的成员变量。  </p>
-<h2>Item 11: Handle assignment ...</h2> <a class="btn btn-info xsmall" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">read more</a></div>
-    </div>	
-				
-    
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html"><h2>Effective C++学习笔记(1)</h2></a>
-        <div class= "well small"> 2013-10-04
-
-by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
- 
-
-
- </div>
-        <div class="summary"><p><strong>【补充概念】</strong><br />
-<strong>类型安全</strong>：<br />
-<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
-<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
-printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
-(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
-(2) SomeClass a;AnotherClass b;<br />
-   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
-(3) #define max(a,b) ((a ...</p> <a class="btn btn-info xsmall" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">read more</a></div>
-    </div>	
-				
-    
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html"><h2>Effective C++学习笔记(2)</h2></a>
-        <div class= "well small"> 2013-10-03
-
-by <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
- 
-
-
- </div>
-        <div class="summary"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
-<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
-2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
-3.唯有这4个函数被调用时，才被产生出来。  <br />
-4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
-5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
-<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2> <a class="btn btn-info xsmall" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">read more</a></div>
-    </div>	
-				
-            <div class="pagination">
-<ul>
-    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
-
-    <li class="active"><a href="http://particle128.github.io/tag/effectivecpp.html">1</a></li>
-
-    <li class="next disabled"><a href="#">&rarr; Next</a></li>
-
-</ul>
-</div>    
- 
-  
         </div>
         
         <div class="span3">
