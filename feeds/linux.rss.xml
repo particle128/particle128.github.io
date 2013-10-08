@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.github.io/</link><description></description><atom:link href="http://particle128.github.io/feeds/linux.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 08 Sep 2013 08:32:29 +0800</lastBuildDate><item><title>Linux下的用户和用户组小结</title><link>http://particle128.github.io/posts/2013/09/linux_user.html</link><description>&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/linux.rss.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-09-08T10:01:27+08:00</updated><entry><title>Linux权限小结</title><link href="http://particle128.github.io/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T10:01:27+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
+&lt;p&gt;r：可以查看文件内容&lt;br /&gt;
+w：可以修改文件内容&lt;br /&gt;
+x：可以执行文件内容  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt; &lt;br /&gt;
+一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。&lt;/p&gt;
+&lt;h4&gt;2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&amp;lt;文件名，inode号&amp;gt;）&lt;/h4&gt;
+&lt;p&gt;r：可以查看目录结构（ls）&lt;br /&gt;
+w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）&lt;br /&gt;
+x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt;&lt;br /&gt;
+一个目录开放浏览，需要r+x权限。&lt;br /&gt;
+有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号；&lt;br /&gt;
+有x没r，可以cd进去，不能ls查看内容。【所谓不能，是指执行该操作会返回“Permission denied”】&lt;br /&gt;
+仅有w，无法修改目录结构，因为命令进入不进去这个目录，需要x权限配合w才能完成修改目录的作用。&lt;/p&gt;
+&lt;h4&gt;3、umask：初始权限中需要屏蔽的部分，ubuntu12.04下默认是0002，去掉其他用户的写权限。&lt;/h4&gt;
+&lt;p&gt;文件初始权限：-rw-rw-rw- （0666）&lt;br /&gt;
+文件默认权限：初始-umask。0666-0002=0664，即-rw-rw-r--&lt;br /&gt;
+文件夹初始权限：drwxrwxrwx（0777）&lt;br /&gt;
+文件夹默认权限：初始-umask。0777-0002=0775，即drwxrwxr-x  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt;&lt;br /&gt;
+所有者和同组用户权限相同，其他用户剥夺写权限。&lt;br /&gt;
+命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;umask&lt;/span&gt; &lt;span class="mo"&gt;022&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;修改&lt;/span&gt;&lt;span class="n"&gt;umask&lt;/span&gt;&lt;span class="err"&gt;默认值&lt;/span&gt;
+&lt;span class="n"&gt;umask&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;S&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;以字符的形式显示&lt;/span&gt;&lt;span class="n"&gt;umask&lt;/span&gt;&lt;span class="err"&gt;之后的效果，&lt;/span&gt;&lt;span class="mo"&gt;0002&lt;/span&gt;&lt;span class="err"&gt;对应&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rwx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rwx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rx&lt;/span&gt;&lt;span class="err"&gt;。&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;4、三个特殊权限：&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;SUID（SetUID）&lt;/strong&gt;：ls-l显示所有者权限x-&amp;gt;s&lt;br /&gt;
+例子：/usr/bin/passwd。普通用户可以执行passwd修改自己的密码，执行该程序后默认UID变为root（passwd的所有者），因此可以修改仅仅root可读的/etc/shadow&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SGID（SetGID）&lt;/strong&gt;：ls-l显示组权限x-&amp;gt;s&lt;br /&gt;
+例子：/usr/bin/locate。普通用户执行locate定位文件，执行该程序后默认GID变为slocate（locate的所属用户组），因此可以查询仅仅mlocate组内用户可以访问的mlocate.db&lt;br /&gt;
+另：作用于目录时，相当于用户cd进该目录后有效用户组就变成该目录的用户组了，影响此后新建的文件的所属用户组。  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SBIT（Sticky Bit）&lt;/strong&gt;：ls-l显示其他权限x-&amp;gt;t&lt;br /&gt;
+例子：/tmp。用户进入/tmp下新建的文件，只有root和文件所有者可以删除，其他用户即使对/tmp有w权限也没用。&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.github.io/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T08:32:29+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
 &lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
 chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
@@ -68,4 +103,4 @@ passwd
 &lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
 &lt;h4&gt;6) groupdel&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 08 Sep 2013 08:32:29 +0800</pubDate><guid>tag:particle128.github.io,2013-09-08:posts/2013/09/linux_user.html</guid><category>linux</category><category>user</category></item></channel></rss>
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry></feed>
