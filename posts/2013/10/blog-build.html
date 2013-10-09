@@ -59,7 +59,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">Linux下使用Github Pages搭建博客</h1>
-          <p class="meta"><time datetime="2013-10-09T13:51:12.741431" pubdate>2013-10-09</time></p>
+          <p class="meta"><time datetime="2013-10-09T14:09:21.473479" pubdate>2013-10-09</time></p>
 </header>
 
   <div class="entry-content"><h2>环境</h2>
@@ -210,6 +210,16 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改</p>
 </pre></div>
 
 
+<ul>
+<li>vim配置</li>
+</ul>
+<div class="highlight"><pre><span class="s2">&quot; markdown设置</span>
+<span class="s2">au BufRead,BufNewFile,FileReadPre *.md set filetype=markdown</span>
+<span class="s2">&quot;</span> <span class="err">换行、修改</span><span class="nb">Item</span><span class="err">字体，添加元数据</span>
+<span class="nx">au</span> <span class="nx">FileType</span> <span class="nx">markdown</span> <span class="kt">map</span> <span class="o">&lt;</span><span class="nx">F12</span><span class="o">&gt;</span> <span class="p">:</span><span class="o">%</span><span class="nb">s</span><span class="o">/\</span><span class="nx">v</span><span class="p">(</span><span class="err">$</span><span class="p">)</span><span class="o">/</span>  <span class="o">\</span><span class="mi">1</span><span class="p">/</span><span class="nx">g</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="p">:</span><span class="o">%</span><span class="nb">s</span><span class="p">/</span><span class="nb">Item</span><span class="o">/</span><span class="err">#</span><span class="vi">#Item</span><span class="p">/</span><span class="nx">g</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="nx">ggOtitle</span><span class="p">:</span><span class="nx">Effective</span> <span class="nx">C</span><span class="o">++</span><span class="err">学习笔记</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="nx">slug</span><span class="p">:</span><span class="nx">EffectiveCpp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="nb">tags</span><span class="p">:</span><span class="nx">EffectiveCpp</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;&lt;</span><span class="nx">ESC</span><span class="o">&gt;</span>
+</pre></div>
+
+
 <p>到此，环境就算搭建完毕。不明白的地方，还是查看pelican的文档。  </p>
 <h2>独立域名</h2>
 <ol>
@@ -232,7 +242,7 @@ f1g1ns2.dnspod.net  </li>
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-09T13:51:12.741431" pubdate>2013-10-09</time>    <span class="categories">
+  <time datetime="2013-10-09T14:09:21.473479" pubdate>2013-10-09</time>    <span class="categories">
         <a class="category" href="http://particle128.github.io/tag/python.html">python</a>
         <a class="category" href="http://particle128.github.io/tag/pelican.html">pelican</a>
         <a class="category" href="http://particle128.github.io/tag/blog.html">blog</a>
