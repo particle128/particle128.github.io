@@ -1,49 +1,69 @@
 <!DOCTYPE html>
-<html lang="zh">
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-        <meta charset="utf-8">
-        <title>particle128's Blog - EffectiveCpp</title>
-        <link rel="stylesheet" href="http://particle128.github.io/theme/css/main.css">
-                <link href="http://particle128.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="particle128's Blog Atom Feed" />
-                        <link href="http://particle128.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="particle128's Blog RSS Feed" />
-        
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+  <meta charset="utf-8">
+  <title>particle128's Blog - EffectiveCpp</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.github.io/favicon.png" rel="icon">
+  <link href="http://particle128.github.io/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.github.io/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.github.io/theme/js/ender.js"></script>
+  <script src="http://particle128.github.io/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
 </head>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="http://particle128.github.io/">particle128's Blog </a></h1>
-                <nav><ul>
-                                    <li><a href="http://particle128.github.io/archives.html">archives</a></li>
-                                    <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
-                                    <li><a href="http://particle128.github.io/category/python.html">python</a></li>
-                                    <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
-                                                    <li><a href="http://particle128.github.io/pages/aboutme.html">About me</a></li>
-                                                                    <li ><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
-                                    <li ><a href="http://particle128.github.io/category/linux.html">linux</a></li>
-                                    <li ><a href="http://particle128.github.io/category/others.html">others</a></li>
-                                    <li ><a href="http://particle128.github.io/category/python.html">python</a></li>
-                                                </ul></nav>
-        </header><!-- /#banner -->
-                
-            
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.github.io/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.github.io/" rel="subscribe-rss">RSS</a></li>
+  </ul>
 
-                            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a></h1> 
-                    <footer class="post-info">
-        <abbr class="published" title="2013-10-04T19:33:09.273884">
-                2013-10-04
-        </abbr>
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
 
-                <address class="vcard author">
-                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
-        </address>
-        <p>In <a href="http://particle128.github.io/category/cpp.html">cpp</a>. </p>
-<p>tags: <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a></p>
-</footer><!-- /.post-info --><h2>Item 13: Use objects to manage resources</h2>
+<ul class="main-navigation">
+      <li><a href="http://particle128.github.io/archives.html">archives</a></li>
+      <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.github.io/category/python.html">python</a></li>
+      <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.github.io/pages/aboutme.html">About me</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+    	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-04T19:33:09.273884" pubdate>2013-10-04</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 13: Use objects to manage resources</h2>
 <p>1.资源是指，使用完之后需要归还系统的东西。比如动态分配的内存，文件描述符，互斥锁，数据库连接，sockets。<br />
 2.尽管可以手动释放资源（比如delete），但是程序的修改（delete之前返回了），或客户的忘记，可能导致资源释放不了。<br />
 解决办法：用对象管理资源，利用对象在作用域范围之外会自动调用析构函数的机制，释放资源。<br />
@@ -51,93 +71,20 @@
 （1）std::auto_ptr<Investment> pInv(createInvestment()); <br />
 缺点：指向同一对象的auto_ptr，进行赋值或拷贝构造，会导致原ptr变成null。这样的目的，释放多次同一个资源。<br />
 （2）std::tr1::shared_ptr<Investment> pInv(createInvestment());<br />
-注意：不存在上面的问题，因为是RCSP(引用计数智能指针)。<br />
-3.以上两种指针，都是在析构函数中使用delete，动态数组元素放入上面两个智能指针中，会导致释放不完全。<br />
-解决：<br />
-（1）使用vector代替动态数组。<br />
-（2）仍然使用动态数组，那么使用<code>boost::scoped_array</code>，<code>boost::shared_array</code>。  </p>
-<h2>Item 14: Think carefully about copying behavior in resource-managing classes</h2>
-<p>1.不是heap-based的资源，需要自己建立资源管理类。然后将需要管理的资源类放在一个大括号内，退出大括号析构函数负责释放资源。<br />
-2.资源管理类的复制行为：<br />
-（1）不希望复制：<br />
-private继承Uncopyable<br />
-（2）资源一个副本，引用计数：  </p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Lock</span><span class="p">{</span>  
-<span class="nl">public:</span>  
-    <span class="k">explicit</span> <span class="n">Lock</span><span class="p">(</span><span class="n">Mutex</span> <span class="o">*</span><span class="n">pm</span><span class="p">)</span><span class="o">:</span><span class="n">mutexPtr</span><span class="p">(</span><span class="n">pm</span><span class="p">,</span><span class="n">unlock</span><span class="p">)</span> <span class="c1">//第二个参数是删除器，引用计数为0时调用的函数。不带此参数默认行为是delete  </span>
-    <span class="p">{</span>  
-         <span class="n">lock</span><span class="p">(</span><span class="n">mutextPtr</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>  
-     <span class="p">}</span>  
-    <span class="n">std</span><span class="o">::</span><span class="n">tr1</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Mutext</span><span class="o">&gt;</span> <span class="n">mutextPtr</span><span class="p">;</span>  
-<span class="p">}</span>  
-</pre></div>
+注意：不存在上面的问题，因为是RCSP ...</investment></investment></p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">Effective C++学习笔记(3)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-04T19:28:25.753871" pubdate>2013-10-04</time></p>
+</header>
 
-
-<p>（3）资源多个副本：<br />
-每次复制资源都深拷贝。<br />
-（4）转移资源拥有权：<br />
-使用std::auto_ptr。  </p>
-<h2>Item 15: Provide access to raw resources in resource-managing classes</h2>
-<p>1.API往往访问原始资源，所以资源管理类要提供取得原始资源的办法。<br />
-2.标准库中两个智能指针的做法：<br />
-（1）显式访问：get()<br />
-（2）隐式访问：成员访问操作符 -&gt; 和 .可以访问到原始资源的成员<br />
-3.自定义资源管理类的做法：<br />
-（1）显式访问：定义get() ，更安全<br />
-<code>FontHandle get() const {return f;}</code><br />
-（2）隐式访问：定义隐式转换函数 ，更方便<br />
-<code>operator FontHandle() const {return f;}</code>  </p>
-<h2>Item16: Use the same form in corresponding uses of new and delete</h2>
-<p>1.new执行过程：通过名为operator new的函数分配内存；在该块内存有一个或多个（new string[4]）构造函数被调用。<br />
-delete执行过程：在该内存有一个或多个（delete [] arr）析构函数被调用；通过名为operator delete的函数释放内存。<br />
-2.delete []一个对象，和delete一个数组，结果都未定义。因为数组在内存的布局可能是：起始地址放置数组大小（4B），之后是数组内容。<br />
-3.注意typedef定义的数组类型的释放:  </p>
-<div class="highlight"><pre><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">StrArr</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>  
-<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">*</span><span class="n">a</span><span class="o">=</span><span class="k">new</span> <span class="n">StrArr</span><span class="p">;</span>  
-<span class="k">delete</span> <span class="p">[]</span> <span class="n">a</span><span class="p">;</span>  
-</pre></div>
-
-
-<p>非常容易引起混淆，所以最好不好定义数组类型，vector代替。  </p>
-<h2>Item17: Store newed object in smart pointers in standalone statements(standalone 独立的)</h2>
-<p>1.例子：<br />
-<code>processWidget(std::tr1::shared_ptr&lt;Widget&gt;(new Widget),priority());</code> <br />
-问题：编译器的优化可能导致这种顺序的调用。  </p>
-<div class="highlight"><pre><span class="k">new</span> <span class="n">Widget</span>  
-<span class="n">priority</span><span class="p">()</span>  <span class="c1">//如果抛出异常，new的资源就泄露了，因为没有指针指向它，没法释放  std::tr1::shared_ptr&lt;Widget&gt;构造函数  </span>
-</pre></div>
-
-
-<p>解决办法：独立语句中将动态分配的对象存入智能指针。  </p>
-<div class="highlight"><pre><span class="nx">std</span><span class="p">::</span><span class="nl">tr1</span><span class="p">::</span><span class="nl">shared_ptr</span><span class="o">&lt;</span><span class="nx">Widget</span><span class="o">&gt;</span> <span class="nx">pw</span><span class="p">(</span><span class="nb">new</span> <span class="nx">Widget</span><span class="p">);</span>  
-<span class="nx">processWidget</span><span class="p">(</span><span class="nx">pw</span><span class="p">,</span><span class="nx">priority</span><span class="p">());</span>   
-</pre></div><p>There are <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html#disqus_thread">comments</a>.</p>                </article>
-                            </aside><!-- /#featured -->
-                            <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-                                                
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html" rel="bookmark"
-                           title="Permalink to Effective C++学习笔记(3)">Effective C++学习笔记(3)</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-10-04T19:28:25.753871">
-                2013-10-04
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
-        </address>
-        <p>In <a href="http://particle128.github.io/category/cpp.html">cpp</a>. </p>
-<p>tags: <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a></p>
-</footer><!-- /.post-info -->                <h2>Item 09: Never call virtual functions in constructions and destructions</h2>
+  <div class="entry-content"><h2>Item 09: Never call virtual functions in constructions and destructions</h2>
 <p>1.derived class对象构造时，base class构造函数先被调用，在其中调用/间接调用的虚函数是是父类的版本。原因有二：<br />
 （1）父类构造时，子类成员变量尚未初始化，处于未定义状态，C++不允许调用子类virtual函数（几乎必然会访问成员变量）<br />
 （2）父类构造函数执行时，动态类型是父类。<br />
@@ -145,31 +92,20 @@ delete执行过程：在该内存有一个或多个（delete [] arr）析构函�
 2.替代策略：对于每个子类都要调用的函数，不声明virtual<br />
 （1）每个子类构造函数分别调用相应函数。例如logTransaction()<br />
 （2）子类构造函数显示调用父类构造函数，传递参数上去。例如<code>BaseClass(createLogString(para))</code>，其中createLogString是static成员，保证不会访问子类对象的成员变量。  </p>
-<h2>Item 11: Handle assignment ...</h2>
-                <a class="readmore" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">read more</a>
-                <p>There are <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
+<h2>Item 11: Handle assignment ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-04T19:11:56.769827" pubdate>2013-10-04</time></p>
+</header>
 
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html" rel="bookmark"
-                           title="Permalink to Effective C++学习笔记(1)">Effective C++学习笔记(1)</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-10-04T19:11:56.769827">
-                2013-10-04
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
-        </address>
-        <p>In <a href="http://particle128.github.io/category/cpp.html">cpp</a>. </p>
-<p>tags: <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a></p>
-</footer><!-- /.post-info -->                <p><strong>【补充概念】</strong><br />
+  <div class="entry-content"><p><strong>【补充概念】</strong><br />
 <strong>类型安全</strong>：<br />
 <em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
 <em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
@@ -177,79 +113,95 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
 (1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
 (2) SomeClass a;AnotherClass b;<br />
    memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
-(3) #define max(a,b) ((a ...</p>
-                <a class="readmore" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">read more</a>
-                <p>There are <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
+(3) #define max(a,b) ((a ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-03T22:42:12.454317" pubdate>2013-10-03</time></p>
+</header>
 
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html" rel="bookmark"
-                           title="Permalink to Effective C++学习笔记(2)">Effective C++学习笔记(2)</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-10-03T22:42:12.454317">
-                2013-10-03
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
-        </address>
-        <p>In <a href="http://particle128.github.io/category/cpp.html">cpp</a>. </p>
-<p>tags: <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a></p>
-</footer><!-- /.post-info -->                <h2>Item 05: Know what functions C++ silently writes and calls</h2>
+  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
 <p>1.默认生成的4种函数，都是public+inline类型的。  <br />
 2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
 3.唯有这4个函数被调用时，才被产生出来。  <br />
 4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
 5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
-<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2>
-                <a class="readmore" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">read more</a>
-                <p>There are <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            </ol><!-- /#posts-list -->
-                            <p class="paginator">
-        Page 1 / 1
-    </p>
-                        </section><!-- /#content -->
-                    <section id="extras" class="body">
-                        <div class="blogroll">
-                        <h2>blogroll</h2>
-                        <ul>
-                                                    <li><a href="http://python.org">Python</a></li>
-                                                </ul>
-                </div><!-- /.blogroll -->
-                                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="http://particle128.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
-                                                        <li><a href="http://particle128.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
-                            
-                                                    <li><a href="https://github.com/particle128">github</a></li>
-                                                </ul>
-                </div><!-- /.social -->
-                </section><!-- /#extras -->
+<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  	<div class="pagination">
+  
+    <br />
+</div>  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">Effective C++学习笔记(3)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.github.io/category/others.html">others</a></li>
+              <li><a href="http://particle128.github.io/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.github.io/tag/pelican.html">pelican</a>,      <a href="http://particle128.github.io/tag/logging.html">logging</a>,      <a href="http://particle128.github.io/tag/python.html">python</a>,      <a href="http://particle128.github.io/tag/blog.html">blog</a>,      <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.github.io/tag/user.html">user</a>,      <a href="http://particle128.github.io/tag/str.html">str</a>,      <a href="http://particle128.github.io/tag/linux.html">linux</a>    </section>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-<script type="text/javascript">
-    var disqus_shortname = 'particle128';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.github.io/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
 </body>
 </html>

@@ -1,49 +1,69 @@
 <!DOCTYPE html>
-<html lang="zh">
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-        <meta charset="utf-8">
-        <title>particle128's Blog - particle128</title>
-        <link rel="stylesheet" href="http://particle128.github.io/theme/css/main.css">
-                <link href="http://particle128.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="particle128's Blog Atom Feed" />
-                        <link href="http://particle128.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="particle128's Blog RSS Feed" />
-        
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+  <meta charset="utf-8">
+  <title>particle128's Blog - Articles by particle128</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.github.io/favicon.png" rel="icon">
+  <link href="http://particle128.github.io/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.github.io/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.github.io/theme/js/ender.js"></script>
+  <script src="http://particle128.github.io/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
 </head>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="http://particle128.github.io/">particle128's Blog </a></h1>
-                <nav><ul>
-                                    <li><a href="http://particle128.github.io/archives.html">archives</a></li>
-                                    <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
-                                    <li><a href="http://particle128.github.io/category/python.html">python</a></li>
-                                    <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
-                                                    <li><a href="http://particle128.github.io/pages/aboutme.html">About me</a></li>
-                                                                    <li ><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
-                                    <li ><a href="http://particle128.github.io/category/linux.html">linux</a></li>
-                                    <li ><a href="http://particle128.github.io/category/others.html">others</a></li>
-                                    <li ><a href="http://particle128.github.io/category/python.html">python</a></li>
-                                                </ul></nav>
-        </header><!-- /#banner -->
-                
-            
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.github.io/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.github.io/" rel="subscribe-rss">RSS</a></li>
+  </ul>
 
-                            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a></h1> 
-                    <footer class="post-info">
-        <abbr class="published" title="2013-10-04T19:11:56.769827">
-                2013-10-04
-        </abbr>
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
 
-                <address class="vcard author">
-                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
-        </address>
-        <p>In <a href="http://particle128.github.io/category/cpp.html">cpp</a>. </p>
-<p>tags: <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a></p>
-</footer><!-- /.post-info --><p><strong>【补充概念】</strong><br />
+<ul class="main-navigation">
+      <li><a href="http://particle128.github.io/archives.html">archives</a></li>
+      <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.github.io/category/python.html">python</a></li>
+      <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.github.io/pages/aboutme.html">About me</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+    	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-04T19:11:56.769827" pubdate>2013-10-04</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>【补充概念】</strong><br />
 <strong>类型安全</strong>：<br />
 <em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
 <em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
@@ -51,161 +71,39 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
 (1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
 (2) SomeClass a;AnotherClass b;<br />
    memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
-(3) #define max(a,b) ((a)&gt;(b)?(a):(b))  <br />
-   max(15,"abc");max(a++,b); 》》》类型安全的template inline函数（同样效率，函数可预料行为，类型安全）  </p>
-<hr />
-<h2>Item 02: Prefer const, enum, and inline to #define</h2>
-<p>1.除非我有一个很好的理由允许构造函数被用于隐式类型转换，否则我会把它声明为explicit。<br />
-2.头文件里定义字符串常量  </p>
-<div class="highlight"><pre><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="k">const</span> <span class="n">str</span><span class="o">=</span><span class="s">&quot;hello&quot;</span><span class="p">;</span> <span class="c1">//或 char const * const str=&quot;hello&quot;;</span>
-</pre></div>
+(3) #define max(a,b) ((a ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-03T22:42:12.454317" pubdate>2013-10-03</time></p>
+</header>
 
-
-<p>缺第1个const，<code>warning： deprecated conversion from string constant to ‘char*’</code> 
-缺第2个const，如果两个源文件引用该头文件，会<code>multiple definition</code>的错误<br />
-3.类关键字：<br />
-一般情况，只允许声明处出现一次：explicit,static,virtual,默认实参<br />
-特殊的2个，inline：出现在任一处都行，一般写在定义处；const：两处都要出现。<br />
-4.<code>#define</code>宏定义完全可以被代替。const代替常量宏，template inline函数代替函数宏。<br />
-此外，static const可以定义类属常量，这是#define做不到的。<br />
-5.static const类属常量，如果是整数类型（char，short，int，bool等），可以在声明时直接赋值，只要不取地址都可以直接使用。  </p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">c</span>  
-<span class="p">{</span>
-    <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>  
-    <span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="n">num</span><span class="p">];</span>  
-<span class="p">}</span> 
-</pre></div>
-
-
-<p>如果非整数类型（如double），如果需要取地址，如果编译器比较旧，需要在源文件中定义，给初值。<br />
-如果非要在编译时使用，编译器还不允许，可以使用enum hack的方法  </p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">c</span>  
-<span class="p">{</span>  
-    <span class="k">enum</span> <span class="p">{</span><span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">};</span>  
-    <span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="n">num</span><span class="p">];</span>  
-<span class="p">}</span> 
-</pre></div>
-
-
-<p>6.需要一组常量的时候，可以使用枚举，用法：  </p>
-<div class="highlight"><pre><span class="k">enum</span> <span class="n">Month</span> <span class="p">{</span><span class="n">Jan</span><span class="p">,</span><span class="n">Feb</span><span class="p">,</span><span class="n">March</span><span class="p">,</span><span class="n">April</span><span class="p">};</span> 
-<span class="n">Month</span> <span class="n">m</span><span class="o">=</span><span class="n">Jan</span><span class="p">;</span>  
-<span class="k">enum</span> <span class="p">{</span><span class="n">First</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">Third</span><span class="o">=</span><span class="mi">3</span><span class="p">};</span>
-<span class="kt">int</span> <span class="n">number</span><span class="o">=</span><span class="n">First</span><span class="p">;</span>  
-</pre></div>
-
-
-<h2>Item 03: Use const whenever possible</h2>
-<p>1.const可作用于任何作用域范围的对象、函数参数、函数返回类型、成员函数本身。<br />
-2.函数返回类型+const的意义，限制返回值再被赋值：  </p>
-<div class="highlight"><pre><span class="k">const</span> <span class="n">Rational</span> <span class="k">operator</span><span class="o">*</span> <span class="p">(</span><span class="k">const</span> <span class="n">Rational</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Rational</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">){...}</span>
-</pre></div>
-
-
-<p>防止  </p>
-<div class="highlight"><pre><span class="n">Rational</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">;</span>   
-<span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-    <span class="p">{...}</span>
-</pre></div>
-
-
-<p>通过编译<br />
-3.将const作用于成员函数，保证该成员函数可以被const对象调用。<br />
-4.const成员函数可以"重载"非const成员函数。虽然const成员函数也可以被non-const对象调用，但是重载后，定义const和non-const对象，调用的同一个函数原型，效果就不一样了。如果返回引用类型或非内置类型，一个可以被赋值，一个不可以。</p>
-<div class="highlight"><pre><span class="k">const</span> <span class="kt">char</span><span class="o">&amp;</span> <span class="n">TextBlock</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">position</span><span class="p">)</span> <span class="k">const</span><span class="p">{...}</span>
-<span class="kt">char</span><span class="o">&amp;</span> <span class="n">TextBlock</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">position</span><span class="p">)</span> <span class="p">{...}</span>
-</pre></div>
-
-
-<p>原理：<br />
-重载函数的确定，先找到candidate函数（名字相同），再找到valid函数（参数列表符合），再确定best match。<br />
-const成员函数内隐藏的this指针是const type<em>类型，而非const成员函数的则是type</em>。因此，const重载的实质是参数类型不同。<br />
-所以，非const对象优先调用非const函数（最佳匹配），没有的时候才调用const函数。<br />
-5.函数返回内置类型，不能做左值；函数返回自定义类型，或引用类型（内置或自定义），可以做左值。<br />
-6.被mutable声明的变量，即使在const成员函数内，也可以修改。这样可以实现概念上的const函数，而不是bitwise上的const函数。<br />
-7.重复代码：编译时间、维护、代码臃肿问题。<br />
-在operator[]函数里调用const operator[]函数：  </p>
-<div class="highlight"><pre><span class="kt">char</span> <span class="o">&amp;</span><span class="k">operator</span><span class="p">[]</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">position</span><span class="p">)</span>  
-<span class="p">{</span>  
-     <span class="k">return</span> <span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&amp;&gt;</span><span class="p">(</span>                      <span class="c1">//C++中仅有这一种方式  </span>
-     <span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">TextBlock</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)[</span><span class="n">position</span><span class="p">]</span>  <span class="c1">//也可以用const_cast代替,不转换成const对象会无限递归调用自己，段错误~  </span>
-     <span class="p">);</span>  
-<span class="p">}</span>
-</pre></div>
-
-
-<h2>Item 04: Make sure that objects are initialized before they're used.</h2>
-<p>1.类成员变量中的自定义类型，在构造函数语句执行之前，已经调用过默认构造函数初始化自身了。所以，为了效率，应该使用初始化列表，然后构造函数语句体为空。代价（默认构造函数+赋值操作）&gt;代价（1个构造函数）。<br />
-类成员变量中的内置类型，构造函数语句执行之前一般不会初始化，而且初始化和赋值效率相同，所以放在哪里一样。代价（1次初始化）=代价（1次赋值）。<br />
-2.内置类型为const或引用，必须初始化，不能赋值。<br />
-3.static对象，包括global对象，namespace作用域内对象，类内对象，函数内对象（local static对象）。<br />
-寿命：从运行中被构造出来，直到main()结束自动调用析构。<br />
-4.<br />
-原理：C++对定义于不同编译单元内的non-local static对象的初始化相对次序，没有明确定义。<br />
-导致的问题：先构造的对象，在构造函数中引用了后构造的对象，此时该对象还没有初始化。<br />
-解决：以函数调用（返回local static对象的引用），替代直接访问non-local static对象。  </p>
-<div class="highlight"><pre><span class="n">C1</span><span class="o">&amp;</span> <span class="n">getobj</span><span class="p">()</span>  
-<span class="p">{</span><span class="k">static</span> <span class="n">C1</span> <span class="n">obj</span><span class="p">;</span><span class="k">return</span> <span class="n">obj</span><span class="p">;}</span>
-</pre></div>
-
-
-<p>原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  </p><p>There are <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html#disqus_thread">comments</a>.</p>                </article>
-                            </aside><!-- /#featured -->
-                            <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-                                                
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html" rel="bookmark"
-                           title="Permalink to Effective C++学习笔记(2)">Effective C++学习笔记(2)</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-10-03T22:42:12.454317">
-                2013-10-03
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
-        </address>
-        <p>In <a href="http://particle128.github.io/category/cpp.html">cpp</a>. </p>
-<p>tags: <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a></p>
-</footer><!-- /.post-info -->                <h2>Item 05: Know what functions C++ silently writes and calls</h2>
+  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
 <p>1.默认生成的4种函数，都是public+inline类型的。  <br />
 2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
 3.唯有这4个函数被调用时，才被产生出来。  <br />
 4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
 5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
-<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2>
-                <a class="readmore" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">read more</a>
-                <p>There are <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
+<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">Effective C++学习笔记(3)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-04T19:28:25.753871" pubdate>2013-10-04</time></p>
+</header>
 
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html" rel="bookmark"
-                           title="Permalink to Effective C++学习笔记(3)">Effective C++学习笔记(3)</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-10-04T19:28:25.753871">
-                2013-10-04
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
-        </address>
-        <p>In <a href="http://particle128.github.io/category/cpp.html">cpp</a>. </p>
-<p>tags: <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a></p>
-</footer><!-- /.post-info -->                <h2>Item 09: Never call virtual functions in constructions and destructions</h2>
+  <div class="entry-content"><h2>Item 09: Never call virtual functions in constructions and destructions</h2>
 <p>1.derived class对象构造时，base class构造函数先被调用，在其中调用/间接调用的虚函数是是父类的版本。原因有二：<br />
 （1）父类构造时，子类成员变量尚未初始化，处于未定义状态，C++不允许调用子类virtual函数（几乎必然会访问成员变量）<br />
 （2）父类构造函数执行时，动态类型是父类。<br />
@@ -213,31 +111,20 @@ const成员函数内隐藏的this指针是const type<em>类型，而非const成�
 2.替代策略：对于每个子类都要调用的函数，不声明virtual<br />
 （1）每个子类构造函数分别调用相应函数。例如logTransaction()<br />
 （2）子类构造函数显示调用父类构造函数，传递参数上去。例如<code>BaseClass(createLogString(para))</code>，其中createLogString是static成员，保证不会访问子类对象的成员变量。  </p>
-<h2>Item 11: Handle assignment ...</h2>
-                <a class="readmore" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">read more</a>
-                <p>There are <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
+<h2>Item 11: Handle assignment ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-04T19:33:09.273884" pubdate>2013-10-04</time></p>
+</header>
 
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html" rel="bookmark"
-                           title="Permalink to Effective C++学习笔记(4)">Effective C++学习笔记(4)</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-10-04T19:33:09.273884">
-                2013-10-04
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
-        </address>
-        <p>In <a href="http://particle128.github.io/category/cpp.html">cpp</a>. </p>
-<p>tags: <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a></p>
-</footer><!-- /.post-info -->                <h2>Item 13: Use objects to manage resources</h2>
+  <div class="entry-content"><h2>Item 13: Use objects to manage resources</h2>
 <p>1.资源是指，使用完之后需要归还系统的东西。比如动态分配的内存，文件描述符，互斥锁，数据库连接，sockets。<br />
 2.尽管可以手动释放资源（比如delete），但是程序的修改（delete之前返回了），或客户的忘记，可能导致资源释放不了。<br />
 解决办法：用对象管理资源，利用对象在作用域范围之外会自动调用析构函数的机制，释放资源。<br />
@@ -245,31 +132,20 @@ const成员函数内隐藏的this指针是const type<em>类型，而非const成�
 （1）std::auto_ptr<Investment> pInv(createInvestment()); <br />
 缺点：指向同一对象的auto_ptr，进行赋值或拷贝构造，会导致原ptr变成null。这样的目的，释放多次同一个资源。<br />
 （2）std::tr1::shared_ptr<Investment> pInv(createInvestment());<br />
-注意：不存在上面的问题，因为是RCSP ...</investment></investment></p>
-                <a class="readmore" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html">read more</a>
-                <p>There are <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            
+注意：不存在上面的问题，因为是RCSP ...</investment></investment></p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/09/authority.html">Linux权限小结</a>
+      </h1>
+          <p class="meta"><time datetime="2013-09-08T10:01:27.753871" pubdate>2013-09-08</time></p>
+</header>
 
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="http://particle128.github.io/posts/2013/09/authority.html" rel="bookmark"
-                           title="Permalink to Linux权限小结">Linux权限小结</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2013-09-08T10:01:27.753871">
-                2013-09-08
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
-        </address>
-        <p>In <a href="http://particle128.github.io/category/linux.html">linux</a>. </p>
-<p>tags: <a href="http://particle128.github.io/tag/linux.html">linux</a></p>
-</footer><!-- /.post-info -->                <h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
+  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
 <p>r：可以查看文件内容<br />
 w：可以修改文件内容<br />
 x：可以执行文件内容  </p>
@@ -281,50 +157,80 @@ w：可以修改目录结构（如touch新文件，rm文件，其他无出其右
 x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
 <p><strong>Note：</strong><br />
 一个目录开放浏览，需要r+x权限。<br />
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p>
-                <a class="readmore" href="http://particle128.github.io/posts/2013/09/authority.html">read more</a>
-                <p>There are <a href="http://particle128.github.io/posts/2013/09/authority.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                            </ol><!-- /#posts-list -->
-                            <p class="paginator">
-        Page 1 / 2
-            <a href="http://particle128.github.io/author/particle1282.html">&raquo;</a>
-    </p>
-                        </section><!-- /#content -->
-                    <section id="extras" class="body">
-                        <div class="blogroll">
-                        <h2>blogroll</h2>
-                        <ul>
-                                                    <li><a href="http://python.org">Python</a></li>
-                                                </ul>
-                </div><!-- /.blogroll -->
-                                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="http://particle128.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
-                                                        <li><a href="http://particle128.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
-                            
-                                                    <li><a href="https://github.com/particle128">github</a></li>
-                                                </ul>
-                </div><!-- /.social -->
-                </section><!-- /#extras -->
+有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/09/authority.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  	<div class="pagination">
+      <a class="prev" href="http://particle128.github.io/author/particle1282.html">&larr; Older</a>
+  
+    <br />
+</div>  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">Effective C++学习笔记(3)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/09/authority.html">Linux权限小结</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.github.io/category/others.html">others</a></li>
+              <li><a href="http://particle128.github.io/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.github.io/tag/pelican.html">pelican</a>,      <a href="http://particle128.github.io/tag/logging.html">logging</a>,      <a href="http://particle128.github.io/tag/python.html">python</a>,      <a href="http://particle128.github.io/tag/blog.html">blog</a>,      <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.github.io/tag/user.html">user</a>,      <a href="http://particle128.github.io/tag/str.html">str</a>,      <a href="http://particle128.github.io/tag/linux.html">linux</a>    </section>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-<script type="text/javascript">
-    var disqus_shortname = 'particle128';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.github.io/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
 </body>
 </html>
