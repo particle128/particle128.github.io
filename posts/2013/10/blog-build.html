@@ -58,7 +58,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">Linux下使用Github Pages搭建博客</h1>
-          <p class="meta"><time datetime="2013-10-09T10:20:49.860868" pubdate>2013-10-09</time></p>
+          <p class="meta"><time datetime="2013-10-09T13:04:16.181305" pubdate>2013-10-09</time></p>
 </header>
 
   <div class="entry-content"><h2>环境</h2>
@@ -116,11 +116,18 @@ markdown语法很简单，不清楚的可以查看<a href="http://daringfireball
 
 
 <p>为了使用插件和主题，需要修改配置文件，见后。<br />
-4. 使用disqus评论系统<br />
-注册<a href="https://disqus.com/admin/signup/">Disqus</a>，然后在配置文件里添加新注册的Disqus的Site short name，具体配置文件见后面。<br />
-5. 使用Google站长工具，以便能被Google收录<br />
-用谷歌账户登陆<a href="www.google.com/webmasters/">Google Webmaster Tools</a>，添加自己的站点，比如xx.github.io，然后可以选择提交sitemap，或者替google手动抓取页面。<br />
-6. 我的配置文件pelicanconf.py的内容  </p>
+PS：默认代码高亮部分不太喜欢，所以我进行了如下修改</p>
+<div class="highlight"><pre>sed %/002b
+</pre></div>
+
+
+<ol>
+<li>使用disqus评论系统<br />
+注册<a href="https://disqus.com/admin/signup/">Disqus</a>，然后在配置文件里添加新注册的Disqus的Site short name，具体配置文件见后面。  </li>
+<li>使用Google站长工具，以便能被Google收录<br />
+用谷歌账户登陆<a href="www.google.com/webmasters/">Google Webmaster Tools</a>，添加自己的站点，比如xx.github.io，然后可以选择提交sitemap，或者替google手动抓取页面。  </li>
+<li>我的配置文件pelicanconf.py的内容  </li>
+</ol>
 <div class="highlight"><pre><span class="c">#!/usr/bin/env python  </span>
 <span class="c"># -*- coding: utf-8 -*- #  </span>
 
@@ -216,7 +223,7 @@ f1g1ns2.dnspod.net  </li>
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-09T10:20:49.860868" pubdate>2013-10-09</time>    <span class="categories">
+  <time datetime="2013-10-09T13:04:16.181305" pubdate>2013-10-09</time>    <span class="categories">
         <a class="category" href="http://particle128.github.io/tag/python.html">python</a>
         <a class="category" href="http://particle128.github.io/tag/pelican.html">pelican</a>
         <a class="category" href="http://particle128.github.io/tag/blog.html">blog</a>
