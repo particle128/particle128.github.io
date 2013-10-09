@@ -1,69 +1,49 @@
 <!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<html lang="zh">
 <head>
-  <meta charset="utf-8">
-  <title>particle128's Blog - logging</title>
-  <meta name="author" content="particle128">
-
-    
-  
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link href="http://particle128.github.io/favicon.png" rel="icon">
-  <link href="http://particle128.github.io/theme/css/main.css" media="screen, projection"
-        rel="stylesheet" type="text/css">
-  <script src="http://particle128.github.io/theme/js/modernizr-2.0.js"></script>
-  <script src="http://particle128.github.io/theme/js/ender.js"></script>
-  <script src="http://particle128.github.io/theme/js/octopress.js" type="text/javascript"></script>
-
-  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
-        rel="stylesheet" type="text/css">
-  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
-        rel="stylesheet" type="text/css">
+        <meta charset="utf-8">
+        <title>particle128's Blog - logging</title>
+        <link rel="stylesheet" href="http://particle128.github.io/theme/css/main.css">
+                <link href="http://particle128.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="particle128's Blog Atom Feed" />
+                        <link href="http://particle128.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="particle128's Blog RSS Feed" />
+        
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
 
-<body>
-  <header role="banner"><hgroup>
-  <h1><a href="http://particle128.github.io/">particle128's Blog</a></h1>
-  </hgroup></header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="http://particle128.github.io/" rel="subscribe-rss">RSS</a></li>
-  </ul>
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://particle128.github.io/">particle128's Blog </a></h1>
+                <nav><ul>
+                                    <li><a href="http://particle128.github.io/archives.html">archives</a></li>
+                                    <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+                                    <li><a href="http://particle128.github.io/category/python.html">python</a></li>
+                                    <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+                                                    <li><a href="http://particle128.github.io/pages/aboutme.html">About me</a></li>
+                                                                    <li ><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
+                                    <li ><a href="http://particle128.github.io/category/linux.html">linux</a></li>
+                                    <li ><a href="http://particle128.github.io/category/others.html">others</a></li>
+                                    <li ><a href="http://particle128.github.io/category/python.html">python</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+                
+            
 
-<!-- TODO: add search here
-<form action="" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:http://particle128.github.io" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
--->
+                            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://particle128.github.io/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a></h1> 
+                    <footer class="post-info">
+        <abbr class="published" title="2013-09-08T10:10:19.289894">
+                2013-09-08
+        </abbr>
 
-<ul class="main-navigation">
-      <li><a href="http://particle128.github.io/archives.html">archives</a></li>
-      <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
-      <li><a href="http://particle128.github.io/category/python.html">python</a></li>
-      <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
-              <li><a href="http://particle128.github.io/pages/aboutme.html">About me</a></li>
-        <!-- TODO: add categories here? -->
-  </ul></nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.github.io/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T10:10:19.289894" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
+                <address class="vcard author">
+                By <a class="url fn" href="http://particle128.github.io/author/particle128.html">particle128</a>
+        </address>
+        <p>In <a href="http://particle128.github.io/category/python.html">python</a>. </p>
+<p>tags: <a href="http://particle128.github.io/tag/python.html">python</a><a href="http://particle128.github.io/tag/logging.html">logging</a></p>
+</footer><!-- /.post-info --><h4>Logging is a means of tracking events that happen when some software runs.</h4>
 <h3>1、各种消息机制的使用场合</h3>
 <p>终端输出来显示一些信息：print()<br />
 报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
@@ -74,67 +54,103 @@ logging.debug()用来诊断错误<br />
 <p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
 <p>level由低到高依次是：<br />
 DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
-<h3>2 ...</h3></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.github.io/posts/2013/09/python-logging.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-    <br />
-</div>  </div>
-      <aside class="sidebar">
-  <section>
-    <h1>Recent Posts</h1>
-    <ul id="recent_posts">
-            <li class="post">
-          <a href="http://particle128.github.io/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
-      </li>
-          </ul>
-  </section>
-    <section>
-      
-    <h1>Categories</h1>
-    <ul id="recent_posts">
-              <li><a href="http://particle128.github.io/category/cpp.html">cpp</a></li>
-              <li><a href="http://particle128.github.io/category/linux.html">linux</a></li>
-              <li><a href="http://particle128.github.io/category/others.html">others</a></li>
-              <li><a href="http://particle128.github.io/category/python.html">python</a></li>
-          </ul>
-  </section>
-   
+<h3>2、基础用法</h3>
+<p>默认日志消息会输出到终端（sys.stderr），用法为：  </p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>  
+<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s"> before you </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;Look&#39;</span><span class="p">,</span> <span class="s">&#39;leap!&#39;</span><span class="p">)</span>
+</pre></div>
 
-  <section>
-  <h1>Tags</h1>
-      <a href="http://particle128.github.io/tag/pelican.html">pelican</a>,      <a href="http://particle128.github.io/tag/logging.html">logging</a>,      <a href="http://particle128.github.io/tag/python.html">python</a>,      <a href="http://particle128.github.io/tag/blog.html">blog</a>,      <a href="http://particle128.github.io/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.github.io/tag/user.html">user</a>,      <a href="http://particle128.github.io/tag/str.html">str</a>,      <a href="http://particle128.github.io/tag/linux.html">linux</a>    </section>
 
-    
-    <section>
-        <h1>Social</h2>
-        <ul>
-            <li><a href="http://particle128.github.io/" type="application/rss+xml" rel="alternate">RSS</a></li>
-                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
-                </ul>
-    </section>
-      <section>
-        <h1>Blogroll</h2>
-        <ul>
-                    <li><a href="http://python.org" target="_blank">Python</a></li>
-                </ul>
-    </section>
-</aside>    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - particle128 -
-  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
-</p></footer>
-  	<script type="text/javascript">
-	  var disqus_shortname = 'particle128';
-      	  (function() {
-	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	   })();
-	</script>
+<p>一次性配置日志消息，用法为：</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;example.log&#39;</span><span class="p">,</span><span class="n">filemode</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> </span><span class="si">%(levelname)s</span><span class="s"> </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;something happends.&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>basicConfig参数：
+filename指明日志消息输出到指定的文件中，默认输出到终端<br />
+filemode指明文件打开方式是只写，每次输出日志都会把原来的日志覆盖。默认是追加('a')<br />
+level指明追踪(track)的日志等级<br />
+format指明日志格式，里面的字典参数依次是：日期、等级名、日志消息。format里不支持：和\n。</p>
+<p><strong>注意：</strong> basicConfig只能在调用logging.debug()等任意函数之前调用，否则无效。调用之后，所有的logging行为都按照配置，再次执行basicConfig也不能进一步修改配置。所以称之为one-off（一次性的）。</p>
+<h3>3、高级用法</h3>
+<p>比较好的习惯是logger=logging.getLogger(__name__) ，这样每个模块里logger的名字都是以自己模块的名字来命名的，从日志中可以看出是哪里导出的日志。</p>
+<p>logger=logging.getLogger()相当于获取根logger，即名字为root的logger  </p>
+<p>Logger常用方法：<br />
+setLevel()，addHandler()，removeHandler()，addFilter()，removeFilter()</p>
+<p>Handler常用方法：<br />
+setLevel()，setFormatter()，addFilter()，removeFilter()</p>
+<p>例子：</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+<span class="k">class</span> <span class="nc">myFilter</span> <span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Filter</span><span class="p">):</span> <span class="c">#其实可以不用继承，只要含有filter方法的类都可以</span>
+    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">record</span><span class="p">):</span> <span class="c"># record是LogRecord对象</span>
+        <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">)</span><span class="o">!=-</span><span class="mi">1</span><span class="p">:</span> <span class="c">#使用msg属性或getMessage()方法都可以</span>
+            <span class="k">return</span> <span class="bp">False</span> <span class="c"># zero for not logging</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span> <span class="c"># non-zero for logging</span>
+
+<span class="n">logger</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;main.a&#39;</span><span class="p">)</span>
+<span class="c"># main.a是该logger的name，即所有者，用点来分割命名空间。如果是main.a则是main的子类，继承关系影响level、handler，如果不设置level就按照父类的level进行设置，如果不设置handler，就由父类的handler捕获。</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span> <span class="c"># 过滤该level以下的日志消息</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">myFilter</span><span class="p">())</span> <span class="c"># 比level更细力度的过滤功能</span>
+
+<span class="n">fh</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="s">&#39;/home/mashu/log.txt&#39;</span><span class="p">)</span>
+<span class="n">sh</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="n">fh</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span> <span class="c"># 文件level是INFO</span>
+<span class="n">sh</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span> <span class="c"># 终端level是DEBUG</span>
+<span class="n">form</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%(asctime)-15s</span><span class="s"> - </span><span class="si">%(name)-10s</span><span class="s"> - </span><span class="si">%(levelname)-10s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span> <span class="c"># 设置日志消息的格式</span>
+<span class="n">fh</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">form</span><span class="p">)</span> 
+<span class="n">sh</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+<span class="n">fh</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">myFilter</span><span class="p">())</span>
+<span class="n">sh</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">myFilter</span><span class="p">())</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">sh</span><span class="p">)</span>
+
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;first: log&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;second:test log&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;third: log&#39;</span><span class="p">)</span>
+</pre></div><p>There are <a href="http://particle128.github.io/posts/2013/09/python-logging.html#disqus_thread">comments</a>.</p>                </article>
+                                    <p class="paginator">
+        Page 1 / 1
+    </p>
+                            </aside><!-- /#featured -->
+                                                </ol><!-- /#posts-list -->
+                        </section><!-- /#content -->
+                    <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://python.org">Python</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://particle128.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                        <li><a href="http://particle128.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                            
+                                                    <li><a href="https://github.com/particle128">github</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'particle128';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
 </body>
 </html>
