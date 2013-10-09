@@ -1,156 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-10-09T10:16:25+08:00</updated><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.github.io/posts/2013/10/blog-build.html" rel="alternate"></link><updated>2013-10-09T10:16:25+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-10-09:posts/2013/10/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
-&lt;hr /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-10-09T10:20:49+08:00</updated><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.github.io/posts/2013/10/blog-build.html" rel="alternate"></link><updated>2013-10-09T10:20:49+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-10-09:posts/2013/10/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;ubuntu12.04LTS(自带python2.7)&lt;/li&gt;
+&lt;li&gt;ubuntu12.04LTS(自带python2.7)  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;前期准备&lt;/h2&gt;
-&lt;hr /&gt;
 &lt;ul&gt;
-&lt;li&gt;注册&lt;a href="https://github.com"&gt;github&lt;/a&gt;，建立一个名为{yourusername}.github.io的repository（不知道咋翻译,数据仓库？）&lt;/li&gt;
-&lt;li&gt;安装pelican和markdown&lt;/li&gt;
+&lt;li&gt;注册&lt;a href="https://github.com"&gt;github&lt;/a&gt;，建立一个名为{yourusername}.github.io的repository（不知道咋翻译,数据仓库？）  &lt;/li&gt;
+&lt;li&gt;安装pelican和markdown  &lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install markdown &lt;span class="c"&gt;#linux下的markdown软件&lt;/span&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;sudo pip install markdown &lt;span class="c"&gt;#python的markdown包&lt;/span&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;sudo pip install pelican &lt;span class="c"&gt;#python的pelican包&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install markdown &lt;span class="c"&gt;#linux下的markdown软件  &lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;sudo pip install markdown &lt;span class="c"&gt;#python的markdown包  &lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;sudo pip install pelican &lt;span class="c"&gt;#python的pelican包  &lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;如果没有安装markdown或python的markdown包，会出现如下错误：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;WARNING&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Could&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;process&lt;/span&gt; &lt;span class="sr"&gt;/path/to/&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;md&lt;/span&gt;
-&lt;span class="s1"&gt;&amp;#39;bool&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;callable&lt;/span&gt;
+&lt;p&gt;如果没有安装markdown或python的markdown包，会出现如下错误：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;WARNING&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Could&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;process&lt;/span&gt; &lt;span class="sr"&gt;/path/to/&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;md&lt;/span&gt;  
+&lt;span class="s1"&gt;&amp;#39;bool&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;callable&lt;/span&gt;  
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;搭建pelican环境&lt;/h2&gt;
-&lt;hr /&gt;
 &lt;ol&gt;
-&lt;li&gt;具体pelican的操作，可以察看&lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;文档&lt;/a&gt;
-搭建命令如下：&lt;/li&gt;
+&lt;li&gt;具体pelican的操作，可以察看&lt;a href="http://docs.getpelican.com/en/3.3.0/"&gt;文档&lt;/a&gt;&lt;br /&gt;
+搭建命令如下：  &lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /path/to/blog&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;s/container
-&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir blog &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;cd &lt;/span&gt;blog
-&lt;span class="nv"&gt;$ &lt;/span&gt;pelican-quickstart &lt;span class="c"&gt;#进行相应配置&lt;/span&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;output &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git clone &lt;span class="o"&gt;{&lt;/span&gt;clone URL of your github.io repository&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /path/to/blog&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;s/container  
+&lt;span class="nv"&gt;$ &lt;/span&gt;mkdir blog &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;cd &lt;/span&gt;blog  
+&lt;span class="nv"&gt;$ &lt;/span&gt;pelican-quickstart &lt;span class="c"&gt;#进行相应配置  &lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;output &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git clone &lt;span class="o"&gt;{&lt;/span&gt;clone URL of your github.io repository&lt;span class="o"&gt;}&lt;/span&gt;  
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;ol&gt;
-&lt;li&gt;参考&lt;a href="http://www.lizherui.com/pages/2013/08/17/build_blog.html"&gt;链接&lt;/a&gt;
-对MakeFile文件进行如下修改：&lt;/li&gt;
+&lt;li&gt;参考&lt;a href="http://www.lizherui.com/pages/2013/08/17/build_blog.html"&gt;链接&lt;/a&gt;&lt;br /&gt;
+对MakeFile文件进行如下修改：  &lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nf"&gt;publish&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="k"&gt;$(&lt;/span&gt;PELICAN&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;INPUTDIR&lt;span class="k"&gt;)&lt;/span&gt; -o &lt;span class="k"&gt;$(&lt;/span&gt;OUTPUTDIR&lt;span class="k"&gt;)&lt;/span&gt; -s &lt;span class="k"&gt;$(&lt;/span&gt;CONFFILE&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;PELICANOPTS&lt;span class="k"&gt;)&lt;/span&gt;
-github: publish
-&lt;span class="nb"&gt;cd &lt;/span&gt;OUTPUTDIR ; git add . ;  git commit -am &lt;span class="s1"&gt;&amp;#39;your comments&amp;#39;&lt;/span&gt; ; git push
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nf"&gt;publish&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+&lt;span class="k"&gt;$(&lt;/span&gt;PELICAN&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;INPUTDIR&lt;span class="k"&gt;)&lt;/span&gt; -o &lt;span class="k"&gt;$(&lt;/span&gt;OUTPUTDIR&lt;span class="k"&gt;)&lt;/span&gt; -s &lt;span class="k"&gt;$(&lt;/span&gt;CONFFILE&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;PELICANOPTS&lt;span class="k"&gt;)&lt;/span&gt;  
+github: publish  
+&lt;span class="nb"&gt;cd &lt;/span&gt;OUTPUTDIR ; git add . ;  git commit -am &lt;span class="s1"&gt;&amp;#39;your comments&amp;#39;&lt;/span&gt; ; git push  
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;每次在blog/content里写markdown格式的文档，然后执行&lt;code&gt;make github&lt;/code&gt;一键生成网站与上传github。上传成功后，等待up to 10minutes就可以通过http://{yourusername}.github.io访问新修改的博客了。
-markdown语法很简单，不清楚的可以查看&lt;a href="http://daringfireball.net/projects/markdown/syntax"&gt;markdown语法&lt;/a&gt;
-3. 下载pelican主题和插件&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog
-&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/getpelican/pelican-themes.git &lt;span class="c"&gt;#getpelican提供的好多主题&lt;/span&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/duilio/pelican-octopress-theme.git &lt;span class="c"&gt;#pelican下octopress的主题&lt;/span&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/getpelican/pelican-plugins.git &lt;span class="c"&gt;#getpelican提供的一些插件&lt;/span&gt;
+&lt;p&gt;每次在blog/content里写markdown格式的文档，然后执行&lt;code&gt;make github&lt;/code&gt;一键生成网站与上传github。上传成功后，等待up to 10minutes就可以通过http://{yourusername}.github.io访问新修改的博客了。&lt;br /&gt;
+markdown语法很简单，不清楚的可以查看&lt;a href="http://daringfireball.net/projects/markdown/syntax"&gt;markdown语法&lt;/a&gt;&lt;br /&gt;
+3. 下载pelican主题和插件  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog  
+&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/getpelican/pelican-themes.git &lt;span class="c"&gt;#getpelican提供的好多主题  &lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/duilio/pelican-octopress-theme.git &lt;span class="c"&gt;#pelican下octopress的主题  &lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;git clone https://github.com/getpelican/pelican-plugins.git &lt;span class="c"&gt;#getpelican提供的一些插件  &lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;为了使用插件和主题，需要修改配置文件，见后。
-4. 使用disqus评论系统
-注册&lt;a href="https://disqus.com/admin/signup/"&gt;Disqus&lt;/a&gt;，然后在配置文件里添加新注册的Disqus的Site short name，具体配置文件见后面。
-5. 使用Google站长工具，以便能被Google收录
-用谷歌账户登陆&lt;a href="www.google.com/webmasters/"&gt;Google Webmaster Tools&lt;/a&gt;，添加自己的站点，比如xx.github.io，然后可以选择提交sitemap，或者替google手动抓取页面。
-6. 我的配置文件pelicanconf.py的内容&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env python&lt;/span&gt;
-&lt;span class="c"&gt;# -*- coding: utf-8 -*- #&lt;/span&gt;
+&lt;p&gt;为了使用插件和主题，需要修改配置文件，见后。&lt;br /&gt;
+4. 使用disqus评论系统&lt;br /&gt;
+注册&lt;a href="https://disqus.com/admin/signup/"&gt;Disqus&lt;/a&gt;，然后在配置文件里添加新注册的Disqus的Site short name，具体配置文件见后面。&lt;br /&gt;
+5. 使用Google站长工具，以便能被Google收录&lt;br /&gt;
+用谷歌账户登陆&lt;a href="www.google.com/webmasters/"&gt;Google Webmaster Tools&lt;/a&gt;，添加自己的站点，比如xx.github.io，然后可以选择提交sitemap，或者替google手动抓取页面。&lt;br /&gt;
+6. 我的配置文件pelicanconf.py的内容  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env python  &lt;/span&gt;
+&lt;span class="c"&gt;# -*- coding: utf-8 -*- #  &lt;/span&gt;
 
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;__future__&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;unicode_literals&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;__future__&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;unicode_literals&lt;/span&gt;  
 
-&lt;span class="n"&gt;AUTHOR&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;u&amp;#39;particle128&amp;#39;&lt;/span&gt;
-&lt;span class="n"&gt;SITENAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;u&amp;quot;particle128&amp;#39;s Blog&amp;quot;&lt;/span&gt;
-&lt;span class="c"&gt;# 点击标题进入的页面&lt;/span&gt;
-&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;http://particle128.github.io&amp;#39;&lt;/span&gt;
-&lt;span class="n"&gt;TIMEZONE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Asia/Shanghai&amp;#39;&lt;/span&gt;
-&lt;span class="n"&gt;DEFAULT_LANG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;u&amp;#39;zh&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;AUTHOR&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;u&amp;#39;particle128&amp;#39;&lt;/span&gt;  
+&lt;span class="n"&gt;SITENAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;u&amp;quot;particle128&amp;#39;s Blog&amp;quot;&lt;/span&gt;  
+&lt;span class="c"&gt;# 点击标题进入的页面  &lt;/span&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;http://particle128.github.io&amp;#39;&lt;/span&gt;  
+&lt;span class="n"&gt;TIMEZONE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Asia/Shanghai&amp;#39;&lt;/span&gt;  
+&lt;span class="n"&gt;DEFAULT_LANG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;u&amp;#39;zh&amp;#39;&lt;/span&gt;  
 
-&lt;span class="c"&gt;# 分页&lt;/span&gt;
-&lt;span class="n"&gt;DEFAULT_PAGINATION&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;
-&lt;span class="c"&gt;# 默认日期是markdown文件的修改日期&lt;/span&gt;
-&lt;span class="n"&gt;DEFAULT_DATE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;fs&amp;#39;&lt;/span&gt;
-&lt;span class="c"&gt;# 博文上显示的日期格式&lt;/span&gt;
-&lt;span class="n"&gt;DEFAULT_DATE_FORMAT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;%Y-%m-&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;
+&lt;span class="c"&gt;# 分页  &lt;/span&gt;
+&lt;span class="n"&gt;DEFAULT_PAGINATION&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;  
+&lt;span class="c"&gt;# 默认日期是markdown文件的修改日期  &lt;/span&gt;
+&lt;span class="n"&gt;DEFAULT_DATE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;fs&amp;#39;&lt;/span&gt;  
+&lt;span class="c"&gt;# 博文上显示的日期格式  &lt;/span&gt;
+&lt;span class="n"&gt;DEFAULT_DATE_FORMAT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;%Y-%m-&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;  
 
-&lt;span class="c"&gt;# !!!点击文件标题进入的文件&lt;/span&gt;
-&lt;span class="n"&gt;ARTICLE_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;posts/{date:%Y}/{date:%m}/{slug}.html&amp;#39;&lt;/span&gt;
-&lt;span class="c"&gt;# 由markdown保存的文件结构&lt;/span&gt;
-&lt;span class="n"&gt;ARTICLE_SAVE_AS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;posts/{date:%Y}/{date:%m}/{slug}.html&amp;#39;&lt;/span&gt;
-&lt;span class="c"&gt;# !!!archives文件的位置&lt;/span&gt;
-&lt;span class="n"&gt;ARCHIVES_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;archives.html&amp;#39;&lt;/span&gt;
-&lt;span class="c"&gt;# 订阅&lt;/span&gt;
-&lt;span class="n"&gt;FEED_ALL_RSS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;feeds/all.rss.xml&amp;#39;&lt;/span&gt;
-&lt;span class="n"&gt;CATEGORY_FEED_ATOM&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;feeds/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;.rss.xml&amp;#39;&lt;/span&gt;
+&lt;span class="c"&gt;# !!!点击文件标题进入的文件  &lt;/span&gt;
+&lt;span class="n"&gt;ARTICLE_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;posts/{date:%Y}/{date:%m}/{slug}.html&amp;#39;&lt;/span&gt;  
+&lt;span class="c"&gt;# 由markdown保存的文件结构  &lt;/span&gt;
+&lt;span class="n"&gt;ARTICLE_SAVE_AS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;posts/{date:%Y}/{date:%m}/{slug}.html&amp;#39;&lt;/span&gt;  
+&lt;span class="c"&gt;# !!!archives文件的位置  &lt;/span&gt;
+&lt;span class="n"&gt;ARCHIVES_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;archives.html&amp;#39;&lt;/span&gt;  
+&lt;span class="c"&gt;# 订阅  &lt;/span&gt;
+&lt;span class="n"&gt;FEED_ALL_RSS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;feeds/all.rss.xml&amp;#39;&lt;/span&gt;  
+&lt;span class="n"&gt;CATEGORY_FEED_ATOM&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;feeds/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;.rss.xml&amp;#39;&lt;/span&gt;  
 
-&lt;span class="n"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;/home/username/Dropbox/Practice/Blog/pelican-octopress-theme&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;/home/username/Dropbox/Practice/Blog/pelican-octopress-theme&amp;#39;&lt;/span&gt;  
 
-&lt;span class="n"&gt;LINKS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;http://python.org&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-        &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;LINKS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;  
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;http://python.org&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;  
+        &lt;span class="p"&gt;]&lt;/span&gt;  
 
-&lt;span class="n"&gt;SOCIAL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt; 
-        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;github&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;https://github.com/particle128&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-        &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;SOCIAL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;   
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;github&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;https://github.com/particle128&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;  
+        &lt;span class="p"&gt;]&lt;/span&gt;  
 
-&lt;span class="c"&gt;#顶部菜单项&lt;/span&gt;
-&lt;span class="n"&gt;MENUITEMS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;archives&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;SITEURL&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/archives.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;linux&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;SITEURL&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/category/linux.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;SITEURL&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/category/python.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;cpp&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;SITEURL&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/category/cpp.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-            &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="c"&gt;#顶部菜单项  &lt;/span&gt;
+&lt;span class="n"&gt;MENUITEMS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;  
+            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;archives&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;SITEURL&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/archives.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;  
+            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;linux&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;SITEURL&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/category/linux.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;  
+            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;SITEURL&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/category/python.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;  
+            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;cpp&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;SITEURL&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/category/cpp.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;  
+            &lt;span class="p"&gt;]&lt;/span&gt;  
 
-&lt;span class="c"&gt;# disqus评论&lt;/span&gt;
-&lt;span class="n"&gt;DISQUS_SITENAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;particle128&amp;quot;&lt;/span&gt;
+&lt;span class="c"&gt;# disqus评论  &lt;/span&gt;
+&lt;span class="n"&gt;DISQUS_SITENAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;particle128&amp;quot;&lt;/span&gt;  
 
-&lt;span class="n"&gt;PLUGIN_PATH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;u&amp;#39;pelican-plugins&amp;#39;&lt;/span&gt;  &lt;span class="c"&gt;# 设置插件路径&lt;/span&gt;
-&lt;span class="n"&gt;PLUGINS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;sitemap&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;related_posts&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;random_article&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;neighbors&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  &lt;span class="c"&gt;# 设置启用的插件&lt;/span&gt;
-&lt;span class="c"&gt;# 配置sitemap 插件&lt;/span&gt;
-&lt;span class="n"&gt;SITEMAP&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="s"&gt;&amp;quot;format&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;xml&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="s"&gt;&amp;quot;priorities&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="s"&gt;&amp;quot;articles&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="s"&gt;&amp;quot;indexes&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-            &lt;span class="s"&gt;&amp;quot;pages&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-            &lt;span class="p"&gt;},&lt;/span&gt;
-            &lt;span class="s"&gt;&amp;quot;changefreqs&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="s"&gt;&amp;quot;articles&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;monthly&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="s"&gt;&amp;quot;indexes&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;daily&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="s"&gt;&amp;quot;pages&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;monthly&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="p"&gt;}&lt;/span&gt;
-          &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="c"&gt;# 随机跳转到某日志&lt;/span&gt;
-&lt;span class="n"&gt;RANDOM&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;random.html&amp;#39;&lt;/span&gt;
-&lt;span class="c"&gt;# 相关文章&lt;/span&gt;
-&lt;span class="n"&gt;RELATED_POSTS_MAX&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;
+&lt;span class="n"&gt;PLUGIN_PATH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;u&amp;#39;pelican-plugins&amp;#39;&lt;/span&gt;  &lt;span class="c"&gt;# 设置插件路径  &lt;/span&gt;
+&lt;span class="n"&gt;PLUGINS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;sitemap&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;related_posts&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;random_article&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;neighbors&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  &lt;span class="c"&gt;# 设置启用的插件  &lt;/span&gt;
+&lt;span class="c"&gt;# 配置sitemap 插件  &lt;/span&gt;
+&lt;span class="n"&gt;SITEMAP&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;  
+            &lt;span class="s"&gt;&amp;quot;format&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;xml&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+            &lt;span class="s"&gt;&amp;quot;priorities&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;  
+            &lt;span class="s"&gt;&amp;quot;articles&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+            &lt;span class="s"&gt;&amp;quot;indexes&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;   
+            &lt;span class="s"&gt;&amp;quot;pages&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;   
+            &lt;span class="p"&gt;},&lt;/span&gt;  
+            &lt;span class="s"&gt;&amp;quot;changefreqs&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;  
+            &lt;span class="s"&gt;&amp;quot;articles&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;monthly&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+            &lt;span class="s"&gt;&amp;quot;indexes&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;daily&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+            &lt;span class="s"&gt;&amp;quot;pages&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;monthly&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  
+            &lt;span class="p"&gt;}&lt;/span&gt;  
+          &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="c"&gt;# 随机跳转到某日志  &lt;/span&gt;
+&lt;span class="n"&gt;RANDOM&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;random.html&amp;#39;&lt;/span&gt;  
+&lt;span class="c"&gt;# 相关文章  &lt;/span&gt;
+&lt;span class="n"&gt;RELATED_POSTS_MAX&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;  
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;到此，环境就算搭建完毕。不明白的地方，还是查看pelican的文档。&lt;/p&gt;
+&lt;p&gt;到此，环境就算搭建完毕。不明白的地方，还是查看pelican的文档。  &lt;/p&gt;
 &lt;h2&gt;独立域名&lt;/h2&gt;
 &lt;ol&gt;
-&lt;li&gt;在&lt;a href="http://www.goyouhuima.com/"&gt;GoDaddy优惠码网站&lt;/a&gt;选择一个链接，进入，购买一年的域名，比如particle128.com，55元左右,可以用支付宝购买。&lt;/li&gt;
-&lt;li&gt;在&lt;a href="https://www.dnspod.cn/"&gt;DNSPOD&lt;/a&gt;上注册，然后建立一条A记录，一条CNAME记录，将购买的域名particle128.com绑定到Github Pages的ip地址（注意不是独立ip），将www.particle128.com重定向到particle128.com
-截图：
-&lt;img alt="dnspod_screenshot" src="http://particle128.github.io/static/images/DNSPod.png" /&gt;&lt;/li&gt;
-&lt;li&gt;重新登陆GoDaddy，添加DNSPod的name server
-f1g1ns1.dnspod.net
-f1g1ns2.dnspod.net&lt;/li&gt;
-&lt;li&gt;Github Pages使用自定义域名
-参考：https://help.github.com/articles/setting-up-a-custom-domain-with-pages
-执行:&lt;/li&gt;
+&lt;li&gt;在&lt;a href="http://www.goyouhuima.com/"&gt;GoDaddy优惠码网站&lt;/a&gt;选择一个链接，进入，购买一年的域名，比如particle128.com，55元左右,可以用支付宝购买。  &lt;/li&gt;
+&lt;li&gt;在&lt;a href="https://www.dnspod.cn/"&gt;DNSPOD&lt;/a&gt;上注册，然后建立一条A记录，一条CNAME记录，将购买的域名particle128.com绑定到Github Pages的ip地址（注意不是独立ip），将www.particle128.com重定向到particle128.com&lt;br /&gt;
+截图：&lt;br /&gt;
+&lt;img alt="dnspod_screenshot" src="http://particle128.github.io/static/images/DNSPod.png" /&gt;  &lt;/li&gt;
+&lt;li&gt;重新登陆GoDaddy，添加DNSPod的name server&lt;br /&gt;
+f1g1ns1.dnspod.net&lt;br /&gt;
+f1g1ns2.dnspod.net  &lt;/li&gt;
+&lt;li&gt;Github Pages使用自定义域名&lt;br /&gt;
+参考：https://help.github.com/articles/setting-up-a-custom-domain-with-pages&lt;br /&gt;
+执行:  &lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog/output
-&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;particle128.com&amp;#39;&lt;/span&gt; &amp;gt; CNAME 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog/output  
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;particle128.com&amp;#39;&lt;/span&gt; &amp;gt; CNAME   
 &lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="pelican"></category><category term="blog"></category></entry><entry><title>Effective C++学习笔记(4)</title><link href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html" rel="alternate"></link><updated>2013-10-04T19:33:09+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-10-04:posts/2013/10/EffectiveCpp(4).html</id><summary type="html">&lt;h2&gt;Item 13: Use objects to manage resources&lt;/h2&gt;
 &lt;p&gt;1.资源是指，使用完之后需要归还系统的东西。比如动态分配的内存，文件描述符，互斥锁，数据库连接，sockets。&lt;br /&gt;
 2.尽管可以手动释放资源（比如delete），但是程序的修改（delete之前返回了），或客户的忘记，可能导致资源释放不了。&lt;br /&gt;
