@@ -60,6 +60,27 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-04T19:11:56.769827" pubdate>2013-10-04</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>【补充概念】</strong><br />
+<strong>类型安全</strong>：<br />
+<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
+<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
+printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
+(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
+(2) SomeClass a;AnotherClass b;<br />
+   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
+(3) #define max(a,b) ((a ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-03T22:42:12.454317" pubdate>2013-10-03</time></p>
@@ -146,41 +167,8 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
     <a rel="full-article" href="http://particle128.github.io/posts/2013/09/authority.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.github.io/posts/2013/09/linux_user.html">Linux下的用户和用户组小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T08:32:29.231066" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
-</pre></div>
-
-
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
-</pre></div>
-
-
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
-</pre></div>
-
-
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.github.io/posts/2013/09/linux_user.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
+      <a class="prev" href="http://particle128.github.io/index3.html">&larr; Older</a>
   
             <a class="next" href="http://particle128.github.io/index.html">Newer &rarr;</a>
         <br />
@@ -189,6 +177,9 @@ chmod a+r aa.txt
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(5).html">Effective C++学习笔记(5)</a>
+      </li>
             <li class="post">
           <a href="http://particle128.github.io/posts/2013/10/some-thought.html">一些反思</a>
       </li>
@@ -200,9 +191,6 @@ chmod a+r aa.txt
       </li>
             <li class="post">
           <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">Effective C++学习笔记(3)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </li>
           </ul>
   </section>

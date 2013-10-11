@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Linux下的用户和用户组小结</title>
+  <title>particle128's Blog - Articles by particle128</title>
   <meta name="author" content="particle128">
 
     
@@ -56,118 +56,56 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div>
-  <article class="hentry" role="article">
-    <header>
-          <h1 class="entry-title">Linux下的用户和用户组小结</h1>
-          <p class="meta"><time datetime="2013-09-08T08:32:29.231066" pubdate>2013-09-08</time></p>
+      <div class="blog-index">
+    	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.github.io/posts/2013/10/some-thought.html">一些反思</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-11T13:37:35.621816" pubdate>2013-10-11</time></p>
 </header>
 
-  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
-</pre></div>
-
-
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
-</pre></div>
-
-
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
-</pre></div>
-
-
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  </p>
-<h4>/etc/shadow</h4>
-<p>记录 用户名 对应的密码（加密后）  </p>
-<h4>/etc/group</h4>
-<p>记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）</p>
-<h3>3. 概念区分</h3>
-<h4>初始用户组：</h4>
-<p>useradd或usermod，-g参数后的组名。保存在/etc/passwd中。<br />
-实际意义是，/etc/group里少写一个用户名。。。  </p>
-<h4>有效用户组：</h4>
-<p>groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。<br />
-实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。</p>
-<h3>4. 用户分类</h3>
-<p>ubuntu12.04下，根据/etc/login.defs<br />
-UID=0  系统管理员<br />
-UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)<br />
-UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  </p>
-<h3>5. linux命令</h3>
-<h4>1) useradd</h4>
-<div class="highlight"><pre>useradd -u <span class="o">[</span>UID<span class="o">]</span> -g <span class="o">[</span>initial group name<span class="o">]</span> -G <span class="o">[</span>other group name<span class="o">]</span> -d <span class="o">[</span>home dir<span class="o">]</span> -s <span class="o">[</span>shell<span class="o">]</span> -r <span class="o">[</span>用户名<span class="o">]</span>
-</pre></div>
-
-
-<p>没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。<br />
--r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）</p>
-<h4>2) usermod</h4>
-<p>同useradd</p>
-<h4>3) passwd</h4>
-<div class="highlight"><pre>passwd <span class="o">[</span>用户名<span class="o">]</span> 
-passwd
-</pre></div>
-
-
-<p>无参数修改自己的密码</p>
-<h4>4) userdel</h4>
-<div class="highlight"><pre>userdel -r <span class="o">[</span>用户名<span class="o">]</span>
-</pre></div>
-
-
-<p>加上-r，连同主文件夹也一同删除</p>
-<h4>5) groupadd</h4>
-<div class="highlight"><pre>groupadd -g <span class="o">[</span>GID<span class="o">]</span> -r <span class="o">[</span>组名<span class="o">]</span>
-</pre></div>
-
-
-<p>-g 指定GID，-r 创建系统组</p>
-<h4>6) groupdel</h4>
-<div class="highlight"><pre>groupdel <span class="o">[</span>组名<span class="o">]</span>
-</pre></div></div>
-    <footer>
-      <p class="meta">
-  <span class="byline author vcard">
-    Posted by <span class="fn">particle128</span>
-  </span>
-  <time datetime="2013-09-08T08:32:29.231066" pubdate>2013-09-08</time>    <span class="categories">
-        <a class="category" href="http://particle128.github.io/tag/linux.html">linux</a>
-        <a class="category" href="http://particle128.github.io/tag/user.html">user</a>
-      </span>
-  </p>    </footer>
-  </article>
-
-    <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
-  </section>
-  </div>
+  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
+<ul>
+<li>目标不具体    </li>
+</ul>
+<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让我坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让我又鼓起斗志。    </p>
+<ul>
+<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
+</ul>
+<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
+<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力，靠目标和纪律来约束自己。    </p>
+<ul>
+<li>方向选择上走了很多弯路。    </li>
+</ul>
+<p>虽然走弯路也有意义，但是会推迟成功到来的时间 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.github.io/posts/2013/10/some-thought.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  	<div class="pagination">
+  
+            <a class="next" href="http://particle128.github.io/author/particle1282.html">Newer &rarr;</a>
+        <br />
+</div>  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(5).html">Effective C++学习笔记(5)</a>
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.github.io/posts/2013/10/some-thought.html">一些反思</a>
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.github.io/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">Effective C++学习笔记(3)</a>
       </li>
             <li class="post">
           <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(3).html">Effective C++学习笔记(3)</a>
+          <a href="http://particle128.github.io/posts/2013/10/EffectiveCpp(5).html">Effective C++学习笔记(5)</a>
       </li>
           </ul>
   </section>
@@ -211,9 +149,6 @@ passwd
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-                var disqus_identifier = '/posts/2013/09/linux_user.html';
-          var disqus_url = 'http://particle128.github.io/posts/2013/09/linux_user.html';
-          var disqus_title = 'Linux下的用户和用户组小结';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
