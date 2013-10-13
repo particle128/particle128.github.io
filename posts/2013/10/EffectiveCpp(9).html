@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Effective C++学习笔记(9)</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">Effective C++学习笔记(9)</h1>
+          <p class="meta"><time datetime="2013-10-13T20:03:58.223572" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32: Make sure public inheritance models "is-a"</h2>
+<p>1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。<br />
+2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：<br />
+企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高<br />
+3.修改”企鹅-&gt;鸟“设计：<br />
+（1）class Bird; class Penguin :public Bird; class FlyingBird: public Bird; //在Bird里不定义fly()，在FlyingBird里定义<br />
+（2）class Bird; class Penguin :public Bird; //在Bird里定义fly()，但是在Penguin里实现fly()中导出一个错误。<br />
+比较：前者更优，编译期错误。  </p>
+<h2>Item 33: Avoid hiding inherited names.</h2>
+<p>1.派生类中的名字，会掩盖基类中的名字。即使派生类中的函数和基类的函数参数列表不同，不论函数是non-virtual或virtual或pure-virtual的，派生类对象也无法调用基类被掩盖的函数。  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Base</span><span class="p">{</span>  
+     <span class="k">public</span><span class="o">:</span> <span class="k">virtual</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>  
+<span class="p">}</span>  
+<span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span><span class="k">public</span> <span class="n">Base</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span> <span class="n">func</span><span class="p">();</span>  
+<span class="p">}</span>  
+<span class="n">Derived</span> <span class="n">d</span><span class="p">;</span> <span class="n">d</span><span class="p">.</span><span class="n">func</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">//错误！！！  </span>
+</pre></div>
+
+
+<p>这样做的目的，是防止派生类从遥远的基类中继承它并不清楚的同名重载函数。<br />
+2.一般公有继承，都要继承父类的所有成员，所以采取两种办法可以解决掩盖，实现重载：<br />
+（1）using声明式  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span><span class="k">public</span> <span class="n">Base</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+         <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func</span><span class="p">;</span> <span class="c1">//引入base的所有func的名字，如果func函数包括多个重载版本，都引入派生类作用域  </span>
+          <span class="n">func</span><span class="p">();</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>（2）forwarding function  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span><span class="k">private</span> <span class="n">Base</span><span class="p">{</span> <span class="c1">//之所以private inheritance，是因为公有继承的设计原则就是派生类拥有基类的一切特征  </span>
+    <span class="nl">public:</span>  
+         <span class="k">virtual</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span><span class="n">Base</span><span class="o">::</span><span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="p">);}</span> <span class="c1">//只引入base中的一个版本的func(int)，一般设计成inline，毕竟就一句。  </span>
+          <span class="n">func</span><span class="p">();</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<h2>Item 34: Differentiate between inheritance of interface and inheritance of implementation</h2>
+<ol>
+<li>class设计者，将接口函数设计成不同类型，就会限制派生类的行为：<br />
+（1）纯虚函数——&gt;接口继承，希望只继承其接口。<br />
+注：纯虚函数也可以实现（在源文件中），除非要提供默认的行为供子类调用(Base::fly();)，否则一般不实现。<br />
+（2）虚函数——&gt;接口和实现继承，提供默认实现，允许覆盖继承的实现。<br />
+派生类不重新定义，就默认使用的基类的版本；派生类重新定义，就可以实现多态。<br />
+（3）非虚函数——&gt;接口和实现继承，不希望被覆盖。<br />
+非虚函数，应该在派生类和基类中有一致的行为，所以不应该被覆盖（名字掩盖的话，就using进来基类的名字）。<br />
+如果想覆盖基类，就把基类的函数定义成virtual。<br />
+2.任何类如果打算作为基类，都要拥有若干virtual函数（至少析构函数）。<br />
+3.任何函数如果不变性（invariant）大于特异性（specialization），就应该被定义成基类的非虚函数，不让子类覆盖（虽然遵守与否看子类守不守规矩）。  </li>
+</ol>
+<h2>Item 35: Consider alternatives to virtual functions.</h2>
+<p>正如上一个item所讲，虚函数的目的：提供默认实现，允许派生类覆盖。<br />
+public virtual的可选替代方案如下，实现了上面的两个目的：<br />
+（1）Template Method模式：NVI（non-virtual interface）手法<br />
+基类定义non-virtual函数healthValue()，调用private/protected virtual函数doHealthValue（每个派生类可以包含各自的实现）。<br />
+因为healthValue()有隐式this指针参数，所以根据调用对象的类型，可以执行不同类中定义的doHealthValue。<br />
+优点：避免代码重复。<br />
+healthValue函数，在调用doHealthValue的前面做一些准备工作（锁），在后面做一些清理工作。如果用public virtual的方法，每个派生类的函数都要有重复的准备和清理代码。<br />
+缺点：增加一个函数调用的开销。<br />
+（2）Strategy模式：非成员函数指针<br />
+基类有函数指针成员（healthFunc），构造函数中传入函数指针，比如int (*)(const GameCharacter&amp;)，默认实参是一个缺省函数的指针。<br />
+优点：同一类型不同对象，可以有不同health函数；同一对象的行为也可以在运行时改变（提供setHealth函数）<br />
+缺点：非成员函数只能访问public成员，除非降低封装性，将其定义为友元函数，或private成员提供public访问方法。 <br />
+（3）Strategy模式：tr1::function<br />
+typedef std::tr1::function<int (const GameCharacter&)> HealthCalcFunc;<br />
+同上，但是支持函数指针、函数对象，和成员函数，且不需要函数完全匹配，兼容（参数和返回类型可以隐式转换）即可。<br />
+（4）Strategy模式：对象指针<br />
+类中包含，指向另一个继承体系的对象（包含一个healthFunc的函数）的指针，构造的时候传入。  </p>
+<h2>Item37: Never redefine a function's inherited default parameter values.</h2>
+<p>1.虚函数是dynamically bound，而默认参数statically bound。所以通过基类指针或引用访问派生类对象的成员函数，使用的基类的默认参数，和派生类的具体实现。<br />
+2.仅仅改变默认实参，不够成重载<br />
+3.派生类和基类中声明同样的默认参数，遵循默认参数不变的原则。但是代码重复，且有相依性（with dependencies），意味着一处修改就要多处修改。PS：貌似重复的代码大多都有相依性，所以杜绝复制粘贴，避免重复。<br />
+解决办法：NVI，仅在 base's non-virtual function上声明默认参数。  </p>
+<h2>Item 38: Model 'has-a' or 'is-implemented-in-terms-of' through composition.</h2>
+<p>1.复合(composition)还有一些同义词（synonym）：内含（containment），聚合（aggregation），内嵌（embedding）<br />
+2.复合，即对象包含在对象里面的情况。塑模两种情况<br />
+（1）has-a（包含）关系：应用域，比如人包含名字、地址<br />
+（2）is-implemented-in-terms-of（根据某物实现出）关系：实现域，比如set是根据linked list实现出的。<br />
+3.区分is-a和is-implemented-in-terms-of：<br />
+is-a的话，对基类为真的每一件事，对派生类也为真。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-10-13T20:03:58.223572" pubdate>2013-10-13</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/10/EffectiveCpp(9).html';
+          var disqus_url = 'http://particle128.com/posts/2013/10/EffectiveCpp(9).html';
+          var disqus_title = 'Effective C++学习笔记(9)';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

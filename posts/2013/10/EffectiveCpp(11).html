@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Effective C++学习笔记(11)</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">Effective C++学习笔记(11)</h1>
+          <p class="meta"><time datetime="2013-10-13T20:06:53.727580" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 44: Factor parameter-independent code out of templates</h2>
+<p>1.类模版成员函数函数，只有被使用时才被具现化。类似类的合成版本的构造/复制构造/赋值操作符/析构函数。<br />
+2.模版的时候减少了源代码量，但是可能导致目标代码增加，因为每具现化一个版本，就多一份目标码。<br />
+策略：把与模版参数（类型参数或非类型参数）无关的代码，剥离出模版类。<br />
+（1）非类型参数<br />
+例如：  </p>
+<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span><span class="kt">size_t</span> <span class="n">n</span><span class="o">&gt;</span>  
+<span class="k">class</span> <span class="nc">SquareMatrix</span><span class="p">{</span> <span class="c1">//方形矩阵  </span>
+  <span class="nl">public:</span>  
+          <span class="kt">void</span> <span class="n">invert</span><span class="p">();</span>     
+<span class="p">};</span>  
+<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">10</span><span class="o">&gt;</span> <span class="n">sm1</span><span class="p">;</span>  
+<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">5</span><span class="o">&gt;</span> <span class="n">sm2</span><span class="p">;</span>  
+<span class="n">sm1</span><span class="p">.</span><span class="n">invert</span><span class="p">();</span><span class="c1">//具现化一次invert  </span>
+<span class="n">sm2</span><span class="p">.</span><span class="n">invert</span><span class="p">();</span><span class="c1">//具现化第二次invert，内容和第一次的代码重复了（只是把10换成5）  </span>
+</pre></div>
+
+
+<p>定义一个不含有非类型参数的基类SquareMatrixBase，含有invert函数。SquareMatrix只要调用基类invert即可。这样上面的例子就会只有1个版本的invert（基类的invert函数）。<br />
+（2）类型参数<br />
+例如：大多数平台，所有指针类型都有相同的二进制表述，模版的类型参数是指针类型的（比如vector<char*>，vector<Date*>），其成员函数应该调用唯一一份底层实现（操作void*指针的函数）。  </p>
+<h2>Item 45: Use member function templates to accept all compatible types</h2>
+<p>1.以TR1::shared_ptr为例：  </p>
+<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>  
+<span class="k">class</span> <span class="nc">shared_ptr</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+         <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">Y</span><span class="o">&gt;</span>  
+         <span class="k">explicit</span> <span class="n">shared_ptr</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">*</span><span class="p">);</span>  <span class="c1">//由“内置指针类型”构造，但是不能隐式转换，只能通过C-style类型转换或reinterpret_cast转换（尚未验证？？？）  </span>
+         <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">Y</span><span class="o">&gt;</span>  
+         <span class="n">shared_ptr</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Y</span><span class="o">&gt;</span> <span class="k">const</span> <span class="o">*</span> <span class="n">other</span><span class="p">)</span><span class="o">:</span><span class="n">ptr</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>  
+          <span class="p">{...}</span> <span class="c1">//由“任意兼容类型的shared_ptr指针”构造，可以隐式转换。如果Y和U不兼容，成员初始化列表会报错  </span>
+         <span class="c1">//赋值操作符也要定义成员函数模版，略  </span>
+         <span class="n">shared_ptr</span><span class="p">(</span><span class="k">const</span> <span class="n">shared_ptr</span><span class="o">&amp;</span><span class="p">);</span> <span class="c1">//需要显示定义。否则编译期会合成一个版本，而不是调用上面的构造函数模版  </span>
+         <span class="n">shared_ptr</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">shared_ptr</span><span class="o">&amp;</span><span class="p">);</span><span class="c1">//需要显示定义。否则编译期会合成一个版本。  </span>
+         <span class="p">...</span>  
+<span class="p">};</span>  
+</pre></div>
+
+
+<h2>Item 46: Define non-member functions inside templates when type conversions are desired</h2>
+<p>1.希望函数所有实参接受隐式类型转换，需要定义成非成员函数；希望模版函数被自动具现化，需要声明在类内。所以需要友元函数，且定义在类内。  </p>
+<div class="highlight"><pre><span class="n">Rational</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">oneHalf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>  
+<span class="n">oneHalf</span><span class="o">*</span><span class="mi">2</span><span class="p">;</span><span class="c1">//需要实现这个  </span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>  
+<span class="k">class</span> <span class="nc">Rational</span> <span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+    <span class="p">...</span>  
+<span class="c1">//如果定义在类外的话，不能通过编译。因为“模版实参推导过程中不进行隐式类型转换”，所以int不会通过non-explicit构造函数，隐式转换成Ratioanl&lt;int&gt;，使模版函数operator*以int为实参具现出来。函数在类内则不同：oneHalf的定义，以int具现出来一个Rational类，编译器产生了该友元函数的声明，且该函数不是模版函数，所以接受隐式类型转换。  </span>
+    <span class="k">friend</span> <span class="k">const</span> <span class="n">Rational</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="n">Rational</span><span class="o">&amp;</span><span class="n">lhs</span><span class="p">,</span><span class="k">const</span> <span class="n">Rational</span> <span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span> <span class="c1">//在类模版内，可以把Rational&lt;T&gt;（模版名+参数名）简写成Rational（模版名）   </span>
+   <span class="p">{</span>  
+         <span class="p">...</span> <span class="c1">//如果实现在外面的话，会链接错误。  </span>
+     <span class="p">}</span>  
+<span class="p">};</span>  
+</pre></div>
+
+
+<p>2.很多编译期强迫把所有模版的定义式放进头文件里，比如模版函数的实现。  </p>
+<h2>Item 47: Use traits classes for information about types</h2>
+<p>1.STL迭代器分类<br />
+（1）input：istream_iterator<br />
+（2）output：ostream_iterator<br />
+（3）forward：slist（单链表，STL不包含该结构）<br />
+（4）bidirectional：set，multiset，map，multimap，list（双向链表）<br />
+（5）random_access：vector，deque，string<br />
+2.typeid确定一个变量的类型是运行期行为，“重载函数的最佳匹配”相当于编译期的类型确定，而且有if-else功能。<br />
+3.例子：  </p>
+<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="p">...</span><span class="o">&gt;</span>  
+<span class="k">class</span> <span class="nc">deque</span><span class="p">{</span>  
+    <span class="k">class</span> <span class="nc">iterator</span><span class="p">{</span>  
+         <span class="k">public</span><span class="o">:</span> <span class="k">typedef</span> <span class="n">random_access_iterator_tag</span> <span class="n">iterator_category</span><span class="p">;</span> <span class="c1">//定义类型  </span>
+     <span class="p">};</span>  
+<span class="p">};</span>  
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>  
+<span class="k">class</span> <span class="nc">iterator_traits</span><span class="p">{</span>  
+     <span class="k">typedef</span> <span class="k">typename</span> <span class="n">T</span><span class="o">::</span><span class="n">iterator_category</span> <span class="n">iterator_category</span><span class="p">;</span>    <span class="c1">//引用T定义的类型  </span>
+<span class="p">};</span>  
+<span class="c1">//对指针的特化版本  </span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>  
+<span class="k">class</span> <span class="nc">iterator_traits</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">{</span>   
+    <span class="k">typedef</span> <span class="n">random_access_iterator_tag</span> <span class="n">iterator_category</span><span class="p">;</span>   
+<span class="p">};</span>  
+<span class="c1">//随即访问指针的重载版本  </span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">IterT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">DistT</span><span class="o">&gt;</span>  
+<span class="n">do_advance</span><span class="p">(</span><span class="n">IterT</span><span class="o">&amp;</span> <span class="n">iter</span><span class="p">,</span><span class="n">DistT</span> <span class="n">d</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">random_access_iterator_tag</span> <span class="p">)</span> <span class="c1">//第三个参数不需要形参，因为没有用到  </span>
+<span class="p">{</span><span class="n">iter</span><span class="o">+=</span><span class="n">d</span><span class="p">;}</span>  
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">IterT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">DistT</span><span class="o">&gt;</span>  
+<span class="n">advance</span><span class="p">(</span><span class="n">IterT</span><span class="o">&amp;</span> <span class="n">iter</span><span class="p">,</span><span class="n">DistT</span> <span class="n">d</span><span class="p">)</span>  
+<span class="p">{</span>  <span class="n">do_advance</span><span class="p">(</span><span class="n">iter</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="k">typename</span> <span class="n">iterator_traits</span><span class="o">&lt;</span><span class="n">iter</span><span class="o">&gt;::</span><span class="n">iterator_category</span><span class="p">())</span> <span class="p">;</span> <span class="c1">//第三个参数传入一个未命名对象，类型后跟一对括号  </span>
+<span class="p">}</span>  
+</pre></div>
+
+
+<h2>Item 48: Be aware of template metaprogramming</h2>
+<p>1.TMP的主要意义：（1）完成一些其他方法没法实现的功能（2）将运行期的工作转移到编译期，可以提高程序执行效率。<br />
+2.##Item47中提到的do_advance方法，就是模版元编程里的if-else用法。用typeid没法实现（非random access iterator 没法编译通过iter+=d这句话）。<br />
+3.循环的用法：  </p>
+<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">n</span><span class="o">&gt;</span>  
+<span class="k">struct</span> <span class="n">Factorial</span><span class="p">{</span>  
+    <span class="k">enum</span><span class="p">{</span><span class="n">value</span><span class="o">=</span><span class="n">n</span><span class="o">*</span><span class="n">Factorial</span><span class="o">&lt;</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">};</span> <span class="c1">//变量在enum里，递归调用自身  </span>
+<span class="p">};</span>  
+<span class="k">template</span><span class="o">&lt;&gt;</span>  
+<span class="k">struct</span> <span class="n">Factorial</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">{</span> <span class="c1">//循环结束条件：特化模版  </span>
+    <span class="k">enum</span><span class="p">{</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">};</span>  
+<span class="p">};</span>  
+<span class="c1">//使用：  </span>
+<span class="n">Factorial</span><span class="o">&lt;</span><span class="mi">100</span><span class="o">&gt;::</span><span class="n">value</span>  
+</pre></div></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-10-13T20:06:53.727580" pubdate>2013-10-13</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/10/EffectiveCpp(11).html';
+          var disqus_url = 'http://particle128.com/posts/2013/10/EffectiveCpp(11).html';
+          var disqus_title = 'Effective C++学习笔记(11)';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

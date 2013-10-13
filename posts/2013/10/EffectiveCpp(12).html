@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Effective C++学习笔记(12)</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">Effective C++学习笔记(12)</h1>
+          <p class="meta"><time datetime="2013-10-13T20:09:29.927587" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><p>关于new和delete的东西，笔记不够详尽，因为新知识比较多，不太方便记录笔记。发现相关知识漏洞的时候，再去查看Cpp Primer和Effective Cpp相关章节。  </p>
+<h2>Item 49: Understand the behavior of the new-handler</h2>
+<p>1.<code>std::set_new_handler()</code>可以绑定一个<code>new_handler</code>（类型为<code>void (*)()</code>），即new获取不到所需内存时调用的客户定制函数。如果不设置函数，或设置null，直接抛出异常<code>std::bad_alloc</code>。<br />
+2.获取<code>new_handler</code>函数的方式：  </p>
+<div class="highlight"><pre><span class="n">handler</span><span class="o">=</span><span class="n">set_new_handler</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  
+<span class="n">set_new_handler</span><span class="p">(</span><span class="n">handler</span><span class="p">);</span>  
+</pre></div>
+
+
+<p>3.new_handler应该具备以下一种功能：<br />
+（1）让更多内存可被使用。否则::operator new会无限循环调用非空的new_handler。例如程序开始分配一个内存池，动态分配不到资源的时候释放一些资源出来。<br />
+（2）安装另一个可以释放更多内存的new_handler函数。<br />
+（3）卸除new_handler，这样::operator new就会直接throw std::bad_alloc()异常了。<br />
+（4）抛出bad_alloc异常。不等operator new抛，自己就抛了。<br />
+（5）调用exit或abort直接退出程序。  </p>
+<h2>Item 50: Understand when it makes sense to replace new and delete</h2>
+<p>重写operator new和operator delete的原因：<br />
+（1）检查所分配内存上的运用错误：每次new的时候，在要分配空间的前后多分配一段内存，存放签名。delete的时候检查签名是否正确。如果前面的签名错了，发生了underrun（数据写到分配内存的前面了）；如果后面的签名错了，发生了overrun（ditto）。<br />
+（2）收集动态分配内存的使用情况：每次new的时候都要统计一些信息，比如分配了多少，等等<br />
+（3）加快速度：定制版本处理的情况比通用版本少，所以速度往往更快。<br />
+（4）降低空间开销：通用版本往往会分配额外一些内存来保存一些信息。小型对象分配器：Boost的Pool<br />
+（5）弥补缺省allocator非最佳齐位（alignment）：好多编译器上的new都声称保证16bit齐位，double变量需要32bit齐位，才能获得最佳的访问速度。<br />
+（6）获得非传统的行为：比如delete释放的时候，空间覆盖为0.  </p>
+<h2>Item 51:Adhere to convention when writing new and deletes(固守常规)</h2>
+<p>1.自定义operator new的时候，需要注意的几点<br />
+（1）尽量和::operator new行为一致，即while(true)下循环尝试分配内存，如果new_handle非0就调用，否则bad_alloc<br />
+（2）用户分配大小为0的空间  </p>
+<div class="highlight"><pre><span class="k">if</span><span class="p">(</span><span class="n">size</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>   <span class="c1">//size是operator new的参数  </span>
+     <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>   
+</pre></div>
+
+
+<p>（3）基类的operator new，需要首先执行  </p>
+<div class="highlight"><pre><span class="k">if</span><span class="p">(</span><span class="n">size</span><span class="o">!=</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Base</span><span class="p">))</span>  
+    <span class="k">return</span> <span class="o">::</span><span class="k">operator</span> <span class="k">new</span><span class="p">(</span><span class="n">size</span><span class="p">);</span> <span class="c1">//如果new派生类的话，使用全局版本的operator new  </span>
+</pre></div>
+
+
+<p>2.自定义operator delete的时候，需要注意的几点<br />
+（1）用户delete一个空指针  </p>
+<div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="n">ptr</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>   <span class="c1">//ptr是operator delete的参数  </span>
+    <span class="k">return</span><span class="p">;</span>  
+</pre></div>
+
+
+<p>（2）基类的operator delete  </p>
+<div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="n">size</span><span class="o">!=</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Base</span><span class="p">))</span>   <span class="c1">//size是operator delete的第二个参数  </span>
+    <span class="o">::</span><span class="k">operator</span> <span class="k">delete</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>  
+    <span class="k">return</span><span class="p">;</span>  
+</pre></div>
+
+
+<h2>Item 52: Write placement delete if you write placement new.</h2>
+<p>1.placement new，C++ Primer上翻译为定位new，理解为：特定位置（第二个参数指定的指针位置）上的new比较好。<br />
+2.编写placement new的时候，也要编写对应版本的placement delete。  </p>
+<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">throw</span><span class="p">();</span>   
+<span class="kt">void</span> <span class="k">operator</span> <span class="nf">delete</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">throw</span><span class="p">();</span>  
+</pre></div>
+
+
+<p>否则，可能内存泄露。<br />
+因为，new表达式执行中，如果第一步operator new分配内存成功，但是构造函数抛出异常，C++运行期系统需要保证内存不发生泄露，就会自动调用<strong>对应版本</strong>的operator delete释放内存。如果找不到对应版本的operator delete，就会造成内存泄露。<br />
+3.global作用域定义了3种形式的operator new和对应3种形式的operator delete  </p>
+<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="p">)</span> <span class="k">throw</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">bad_alloc</span><span class="p">);</span>  
+<span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span> <span class="k">throw</span><span class="p">();</span>  
+<span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="p">,</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">nothrow_t</span> <span class="o">&amp;</span><span class="p">)</span> <span class="k">throw</span><span class="p">();</span>  
+</pre></div>
+
+
+<p>对应delete版本就是第一个参数换成void*，全部不抛出异常。<br />
+4.定义于类内的operator new，不管是placement还是非placement，都会掩盖全局的3个版本。如果需要使用，重写这6个函数：函数体只是调用全局作用域的版本。<br />
+例如：  </p>
+<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="p">)</span> <span class="k">throw</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">bad_alloc</span><span class="p">)</span>  
+<span class="p">{</span>  
+     <span class="k">return</span> <span class="o">::</span><span class="k">operator</span> <span class="k">new</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>注意：<strong>不能在类内简单的using ::operator new，否则报错using-declaration for non-member at class scope。</strong>只能using基类的被覆盖的名字，不能using全局的，但是可以用作用域限定符(::)调用全局的函数。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-10-13T20:09:29.927587" pubdate>2013-10-13</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/10/EffectiveCpp(12).html';
+          var disqus_url = 'http://particle128.com/posts/2013/10/EffectiveCpp(12).html';
+          var disqus_title = 'Effective C++学习笔记(12)';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

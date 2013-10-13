@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.github.io/" rel="alternate"></link><link href="http://particle128.github.io/feeds/others.rss.xml" rel="self"></link><id>http://particle128.github.io/</id><updated>2013-10-09T14:09:21+08:00</updated><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.github.io/posts/2013/10/blog-build.html" rel="alternate"></link><updated>2013-10-09T14:09:21+08:00</updated><author><name>particle128</name></author><id>tag:particle128.github.io,2013-10-09:posts/2013/10/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/others.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-09T14:09:21+08:00</updated><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.com/posts/2013/10/blog-build.html" rel="alternate"></link><updated>2013-10-09T14:09:21+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-09:posts/2013/10/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;ubuntu12.04LTS(自带python2.7)  &lt;/li&gt;
 &lt;/ul&gt;
@@ -163,7 +163,7 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改&lt;/p
 &lt;li&gt;在&lt;a href="http://www.goyouhuima.com/"&gt;GoDaddy优惠码网站&lt;/a&gt;选择一个链接，进入，购买一年的域名，比如particle128.com，55元左右,可以用支付宝购买。  &lt;/li&gt;
 &lt;li&gt;在&lt;a href="https://www.dnspod.cn/"&gt;DNSPOD&lt;/a&gt;上注册，然后建立一条A记录，一条CNAME记录，将购买的域名particle128.com绑定到Github Pages的ip地址（注意不是独立ip），将www.particle128.com重定向到particle128.com&lt;br /&gt;
 截图：&lt;br /&gt;
-&lt;img alt="dnspod_screenshot" src="http://particle128.github.io/static/images/DNSPod.png" /&gt;  &lt;/li&gt;
+&lt;img alt="dnspod_screenshot" src="http://particle128.com/static/images/DNSPod.png" /&gt;  &lt;/li&gt;
 &lt;li&gt;重新登陆GoDaddy，添加DNSPod的name server&lt;br /&gt;
 f1g1ns1.dnspod.net&lt;br /&gt;
 f1g1ns2.dnspod.net  &lt;/li&gt;
