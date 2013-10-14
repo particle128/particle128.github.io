@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog</title>
+  <title>particle128's Blog - link</title>
   <meta name="author" content="particle128">
 
     
@@ -60,38 +60,21 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
+        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-09T14:09:21.473479" pubdate>2013-10-09</time></p>
+          <p class="meta"><time datetime="2013-10-14T11:11:55.358809" pubdate>2013-10-14</time></p>
 </header>
 
-  <div class="entry-content"><h2>环境</h2>
-<ul>
-<li>ubuntu12.04LTS(自带python2.7)  </li>
-</ul>
-<h2>前期准备</h2>
-<ul>
-<li>注册<a href="https://github.com">github</a>，建立一个名为{yourusername}.github.io的repository（不知道咋翻译,数据仓库？）  </li>
-<li>安装pelican和markdown  </li>
-</ul>
-<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install markdown <span class="c">#linux下的markdown软件  </span>
-<span class="nv">$ </span>sudo pip install markdown <span class="c">#python的markdown包  </span>
-<span class="nv">$ </span>sudo pip install pelican <span class="c">#python的pelican包  </span>
-</pre></div>
-
-
-<p>如果没有安装markdown或python的markdown包，会出现如下错误：  </p>
-<div class="highlight"><pre><span class="n">WARNING</span><span class="o">:</span> <span class="n">Could</span> <span class="n">not</span> <span class="n">process</span> <span class="sr">/path/to/</span><span class="n">file</span><span class="o">.</span><span class="na">md</span>  
-<span class="s1">&#39;bool&#39;</span> <span class="n">object</span> <span class="k">is</span> <span class="n">not</span> <span class="n">callable</span>  
-</pre></div>
-
-
-<h2>搭建pelican环境</h2>
-<ul>
-<li>具体pelican的操作，可以查看<a href="http://docs.getpelican.com/en/3.3.0/">文档</a><br />
-搭建命令如下 ...</li></ul></div>
+  <div class="entry-content"><h2>Chapter 2</h2>
+<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
+gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
+[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
+宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
+gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
+[2]编译  把源文件生成汇编代码 (调用cc1)<br />
+gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/blog-build.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -103,7 +86,7 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
+          <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
       </li>
           </ul>
   </section>

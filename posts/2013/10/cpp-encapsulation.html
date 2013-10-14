@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - EffectiveCpp</title>
+  <title>C++提供的数据封装，只是访问控制，而不是信息隐藏</title>
   <meta name="author" content="particle128">
 
     
@@ -56,70 +56,75 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-04T19:11:56.769827" pubdate>2013-10-04</time></p>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">C++提供的数据封装，只是访问控制，而不是信息隐藏</h1>
+          <p class="meta"><time datetime="2013-10-14T09:25:05.290524" pubdate>2013-10-14</time></p>
 </header>
 
-  <div class="entry-content"><p><strong>【补充概念】</strong><br />
-<strong>类型安全</strong>：<br />
-<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
-<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
-printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
-(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
-(2) SomeClass a;AnotherClass b;<br />
-   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
-(3) #define max(a,b) ((a ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-03T22:42:12.454317" pubdate>2013-10-03</time></p>
-</header>
+  <div class="entry-content"><ul>
+<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
+<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
+甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
+<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
+<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
+<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
+<span class="k">extern</span> <span class="kt">int</span> <span class="nf">process_entity</span><span class="p">(</span><span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span><span class="n">info</span><span class="p">);</span>  
+<span class="k">extern</span> <span class="kt">void</span> <span class="nf">close_entity</span><span class="p">(</span><span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span><span class="n">info</span><span class="p">);</span>  
 
-  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
-<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
-2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
-3.唯有这4个函数被调用时，才被产生出来。  <br />
-4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
-5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
-<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-            <a class="next" href="http://particle128.com/tag/effectivecpp2.html">Newer &rarr;</a>
-        <br />
-</div>  </div>
+
+
+<span class="c1">// Implementation file &quot;api.c&quot;  </span>
+<span class="cp">#include &quot;api.h&quot;  </span>
+<span class="k">struct</span> <span class="n">Entity</span>  
+<span class="p">{</span>  
+<span class="kt">int</span> <span class="n">ent_id</span><span class="p">;</span> <span class="c1">// ID number  </span>
+<span class="kt">char</span> <span class="n">ent_name</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span> <span class="c1">// Name  </span>
+<span class="p">...</span> <span class="n">and</span> <span class="n">other</span> <span class="n">members</span> <span class="p">...</span>  
+<span class="p">};</span>  
+<span class="c1">// API function implementations  </span>
+<span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>  
+<span class="kt">int</span> <span class="nf">process_entity</span><span class="p">(</span><span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span><span class="n">info</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>  
+<span class="kt">void</span> <span class="nf">close_entity</span><span class="p">(</span><span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span><span class="n">info</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>  
+</pre></div></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-10-14T09:25:05.290524" pubdate>2013-10-14</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
+        <a class="category" href="http://particle128.com/tag/encapsulation.html">encapsulation</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
       </li>
           </ul>
   </section>
@@ -163,6 +168,9 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/10/cpp-encapsulation.html';
+          var disqus_url = 'http://particle128.com/posts/2013/10/cpp-encapsulation.html';
+          var disqus_title = 'C++提供的数据封装，只是访问控制，而不是信息隐藏';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
