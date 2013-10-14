@@ -45,12 +45,12 @@
 -->
 
 <ul class="main-navigation">
-      <li><a href="http://particle128.com/archives.html">archives</a></li>
-      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
-      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
-      <li><a href="http://particle128.com/category/python.html">python</a></li>
-      <li><a href="http://particle128.com/category/others.html">others</a></li>
-      <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://localhost:8000/archives.html">archives</a></li>
+      <li><a href="http://localhost:8000/category/cpp.html">cpp</a></li>
+      <li><a href="http://localhost:8000/category/linux.html">linux</a></li>
+      <li><a href="http://localhost:8000/category/python.html">python</a></li>
+      <li><a href="http://localhost:8000/category/others.html">others</a></li>
+      <li><a href="http://localhost:8000/category/life.html">life</a></li>
               <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
         <!-- TODO: add categories here? -->
   </ul></nav>
@@ -58,6 +58,34 @@
     <div id="content">
       <div class="blog-index">
     	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Effective C++学习笔记(5)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-11T16:34:30.926289" pubdate>2013-10-11</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item18:  Make interfaces easy to use correctly and hard to use incorrectly</h2>
+<p>1.促进接口被正确使用：<br />
+（1）接口一致性：stl中所有容器都具有size() 函数，而不像Java和.Net。<br />
+（2）与内置类型行为兼容：想想和int类比。<br />
+2.阻止接口被误用（！！！不正确的行为，编译都不能通过）：<br />
+例子：  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Date</span>  
+<span class="p">{</span>  
+    <span class="n">Date</span><span class="p">(</span><span class="kt">int</span> <span class="n">month</span><span class="p">,</span><span class="kt">int</span> <span class="n">day</span><span class="p">,</span><span class="kt">int</span> <span class="n">year</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>（1）建立新类型，防止调用顺序错乱，比如(2013,1,10)。  </p>
+<div class="highlight"><pre><span class="c1">//定义Month,Day,Year类型（struct，只含一个val变量和一个explicit单个参数构造函数即可）  </span>
+<span class="n">Date ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
     		<header>
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
@@ -149,6 +177,9 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
       </li>
             <li class="post">
@@ -159,9 +190,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
       </li>
           </ul>
   </section>
@@ -180,7 +208,7 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
 
     
     <section>

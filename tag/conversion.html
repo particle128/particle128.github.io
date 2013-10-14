@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - load</title>
+  <title>particle128's Blog - conversion</title>
   <meta name="author" content="particle128">
 
     
@@ -60,21 +60,42 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
+        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-14T11:11:55.358809" pubdate>2013-10-14</time></p>
+          <p class="meta"><time datetime="2013-10-14T22:17:06.652589" pubdate>2013-10-14</time></p>
 </header>
 
-  <div class="entry-content"><h2>Chapter 2</h2>
-<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
-gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
-[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
-宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
-gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
-[2]编译  把源文件生成汇编代码 (调用cc1)<br />
-gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
+  <div class="entry-content"><p>两个类，分别定义了到对方的转换时，一般会出现二义性。  </p>
+<ul>
+<li>例子：  </li>
+</ul>
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
+<span class="k">struct</span> <span class="n">X</span>  
+<span class="p">{</span>  
+        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+<span class="k">struct</span> <span class="n">Y</span>  
+<span class="p">{</span>  
+        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
+        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
+<ul>
+<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="k">operator</span> <span class="nf">X ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -86,7 +107,7 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
+          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </li>
           </ul>
   </section>

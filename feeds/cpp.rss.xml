@@ -1,5 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/cpp.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-14T11:11:55+08:00</updated><entry><title>程序员的自我修养 笔记</title><link href="http://particle128.com/posts/2013/10/ziwoxiuyang.html" rel="alternate"></link><updated>2013-10-14T11:11:55+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/ziwoxiuyang.html</id><summary type="html">&lt;h2&gt;Chapter 2&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/cpp.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-14T22:17:06+08:00</updated><entry><title>两个类定义相互转换时的二义性</title><link href="http://particle128.com/posts/2013/10/inter-convert.html" rel="alternate"></link><updated>2013-10-14T22:17:06+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/inter-convert.html</id><summary type="html">&lt;p&gt;两个类，分别定义了到对方的转换时，一般会出现二义性。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;例子：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+        &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;converting constructor&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+        &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;conversion function&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;  
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+        &lt;span class="n"&gt;Y&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+        &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果X的构造函数和Y的转换操作符变成如下声明形式：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;X&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;不会出现二义性，编译器直接确认operator X()是最佳匹配。原因在于：如果要调用X的构造函数，那么需要首先进行标准转换（Y-&amp;gt;const Y）；而如果调用operator X则免去了标准转换。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果声明式改成：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;不会出现二义性，编译器直接确认X(Y&amp;amp;)是最佳匹配。原因在于：const函数的this指针是const Y &lt;em&gt;const，因此首先需要一个标准转换（Y &lt;/em&gt;-&amp;gt;const Y *）；而如果调用前者，免去了标准转换。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;诡异的事情来了，如果声明式是：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果我们按照前面的推理过程，应该的得这是一个二义性的代码，因为都需要一个标准转换在调用类类型转换之前。但是g++神奇的没有报错就选择了X(const Y&amp;amp;)这个函数作为转换函数。百撕不得骑姐，甚至怀疑刚才我的推理都错了，终于在stackoverflow上找到了解答，&lt;a href="http://stackoverflow.com/questions/1384007/conversion-constructor-vs-conversion-operator-precedence"&gt;链接&lt;/a&gt; &lt;br /&gt;
+这应该是g++不符合C++标准的地方，是它的一个策略：在这个都需要const转换的"二义性"情况下，默默吞掉二义性而选择conversion constructor作为最佳匹配。如果想看到二义性错误，只要使用&lt;code&gt;g++ -pedantic&lt;/code&gt;命令，pedantic的意思是迂腐的,学究式的。  &lt;/p&gt;
+&lt;p&gt;花了好久才涨了这点姿势，不过得出一个结论：&lt;strong&gt;纸上得来终觉浅，绝知此事要躬行&lt;/strong&gt;。  &lt;/p&gt;</summary><category term="conversion"></category><category term="cpp"></category></entry><entry><title>程序员的自我修养 笔记</title><link href="http://particle128.com/posts/2013/10/ziwoxiuyang.html" rel="alternate"></link><updated>2013-10-14T11:11:55+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/ziwoxiuyang.html</id><summary type="html">&lt;h2&gt;Chapter 2&lt;/h2&gt;
 &lt;p&gt;所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。&lt;br /&gt;
 gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器&lt;br /&gt;
 [1]预处理   主要处理预处理指令（#开头的），主要工作如下：&lt;br /&gt;
