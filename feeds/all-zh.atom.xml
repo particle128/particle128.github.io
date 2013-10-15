@@ -1,5 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-14T22:17:06+08:00</updated><entry><title>两个类定义相互转换时的二义性</title><link href="http://particle128.com/posts/2013/10/inter-convert.html" rel="alternate"></link><updated>2013-10-14T22:17:06+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/inter-convert.html</id><summary type="html">&lt;p&gt;两个类，分别定义了到对方的转换时，一般会出现二义性。  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-15T14:01:14+08:00</updated><entry><title>core dump相关</title><link href="http://particle128.com/posts/2013/10/core-dump.html" rel="alternate"></link><updated>2013-10-15T14:01:14+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/core-dump.html</id><summary type="html">&lt;h3&gt;概念&lt;/h3&gt;
+&lt;p&gt;当程序异常退出（接受到内核或其他程序的某种信号，比如SIGTERM，SIGKILL等）的时候，一般会将出错时候的内存状况保存到core file中，以帮助开发者了解程序崩溃的原因。&lt;br /&gt;
+即core memory（内存最开始使用线圈做的），其实就是内存。core dump就是内存倾倒的意思。  &lt;/p&gt;
+&lt;h3&gt;ubuntu下使能core dump功能&lt;/h3&gt;
+&lt;p&gt;ubuntu下默认core文件的大小限制是0（执行ulimit -c查看），即不允许core文件产生。&lt;br /&gt;
+解除限制：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;ulimit&lt;/span&gt; -c unlimited &lt;span class="c"&gt;#设置core file的限制  &lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;ulimit&lt;/span&gt; -a &lt;span class="c"&gt;#查看所有限制（包括栈大小、cpu时间、虚拟内存、文件大小等）  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;core文件的默认位置&lt;/h3&gt;
+&lt;p&gt;查看core文件存储格式，以及ubuntu下输出结果：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;cat /proc/sys/kernel/core_pattern   
+|/usr/share/apport/apport %p %s %c  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;意思是：core file文件通过管道，变做apport程序的输入。&lt;br /&gt;
+后面的参数解释如下（man core）：&lt;br /&gt;
+%p - insert pid into filename 添加pid&lt;br /&gt;
+%u - insert current uid into filename 添加当前uid&lt;br /&gt;
+%g - insert current gid into filename 添加当前gid&lt;br /&gt;
+%s - insert signal that caused the coredump into the filename 添加导致产生core的信号&lt;br /&gt;
+%t - insert UNIX time that the coredump occurred into filename 添加core文件生成时的unix时间&lt;br /&gt;
+%h - insert hostname where the coredump happened into filename 添加主机名&lt;br /&gt;
+%e - insert coredumping executable name into filename 添加命令名&lt;br /&gt;
+%c - core  file  size soft resource limit of crashing process 添加core文件大小限制  &lt;/p&gt;
+&lt;h3&gt;apport&lt;/h3&gt;
+&lt;p&gt;介绍它的页面：&lt;a href="https://wiki.ubuntu.com/Apport"&gt;link&lt;/a&gt;&lt;br /&gt;
+需要注意的地方：&lt;br /&gt;
+1. apport把core file保存在 /var/crash/ 目录下&lt;br /&gt;
+2. ubuntu12.04之后，apport才默认开启。之前的版本都需要设置 /etc/default/apport 文件&lt;br /&gt;
+3. apport的日志文件保存在 /var/log/apport.log 一般日志文件都放置于此，例如syslog，redis&lt;br /&gt;
+4. 自己的程序，只有打包成.deb文件，并被安装之后，apport才会保存其core file到/var/crash。否则不生成core file，log文件里会报错如下：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;executable does not belong to a package, ignoring  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;重定向core file&lt;/h3&gt;
+&lt;p&gt;既然apport只能处理ubuntu下的包程序，那么我们就不让apport干涉core file的产生了。&lt;br /&gt;
+执行如下命令：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;ulimit&lt;/span&gt; -c unlimited  
+&lt;span class="c"&gt;# echo &amp;quot;core.%e.%p&amp;quot; &amp;gt; /proc/sys/kernel/core_pattern  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样，每次core file都会在当前目录下保存了。  &lt;/p&gt;
+&lt;h3&gt;gdb定位错误位置&lt;/h3&gt;
+&lt;p&gt;产生core file之后（姑且命名为core.a.out.11111），直接vi查看其内容会一头雾水。&lt;br /&gt;
+执行如下命令，定位程序崩溃的位置：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;gdb -c core.a.out.11111  
+&lt;span class="o"&gt;(&lt;/span&gt;gdb&lt;span class="o"&gt;)&lt;/span&gt; where  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;程序中捕捉崩溃事件&lt;/h3&gt;
+&lt;p&gt;sigaction()函数指定信号的处理函数（比如SIGSEGV），然后在处理函数中打log，发送错误报告之类的。  &lt;/p&gt;</summary><category term="core dump"></category></entry><entry><title>DNS相关</title><link href="http://particle128.com/posts/2013/10/dns.html" rel="alternate"></link><updated>2013-10-15T14:00:41+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/dns.html</id><summary type="html">&lt;p&gt;信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  &lt;/p&gt;
+&lt;h3&gt;Domain Name System&lt;/h3&gt;
+&lt;p&gt;host name &amp;lt; - &amp;gt; ip address&lt;br /&gt;
+主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。&lt;br /&gt;
+如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  &lt;/p&gt;
+&lt;h3&gt;名字/域名服务器层次结构：&lt;/h3&gt;
+&lt;p&gt;root name server 根域名服务器（无名）&lt;br /&gt;
+TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa，普通域com等，和国家域cn等）&lt;br /&gt;
+authoritative name server 授权域名服务器&lt;br /&gt;
+local name server 本地域名服务器  &lt;/p&gt;
+&lt;h3&gt;DNS查询过程：&lt;/h3&gt;
+&lt;p&gt;本地主机高速缓存里有记录的话，不用查找了。&lt;br /&gt;
+本地主机缓存里记录过期或没有，以递归方式查找local。&lt;br /&gt;
+local没有记录的话，一般以迭代方式分别查找root,TLD,authoritative，直到找到，返回给local。&lt;br /&gt;
+以本地主机的视角，就看到查找local并得到local的回应了，local的查找过程时透明的。  &lt;/p&gt;
+&lt;h3&gt;解析器的配置文件/etc/resolv.conf：&lt;/h3&gt;
+&lt;p&gt;格式：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;search&lt;/span&gt; &lt;span class="n"&gt;example&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt; &lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lan&lt;/span&gt;  
+&lt;span class="n"&gt;nameserver&lt;/span&gt; &lt;span class="mf"&gt;172.16.1.254&lt;/span&gt;  
+&lt;span class="n"&gt;nameserver&lt;/span&gt; &lt;span class="mf"&gt;172.16.2.254&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;资源记录（resource record）&lt;/h3&gt;
+&lt;p&gt;都可以简略理解成&amp;lt;域名，数据&amp;gt;对，数据有时候是ip地址，有时候是域名。PTR也不例外。&lt;br /&gt;
+DNS中的常用RR：  &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A（address）：host name-&amp;gt;ipv4&lt;br /&gt;
+AAAA：host name-&amp;gt;ipv6&lt;br /&gt;
+PTR(pointer)：ipv4/ipv6-&amp;gt;hostname&lt;br /&gt;
+MX(mail exchanger)：host name-&amp;gt;its mail exchanger&lt;br /&gt;
+CNAME(canonical name):server name-&amp;gt; host name&lt;br /&gt;
+NS（name server）:domain-&amp;gt;authoritive name server of this domain  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;指针查询&lt;/h3&gt;
+&lt;p&gt;一个组织申请一个域名的时候，同时给其分配一个in-addr.arpa下的域名。&lt;br /&gt;
+比如申请210.30.97.139的域名为www.mashu.com，那么名字服务器上会增加两条记录：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mashu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;                   &lt;span class="n"&gt;A&lt;/span&gt;      &lt;span class="mf"&gt;210.30.97.139&lt;/span&gt;  
+&lt;span class="mf"&gt;139.97.30.210&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;in&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arpa&lt;/span&gt; &lt;span class="n"&gt;PTR&lt;/span&gt; &lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mashu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样，ip地址反向查找域名就直接找PTR记录即可，而不用遍历所有A记录了。&lt;br /&gt;
+注：我理解的逆序有一定好处是，一个区域的ip地址高字节都是相同的，比如都是210.30，区分每一台主机的主要是低位的字节，所以把低字节排在前面，查找更迅速。&lt;br /&gt;
+设想学校的local：逆序，第一个字节符合要求的就1个记录；正序，第一个字节所有记录都匹配。  &lt;/p&gt;
+&lt;h3&gt;传输层协议：&lt;/h3&gt;
+&lt;p&gt;DNS请求一般是解析器（resolver）发出的，解析器是应用程序的一部分（以模块的形式加入应用程序），而不是内核的一部分。&lt;br /&gt;
+DNS一般都使用UDP数据报，只有2个特例：&lt;br /&gt;
+1）DNS响应报文超过UDP的上限512B，解析器就会用TCP重发原来的请求。&lt;br /&gt;
+2）一个域的辅助名字服务器从主名字服务器上拉取数据的时候，区域传送使用TCP。  &lt;/p&gt;
+&lt;h3&gt;备份&lt;/h3&gt;
+&lt;p&gt;除了本地名字服务器，网上有OpenDNS和googleDNS服务器的ip地址，应该是被墙了，现在访问不到。所以一旦学校的本地名字服务器崩了，就没办法通过主机名访问外网了。&lt;br /&gt;
+常用网站ip地址：&lt;br /&gt;
+google : 74.125.31.106  173.194.45.20 &lt;br /&gt;
+yinxiang : 119.254.30.32/Home.action&lt;br /&gt;
+youdao dict : 121.195.178.201  &lt;/p&gt;
+&lt;h3&gt;查看DNS解析的linux工具：&lt;/h3&gt;
+&lt;p&gt;[1] host&lt;br /&gt;
+格式：$ host [-t type]{name} [server]&lt;br /&gt;
+说明：&lt;br /&gt;
+DNS解析工具。&lt;br /&gt;
+name如果是一个主机名，就解析出其ip地址；name如果是ip地址，就反解析出其主机名。&lt;br /&gt;
+server可选参数。默认从/etc/resolv.conf读取名字服务器（nameserver），加上该参数（ip地址或主机名形式均可）后，就采用该名字服务器。&lt;br /&gt;
+-t后面接类型，比如cname，a等&lt;br /&gt;
+示例：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$host&lt;/span&gt; google.com    
+&lt;span class="nv"&gt;$host&lt;/span&gt; google.com 202.118.66.6    
+&lt;span class="nv"&gt;$host&lt;/span&gt; 127.0.0.1  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;[2] nslookup&lt;br /&gt;
+格式：$ nslookup [name] [server]&lt;br /&gt;
+说明：交互式(interactve)DNS解析工具，输入nslookup之后出现交互式操作提示符“&amp;gt;”，之后就可以多次输入需要解析的host name。给出的解析结果相对host详细一些。  &lt;/p&gt;
+&lt;p&gt;[3] dig(domain information groper)&lt;br /&gt;
+格式： $ dig [server] {name} [type]&lt;br /&gt;
+示例：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$dig&lt;/span&gt; google.com （默认只寻找资源类型A）  
+&lt;span class="nv"&gt;$dig&lt;/span&gt; google.com ANY  
+&lt;span class="nv"&gt;$dig&lt;/span&gt; google.com MX  
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="dns"></category></entry><entry><title>Python学习笔记-ConfigParser模块</title><link href="http://particle128.com/posts/2013/10/python-configparser.html" rel="alternate"></link><updated>2013-10-15T13:55:39+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/python-configparser.html</id><summary type="html">&lt;h3&gt;前言&lt;/h3&gt;
+&lt;p&gt;配置文件可以有很多种格式，windows下常用ini格式，网络上常用xml和json格式，分别可以调用的python模块如下：&lt;br /&gt;
+ini——ConfigParser模块&lt;br /&gt;
+xml——xml.etree.ElementTree模块&lt;br /&gt;
+json——json模块  &lt;/p&gt;
+&lt;h3&gt;参考文档&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://docs.python.org/2/library/configparser.html"&gt;link&lt;/a&gt;&lt;br /&gt;
+点评：&lt;br /&gt;
+前面的文字讲的很晕，没有上下文的情况下就各种说，还不如直接来几个例子。不过我还是硬着头皮看完了。  &lt;/p&gt;
+&lt;h3&gt;ini文档的格式&lt;/h3&gt;
+&lt;p&gt;1.注释的开始标记是semicolon 和 number sign。semicolon开头的注释可以嵌入在ini文件的行内（和其他文本用一个空白符隔开），number sign开头的注释只能用在单独的一行中。&lt;br /&gt;
+2.[section]中可以使用option=value或option: value&lt;br /&gt;
+3.可以在value中包含格式化字符串，来自同section，或DEFAULT section，或初始化的时候传入的内容。&lt;br /&gt;
+示例：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;[My&lt;/span&gt; &lt;span class="err"&gt;Section]&lt;/span&gt;  
+&lt;span class="err"&gt;foodir:&lt;/span&gt; &lt;span class="err"&gt;%(dir)s/whatever&lt;/span&gt;  
+&lt;span class="na"&gt;dir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;frob  &lt;/span&gt;
+&lt;span class="err"&gt;long:&lt;/span&gt; &lt;span class="err"&gt;this&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;continues&lt;/span&gt;  
+   &lt;span class="err"&gt;in&lt;/span&gt; &lt;span class="err"&gt;the&lt;/span&gt; &lt;span class="err"&gt;next&lt;/span&gt; &lt;span class="err"&gt;line&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;类层次关系&lt;/h3&gt;
+&lt;p&gt;import ConfigParser&lt;br /&gt;
+class ConfigParser.RawConfigParser([defaults[, dict_type[, allow_no_value]]])&lt;br /&gt;
+——》ConfigParser （增加value中格式化字符串）&lt;br /&gt;
+——》 SafeConfigParser（更加健全的格式化字符串）&lt;br /&gt;
+符号——》表示派生出。  &lt;/p&gt;
+&lt;h3&gt;成员方法&lt;/h3&gt;
+&lt;p&gt;示例： config=ConfigParser.SafeConfigParser()&lt;br /&gt;
+读写配置文件：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;site.cfg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;expanduser&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;~/.myapp.cfg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt; &lt;span class="c"&gt;#打开多个文件，忽略打开失败的文件，返回打开成功的文件列表  &lt;/span&gt;
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;site.cfg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;#打开一个文件  &lt;/span&gt;
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;readfp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;defaults.cfg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c"&gt;#打开一个文件  &lt;/span&gt;
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;defaults.cfg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;wb&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;  
+&lt;span class="c"&gt;# 判断配置文件内容：  &lt;/span&gt;
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;has_section&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;My Section&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;has_option&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;My Section&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;dir&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="c"&gt;# 读取配置文件内容：  &lt;/span&gt;
+&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;MySection&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;dir&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="err"&gt;带类型判断的变种，类型不对会抛出异常：&lt;/span&gt;&lt;span class="n"&gt;getint&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;getfloat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;getboolean&lt;/span&gt;  
+&lt;span class="n"&gt;sections&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c"&gt;#返回section列表  &lt;/span&gt;
+&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;My Section&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;#返回option列表  &lt;/span&gt;
+&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;My Section&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;#返回(option，value)列表  &lt;/span&gt;
+&lt;span class="c"&gt;# 修改配置文件内容：  &lt;/span&gt;
+&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;My Section&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;dir&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;frob&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;remove_section&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;My Section&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;remove_option&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;My Section&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;dir&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;遇到的问题&lt;/h3&gt;
+&lt;p&gt;问题：&lt;br /&gt;
+配置文件中有一行 XL=10101。但是，get函数返回的option总是xl&lt;br /&gt;
+原因：&lt;br /&gt;
+&lt;a href="http://docs.python.org/2/library/configparser.html#ConfigParser.RawConfigParser.optionxform"&gt;link&lt;/a&gt;&lt;br /&gt;
+RawConfigParser有一个成员方法：optionxform(option)&lt;br /&gt;
+Transforms the option name option as found in an input file or as passed in by client code to the form that should be used in the internal structures.The default implementation returns a lower-case version of option.&lt;br /&gt;
+意思是，ConfigParser会自动调用optionxform函数，处理输入文件中的选项字段，或输出时指定的选项字段，默认是将其转变成小写。&lt;br /&gt;
+文档中的解决方案是  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;cfgparser&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ConfigParser&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="o"&gt;...&lt;/span&gt;  
+&lt;span class="n"&gt;cf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;optionxform&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="c"&gt;#直接改成str，意味着不区分大小写。但是这对于含有中文option的配置文件并不合适。  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;解决：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#调用的时候转换成小写  &lt;/span&gt;
+&lt;span class="n"&gt;new_url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;originUrl&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;?q=0|&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TYPE&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="n"&gt;SIZE&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lower&lt;/span&gt;&lt;span class="p"&gt;()],&lt;/span&gt;&lt;span class="n"&gt;EMPTY&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="n"&gt;SORT&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Sort&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="ConfigParser"></category><category term="python"></category></entry><entry><title>Python学习笔记-subprocess模块</title><link href="http://particle128.com/posts/2013/10/py-subprocess.html" rel="alternate"></link><updated>2013-10-15T13:52:20+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/py-subprocess.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;subprocess是python的一个内置模块，用来产生子进程，和子进程通过pipe通信。&lt;/strong&gt;  &lt;/p&gt;
+&lt;h3&gt;3个便捷函数&lt;/h3&gt;
+&lt;p&gt;如果仅仅想要调用一个子进程完成一个任务，不需要父进程与其通信，并且等待子进程退出的话，选择便捷函数。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 返回returncode，0成功，非0出错。  &lt;/span&gt;
+&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="c"&gt;# 返回0或引发CalledProcessError异常。  &lt;/span&gt;
+&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;check_call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="c"&gt;# 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  &lt;/span&gt;
+&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;check_output&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;universal_newlines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;参数：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;args是调用的命令和参数，可以是字符串，或字符串列表（带参数）。  &lt;/li&gt;
+&lt;li&gt;是省略的一些关键字参数，不常用。  &lt;/li&gt;
+&lt;li&gt;stdin,stdout,stderr是标准io，默认不重定向，可以给他们重定向到subprocess.PIPE，或文件对象（open函数的返回），或文件描述符。&lt;br /&gt;
+注意：需要和子进程进行PIPE通信，不要用这三个函数。因为父进程在调用这三个函数的时候会阻塞，所以没法去都去PIPE里的信息或向管道传递信息。  &lt;/li&gt;
+&lt;li&gt;shell设置为True的话，args指定的字符串将作为shell的参数，调用shell。  &lt;/li&gt;
+&lt;li&gt;universal_newlines如果设置为True，那么stdout和stderr都会使用统一的换行符\n，而不区分操作系统。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Popen类&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bufsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;executable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;preexec_fn&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;close_fds&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cwd&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;universal_newlines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;startupinfo&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;creationflags&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;参数：&lt;br /&gt;
+bufsize设置缓冲区大小，默认是0表示无缓冲，即每次write都直接执行io操作，而不是先放到缓冲区里，等待某个时机（换行符，或缓冲区满时才执行真正的io）&lt;br /&gt;
+方法： &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 检查进程是否中止，返回returncode属性  &lt;/span&gt;
+&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;poll&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="c"&gt;# 等待进程中止，返回returncode属性  &lt;/span&gt;
+&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wait&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="c"&gt;# 和进程交互，发送数据到stdin，在stdout和stderr接收数据。前提是构造函数中对应io设置成PIPE  &lt;/span&gt;
+&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;communicate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;input&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="c"&gt;# returns a tuple (stdoutdata, stderrdata)  &lt;/span&gt;
+&lt;span class="c"&gt;# 发送信号给进程  &lt;/span&gt;
+&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send_signal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;signal&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;此外还有terminate（），kill（）函数&lt;br /&gt;
+stdin，stdout，stderr，pid，returncode属性  &lt;/p&gt;</summary><category term="python"></category><category term="subprocess"></category></entry><entry><title>两个类定义相互转换时的二义性</title><link href="http://particle128.com/posts/2013/10/inter-convert.html" rel="alternate"></link><updated>2013-10-14T22:17:06+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/inter-convert.html</id><summary type="html">&lt;p&gt;两个类，分别定义了到对方的转换时，一般会出现二义性。  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;例子：  &lt;/li&gt;
 &lt;/ul&gt;

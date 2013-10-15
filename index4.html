@@ -60,6 +60,118 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Effective C++学习笔记(5)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-11T16:34:30.926289" pubdate>2013-10-11</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item18:  Make interfaces easy to use correctly and hard to use incorrectly</h2>
+<p>1.促进接口被正确使用：<br />
+（1）接口一致性：stl中所有容器都具有size() 函数，而不像Java和.Net。<br />
+（2）与内置类型行为兼容：想想和int类比。<br />
+2.阻止接口被误用（！！！不正确的行为，编译都不能通过）：<br />
+例子：  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Date</span>  
+<span class="p">{</span>  
+    <span class="n">Date</span><span class="p">(</span><span class="kt">int</span> <span class="n">month</span><span class="p">,</span><span class="kt">int</span> <span class="n">day</span><span class="p">,</span><span class="kt">int</span> <span class="n">year</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>（1）建立新类型，防止调用顺序错乱，比如(2013,1,10)。  </p>
+<div class="highlight"><pre><span class="c1">//定义Month,Day,Year类型（struct，只含一个val变量和一个explicit单个参数构造函数即可）  </span>
+<span class="n">Date ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/some-thought.html">一些反思</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-11T13:37:35.621816" pubdate>2013-10-11</time></p>
+</header>
+
+  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
+<ul>
+<li>目标不具体    </li>
+</ul>
+<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让我坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让我又鼓起斗志。    </p>
+<ul>
+<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
+</ul>
+<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
+<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力，靠目标和纪律来约束自己。    </p>
+<ul>
+<li>方向选择上走了很多弯路。    </li>
+</ul>
+<p>虽然走弯路也有意义，但是会推迟成功到来的时间 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/some-thought.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-09T14:09:21.473479" pubdate>2013-10-09</time></p>
+</header>
+
+  <div class="entry-content"><h2>环境</h2>
+<ul>
+<li>ubuntu12.04LTS(自带python2.7)  </li>
+</ul>
+<h2>前期准备</h2>
+<ul>
+<li>注册<a href="https://github.com">github</a>，建立一个名为{yourusername}.github.io的repository（不知道咋翻译,数据仓库？）  </li>
+<li>安装pelican和markdown  </li>
+</ul>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install markdown <span class="c">#linux下的markdown软件  </span>
+<span class="nv">$ </span>sudo pip install markdown <span class="c">#python的markdown包  </span>
+<span class="nv">$ </span>sudo pip install pelican <span class="c">#python的pelican包  </span>
+</pre></div>
+
+
+<p>如果没有安装markdown或python的markdown包，会出现如下错误：  </p>
+<div class="highlight"><pre><span class="n">WARNING</span><span class="o">:</span> <span class="n">Could</span> <span class="n">not</span> <span class="n">process</span> <span class="sr">/path/to/</span><span class="n">file</span><span class="o">.</span><span class="na">md</span>  
+<span class="s1">&#39;bool&#39;</span> <span class="n">object</span> <span class="k">is</span> <span class="n">not</span> <span class="n">callable</span>  
+</pre></div>
+
+
+<h2>搭建pelican环境</h2>
+<ul>
+<li>具体pelican的操作，可以查看<a href="http://docs.getpelican.com/en/3.3.0/">文档</a><br />
+搭建命令如下 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/blog-build.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-04T19:33:09.273884" pubdate>2013-10-04</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 13: Use objects to manage resources</h2>
+<p>1.资源是指，使用完之后需要归还系统的东西。比如动态分配的内存，文件描述符，互斥锁，数据库连接，sockets。<br />
+2.尽管可以手动释放资源（比如delete），但是程序的修改（delete之前返回了），或客户的忘记，可能导致资源释放不了。<br />
+解决办法：用对象管理资源，利用对象在作用域范围之外会自动调用析构函数的机制，释放资源。<br />
+对于heap-based资源（资源new出来的，通过指针访问），有如下两种智能指针可用：<br />
+（1）std::auto_ptr<Investment> pInv(createInvestment()); <br />
+缺点：指向同一对象的auto_ptr，进行赋值或拷贝构造，会导致原ptr变成null。这样的目的，释放多次同一个资源。<br />
+（2）std::tr1::shared_ptr<Investment> pInv(createInvestment());<br />
+注意：不存在上面的问题，因为是RCSP ...</investment></investment></p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html">Effective C++学习笔记(3)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-04T19:28:25.753871" pubdate>2013-10-04</time></p>
@@ -78,91 +190,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-04T19:11:56.769827" pubdate>2013-10-04</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>【补充概念】</strong><br />
-<strong>类型安全</strong>：<br />
-<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
-<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
-printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
-(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
-(2) SomeClass a;AnotherClass b;<br />
-   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
-(3) #define max(a,b) ((a ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-03T22:42:12.454317" pubdate>2013-10-03</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
-<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
-2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
-3.唯有这4个函数被调用时，才被产生出来。  <br />
-4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
-5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
-<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-str.html">Python学习笔记-字符串</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-22T17:52:45.919950" pubdate>2013-09-22</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
-<h3>（一） 具备的操作</h3>
-<p>str作为序列元素，包含其他序列共同的操作：<br />
-1. “hello” [not] in "hello world"<br />
-2. "hello" + " world"<br />
-3. 5<em>"hello" 或 “hello”</em>5<br />
-4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
-5. len("hello")  min("hello")  max("hello")<br />
-6. "hello".index('o')   "hello".count('l ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-str.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T10:10:19.289894" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
-<h3>1、各种消息机制的使用场合</h3>
-<p>终端输出来显示一些信息：print()<br />
-报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
-logging.debug()用来诊断错误<br />
-发布一个警告：logging.warning()或warnings.warn()<br />
-报告一个错误：raise an exception<br />
-不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  </p>
-<p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
-<p>level由低到高依次是：<br />
-DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
-<h3>2 ...</h3></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index5.html">&larr; Older</a>
   
@@ -174,19 +201,19 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
       </li>
           </ul>
   </section>
@@ -205,7 +232,7 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
 
     
     <section>

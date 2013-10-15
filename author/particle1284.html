@@ -60,6 +60,48 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-14T09:25:05.290524" pubdate>2013-10-14</time></p>
+</header>
+
+  <div class="entry-content"><ul>
+<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
+<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
+甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
+<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
+<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
+<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
+<span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T14:00:41.520375" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
+<h3>Domain Name System</h3>
+<p>host name &lt; - &gt; ip address<br />
+主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
+如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
+<h3>名字/域名服务器层次结构：</h3>
+<p>root name server 根域名服务器（无名）<br />
+TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/dns.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
       </h1>
           <p class="meta"><time datetime="2013-10-14T13:37:37.851199" pubdate>2013-10-14</time></p>
@@ -146,51 +188,6 @@ chmod a+r aa.txt
     <a rel="full-article" href="http://particle128.com/posts/2013/09/linux_user.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T10:10:19.289894" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
-<h3>1、各种消息机制的使用场合</h3>
-<p>终端输出来显示一些信息：print()<br />
-报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
-logging.debug()用来诊断错误<br />
-发布一个警告：logging.warning()或warnings.warn()<br />
-报告一个错误：raise an exception<br />
-不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  </p>
-<p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
-<p>level由低到高依次是：<br />
-DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
-<h3>2 ...</h3></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-str.html">Python学习笔记-字符串</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-22T17:52:45.919950" pubdate>2013-09-22</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
-<h3>（一） 具备的操作</h3>
-<p>str作为序列元素，包含其他序列共同的操作：<br />
-1. “hello” [not] in "hello world"<br />
-2. "hello" + " world"<br />
-3. 5<em>"hello" 或 “hello”</em>5<br />
-4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
-5. len("hello")  min("hello")  max("hello")<br />
-6. "hello".index('o')   "hello".count('l ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-str.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/author/particle1285.html">&larr; Older</a>
   
@@ -233,7 +230,7 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
 
     
     <section>

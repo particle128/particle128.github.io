@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Python学习笔记-ConfigParser模块</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">Python学习笔记-ConfigParser模块</h1>
+          <p class="meta"><time datetime="2013-10-15T13:55:39.804362" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><h3>前言</h3>
+<p>配置文件可以有很多种格式，windows下常用ini格式，网络上常用xml和json格式，分别可以调用的python模块如下：<br />
+ini——ConfigParser模块<br />
+xml——xml.etree.ElementTree模块<br />
+json——json模块  </p>
+<h3>参考文档</h3>
+<p><a href="http://docs.python.org/2/library/configparser.html">link</a><br />
+点评：<br />
+前面的文字讲的很晕，没有上下文的情况下就各种说，还不如直接来几个例子。不过我还是硬着头皮看完了。  </p>
+<h3>ini文档的格式</h3>
+<p>1.注释的开始标记是semicolon 和 number sign。semicolon开头的注释可以嵌入在ini文件的行内（和其他文本用一个空白符隔开），number sign开头的注释只能用在单独的一行中。<br />
+2.[section]中可以使用option=value或option: value<br />
+3.可以在value中包含格式化字符串，来自同section，或DEFAULT section，或初始化的时候传入的内容。<br />
+示例：  </p>
+<div class="highlight"><pre><span class="err">[My</span> <span class="err">Section]</span>  
+<span class="err">foodir:</span> <span class="err">%(dir)s/whatever</span>  
+<span class="na">dir</span><span class="o">=</span><span class="s">frob  </span>
+<span class="err">long:</span> <span class="err">this</span> <span class="err">value</span> <span class="err">continues</span>  
+   <span class="err">in</span> <span class="err">the</span> <span class="err">next</span> <span class="err">line</span>  
+</pre></div>
+
+
+<h3>类层次关系</h3>
+<p>import ConfigParser<br />
+class ConfigParser.RawConfigParser([defaults[, dict_type[, allow_no_value]]])<br />
+——》ConfigParser （增加value中格式化字符串）<br />
+——》 SafeConfigParser（更加健全的格式化字符串）<br />
+符号——》表示派生出。  </p>
+<h3>成员方法</h3>
+<p>示例： config=ConfigParser.SafeConfigParser()<br />
+读写配置文件：  </p>
+<div class="highlight"><pre><span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">([</span><span class="s">&#39;site.cfg&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&#39;~/.myapp.cfg&#39;</span><span class="p">)])</span> <span class="c">#打开多个文件，忽略打开失败的文件，返回打开成功的文件列表  </span>
+<span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s">&#39;site.cfg&#39;</span><span class="p">)</span> <span class="c">#打开一个文件  </span>
+<span class="n">config</span><span class="o">.</span><span class="n">readfp</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;defaults.cfg&#39;</span><span class="p">))</span> <span class="c">#打开一个文件  </span>
+<span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;defaults.cfg&#39;</span><span class="p">,</span><span class="s">&#39;wb&#39;</span><span class="p">))</span>  
+<span class="c"># 判断配置文件内容：  </span>
+<span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="s">&#39;My Section&#39;</span><span class="p">)</span>  
+<span class="n">config</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s">&#39;My Section&#39;</span><span class="p">,</span><span class="s">&#39;dir&#39;</span><span class="p">)</span>  
+<span class="c"># 读取配置文件内容：  </span>
+<span class="n">get</span><span class="p">(</span><span class="s">&#39;MySection&#39;</span><span class="p">,</span> <span class="s">&#39;dir&#39;</span><span class="p">)</span> <span class="err">带类型判断的变种，类型不对会抛出异常：</span><span class="n">getint</span><span class="p">,</span><span class="n">getfloat</span><span class="p">,</span><span class="n">getboolean</span>  
+<span class="n">sections</span><span class="p">()</span> <span class="c">#返回section列表  </span>
+<span class="n">options</span><span class="p">(</span><span class="s">&#39;My Section&#39;</span><span class="p">)</span> <span class="c">#返回option列表  </span>
+<span class="n">items</span><span class="p">(</span><span class="s">&#39;My Section&#39;</span><span class="p">)</span> <span class="c">#返回(option，value)列表  </span>
+<span class="c"># 修改配置文件内容：  </span>
+<span class="nb">set</span><span class="p">(</span><span class="s">&#39;My Section&#39;</span><span class="p">,</span> <span class="s">&#39;dir&#39;</span><span class="p">,</span> <span class="s">&#39;frob&#39;</span><span class="p">)</span>  
+<span class="n">remove_section</span><span class="p">(</span><span class="s">&#39;My Section&#39;</span><span class="p">)</span>  
+<span class="n">remove_option</span><span class="p">(</span><span class="s">&#39;My Section&#39;</span><span class="p">,</span><span class="s">&#39;dir&#39;</span><span class="p">)</span>  
+</pre></div>
+
+
+<h3>遇到的问题</h3>
+<p>问题：<br />
+配置文件中有一行 XL=10101。但是，get函数返回的option总是xl<br />
+原因：<br />
+<a href="http://docs.python.org/2/library/configparser.html#ConfigParser.RawConfigParser.optionxform">link</a><br />
+RawConfigParser有一个成员方法：optionxform(option)<br />
+Transforms the option name option as found in an input file or as passed in by client code to the form that should be used in the internal structures.The default implementation returns a lower-case version of option.<br />
+意思是，ConfigParser会自动调用optionxform函数，处理输入文件中的选项字段，或输出时指定的选项字段，默认是将其转变成小写。<br />
+文档中的解决方案是  </p>
+<div class="highlight"><pre><span class="n">cfgparser</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>  
+<span class="o">...</span>  
+<span class="n">cf</span><span class="o">.</span><span class="n">optionxform</span> <span class="o">=</span> <span class="nb">str</span> <span class="c">#直接改成str，意味着不区分大小写。但是这对于含有中文option的配置文件并不合适。  </span>
+</pre></div>
+
+
+<p>解决：  </p>
+<div class="highlight"><pre><span class="c">#调用的时候转换成小写  </span>
+<span class="n">new_url</span><span class="o">=</span><span class="n">originUrl</span><span class="o">+</span><span class="s">&quot;?q=0|</span><span class="si">%s</span><span class="s">|</span><span class="si">%s</span><span class="s">|</span><span class="si">%s</span><span class="s">|</span><span class="si">%s</span><span class="s">|</span><span class="si">%d</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">TYPE</span><span class="p">[</span><span class="nb">type</span><span class="p">],</span><span class="n">SIZE</span><span class="p">[</span><span class="n">size</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span><span class="n">EMPTY</span><span class="p">[</span><span class="n">Empty</span><span class="p">],</span><span class="n">SORT</span><span class="p">[</span><span class="n">Sort</span><span class="p">],</span><span class="n">num</span><span class="p">)</span>  
+</pre></div></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-10-15T13:55:39.804362" pubdate>2013-10-15</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/configparser.html">ConfigParser</a>
+        <a class="category" href="http://particle128.com/tag/python.html">python</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/10/python-configparser.html';
+          var disqus_url = 'http://particle128.com/posts/2013/10/python-configparser.html';
+          var disqus_title = 'Python学习笔记-ConfigParser模块';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - Articles by particle128</title>
+  <title>Python学习笔记-subprocess模块</title>
   <meta name="author" content="particle128">
 
     
@@ -56,12 +56,10 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
-      </h1>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">Python学习笔记-subprocess模块</h1>
           <p class="meta"><time datetime="2013-10-15T13:52:20.816353" pubdate>2013-10-15</time></p>
 </header>
 
@@ -73,135 +71,76 @@
 <span class="c"># 返回0或引发CalledProcessError异常。  </span>
 <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
 <span class="c"># 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/py-subprocess.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T13:55:39.804362" pubdate>2013-10-15</time></p>
-</header>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
+</pre></div>
 
-  <div class="entry-content"><h3>前言</h3>
-<p>配置文件可以有很多种格式，windows下常用ini格式，网络上常用xml和json格式，分别可以调用的python模块如下：<br />
-ini——ConfigParser模块<br />
-xml——xml.etree.ElementTree模块<br />
-json——json模块  </p>
-<h3>参考文档</h3>
-<p><a href="http://docs.python.org/2/library/configparser.html">link</a><br />
-点评：<br />
-前面的文字讲的很晕，没有上下文的情况下就各种说，还不如直接来几个例子。不过我还是硬着头皮看完了。  </p>
-<h3>ini文档的格式</h3>
-<p>1.注释的开始标记是semicolon 和 number sign。semicolon开头的注释可以嵌入在ini文件的行内（和其他文本用一个空白符隔开），number sign开头的注释只能用在单独的一行中。<br />
-2.[section]中可以使用option=value或option: value<br />
-3.可以在value中包含格式化字符串，来自同section，或DEFAULT section，或初始化的时候传入的内容。<br />
-示例：  </p>
-<div class="highlight"><pre><span class="err">[My</span> <span class="err">Section]</span>  
-<span class="err">foodir:</span> <span class="err">%(dir)s/whatever</span>  
-<span class="na">dir</span><span class="o">=</span><span class="s">frob ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/python-configparser.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T10:10:19.289894" pubdate>2013-09-08</time></p>
-</header>
 
-  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
-<h3>1、各种消息机制的使用场合</h3>
-<p>终端输出来显示一些信息：print()<br />
-报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
-logging.debug()用来诊断错误<br />
-发布一个警告：logging.warning()或warnings.warn()<br />
-报告一个错误：raise an exception<br />
-不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  </p>
-<p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
-<p>level由低到高依次是：<br />
-DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
-<h3>2 ...</h3></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-str.html">Python学习笔记-字符串</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-22T17:52:45.919950" pubdate>2013-09-22</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
-<h3>（一） 具备的操作</h3>
-<p>str作为序列元素，包含其他序列共同的操作：<br />
-1. “hello” [not] in "hello world"<br />
-2. "hello" + " world"<br />
-3. 5<em>"hello" 或 “hello”</em>5<br />
-4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
-5. len("hello")  min("hello")  max("hello")<br />
-6. "hello".index('o')   "hello".count('l ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-str.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/some-thought.html">一些反思</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-11T13:37:35.621816" pubdate>2013-10-11</time></p>
-</header>
-
-  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
+<p>参数：  </p>
 <ul>
-<li>目标不具体    </li>
+<li>args是调用的命令和参数，可以是字符串，或字符串列表（带参数）。  </li>
+<li>是省略的一些关键字参数，不常用。  </li>
+<li>stdin,stdout,stderr是标准io，默认不重定向，可以给他们重定向到subprocess.PIPE，或文件对象（open函数的返回），或文件描述符。<br />
+注意：需要和子进程进行PIPE通信，不要用这三个函数。因为父进程在调用这三个函数的时候会阻塞，所以没法去都去PIPE里的信息或向管道传递信息。  </li>
+<li>shell设置为True的话，args指定的字符串将作为shell的参数，调用shell。  </li>
+<li>universal_newlines如果设置为True，那么stdout和stderr都会使用统一的换行符\n，而不区分操作系统。  </li>
 </ul>
-<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让我坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让我又鼓起斗志。    </p>
-<ul>
-<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
-</ul>
-<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
-<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力，靠目标和纪律来约束自己。    </p>
-<ul>
-<li>方向选择上走了很多弯路。    </li>
-</ul>
-<p>虽然走弯路也有意义，但是会推迟成功到来的时间 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/some-thought.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-      <a class="prev" href="http://particle128.com/author/particle1286.html">&larr; Older</a>
-  
-            <a class="next" href="http://particle128.com/author/particle1284.html">Newer &rarr;</a>
-        <br />
-</div>  </div>
+<h3>Popen类</h3>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">executable</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">close_fds</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">startupinfo</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">creationflags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  
+</pre></div>
+
+
+<p>参数：<br />
+bufsize设置缓冲区大小，默认是0表示无缓冲，即每次write都直接执行io操作，而不是先放到缓冲区里，等待某个时机（换行符，或缓冲区满时才执行真正的io）<br />
+方法： </p>
+<div class="highlight"><pre><span class="c"># 检查进程是否中止，返回returncode属性  </span>
+<span class="n">Popen</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>  
+<span class="c"># 等待进程中止，返回returncode属性  </span>
+<span class="n">Popen</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>  
+<span class="c"># 和进程交互，发送数据到stdin，在stdout和stderr接收数据。前提是构造函数中对应io设置成PIPE  </span>
+<span class="n">Popen</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>  
+<span class="c"># returns a tuple (stdoutdata, stderrdata)  </span>
+<span class="c"># 发送信号给进程  </span>
+<span class="n">Popen</span><span class="o">.</span><span class="n">send_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>  
+</pre></div>
+
+
+<p>此外还有terminate（），kill（）函数<br />
+stdin，stdout，stderr，pid，returncode属性  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-10-15T13:52:20.816353" pubdate>2013-10-15</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/python.html">python</a>
+        <a class="category" href="http://particle128.com/tag/subprocess.html">subprocess</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+          <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+          <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
+          <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+          <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </li>
           </ul>
   </section>
@@ -245,6 +184,9 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/10/py-subprocess.html';
+          var disqus_url = 'http://particle128.com/posts/2013/10/py-subprocess.html';
+          var disqus_title = 'Python学习笔记-subprocess模块';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

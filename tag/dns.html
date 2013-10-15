@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - goal</title>
+  <title>particle128's Blog - dns</title>
   <meta name="author" content="particle128">
 
     
@@ -60,27 +60,21 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/some-thought.html">一些反思</a>
+        <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-11T13:37:35.621816" pubdate>2013-10-11</time></p>
+          <p class="meta"><time datetime="2013-10-15T14:00:41.520375" pubdate>2013-10-15</time></p>
 </header>
 
-  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
-<ul>
-<li>目标不具体    </li>
-</ul>
-<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让我坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让我又鼓起斗志。    </p>
-<ul>
-<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
-</ul>
-<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
-<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力，靠目标和纪律来约束自己。    </p>
-<ul>
-<li>方向选择上走了很多弯路。    </li>
-</ul>
-<p>虽然走弯路也有意义，但是会推迟成功到来的时间 ...</p></div>
+  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
+<h3>Domain Name System</h3>
+<p>host name &lt; - &gt; ip address<br />
+主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
+如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
+<h3>名字/域名服务器层次结构：</h3>
+<p>root name server 根域名服务器（无名）<br />
+TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/some-thought.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/dns.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -92,7 +86,7 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/some-thought.html">一些反思</a>
+          <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
       </li>
           </ul>
   </section>
