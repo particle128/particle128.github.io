@@ -60,7 +60,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">Effective C++学习笔记(1)</h1>
-          <p class="meta"><time datetime="2013-10-04T19:11:56.769827" pubdate>2013-10-04</time></p>
+          <p class="meta"><time datetime="2013-10-15T15:20:21.500588" pubdate>2013-10-15</time></p>
 </header>
 
   <div class="entry-content"><p><strong>【补充概念】</strong><br />
@@ -109,9 +109,9 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
 
 <p>6.需要一组常量的时候，可以使用枚举，用法：  </p>
 <div class="highlight"><pre><span class="k">enum</span> <span class="n">Month</span> <span class="p">{</span><span class="n">Jan</span><span class="p">,</span><span class="n">Feb</span><span class="p">,</span><span class="n">March</span><span class="p">,</span><span class="n">April</span><span class="p">};</span> 
-<span class="n">Month</span> <span class="n">m</span><span class="o">=</span><span class="n">Jan</span><span class="p">;</span>  
+<span class="n">Month</span> <span class="n">m</span><span class="o">=</span><span class="n">Jan</span><span class="p">;</span>  <span class="c1">//枚举类型可以被枚举值赋值</span>
 <span class="k">enum</span> <span class="p">{</span><span class="n">First</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">Third</span><span class="o">=</span><span class="mi">3</span><span class="p">};</span>
-<span class="kt">int</span> <span class="n">number</span><span class="o">=</span><span class="n">First</span><span class="p">;</span>  
+<span class="kt">int</span> <span class="n">number</span><span class="o">=</span><span class="n">First</span><span class="p">;</span>  <span class="c1">//整数类型也可以被枚举值赋值</span>
 </pre></div>
 
 
@@ -138,11 +138,12 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
 
 
 <p>原理：<br />
-重载函数的确定，先找到candidate函数（名字相同），再找到valid函数（参数列表符合），再确定best match。<br />
-const成员函数内隐藏的this指针是const type<em>类型，而非const成员函数的则是type</em>。因此，const重载的实质是参数类型不同。<br />
+重载函数的确定，先找到candidate函数（名字相同），再找到viable函数（参数列表符合），再确定best match。<br />
+const成员函数内隐藏的this指针是<code>const type *</code> 类型，而非const成员函数的则是<code>type *</code> 。因此，const重载的实质是参数类型不同。<br />
 所以，非const对象优先调用非const函数（最佳匹配），没有的时候才调用const函数。<br />
 5.函数返回内置类型，不能做左值；函数返回自定义类型，或引用类型（内置或自定义），可以做左值。<br />
 6.被mutable声明的变量，即使在const成员函数内，也可以修改。这样可以实现概念上的const函数，而不是bitwise上的const函数。<br />
+举例：类里保存cache缓冲区的指针。每次调用length()函数读取cache缓冲区大小的时候，都要重新计算一下。
 7.重复代码：编译时间、维护、代码臃肿问题。<br />
 在operator[]函数里调用const operator[]函数：  </p>
 <div class="highlight"><pre><span class="kt">char</span> <span class="o">&amp;</span><span class="k">operator</span><span class="p">[]</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">position</span><span class="p">)</span>  
@@ -158,7 +159,7 @@ const成员函数内隐藏的this指针是const type<em>类型，而非const成�
 <p>1.类成员变量中的自定义类型，在构造函数语句执行之前，已经调用过默认构造函数初始化自身了。所以，为了效率，应该使用初始化列表，然后构造函数语句体为空。代价（默认构造函数+赋值操作）&gt;代价（1个构造函数）。<br />
 类成员变量中的内置类型，构造函数语句执行之前一般不会初始化，而且初始化和赋值效率相同，所以放在哪里一样。代价（1次初始化）=代价（1次赋值）。<br />
 2.内置类型为const或引用，必须初始化，不能赋值。<br />
-3.static对象，包括global对象，namespace作用域内对象，类内对象，函数内对象（local static对象）。<br />
+3.static对象，包括global对象，namespace作用域内对象，类内静态对象，函数内静态对象（local static对象）。<br />
 寿命：从运行中被构造出来，直到main()结束自动调用析构。<br />
 4.<br />
 原理：C++对定义于不同编译单元内的non-local static对象的初始化相对次序，没有明确定义。<br />
@@ -175,7 +176,7 @@ const成员函数内隐藏的this指针是const type<em>类型，而非const成�
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-04T19:11:56.769827" pubdate>2013-10-04</time>    <span class="categories">
+  <time datetime="2013-10-15T15:20:21.500588" pubdate>2013-10-15</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
       </span>
   </p>    </footer>
@@ -191,19 +192,19 @@ const成员函数内隐藏的this指针是const type<em>类型，而非const成�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </li>
           </ul>
   </section>

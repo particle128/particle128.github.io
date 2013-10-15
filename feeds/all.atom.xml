@@ -1,5 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-15T14:01:14+08:00</updated><entry><title>core dump相关</title><link href="http://particle128.com/posts/2013/10/core-dump.html" rel="alternate"></link><updated>2013-10-15T14:01:14+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/core-dump.html</id><summary type="html">&lt;h3&gt;概念&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-15T15:20:21+08:00</updated><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-15T15:20:21+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;类型安全&lt;/strong&gt;：&lt;br /&gt;
+&lt;em&gt;MSDN上的权威解释&lt;/em&gt;：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。&lt;br /&gt;
+&lt;em&gt;简单理解&lt;/em&gt;：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。&lt;br /&gt;
+printf，memcpy，#define 宏定义函数就不是类型安全的。&lt;br /&gt;
+(1) printf("The meaning of life is %s",42);  》》》类型安全的cout&lt;br /&gt;
+(2) SomeClass a;AnotherClass b;&lt;br /&gt;
+   memcpy((void&lt;em&gt;)&amp;amp;a,(void&lt;/em&gt;)&amp;amp;b,sizeof(b)); 》》》类型安全的copy constructor&lt;br /&gt;
+(3) #define max(a,b) ((a)&amp;gt;(b)?(a):(b))  &lt;br /&gt;
+   max(15,"abc");max(a++,b); 》》》类型安全的template inline函数（同样效率，函数可预料行为，类型安全）  &lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;Item 02: Prefer const, enum, and inline to #define&lt;/h2&gt;
+&lt;p&gt;1.除非我有一个很好的理由允许构造函数被用于隐式类型转换，否则我会把它声明为explicit。&lt;br /&gt;
+2.头文件里定义字符串常量  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//或 char const * const str=&amp;quot;hello&amp;quot;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;缺第1个const，&lt;code&gt;warning： deprecated conversion from string constant to ‘char*’&lt;/code&gt; 
+缺第2个const，如果两个源文件引用该头文件，会&lt;code&gt;multiple definition&lt;/code&gt;的错误&lt;br /&gt;
+3.类关键字：&lt;br /&gt;
+一般情况，只允许声明处出现一次：explicit,static,virtual,默认实参&lt;br /&gt;
+特殊的2个，inline：出现在任一处都行，一般写在定义处；const：两处都要出现。&lt;br /&gt;
+4.&lt;code&gt;#define&lt;/code&gt;宏定义完全可以被代替。const代替常量宏，template inline函数代替函数宏。&lt;br /&gt;
+此外，static const可以定义类属常量，这是#define做不到的。&lt;br /&gt;
+5.static const类属常量，如果是整数类型（char，short，int，bool等），可以在声明时直接赋值，只要不取地址都可以直接使用。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;c&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果非整数类型（如double），如果需要取地址，如果编译器比较旧，需要在源文件中定义，给初值。&lt;br /&gt;
+如果非要在编译时使用，编译器还不允许，可以使用enum hack的方法  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;c&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;  
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;6.需要一组常量的时候，可以使用枚举，用法：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="n"&gt;Month&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Jan&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;Feb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;March&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;April&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt; 
+&lt;span class="n"&gt;Month&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Jan&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;//枚举类型可以被枚举值赋值&lt;/span&gt;
+&lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;First&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;Third&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;number&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;First&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;//整数类型也可以被枚举值赋值&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Item 03: Use const whenever possible&lt;/h2&gt;
+&lt;p&gt;1.const可作用于任何作用域范围的对象、函数参数、函数返回类型、成员函数本身。&lt;br /&gt;
+2.函数返回类型+const的意义，限制返回值再被赋值：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;lhs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;){...}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;防止  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;   
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{...}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;通过编译&lt;br /&gt;
+3.将const作用于成员函数，保证该成员函数可以被const对象调用。&lt;br /&gt;
+4.const成员函数可以"重载"非const成员函数。虽然const成员函数也可以被non-const对象调用，但是重载后，定义const和non-const对象，调用的同一个函数原型，效果就不一样了。如果返回引用类型或非内置类型，一个可以被赋值，一个不可以。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;TextBlock&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;{...}&lt;/span&gt;
+&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;TextBlock&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{...}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;原理：&lt;br /&gt;
+重载函数的确定，先找到candidate函数（名字相同），再找到viable函数（参数列表符合），再确定best match。&lt;br /&gt;
+const成员函数内隐藏的this指针是&lt;code&gt;const type *&lt;/code&gt; 类型，而非const成员函数的则是&lt;code&gt;type *&lt;/code&gt; 。因此，const重载的实质是参数类型不同。&lt;br /&gt;
+所以，非const对象优先调用非const函数（最佳匹配），没有的时候才调用const函数。&lt;br /&gt;
+5.函数返回内置类型，不能做左值；函数返回自定义类型，或引用类型（内置或自定义），可以做左值。&lt;br /&gt;
+6.被mutable声明的变量，即使在const成员函数内，也可以修改。这样可以实现概念上的const函数，而不是bitwise上的const函数。&lt;br /&gt;
+举例：类里保存cache缓冲区的指针。每次调用length()函数读取cache缓冲区大小的时候，都要重新计算一下。
+7.重复代码：编译时间、维护、代码臃肿问题。&lt;br /&gt;
+在operator[]函数里调用const operator[]函数：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;const_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;                      &lt;span class="c1"&gt;//C++中仅有这一种方式  &lt;/span&gt;
+     &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;TextBlock&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  &lt;span class="c1"&gt;//也可以用const_cast代替,不转换成const对象会无限递归调用自己，段错误~  &lt;/span&gt;
+     &lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Item 04: Make sure that objects are initialized before they're used.&lt;/h2&gt;
+&lt;p&gt;1.类成员变量中的自定义类型，在构造函数语句执行之前，已经调用过默认构造函数初始化自身了。所以，为了效率，应该使用初始化列表，然后构造函数语句体为空。代价（默认构造函数+赋值操作）&amp;gt;代价（1个构造函数）。&lt;br /&gt;
+类成员变量中的内置类型，构造函数语句执行之前一般不会初始化，而且初始化和赋值效率相同，所以放在哪里一样。代价（1次初始化）=代价（1次赋值）。&lt;br /&gt;
+2.内置类型为const或引用，必须初始化，不能赋值。&lt;br /&gt;
+3.static对象，包括global对象，namespace作用域内对象，类内静态对象，函数内静态对象（local static对象）。&lt;br /&gt;
+寿命：从运行中被构造出来，直到main()结束自动调用析构。&lt;br /&gt;
+4.&lt;br /&gt;
+原理：C++对定义于不同编译单元内的non-local static对象的初始化相对次序，没有明确定义。&lt;br /&gt;
+导致的问题：先构造的对象，在构造函数中引用了后构造的对象，此时该对象还没有初始化。&lt;br /&gt;
+解决：以函数调用（返回local static对象的引用），替代直接访问non-local static对象。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;C1&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;getobj&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;C1&lt;/span&gt; &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>两个类定义相互转换时的二义性</title><link href="http://particle128.com/posts/2013/10/inter-convert.html" rel="alternate"></link><updated>2013-10-15T15:16:41+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/inter-convert.html</id><summary type="html">&lt;p&gt;两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;例子：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+        &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;converting constructor&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+        &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;conversion function&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;  
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+        &lt;span class="n"&gt;Y&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+        &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果X的构造函数和Y的转换操作符变成如下声明形式：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;X&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;不会出现二义性，编译器直接确认operator X()是最佳匹配。原因在于：如果要调用X的构造函数，那么需要首先进行标准转换（Y-&amp;gt;const Y）；而如果调用operator X则免去了标准转换。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果声明式改成：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;不会出现二义性，编译器直接确认X(Y&amp;amp;)是最佳匹配。原因在于：const函数的this指针是const Y &lt;em&gt;const，因此首先需要一个标准转换（Y &lt;/em&gt;-&amp;gt;const Y *）；而如果调用前者，免去了标准转换。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;诡异的事情来了，如果声明式是：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果我们按照前面的推理过程，应该的得这是一个二义性的代码，因为都需要一个标准转换在调用类类型转换之前。但是g++神奇的没有报错就选择了X(const Y&amp;amp;)这个函数作为转换函数。百撕不得骑姐，甚至怀疑刚才我的推理都错了，终于在stackoverflow上找到了解答，&lt;a href="http://stackoverflow.com/questions/1384007/conversion-constructor-vs-conversion-operator-precedence"&gt;链接&lt;/a&gt; &lt;br /&gt;
+这应该是g++不符合C++标准的地方，是它的一个策略：在这个都需要const转换的"二义性"情况下，默默吞掉二义性而选择conversion constructor作为最佳匹配。如果想看到二义性错误，只要使用&lt;code&gt;g++ -pedantic&lt;/code&gt;命令，pedantic的意思是迂腐的,学究式的。  &lt;/p&gt;
+&lt;h3&gt;之前讨论的是隐式转换，如果是强制类型转换呢？&lt;/h3&gt;
+&lt;p&gt;在测试的时候发现：如果既有构造函数，又有转换操作符，使A类对象转化为B类对象，如下3种强制类型转换方法都偏向于构造函数，除非构造函数不存在的时候，才调用转换操作符进行转换。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;B(A)&lt;/li&gt;
+&lt;li&gt;(B)A&lt;/li&gt;
+&lt;li&gt;static_cast&lt;B&gt;(A)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;注意：强制类型转换不看最佳匹配，所以即使构造函数的代价比转换操作符代价大，比如const constructor和non-const operator，也是如此。&lt;/p&gt;
+&lt;p&gt;花了好久才涨了这点姿势，不过得出一个结论：&lt;strong&gt;纸上得来终觉浅，绝知此事要躬行&lt;/strong&gt;。  &lt;/p&gt;</summary><category term="conversion"></category><category term="cpp"></category></entry><entry><title>Headache</title><link href="http://particle128.com/posts/2013/10/headache.html" rel="alternate"></link><updated>2013-10-15T14:18:14+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/headache.html</id><summary type="html">&lt;p&gt;Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.&lt;br /&gt;
+Headache is not a big deal, but it troubles me a lot. So, I'm going to make a list of &lt;em&gt;the cause&lt;/em&gt;, &lt;em&gt;how to avoid &lt;/em&gt;and &lt;em&gt;what to do if it has already happened&lt;/em&gt;.  &lt;/p&gt;
+&lt;h3&gt;The Cause:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;excessive drink  &lt;/li&gt;
+&lt;li&gt;afternoon nap not on time  &lt;/li&gt;
+&lt;li&gt;have a cold  &lt;/li&gt;
+&lt;li&gt;two many handjobs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;How to Avoid:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Don't drink unless it is a must. Learn to say no when others propose you a toast. &lt;strong&gt;Remember that a true hero is not evaluated according to his behavior on the table&lt;/strong&gt;.  &lt;/li&gt;
+&lt;li&gt;Never destroy the routine whatever happens.  &lt;/li&gt;
+&lt;li&gt;Hard to avoid.  &lt;/li&gt;
+&lt;li&gt;Minimize the frequency of it.  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;What to do if it has already happened:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;If it is serious, don't hesitate to take some pills and go to bed for a rest. Don't &lt;strong&gt;bite the bullet&lt;/strong&gt; in this case.  &lt;/li&gt;
+&lt;li&gt;If not, just return to normal and watch the situation. When the situation keeps the same or turns bad, take some medicine.  &lt;/li&gt;
+&lt;li&gt;Last but not least, don't waste too much time under the circumstance. Although it's uncomfortable, it's not such unbearable.  &lt;/li&gt;
+&lt;/ul&gt;</summary><category term="headache"></category><category term="health"></category></entry><entry><title>core dump相关</title><link href="http://particle128.com/posts/2013/10/core-dump.html" rel="alternate"></link><updated>2013-10-15T14:01:14+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/core-dump.html</id><summary type="html">&lt;h3&gt;概念&lt;/h3&gt;
 &lt;p&gt;当程序异常退出（接受到内核或其他程序的某种信号，比如SIGTERM，SIGKILL等）的时候，一般会将出错时候的内存状况保存到core file中，以帮助开发者了解程序崩溃的原因。&lt;br /&gt;
 即core memory（内存最开始使用线圈做的），其实就是内存。core dump就是内存倾倒的意思。  &lt;/p&gt;
 &lt;h3&gt;ubuntu下使能core dump功能&lt;/h3&gt;
@@ -246,80 +434,7 @@ bufsize设置缓冲区大小，默认是0表示无缓冲，即每次write都直�
 
 
 &lt;p&gt;此外还有terminate（），kill（）函数&lt;br /&gt;
-stdin，stdout，stderr，pid，returncode属性  &lt;/p&gt;</summary><category term="python"></category><category term="subprocess"></category></entry><entry><title>两个类定义相互转换时的二义性</title><link href="http://particle128.com/posts/2013/10/inter-convert.html" rel="alternate"></link><updated>2013-10-14T22:17:06+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/inter-convert.html</id><summary type="html">&lt;p&gt;两个类，分别定义了到对方的转换时，一般会出现二义性。  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;例子：  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-        &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;converting constructor&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;  
-&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-        &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;conversion function&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;  
-
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;  
-&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-        &lt;span class="n"&gt;Y&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-        &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;如果X的构造函数和Y的转换操作符变成如下声明形式：  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;X&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;不会出现二义性，编译器直接确认operator X()是最佳匹配。原因在于：如果要调用X的构造函数，那么需要首先进行标准转换（Y-&amp;gt;const Y）；而如果调用operator X则免去了标准转换。  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;如果声明式改成：  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;不会出现二义性，编译器直接确认X(Y&amp;amp;)是最佳匹配。原因在于：const函数的this指针是const Y &lt;em&gt;const，因此首先需要一个标准转换（Y &lt;/em&gt;-&amp;gt;const Y *）；而如果调用前者，免去了标准转换。  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;诡异的事情来了，如果声明式是：  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;如果我们按照前面的推理过程，应该的得这是一个二义性的代码，因为都需要一个标准转换在调用类类型转换之前。但是g++神奇的没有报错就选择了X(const Y&amp;amp;)这个函数作为转换函数。百撕不得骑姐，甚至怀疑刚才我的推理都错了，终于在stackoverflow上找到了解答，&lt;a href="http://stackoverflow.com/questions/1384007/conversion-constructor-vs-conversion-operator-precedence"&gt;链接&lt;/a&gt; &lt;br /&gt;
-这应该是g++不符合C++标准的地方，是它的一个策略：在这个都需要const转换的"二义性"情况下，默默吞掉二义性而选择conversion constructor作为最佳匹配。如果想看到二义性错误，只要使用&lt;code&gt;g++ -pedantic&lt;/code&gt;命令，pedantic的意思是迂腐的,学究式的。  &lt;/p&gt;
-&lt;p&gt;花了好久才涨了这点姿势，不过得出一个结论：&lt;strong&gt;纸上得来终觉浅，绝知此事要躬行&lt;/strong&gt;。  &lt;/p&gt;</summary><category term="conversion"></category><category term="cpp"></category></entry><entry><title>Headache</title><link href="http://particle128.com/posts/2013/10/headache.html" rel="alternate"></link><updated>2013-10-14T13:37:37+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/headache.html</id><summary type="html">&lt;p&gt;Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicines, I failed. After taking two cold capsules, hurt is fading away.&lt;br /&gt;
-Headache is not a big deal, but it troubles me a lot. So, I'm going to make a list of &lt;em&gt;the cause&lt;/em&gt;, &lt;em&gt;how to avoid &lt;/em&gt;and &lt;em&gt;what to do if it has already happened&lt;/em&gt;.  &lt;/p&gt;
-&lt;h3&gt;The Cause:&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;excessive drink  &lt;/li&gt;
-&lt;li&gt;afternoon nap not on time  &lt;/li&gt;
-&lt;li&gt;have a cold  &lt;/li&gt;
-&lt;li&gt;two many handjobs&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;How to Avoid:&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Don't drink unless it is a must. Learn to say no when others propose you a toast. &lt;strong&gt;Remember that a true hero is not evaluated according to his behavior on the table&lt;/strong&gt;.  &lt;/li&gt;
-&lt;li&gt;Never destroy the routine whatever happens.  &lt;/li&gt;
-&lt;li&gt;Hard to avoid.  &lt;/li&gt;
-&lt;li&gt;Minimize the frequency of it.  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;What to do if it has already happened:&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;If it is serious, don't hesitate to take some pills and go to bed for a rest. Don't &lt;strong&gt;bite the bullet&lt;/strong&gt; under this case.  &lt;/li&gt;
-&lt;li&gt;If not, just return to normal and watch the situation. When the situation keeps the same or turns bad, take some medicine.  &lt;/li&gt;
-&lt;li&gt;Last but not least, don't waste too much time under the circumstance. Although it's uncomfortable, it's not such unbearable.  &lt;/li&gt;
-&lt;/ul&gt;</summary><category term="headache"></category><category term="health"></category></entry><entry><title>程序员的自我修养 笔记</title><link href="http://particle128.com/posts/2013/10/ziwoxiuyang.html" rel="alternate"></link><updated>2013-10-14T11:11:55+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/ziwoxiuyang.html</id><summary type="html">&lt;h2&gt;Chapter 2&lt;/h2&gt;
+stdin，stdout，stderr，pid，returncode属性  &lt;/p&gt;</summary><category term="python"></category><category term="subprocess"></category></entry><entry><title>程序员的自我修养 笔记</title><link href="http://particle128.com/posts/2013/10/ziwoxiuyang.html" rel="alternate"></link><updated>2013-10-14T11:11:55+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/ziwoxiuyang.html</id><summary type="html">&lt;h2&gt;Chapter 2&lt;/h2&gt;
 &lt;p&gt;所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。&lt;br /&gt;
 gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器&lt;br /&gt;
 [1]预处理   主要处理预处理指令（#开头的），主要工作如下：&lt;br /&gt;
@@ -1456,113 +1571,7 @@ delete执行过程：在该内存有一个或多个（delete [] arr）析构函�
 
 
 &lt;p&gt;注意：编译器合成的版本，会自动调用基类的复制构造和赋值操作，就像上面实现的一样。&lt;br /&gt;
-3.重复代码放到私有函数init里，不要复制构造调用赋值操作符，或反过来。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-04T19:11:56+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-04:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
-&lt;strong&gt;类型安全&lt;/strong&gt;：&lt;br /&gt;
-&lt;em&gt;MSDN上的权威解释&lt;/em&gt;：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。&lt;br /&gt;
-&lt;em&gt;简单理解&lt;/em&gt;：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。&lt;br /&gt;
-printf，memcpy，#define 宏定义函数就不是类型安全的。&lt;br /&gt;
-(1) printf("The meaning of life is %s",42);  》》》类型安全的cout&lt;br /&gt;
-(2) SomeClass a;AnotherClass b;&lt;br /&gt;
-   memcpy((void&lt;em&gt;)&amp;amp;a,(void&lt;/em&gt;)&amp;amp;b,sizeof(b)); 》》》类型安全的copy constructor&lt;br /&gt;
-(3) #define max(a,b) ((a)&amp;gt;(b)?(a):(b))  &lt;br /&gt;
-   max(15,"abc");max(a++,b); 》》》类型安全的template inline函数（同样效率，函数可预料行为，类型安全）  &lt;/p&gt;
-&lt;hr /&gt;
-&lt;h2&gt;Item 02: Prefer const, enum, and inline to #define&lt;/h2&gt;
-&lt;p&gt;1.除非我有一个很好的理由允许构造函数被用于隐式类型转换，否则我会把它声明为explicit。&lt;br /&gt;
-2.头文件里定义字符串常量  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//或 char const * const str=&amp;quot;hello&amp;quot;;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;缺第1个const，&lt;code&gt;warning： deprecated conversion from string constant to ‘char*’&lt;/code&gt; 
-缺第2个const，如果两个源文件引用该头文件，会&lt;code&gt;multiple definition&lt;/code&gt;的错误&lt;br /&gt;
-3.类关键字：&lt;br /&gt;
-一般情况，只允许声明处出现一次：explicit,static,virtual,默认实参&lt;br /&gt;
-特殊的2个，inline：出现在任一处都行，一般写在定义处；const：两处都要出现。&lt;br /&gt;
-4.&lt;code&gt;#define&lt;/code&gt;宏定义完全可以被代替。const代替常量宏，template inline函数代替函数宏。&lt;br /&gt;
-此外，static const可以定义类属常量，这是#define做不到的。&lt;br /&gt;
-5.static const类属常量，如果是整数类型（char，short，int，bool等），可以在声明时直接赋值，只要不取地址都可以直接使用。  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;c&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt; 
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;如果非整数类型（如double），如果需要取地址，如果编译器比较旧，需要在源文件中定义，给初值。&lt;br /&gt;
-如果非要在编译时使用，编译器还不允许，可以使用enum hack的方法  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;c&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;  
-    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt; 
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;6.需要一组常量的时候，可以使用枚举，用法：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="n"&gt;Month&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Jan&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;Feb&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;March&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;April&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt; 
-&lt;span class="n"&gt;Month&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Jan&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;First&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;Third&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;number&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;First&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;Item 03: Use const whenever possible&lt;/h2&gt;
-&lt;p&gt;1.const可作用于任何作用域范围的对象、函数参数、函数返回类型、成员函数本身。&lt;br /&gt;
-2.函数返回类型+const的意义，限制返回值再被赋值：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;lhs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;){...}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;防止  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;   
-&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="p"&gt;{...}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;通过编译&lt;br /&gt;
-3.将const作用于成员函数，保证该成员函数可以被const对象调用。&lt;br /&gt;
-4.const成员函数可以"重载"非const成员函数。虽然const成员函数也可以被non-const对象调用，但是重载后，定义const和non-const对象，调用的同一个函数原型，效果就不一样了。如果返回引用类型或非内置类型，一个可以被赋值，一个不可以。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;TextBlock&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;{...}&lt;/span&gt;
-&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;TextBlock&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{...}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;原理：&lt;br /&gt;
-重载函数的确定，先找到candidate函数（名字相同），再找到valid函数（参数列表符合），再确定best match。&lt;br /&gt;
-const成员函数内隐藏的this指针是const type&lt;em&gt;类型，而非const成员函数的则是type&lt;/em&gt;。因此，const重载的实质是参数类型不同。&lt;br /&gt;
-所以，非const对象优先调用非const函数（最佳匹配），没有的时候才调用const函数。&lt;br /&gt;
-5.函数返回内置类型，不能做左值；函数返回自定义类型，或引用类型（内置或自定义），可以做左值。&lt;br /&gt;
-6.被mutable声明的变量，即使在const成员函数内，也可以修改。这样可以实现概念上的const函数，而不是bitwise上的const函数。&lt;br /&gt;
-7.重复代码：编译时间、维护、代码臃肿问题。&lt;br /&gt;
-在operator[]函数里调用const operator[]函数：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;const_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;                      &lt;span class="c1"&gt;//C++中仅有这一种方式  &lt;/span&gt;
-     &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;TextBlock&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  &lt;span class="c1"&gt;//也可以用const_cast代替,不转换成const对象会无限递归调用自己，段错误~  &lt;/span&gt;
-     &lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;Item 04: Make sure that objects are initialized before they're used.&lt;/h2&gt;
-&lt;p&gt;1.类成员变量中的自定义类型，在构造函数语句执行之前，已经调用过默认构造函数初始化自身了。所以，为了效率，应该使用初始化列表，然后构造函数语句体为空。代价（默认构造函数+赋值操作）&amp;gt;代价（1个构造函数）。&lt;br /&gt;
-类成员变量中的内置类型，构造函数语句执行之前一般不会初始化，而且初始化和赋值效率相同，所以放在哪里一样。代价（1次初始化）=代价（1次赋值）。&lt;br /&gt;
-2.内置类型为const或引用，必须初始化，不能赋值。&lt;br /&gt;
-3.static对象，包括global对象，namespace作用域内对象，类内对象，函数内对象（local static对象）。&lt;br /&gt;
-寿命：从运行中被构造出来，直到main()结束自动调用析构。&lt;br /&gt;
-4.&lt;br /&gt;
-原理：C++对定义于不同编译单元内的non-local static对象的初始化相对次序，没有明确定义。&lt;br /&gt;
-导致的问题：先构造的对象，在构造函数中引用了后构造的对象，此时该对象还没有初始化。&lt;br /&gt;
-解决：以函数调用（返回local static对象的引用），替代直接访问non-local static对象。  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;C1&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;getobj&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;C1&lt;/span&gt; &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(2)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html" rel="alternate"></link><updated>2013-10-03T22:42:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-03:posts/2013/10/EffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item 05: Know what functions C++ silently writes and calls&lt;/h2&gt;
+3.重复代码放到私有函数init里，不要复制构造调用赋值操作符，或反过来。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(2)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html" rel="alternate"></link><updated>2013-10-03T22:42:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-03:posts/2013/10/EffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item 05: Know what functions C++ silently writes and calls&lt;/h2&gt;
 &lt;p&gt;1.默认生成的4种函数，都是public+inline类型的。  &lt;br /&gt;
 2.复制构造函数原型：&lt;code&gt;Empty(const Empty&amp;amp;);&lt;/code&gt; 赋值操作符原型：&lt;code&gt;Empty&amp;amp; operator=(const Empty&amp;amp;);&lt;/code&gt; 为了和内置类型的赋值操作意义相同，返回左值的引用  &lt;br /&gt;
 3.唯有这4个函数被调用时，才被产生出来。  &lt;br /&gt;
