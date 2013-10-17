@@ -62,23 +62,19 @@
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-17T21:30:10.985410" pubdate>2013-10-17</time></p>
+          <p class="meta"><time datetime="2013-10-17T21:33:57.257420" pubdate>2013-10-17</time></p>
 </header>
 
   <div class="entry-content"><h2>Introduction</h2>
 <ul>
-<li>
-<p>没有实现bool类型的编译器，替代方案：<br />
+<li>没有实现bool类型的编译器，替代方案：<br />
 (1)enum bool{false,true};<br />
 缺点：无法int赋值给bool变量<br />
 (2)typedef int bool;<br />
 const bool false=0;<br />
 const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </p>
-</li>
-<li>
-<p>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </p>
-</li>
+缺点：无法重载bool和int参数的函数  </li>
+<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
 </ul>
 <h2>Item1</h2>
 <ul>
@@ -94,12 +90,8 @@ const bool true=1;<br />
 
 <h2>Item2</h2>
 <ul>
-<li>
-<p>const_cast用于改变constnest和valatileness  </p>
-</li>
-<li>
-<p>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针  </p>
-</li>
+<li>const_cast用于改变constnest和valatileness  </li>
+<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针  </li>
 </ul>
 <div class="highlight"><pre><span class="k">typedef ...</span></pre></div></div>
   <footer>

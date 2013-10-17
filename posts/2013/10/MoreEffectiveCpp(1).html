@@ -60,23 +60,19 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">MoreEffectiveC++（1）</h1>
-          <p class="meta"><time datetime="2013-10-17T21:30:10.985410" pubdate>2013-10-17</time></p>
+          <p class="meta"><time datetime="2013-10-17T21:33:57.257420" pubdate>2013-10-17</time></p>
 </header>
 
   <div class="entry-content"><h2>Introduction</h2>
 <ul>
-<li>
-<p>没有实现bool类型的编译器，替代方案：<br />
+<li>没有实现bool类型的编译器，替代方案：<br />
 (1)enum bool{false,true};<br />
 缺点：无法int赋值给bool变量<br />
 (2)typedef int bool;<br />
 const bool false=0;<br />
 const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </p>
-</li>
-<li>
-<p>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </p>
-</li>
+缺点：无法重载bool和int参数的函数  </li>
+<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
 </ul>
 <h2>Item1</h2>
 <ul>
@@ -92,12 +88,8 @@ const bool true=1;<br />
 
 <h2>Item2</h2>
 <ul>
-<li>
-<p>const_cast用于改变constnest和valatileness  </p>
-</li>
-<li>
-<p>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针  </p>
-</li>
+<li>const_cast用于改变constnest和valatileness  </li>
+<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针  </li>
 </ul>
 <div class="highlight"><pre><span class="k">typedef</span> <span class="nf">void</span> <span class="p">(</span><span class="o">*</span><span class="n">FuncPtr</span><span class="p">)();</span>  
 <span class="n">FuncPtr</span> <span class="n">funcPtrArr</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>  
@@ -106,6 +98,12 @@ const bool true=1;<br />
 </pre></div>
 
 
+<ul>
+<li>经典语录<blockquote>
+<p>让转型动作既丑陋又不易键入，或许未尝不是件好事。</p>
+</blockquote>
+</li>
+</ul>
 <h2>Item3</h2>
 <ul>
 <li>不要以多态方式处理数组，因为数组对象总是会涉及指针算术运算，而指针位置的移动是按照指针类型的对象大小来算的，而不是指向实际对象大小。  </li>
@@ -143,28 +141,22 @@ const bool true=1;<br />
 <p>2.不适于很多给予模版的容器类(template-based container class)<br />
 因为很多容器类都有单参构造函数，参数是容器的size，所以里面可能调用的<code>data=new T[size];</code>。<br />
 但是设计良好的模版类，应该不依赖默认构造函数，像vector，可能使用上面3种方法的后两种解决的。<br />
-3.虚基类如果没有默认构造函数，对于派生类来说非常不方便。  </p>
-<ul>
-<li>但是如果提供默认构造函数，可能产生没有被完全初始化的对象，如果如果不在乎上面的3个限制（不需要面对数组，不需要存入默认容器，不需要做虚基类），就不提供默认构造函数。  </li>
-</ul>
+3.虚基类如果没有默认构造函数，对于派生类来说非常不方便。<br />
+* 但是如果提供默认构造函数，可能产生没有被完全初始化的对象，如果如果不在乎上面的3个限制（不需要面对数组，不需要存入默认容器，不需要做虚基类），就不提供默认构造函数。  </p>
 <h2>Item5</h2>
 <ul>
 <li>模版的实例化参数也是模版类型的话，注意右尖括号中间加空格。<br />
 static_cast<Array<int> &gt;(...)  </li>
-<li>
-<p>尽量不用conversion operator，因为很可能在你没意识到的情况下隐式调用了。<br />
+<li>尽量不用conversion operator，因为很可能在你没意识到的情况下隐式调用了。<br />
 解决：<br />
-显示定义一个函数，比如<code>double asDouble() const</code>。这样虽然写起来很麻烦，但是可以防止很多错误。  </p>
-<blockquote>
+显示定义一个函数，比如<code>double asDouble() const</code>。这样虽然写起来很麻烦，但是可以防止很多错误。  <blockquote>
 <p>越有经验的C++程序员越会避免使用类型转换操作符，比如string类型没有隐式转换成char *的conversion operator，而是包含<code>c_str()</code> 函数。  </p>
 </blockquote>
 </li>
-<li>
-<p>尽量不要使用conversion constructor，道理同上。<br />
+<li>尽量不要使用conversion constructor，道理同上。<br />
 解决：<br />
-1.explicit  </p>
-</li>
-<li></li>
+1.explicit<br />
+2.例子：  </li>
 </ul>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">Array</span><span class="p">{</span>  
     <span class="k">public</span><span class="o">:</span>  
@@ -187,7 +179,7 @@ static_cast<Array<int> &gt;(...)  </li>
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-17T21:30:10.985410" pubdate>2013-10-17</time>    <span class="categories">
+  <time datetime="2013-10-17T21:33:57.257420" pubdate>2013-10-17</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
         <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
       </span>
