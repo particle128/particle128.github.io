@@ -60,7 +60,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">Linux下使用Github Pages搭建博客</h1>
-          <p class="meta"><time datetime="2013-10-15T18:43:25.269131" pubdate>2013-10-15</time></p>
+          <p class="meta"><time datetime="2013-10-16T22:05:23.024445" pubdate>2013-10-16</time></p>
 </header>
 
   <div class="entry-content"><h2>环境</h2>
@@ -97,17 +97,15 @@
 
 
 <ul>
-<li>参考<a href="http://www.lizherui.com/pages/2013/08/17/build_blog.html">链接</a><br />
+<li>修改
 对MakeFile文件进行如下修改：  </li>
 </ul>
-<div class="highlight"><pre><span class="nf">publish</span><span class="o">:</span>  
-<span class="k">$(</span>PELICAN<span class="k">)</span> <span class="k">$(</span>INPUTDIR<span class="k">)</span> -o <span class="k">$(</span>OUTPUTDIR<span class="k">)</span> -s <span class="k">$(</span>CONFFILE<span class="k">)</span> <span class="k">$(</span>PELICANOPTS<span class="k">)</span>  
-github: publish  
-<span class="nb">cd </span>OUTPUTDIR ; git add . ;  git commit -am <span class="s1">&#39;your comments&#39;</span> ; git push  
+<div class="highlight"><pre><span class="nf">github</span><span class="o">:</span> <span class="m">publish  </span>
+<span class="err">cd</span> <span class="err">OUTPUTDIR</span> <span class="err">;</span> <span class="err">git</span> <span class="err">add</span> <span class="err">.</span> <span class="err">;</span>  <span class="err">git</span> <span class="err">commit</span> <span class="err">-am</span> <span class="s1">&#39;your comments&#39;</span> <span class="err">;</span> <span class="err">git</span> <span class="err">push</span>  
 </pre></div>
 
 
-<p>每次在blog/content里写markdown格式的文档，然后执行<code>make github</code>一键生成网站与上传github。上传成功后，等待up to 10minutes就可以通过http://{yourusername}.github.io访问新修改的博客了。<br />
+<p>每次在blog/content里写markdown格式的文档，执行<code>make devserver</code>，查看http://localhost:8000，并随时修改md文件。确认无误后，执行<code>make github</code>一键生成网站与上传github。上传成功后，等待up to 10minutes就可以通过http://{yourusername}.github.io访问新修改的博客了。<br />
 markdown语法很简单，不清楚的可以查看<a href="http://daringfireball.net/projects/markdown/syntax">markdown语法</a>  </p>
 <ul>
 <li>下载pelican主题和插件  </li>
@@ -120,7 +118,7 @@ markdown语法很简单，不清楚的可以查看<a href="http://daringfireball
 
 
 <p>为了使用插件和主题，需要修改配置文件，见后。<br />
-PS：默认代码高亮部分不太喜欢，所以我进行了如下修改</p>
+PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把灰黑色的背景改成了白色。</p>
 <div class="highlight"><pre><span class="nv">$ </span>sed -i <span class="s1">&#39;s/002b36/ffffff/g&#39;</span> pelican-octopress-theme/static/css/main.css
 </pre></div>
 
@@ -132,86 +130,110 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改</p>
 </li>
 <li>
 <p>使用Google站长工具，以便能被Google收录<br />
-用谷歌账户登陆<a href="www.google.com/webmasters/">Google Webmaster Tools</a>，添加自己的站点，比如www.particle128.com，然后可以选择提交sitemap，或者替google手动抓取页面。  </p>
+用谷歌账户登陆<a href="www.google.com/webmasters/">Google Webmaster Tools</a>，添加自己的站点，比如particle128.com，然后可以选择提交sitemap，或者替google手动抓取页面。  </p>
 </li>
 <li>
 <p>使用Baidu站长工具，以便能被Baidu收录<br />
-用百度账户登陆<a href="http://zhanzhang.baidu.com/">Baidu Webmaster Tools</a>，添加自己的站点，比如www.particle128.com。</p>
+用百度账户登陆<a href="http://zhanzhang.baidu.com/">Baidu Webmaster Tools</a>，添加自己的站点，比如particle128.com。</p>
 </li>
 <li>
-<p>我的配置文件pelicanconf.py的内容  </p>
+<p>配置文件
+配置文件pelicanconf.py的内容  </p>
 </li>
 </ul>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env python  </span>
-<span class="c"># -*- coding: utf-8 -*- #  </span>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*- #</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>  
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
 
-<span class="n">AUTHOR</span> <span class="o">=</span> <span class="s">u&#39;particle128&#39;</span>  
-<span class="n">SITENAME</span> <span class="o">=</span> <span class="s">u&quot;particle128&#39;s Blog&quot;</span>  
-<span class="c"># 点击标题进入的页面  </span>
-<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">&#39;http://particle128.github.io&#39;</span>  
-<span class="n">TIMEZONE</span> <span class="o">=</span> <span class="s">&#39;Asia/Shanghai&#39;</span>  
-<span class="n">DEFAULT_LANG</span> <span class="o">=</span> <span class="s">u&#39;zh&#39;</span>  
+<span class="n">AUTHOR</span> <span class="o">=</span> <span class="s">u&#39;particle128&#39;</span>
+<span class="n">SITENAME</span> <span class="o">=</span> <span class="s">u&quot;particle128&#39;s Blog&quot;</span>
+<span class="c"># 点击标题进入的页面</span>
+<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">&#39;http://localhost:8000&#39;</span>
+<span class="n">TIMEZONE</span> <span class="o">=</span> <span class="s">&#39;Asia/Shanghai&#39;</span>
+<span class="n">DEFAULT_LANG</span> <span class="o">=</span> <span class="s">u&#39;zh&#39;</span>
 
-<span class="c"># 分页  </span>
-<span class="n">DEFAULT_PAGINATION</span> <span class="o">=</span> <span class="mi">5</span>  
-<span class="c"># 默认日期是markdown文件的修改日期  </span>
-<span class="n">DEFAULT_DATE</span> <span class="o">=</span> <span class="s">&#39;fs&#39;</span>  
-<span class="c"># 博文上显示的日期格式  </span>
-<span class="n">DEFAULT_DATE_FORMAT</span> <span class="o">=</span> <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span>  
+<span class="c"># 分页</span>
+<span class="n">DEFAULT_PAGINATION</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c"># 默认日期是markdown文件的修改日期</span>
+<span class="n">DEFAULT_DATE</span> <span class="o">=</span> <span class="s">&#39;fs&#39;</span>
+<span class="c"># 博文上显示的日期格式</span>
+<span class="n">DEFAULT_DATE_FORMAT</span> <span class="o">=</span> <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span>
 
-<span class="c"># !!!点击文件标题进入的文件  </span>
-<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s">&#39;posts/{date:%Y}/{date:%m}/{slug}.html&#39;</span>  
-<span class="c"># 由markdown保存的文件结构  </span>
-<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s">&#39;posts/{date:%Y}/{date:%m}/{slug}.html&#39;</span>  
-<span class="c"># !!!archives文件的位置  </span>
-<span class="n">ARCHIVES_URL</span> <span class="o">=</span> <span class="s">&#39;archives.html&#39;</span>  
-<span class="c"># 订阅  </span>
-<span class="n">FEED_ALL_RSS</span> <span class="o">=</span> <span class="s">&#39;feeds/all.rss.xml&#39;</span>  
-<span class="n">CATEGORY_FEED_ATOM</span> <span class="o">=</span> <span class="s">&#39;feeds/</span><span class="si">%s</span><span class="s">.rss.xml&#39;</span>  
+<span class="c"># !!!点击文件标题进入的文件</span>
+<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s">&#39;posts/{date:%Y}/{date:%m}/{slug}.html&#39;</span>
+<span class="c"># 由markdown保存的文件结构</span>
+<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s">&#39;posts/{date:%Y}/{date:%m}/{slug}.html&#39;</span>
+<span class="c"># !!!archives文件的位置</span>
+<span class="n">ARCHIVES_URL</span> <span class="o">=</span> <span class="s">&#39;archives.html&#39;</span>
+<span class="c"># 订阅</span>
+<span class="n">FEED_ALL_RSS</span> <span class="o">=</span> <span class="s">&#39;feeds/all.rss.xml&#39;</span>
+<span class="n">CATEGORY_FEED_ATOM</span> <span class="o">=</span> <span class="s">&#39;feeds/</span><span class="si">%s</span><span class="s">.rss.xml&#39;</span>
 
-<span class="n">THEME</span> <span class="o">=</span> <span class="s">&#39;/home/username/Dropbox/Practice/Blog/pelican-octopress-theme&#39;</span>  
+<span class="n">THEME</span> <span class="o">=</span> <span class="s">&#39;/home/mashu/Dropbox/Practice/Blog/pelican-octopress-theme&#39;</span>
 
-<span class="n">LINKS</span> <span class="o">=</span> <span class="p">[</span>  
-        <span class="p">(</span><span class="s">&#39;Python&#39;</span><span class="p">,</span> <span class="s">&#39;http://python.org&#39;</span><span class="p">),</span>  
-        <span class="p">]</span>  
+<span class="n">LINKS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&#39;Boost&#39;</span><span class="p">,</span><span class="s">&#39;http://www.boost.org/&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Python&#39;</span><span class="p">,</span> <span class="s">&#39;http://python.org&#39;</span><span class="p">),</span>
+        <span class="p">]</span>
 
-<span class="n">SOCIAL</span> <span class="o">=</span><span class="p">[</span>   
-        <span class="p">(</span><span class="s">&#39;github&#39;</span><span class="p">,</span> <span class="s">&#39;https://github.com/particle128&#39;</span><span class="p">),</span>  
-        <span class="p">]</span>  
+<span class="n">SOCIAL</span> <span class="o">=</span><span class="p">[</span> 
+        <span class="p">(</span><span class="s">&#39;github&#39;</span><span class="p">,</span> <span class="s">&#39;https://github.com/particle128&#39;</span><span class="p">),</span>
+        <span class="p">]</span>
 
-<span class="c">#顶部菜单项  </span>
-<span class="n">MENUITEMS</span> <span class="o">=</span> <span class="p">[</span>  
-            <span class="p">(</span><span class="s">&#39;archives&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/archives.html&#39;</span><span class="p">),</span>  
-            <span class="p">(</span><span class="s">&#39;linux&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/linux.html&#39;</span><span class="p">),</span>  
-            <span class="p">(</span><span class="s">&#39;python&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/python.html&#39;</span><span class="p">),</span>  
-            <span class="p">(</span><span class="s">&#39;cpp&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/cpp.html&#39;</span><span class="p">),</span>  
-            <span class="p">]</span>  
+<span class="c">#顶部菜单项</span>
+<span class="n">MENUITEMS</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s">&#39;archives&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/archives.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;cpp&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/cpp.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;linux&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/linux.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;python&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/python.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;others&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/others.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;life&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/life.html&#39;</span><span class="p">),</span>
+            <span class="p">]</span>
 
-<span class="c"># disqus评论  </span>
-<span class="n">DISQUS_SITENAME</span> <span class="o">=</span> <span class="s">&quot;particle128&quot;</span>  
+<span class="c"># disqus评论</span>
+<span class="n">DISQUS_SITENAME</span> <span class="o">=</span> <span class="s">&quot;particle128&quot;</span>
 
-<span class="n">PLUGIN_PATH</span> <span class="o">=</span> <span class="s">u&#39;pelican-plugins&#39;</span>  <span class="c"># 设置插件路径  </span>
-<span class="n">PLUGINS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;sitemap&#39;</span><span class="p">,</span> <span class="s">&#39;related_posts&#39;</span><span class="p">,</span> <span class="s">&#39;random_article&#39;</span><span class="p">,</span> <span class="s">&#39;neighbors&#39;</span><span class="p">]</span>  <span class="c"># 设置启用的插件  </span>
-<span class="c"># 配置sitemap 插件  </span>
-<span class="n">SITEMAP</span> <span class="o">=</span> <span class="p">{</span>  
-            <span class="s">&quot;format&quot;</span><span class="p">:</span> <span class="s">&quot;xml&quot;</span><span class="p">,</span>  
-            <span class="s">&quot;priorities&quot;</span><span class="p">:</span> <span class="p">{</span>  
-            <span class="s">&quot;articles&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>  
-            <span class="s">&quot;indexes&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>   
-            <span class="s">&quot;pages&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>   
-            <span class="p">},</span>  
-            <span class="s">&quot;changefreqs&quot;</span><span class="p">:</span> <span class="p">{</span>  
-            <span class="s">&quot;articles&quot;</span><span class="p">:</span> <span class="s">&quot;monthly&quot;</span><span class="p">,</span>  
-            <span class="s">&quot;indexes&quot;</span><span class="p">:</span> <span class="s">&quot;daily&quot;</span><span class="p">,</span>  
-            <span class="s">&quot;pages&quot;</span><span class="p">:</span> <span class="s">&quot;monthly&quot;</span><span class="p">,</span>  
-            <span class="p">}</span>  
-          <span class="p">}</span>  
-<span class="c"># 随机跳转到某日志  </span>
-<span class="n">RANDOM</span> <span class="o">=</span> <span class="s">&#39;random.html&#39;</span>  
-<span class="c"># 相关文章  </span>
-<span class="n">RELATED_POSTS_MAX</span> <span class="o">=</span> <span class="mi">10</span>  
+<span class="n">PLUGIN_PATH</span> <span class="o">=</span> <span class="s">u&#39;pelican-plugins&#39;</span>  <span class="c"># 设置插件路径</span>
+<span class="n">PLUGINS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;related_posts&#39;</span><span class="p">,</span> <span class="s">&#39;random_article&#39;</span><span class="p">,</span> <span class="s">&#39;neighbors&#39;</span><span class="p">,</span><span class="s">&#39;sitemap&#39;</span><span class="p">]</span>  <span class="c"># 设置启用的插件</span>
+<span class="c"># 随机跳转到某日志</span>
+<span class="n">RANDOM</span> <span class="o">=</span> <span class="s">&#39;random.html&#39;</span>
+<span class="c"># 相关文章</span>
+<span class="n">RELATED_POSTS_MAX</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c"># sitemap</span>
+<span class="n">SITEMAP</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&quot;format&quot;</span><span class="p">:</span> <span class="s">&quot;xml&quot;</span><span class="p">,</span>
+        <span class="s">&quot;priorities&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;articles&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+            <span class="s">&quot;indexes&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s">&quot;pages&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="s">&quot;changefreqs&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;articles&quot;</span><span class="p">:</span> <span class="s">&quot;monthly&quot;</span><span class="p">,</span>
+            <span class="s">&quot;indexes&quot;</span><span class="p">:</span> <span class="s">&quot;daily&quot;</span><span class="p">,</span>
+            <span class="s">&quot;pages&quot;</span><span class="p">:</span> <span class="s">&quot;monthly&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+</pre></div>
+
+
+<p>配置文件publishconf.py内容如下：</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">curdir</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pelicanconf</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">&#39;http://particle128.com&#39;</span>
+<span class="c">#顶部菜单项</span>
+<span class="n">MENUITEMS</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s">&#39;archives&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/archives.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;cpp&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/cpp.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;linux&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/linux.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;python&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/python.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;others&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/others.html&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;life&#39;</span><span class="p">,</span><span class="n">SITEURL</span><span class="o">+</span><span class="s">&#39;/category/life.html&#39;</span><span class="p">),</span>
+            <span class="p">]</span>
 </pre></div>
 
 
@@ -247,7 +269,7 @@ f1g1ns2.dnspod.net  </li>
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-15T18:43:25.269131" pubdate>2013-10-15</time>    <span class="categories">
+  <time datetime="2013-10-16T22:05:23.024445" pubdate>2013-10-16</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/python.html">python</a>
         <a class="category" href="http://particle128.com/tag/pelican.html">pelican</a>
         <a class="category" href="http://particle128.com/tag/blog.html">blog</a>
@@ -265,6 +287,9 @@ f1g1ns2.dnspod.net  </li>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </li>
             <li class="post">
@@ -275,9 +300,6 @@ f1g1ns2.dnspod.net  </li>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
       </li>
           </ul>
   </section>
@@ -296,7 +318,7 @@ f1g1ns2.dnspod.net  </li>
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
 
     
     <section>

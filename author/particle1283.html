@@ -103,6 +103,55 @@
   	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-17T21:30:10.985410" pubdate>2013-10-17</time></p>
+</header>
+
+  <div class="entry-content"><h2>Introduction</h2>
+<ul>
+<li>
+<p>没有实现bool类型的编译器，替代方案：<br />
+(1)enum bool{false,true};<br />
+缺点：无法int赋值给bool变量<br />
+(2)typedef int bool;<br />
+const bool false=0;<br />
+const bool true=1;<br />
+缺点：无法重载bool和int参数的函数  </p>
+</li>
+<li>
+<p>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </p>
+</li>
+</ul>
+<h2>Item1</h2>
+<ul>
+<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">//使用指针  </span>
+<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
+    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
+<span class="c1">//使用引用  </span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
+</pre></div>
+
+
+<h2>Item2</h2>
+<ul>
+<li>
+<p>const_cast用于改变constnest和valatileness  </p>
+</li>
+<li>
+<p>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针  </p>
+</li>
+</ul>
+<div class="highlight"><pre><span class="k">typedef ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
       </h1>
           <p class="meta"><time datetime="2013-09-08T10:01:27.753871" pubdate>2013-09-08</time></p>
@@ -130,7 +179,7 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-15T18:43:25.269131" pubdate>2013-10-15</time></p>
+          <p class="meta"><time datetime="2013-10-16T22:05:23.024445" pubdate>2013-10-16</time></p>
 </header>
 
   <div class="entry-content"><h2>环境</h2>
@@ -160,37 +209,6 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
 搭建命令如下 ...</li></ul></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/blog-build.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T14:01:14.284377" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><h3>概念</h3>
-<p>当程序异常退出（接受到内核或其他程序的某种信号，比如SIGTERM，SIGKILL等）的时候，一般会将出错时候的内存状况保存到core file中，以帮助开发者了解程序崩溃的原因。<br />
-即core memory（内存最开始使用线圈做的），其实就是内存。core dump就是内存倾倒的意思。  </p>
-<h3>ubuntu下使能core dump功能</h3>
-<p>ubuntu下默认core文件的大小限制是0（执行ulimit -c查看），即不允许core文件产生。<br />
-解除限制：  </p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">ulimit</span> -c unlimited <span class="c">#设置core file的限制  </span>
-<span class="nv">$ </span><span class="nb">ulimit</span> -a <span class="c">#查看所有限制（包括栈大小、cpu时间、虚拟内存、文件大小等）  </span>
-</pre></div>
-
-
-<h3>core文件的默认位置</h3>
-<p>查看core文件存储格式，以及ubuntu下输出结果：  </p>
-<div class="highlight"><pre><span class="nv">$ </span>cat /proc/sys/kernel/core_pattern   
-|/usr/share/apport/apport %p %s %c  
-</pre></div>
-
-
-<p>意思是 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/core-dump.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -235,7 +253,7 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
 
     
     <section>

@@ -60,6 +60,31 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
+      </h1>
+          <p class="meta"><time datetime="2013-09-08T10:01:27.753871" pubdate>2013-09-08</time></p>
+</header>
+
+  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
+<p>r：可以查看文件内容<br />
+w：可以修改文件内容<br />
+x：可以执行文件内容  </p>
+<p><strong>Note：</strong> <br />
+一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
+<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
+<p>r：可以查看目录结构（ls）<br />
+w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
+x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
+<p><strong>Note：</strong><br />
+一个目录开放浏览，需要r+x权限。<br />
+有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/linux_user.html">Linux下的用户和用户组小结</a>
       </h1>
           <p class="meta"><time datetime="2013-09-08T08:32:29.231066" pubdate>2013-09-08</time></p>
@@ -101,6 +126,9 @@ chmod a+r aa.txt
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </li>
             <li class="post">
@@ -111,9 +139,6 @@ chmod a+r aa.txt
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
       </li>
           </ul>
   </section>
@@ -132,7 +157,7 @@ chmod a+r aa.txt
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
 
     
     <section>

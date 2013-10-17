@@ -1,5 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/cpp.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-15T15:20:21+08:00</updated><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-15T15:20:21+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/cpp.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-17T21:30:10+08:00</updated><entry><title>MoreEffectiveC++（1）</title><link href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-17T21:30:10+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-17:posts/2013/10/MoreEffectiveCpp(1).html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;没有实现bool类型的编译器，替代方案：&lt;br /&gt;
+(1)enum bool{false,true};&lt;br /&gt;
+缺点：无法int赋值给bool变量&lt;br /&gt;
+(2)typedef int bool;&lt;br /&gt;
+const bool false=0;&lt;br /&gt;
+const bool true=1;&lt;br /&gt;
+缺点：无法重载bool和int参数的函数  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item1&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;没有null reference，所以有时候使用引用可能比使用指针更有效率。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//使用指针  &lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;   
+    &lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;*&lt;/span&gt;&lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="c1"&gt;//使用引用  &lt;/span&gt;
+&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;rd&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Item2&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;const_cast用于改变constnest和valatileness  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="nf"&gt;void&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;FuncPtr&lt;/span&gt;&lt;span class="p"&gt;)();&lt;/span&gt;  
+&lt;span class="n"&gt;FuncPtr&lt;/span&gt; &lt;span class="n"&gt;funcPtrArr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;  
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;doSomething&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;span class="n"&gt;funcPtrArr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;FuncPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;doSomething&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Item3&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;不要以多态方式处理数组，因为数组对象总是会涉及指针算术运算，而指针位置的移动是按照指针类型的对象大小来算的，而不是指向实际对象大小。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;  
+&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+    &lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt; &lt;span class="c1"&gt;//pb[i]是*(pb+i)的简写，代表pb+i*sizeof(Base)  &lt;/span&gt;
+&lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//同样不行，相当于循环中从后向前调用pb[j].~Base();  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Item4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;不提供默认构造函数，会有3个限制：&lt;br /&gt;
+1.不方便定义数组，以普通方式（&lt;code&gt;X a[N]&lt;/code&gt;）定义的数组调用默认构造函数&lt;br /&gt;
+解决：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//第一个方法，仅用于静态数组  &lt;/span&gt;
+&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="n"&gt;xArr&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)};&lt;/span&gt;   
+&lt;span class="c1"&gt;//第二个方法，动态数组，需要额外空间保存指针数组  &lt;/span&gt;
+&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;pX&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt; &lt;span class="c1"&gt;//或 X* pX[3];  &lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+    &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="c1"&gt;//第三个方法，动态数组，不需要额外空间  &lt;/span&gt;
+&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;xArr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;)));&lt;/span&gt;  
+&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+    &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;xArr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;...&lt;/span&gt;  
+&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+    &lt;span class="n"&gt;xArr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="n"&gt;xArr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.不适于很多给予模版的容器类(template-based container class)&lt;br /&gt;
+因为很多容器类都有单参构造函数，参数是容器的size，所以里面可能调用的&lt;code&gt;data=new T[size];&lt;/code&gt;。&lt;br /&gt;
+但是设计良好的模版类，应该不依赖默认构造函数，像vector，可能使用上面3种方法的后两种解决的。&lt;br /&gt;
+3.虚基类如果没有默认构造函数，对于派生类来说非常不方便。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;但是如果提供默认构造函数，可能产生没有被完全初始化的对象，如果如果不在乎上面的3个限制（不需要面对数组，不需要存入默认容器，不需要做虚基类），就不提供默认构造函数。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item5&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;模版的实例化参数也是模版类型的话，注意右尖括号中间加空格。&lt;br /&gt;
+static_cast&lt;Array&lt;int&gt; &amp;gt;(...)  &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;尽量不用conversion operator，因为很可能在你没意识到的情况下隐式调用了。&lt;br /&gt;
+解决：&lt;br /&gt;
+显示定义一个函数，比如&lt;code&gt;double asDouble() const&lt;/code&gt;。这样虽然写起来很麻烦，但是可以防止很多错误。  &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;越有经验的C++程序员越会避免使用类型转换操作符，比如string类型没有隐式转换成char *的conversion operator，而是包含&lt;code&gt;c_str()&lt;/code&gt; 函数。  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;尽量不要使用conversion constructor，道理同上。&lt;br /&gt;
+解决：&lt;br /&gt;
+1.explicit  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+        &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ArraySize&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+            &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+                &lt;span class="n"&gt;ArraySize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;theSize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;){}&lt;/span&gt;  
+            &lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+                &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;theSize&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+        &lt;span class="p"&gt;};&lt;/span&gt;  
+    &lt;span class="n"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ArraySize&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样，就不会出现类似a==b[i]这类错误通过编译了。&lt;br /&gt;
+因为，b[i]如果想要转换成Array，首先需要转换成ArraySize。C++不允许两次类类型转换。&lt;br /&gt;
+这种技术叫"proxy classes".  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-15T15:20:21+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
 &lt;strong&gt;类型安全&lt;/strong&gt;：&lt;br /&gt;
 &lt;em&gt;MSDN上的权威解释&lt;/em&gt;：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。&lt;br /&gt;
 &lt;em&gt;简单理解&lt;/em&gt;：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。&lt;br /&gt;

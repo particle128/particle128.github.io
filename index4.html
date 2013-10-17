@@ -60,6 +60,25 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-13T20:03:58.223572" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32: Make sure public inheritance models "is-a"</h2>
+<p>1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。<br />
+2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：<br />
+企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高<br />
+3.修改”企鹅-&gt;鸟“设计：<br />
+（1）class Bird; class Penguin :public Bird; class FlyingBird: public Bird; //在Bird里不定义fly()，在FlyingBird里定义<br />
+（2）class Bird; class Penguin :public Bird; //在Bird里定义fly ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-13T20:00:59.983564" pubdate>2013-10-13</time></p>
@@ -153,27 +172,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/10/some-thought.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-04T19:33:09.273884" pubdate>2013-10-04</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 13: Use objects to manage resources</h2>
-<p>1.资源是指，使用完之后需要归还系统的东西。比如动态分配的内存，文件描述符，互斥锁，数据库连接，sockets。<br />
-2.尽管可以手动释放资源（比如delete），但是程序的修改（delete之前返回了），或客户的忘记，可能导致资源释放不了。<br />
-解决办法：用对象管理资源，利用对象在作用域范围之外会自动调用析构函数的机制，释放资源。<br />
-对于heap-based资源（资源new出来的，通过指针访问），有如下两种智能指针可用：<br />
-（1）std::auto_ptr<Investment> pInv(createInvestment()); <br />
-缺点：指向同一对象的auto_ptr，进行赋值或拷贝构造，会导致原ptr变成null。这样的目的，释放多次同一个资源。<br />
-（2）std::tr1::shared_ptr<Investment> pInv(createInvestment());<br />
-注意：不存在上面的问题，因为是RCSP ...</investment></investment></p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index5.html">&larr; Older</a>
   
@@ -185,6 +183,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </li>
             <li class="post">
@@ -195,9 +196,6 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
       </li>
           </ul>
   </section>
@@ -216,7 +214,7 @@
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
 
     
     <section>
