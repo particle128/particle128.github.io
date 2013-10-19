@@ -52,12 +52,33 @@
       <li><a href="http://particle128.com/category/others.html">others</a></li>
       <li><a href="http://particle128.com/category/life.html">life</a></li>
               <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
         <!-- TODO: add categories here? -->
   </ul></nav>
   <div id="main">
     <div id="content">
       <div class="blog-index">
     	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-14T11:11:55.358809" pubdate>2013-10-14</time></p>
+</header>
+
+  <div class="entry-content"><h2>Chapter 2</h2>
+<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
+gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
+[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
+宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
+gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
+[2]编译  把源文件生成汇编代码 (调用cc1)<br />
+gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
     		<header>
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
@@ -154,31 +175,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T20:05:09.203575" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 39: Use private inheritance judiciously</h2>
-<p>1.私有继承和复合(composition)意义相同：根据某物实现出（is-implemented-in-terms-of）。<br />
-2.除非必要，尽量用复合实现这种语义。<br />
-3.可以考虑使用private继承的情况：<br />
-（1）需要需要访问protected成员<br />
-（2）需要重写virtual函数。（替代策略:可以派生一个类，重写virtual函数。然后包含这个类的对象）<br />
-（3）如果需要包含的是一个空类对象，用private继承，节省空间。<br />
-Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual函数的类。因为不含非静态成员变量和虚函数，所以一般不需要内存空间。<br />
-注：<br />
-1)类中包含一个空类对象的时候，大多数编译器至少需要1个字节的内存空间。<br />
-2)继承自空类对象，不需要任何内存空间。<br />
-4.尽量复用已有代码，所以平时注意积累自己的工具箱，设计的越通用越好，随时可以拿来复用。  </p>
-<h2>Item 40 ...</h2></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index4.html">&larr; Older</a>
   
@@ -190,6 +186,9 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
       </li>
             <li class="post">
@@ -200,9 +199,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
       </li>
           </ul>
   </section>

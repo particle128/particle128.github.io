@@ -52,12 +52,32 @@
       <li><a href="http://particle128.com/category/others.html">others</a></li>
       <li><a href="http://particle128.com/category/life.html">life</a></li>
               <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
         <!-- TODO: add categories here? -->
   </ul></nav>
   <div id="main">
     <div id="content">
       <div class="blog-index">
     	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-18T14:53:19.016843" pubdate>2013-10-18</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
+<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
+2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
+3.唯有这4个函数被调用时，才被产生出来。  <br />
+4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
+5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
+<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
     		<header>
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
@@ -197,20 +217,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T14:18:14.904422" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p>Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.<br />
-Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/headache.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index2.html">&larr; Older</a>
   
@@ -220,6 +226,9 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
       </li>
@@ -231,9 +240,6 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
       </li>
           </ul>
   </section>

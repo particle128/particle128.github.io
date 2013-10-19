@@ -52,12 +52,32 @@
       <li><a href="http://particle128.com/category/others.html">others</a></li>
       <li><a href="http://particle128.com/category/life.html">life</a></li>
               <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
         <!-- TODO: add categories here? -->
   </ul></nav>
   <div id="main">
     <div id="content">
       <div class="blog-index">
     	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-18T14:53:19.016843" pubdate>2013-10-18</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
+<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
+2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
+3.唯有这4个函数被调用时，才被产生出来。  <br />
+4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
+5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
+<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
     		<header>
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
@@ -153,31 +173,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T20:05:09.203575" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 39: Use private inheritance judiciously</h2>
-<p>1.私有继承和复合(composition)意义相同：根据某物实现出（is-implemented-in-terms-of）。<br />
-2.除非必要，尽量用复合实现这种语义。<br />
-3.可以考虑使用private继承的情况：<br />
-（1）需要需要访问protected成员<br />
-（2）需要重写virtual函数。（替代策略:可以派生一个类，重写virtual函数。然后包含这个类的对象）<br />
-（3）如果需要包含的是一个空类对象，用private继承，节省空间。<br />
-Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual函数的类。因为不含非静态成员变量和虚函数，所以一般不需要内存空间。<br />
-注：<br />
-1)类中包含一个空类对象的时候，大多数编译器至少需要1个字节的内存空间。<br />
-2)继承自空类对象，不需要任何内存空间。<br />
-4.尽量复用已有代码，所以平时注意积累自己的工具箱，设计的越通用越好，随时可以拿来复用。  </p>
-<h2>Item 40 ...</h2></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/tag/effectivecpp2.html">&larr; Older</a>
   
@@ -187,6 +182,9 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </li>
@@ -198,9 +196,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
       </li>
           </ul>
   </section>
