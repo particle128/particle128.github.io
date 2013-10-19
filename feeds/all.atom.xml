@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-19T21:35:29+08:00</updated><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.com/posts/2013/10/blog-build.html" rel="alternate"></link><updated>2013-10-19T21:35:29+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-19:posts/2013/10/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-19T21:48:49+08:00</updated><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.com/posts/2013/10/blog-build.html" rel="alternate"></link><updated>2013-10-19T21:48:49+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-19:posts/2013/10/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;ubuntu12.04LTS(自带python2.7)  &lt;/li&gt;
 &lt;/ul&gt;
@@ -33,7 +33,7 @@
 
 
 &lt;ul&gt;
-&lt;li&gt;修改
+&lt;li&gt;修改&lt;br /&gt;
 对MakeFile文件进行如下修改：  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nf"&gt;github&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;publish  &lt;/span&gt;
@@ -73,12 +73,12 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把
 用百度账户登陆&lt;a href="http://zhanzhang.baidu.com/"&gt;Baidu Webmaster Tools&lt;/a&gt;，添加自己的站点，比如particle128.com。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;使用Google的Custom Search Engine，可以站内搜索
+&lt;p&gt;使用Google的Custom Search Engine，可以站内搜索&lt;br /&gt;
 使用谷歌账户登陆&lt;a href="https://www.google.com/cse/"&gt;CSE&lt;/a&gt;，添加自己的站点，比如particle128.com。
 然后在content/pages/里建一个search.md文件，除了开头的&lt;code&gt;title:Search slug:search&lt;/code&gt;元数据外，其余内容复制cse里的代码。pages里的文件自动会加载到标题栏。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;配置文件
+&lt;p&gt;配置文件&lt;br /&gt;
 配置文件pelicanconf.py的内容  &lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -118,7 +118,7 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把
         &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;http://python.org&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
         &lt;span class="p"&gt;]&lt;/span&gt;
 
-&lt;span class="n"&gt;SOCIAL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt; 
+&lt;span class="n"&gt;SOCIAL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;  
         &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;github&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;https://github.com/particle128&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
         &lt;span class="p"&gt;]&lt;/span&gt;
 
@@ -183,11 +183,13 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="s2"&gt;&amp;quot; markdown设置&lt;/span&gt;
 &lt;span class="s2"&gt;au BufRead,BufNewFile,FileReadPre *.md set filetype=markdown&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;换行、修改&lt;/span&gt;&lt;span class="nb"&gt;Item&lt;/span&gt;&lt;span class="err"&gt;字体，添加元数据&lt;/span&gt;
-&lt;span class="nx"&gt;au&lt;/span&gt; &lt;span class="nx"&gt;FileType&lt;/span&gt; &lt;span class="nx"&gt;markdown&lt;/span&gt; &lt;span class="kt"&gt;map&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;F12&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="o"&gt;/\&lt;/span&gt;&lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;  &lt;span class="o"&gt;\&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;g&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;CR&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="p"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;Item&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="vi"&gt;#Item&lt;/span&gt;&lt;span class="p"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;g&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;CR&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="nx"&gt;ggOtitle&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;Effective&lt;/span&gt; &lt;span class="nx"&gt;C&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="err"&gt;学习笔记&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;CR&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="nx"&gt;slug&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;EffectiveCpp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;CR&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="nb"&gt;tags&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;EffectiveCpp&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;CR&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;ESC&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;换行、添加元数据&lt;/span&gt;
+&lt;span class="nx"&gt;au&lt;/span&gt; &lt;span class="nx"&gt;FileType&lt;/span&gt; &lt;span class="nx"&gt;markdown&lt;/span&gt; &lt;span class="kt"&gt;map&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;F12&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="o"&gt;/\&lt;/span&gt;&lt;span class="nx"&gt;v&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;  &lt;span class="o"&gt;\&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;g&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;CR&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="nx"&gt;ggOtitle&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;xxx&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;CR&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="nx"&gt;slug&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;xxx&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;CR&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="nb"&gt;tags&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;xx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;xx&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;CR&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;ESC&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;1.用vim编辑markdown文件的时候，首先写正文，不需要注意两个空格的换行。写完正文后，按F12键生成换行的两空格和正文前的元数据（title,slug,tags）
+2.如果是用vim修改已经写好并且执行过F12的markdown文件，修改完成后，F12，然后删除前面多添加的元数据。&lt;/p&gt;
 &lt;p&gt;到此，环境就算搭建完毕。不明白的地方，还是查看pelican的文档。  &lt;/p&gt;
 &lt;h2&gt;独立域名&lt;/h2&gt;
 &lt;ol&gt;
@@ -203,7 +205,7 @@ f1g1ns2.dnspod.net  &lt;/li&gt;
 执行:  &lt;/li&gt;
 &lt;/ol&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog/output  
-&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;particle128.com&amp;#39;&lt;/span&gt; &amp;gt; CNAME   
+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;particle128.com&amp;#39;&lt;/span&gt; &amp;gt; CNAME  
 &lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="pelican"></category><category term="blog"></category></entry><entry><title>Effective C++学习笔记(2)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html" rel="alternate"></link><updated>2013-10-18T14:53:19+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-18:posts/2013/10/EffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item 05: Know what functions C++ silently writes and calls&lt;/h2&gt;
 &lt;p&gt;1.默认生成的4种函数，都是public+inline类型的。  &lt;br /&gt;
 2.复制构造函数原型：&lt;code&gt;Empty(const Empty&amp;amp;);&lt;/code&gt; 赋值操作符原型：&lt;code&gt;Empty&amp;amp; operator=(const Empty&amp;amp;);&lt;/code&gt; 为了和内置类型的赋值操作意义相同，返回左值的引用  &lt;br /&gt;

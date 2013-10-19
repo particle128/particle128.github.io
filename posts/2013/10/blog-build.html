@@ -61,7 +61,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">Linux下使用Github Pages搭建博客</h1>
-          <p class="meta"><time datetime="2013-10-19T21:35:29.396504" pubdate>2013-10-19</time></p>
+          <p class="meta"><time datetime="2013-10-19T21:48:49.616540" pubdate>2013-10-19</time></p>
 </header>
 
   <div class="entry-content"><h2>环境</h2>
@@ -98,7 +98,7 @@
 
 
 <ul>
-<li>修改
+<li>修改<br />
 对MakeFile文件进行如下修改：  </li>
 </ul>
 <div class="highlight"><pre><span class="nf">github</span><span class="o">:</span> <span class="m">publish  </span>
@@ -138,12 +138,12 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把
 用百度账户登陆<a href="http://zhanzhang.baidu.com/">Baidu Webmaster Tools</a>，添加自己的站点，比如particle128.com。</p>
 </li>
 <li>
-<p>使用Google的Custom Search Engine，可以站内搜索
+<p>使用Google的Custom Search Engine，可以站内搜索<br />
 使用谷歌账户登陆<a href="https://www.google.com/cse/">CSE</a>，添加自己的站点，比如particle128.com。
 然后在content/pages/里建一个search.md文件，除了开头的<code>title:Search slug:search</code>元数据外，其余内容复制cse里的代码。pages里的文件自动会加载到标题栏。</p>
 </li>
 <li>
-<p>配置文件
+<p>配置文件<br />
 配置文件pelicanconf.py的内容  </p>
 </li>
 </ul>
@@ -183,7 +183,7 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把
         <span class="p">(</span><span class="s">&#39;Python&#39;</span><span class="p">,</span> <span class="s">&#39;http://python.org&#39;</span><span class="p">),</span>
         <span class="p">]</span>
 
-<span class="n">SOCIAL</span> <span class="o">=</span><span class="p">[</span> 
+<span class="n">SOCIAL</span> <span class="o">=</span><span class="p">[</span>  
         <span class="p">(</span><span class="s">&#39;github&#39;</span><span class="p">,</span> <span class="s">&#39;https://github.com/particle128&#39;</span><span class="p">),</span>
         <span class="p">]</span>
 
@@ -248,11 +248,13 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把
 </ul>
 <div class="highlight"><pre><span class="s2">&quot; markdown设置</span>
 <span class="s2">au BufRead,BufNewFile,FileReadPre *.md set filetype=markdown</span>
-<span class="s2">&quot;</span> <span class="err">换行、修改</span><span class="nb">Item</span><span class="err">字体，添加元数据</span>
-<span class="nx">au</span> <span class="nx">FileType</span> <span class="nx">markdown</span> <span class="kt">map</span> <span class="o">&lt;</span><span class="nx">F12</span><span class="o">&gt;</span> <span class="p">:</span><span class="o">%</span><span class="nb">s</span><span class="o">/\</span><span class="nx">v</span><span class="p">(</span><span class="err">$</span><span class="p">)</span><span class="o">/</span>  <span class="o">\</span><span class="mi">1</span><span class="p">/</span><span class="nx">g</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="p">:</span><span class="o">%</span><span class="nb">s</span><span class="p">/</span><span class="nb">Item</span><span class="o">/</span><span class="err">#</span><span class="vi">#Item</span><span class="p">/</span><span class="nx">g</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="nx">ggOtitle</span><span class="p">:</span><span class="nx">Effective</span> <span class="nx">C</span><span class="o">++</span><span class="err">学习笔记</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="nx">slug</span><span class="p">:</span><span class="nx">EffectiveCpp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="nb">tags</span><span class="p">:</span><span class="nx">EffectiveCpp</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;&lt;</span><span class="nx">ESC</span><span class="o">&gt;</span>
+<span class="s2">&quot;</span> <span class="err">换行、添加元数据</span>
+<span class="nx">au</span> <span class="nx">FileType</span> <span class="nx">markdown</span> <span class="kt">map</span> <span class="o">&lt;</span><span class="nx">F12</span><span class="o">&gt;</span> <span class="p">:</span><span class="o">%</span><span class="nb">s</span><span class="o">/\</span><span class="nx">v</span> <span class="o">+</span><span class="p">(</span><span class="err">$</span><span class="p">)</span><span class="o">/</span>  <span class="o">\</span><span class="mi">1</span><span class="p">/</span><span class="nx">g</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="nx">ggOtitle</span><span class="p">:</span><span class="nx">xxx</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="nx">slug</span><span class="p">:</span><span class="nx">xxx</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;</span><span class="nb">tags</span><span class="p">:</span><span class="nx">xx</span><span class="p">,</span><span class="nx">xx</span><span class="o">&lt;</span><span class="nx">CR</span><span class="o">&gt;&lt;</span><span class="nx">ESC</span><span class="o">&gt;</span>  
 </pre></div>
 
 
+<p>1.用vim编辑markdown文件的时候，首先写正文，不需要注意两个空格的换行。写完正文后，按F12键生成换行的两空格和正文前的元数据（title,slug,tags）
+2.如果是用vim修改已经写好并且执行过F12的markdown文件，修改完成后，F12，然后删除前面多添加的元数据。</p>
 <p>到此，环境就算搭建完毕。不明白的地方，还是查看pelican的文档。  </p>
 <h2>独立域名</h2>
 <ol>
@@ -268,14 +270,14 @@ f1g1ns2.dnspod.net  </li>
 执行:  </li>
 </ol>
 <div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>blog/output  
-<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;particle128.com&#39;</span> &gt; CNAME   
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;particle128.com&#39;</span> &gt; CNAME  
 </pre></div></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-19T21:35:29.396504" pubdate>2013-10-19</time>    <span class="categories">
+  <time datetime="2013-10-19T21:48:49.616540" pubdate>2013-10-19</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/python.html">python</a>
         <a class="category" href="http://particle128.com/tag/pelican.html">pelican</a>
         <a class="category" href="http://particle128.com/tag/blog.html">blog</a>
