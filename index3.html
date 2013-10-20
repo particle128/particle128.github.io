@@ -61,6 +61,27 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T13:52:20.816353" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>subprocess是python的一个内置模块，用来产生子进程，和子进程通过pipe通信。</strong>  </p>
+<h3>3个便捷函数</h3>
+<p>如果仅仅想要调用一个子进程完成一个任务，不需要父进程与其通信，并且等待子进程退出的话，选择便捷函数。  </p>
+<div class="highlight"><pre><span class="c"># 返回returncode，0成功，非0出错。  </span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
+<span class="c"># 返回0或引发CalledProcessError异常。  </span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
+<span class="c"># 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  </span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/py-subprocess.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
       </h1>
           <p class="meta"><time datetime="2013-10-14T11:11:55.358809" pubdate>2013-10-14</time></p>
@@ -149,32 +170,6 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T20:06:53.727580" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 44: Factor parameter-independent code out of templates</h2>
-<p>1.类模版成员函数函数，只有被使用时才被具现化。类似类的合成版本的构造/复制构造/赋值操作符/析构函数。<br />
-2.模版的时候减少了源代码量，但是可能导致目标代码增加，因为每具现化一个版本，就多一份目标码。<br />
-策略：把与模版参数（类型参数或非类型参数）无关的代码，剥离出模版类。<br />
-（1）非类型参数<br />
-例如：  </p>
-<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span><span class="kt">size_t</span> <span class="n">n</span><span class="o">&gt;</span>  
-<span class="k">class</span> <span class="nc">SquareMatrix</span><span class="p">{</span> <span class="c1">//方形矩阵  </span>
-  <span class="nl">public:</span>  
-          <span class="kt">void</span> <span class="n">invert</span><span class="p">();</span>     
-<span class="p">};</span>  
-<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">10</span><span class="o">&gt;</span> <span class="n">sm1</span><span class="p">;</span>  
-<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">5</span><span class="o">&gt;</span> <span class="n">sm2</span><span class="p">;</span>  
-<span class="n">sm1</span><span class="p">.</span><span class="n">invert</span><span class="p">();</span><span class="c1">//具现化一次invert ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index4.html">&larr; Older</a>
   
@@ -186,19 +181,19 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
-      </li>
-            <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </li>
           </ul>
   </section>

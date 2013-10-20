@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>MoreEffectiveC++（1）</title>
+  <title>MoreEffectiveC++(1)</title>
   <meta name="author" content="particle128">
 
     
@@ -60,8 +60,8 @@
       <div>
   <article class="hentry" role="article">
     <header>
-          <h1 class="entry-title">MoreEffectiveC++（1）</h1>
-          <p class="meta"><time datetime="2013-10-17T21:33:57.257420" pubdate>2013-10-17</time></p>
+          <h1 class="entry-title">MoreEffectiveC++(1)</h1>
+          <p class="meta"><time datetime="2013-10-20T19:25:00.951568" pubdate>2013-10-20</time></p>
 </header>
 
   <div class="entry-content"><h2>Introduction</h2>
@@ -142,8 +142,10 @@ const bool true=1;<br />
 <p>2.不适于很多给予模版的容器类(template-based container class)<br />
 因为很多容器类都有单参构造函数，参数是容器的size，所以里面可能调用的<code>data=new T[size];</code>。<br />
 但是设计良好的模版类，应该不依赖默认构造函数，像vector，可能使用上面3种方法的后两种解决的。<br />
-3.虚基类如果没有默认构造函数，对于派生类来说非常不方便。<br />
-* 但是如果提供默认构造函数，可能产生没有被完全初始化的对象，如果如果不在乎上面的3个限制（不需要面对数组，不需要存入默认容器，不需要做虚基类），就不提供默认构造函数。  </p>
+3.虚基类如果没有默认构造函数，对于派生类来说非常不方便。  </p>
+<ul>
+<li>但是如果提供默认构造函数，可能产生没有被完全初始化的对象，如果如果不在乎上面的3个限制（不需要面对数组，不需要存入默认容器，不需要做虚基类），就不提供默认构造函数。  </li>
+</ul>
 <h2>Item5</h2>
 <ul>
 <li>模版的实例化参数也是模版类型的话，注意右尖括号中间加空格。<br />
@@ -180,7 +182,7 @@ static_cast<Array<int> &gt;(...)  </li>
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-17T21:33:57.257420" pubdate>2013-10-17</time>    <span class="categories">
+  <time datetime="2013-10-20T19:25:00.951568" pubdate>2013-10-20</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
         <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
       </span>
@@ -197,19 +199,19 @@ static_cast<Array<int> &gt;(...)  </li>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
-      </li>
-            <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </li>
           </ul>
   </section>
@@ -255,7 +257,7 @@ static_cast<Array<int> &gt;(...)  </li>
 	  var disqus_shortname = 'particle128';
                 var disqus_identifier = '/posts/2013/10/MoreEffectiveCpp(1).html';
           var disqus_url = 'http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html';
-          var disqus_title = 'MoreEffectiveC++（1）';
+          var disqus_title = 'MoreEffectiveC++(1)';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

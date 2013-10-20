@@ -61,6 +61,79 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-20T19:26:34.439573" pubdate>2013-10-20</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item6</h2>
+<ul>
+<li>自增自减操作符，两原则：<br />
+1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  <blockquote>
+<p>设计类的一条无上宝典就是：一旦有疑虑，试看int行为如何并遵循之。  </p>
+</blockquote>
+</li>
+</ul>
+<p>2.后自增和自减应该调用前自增和自减，而不是自己写函数，这样只需要维护前自增。  </p>
+<h2>Item7</h2>
+<ul>
+<li>不要重载&amp;&amp;，||和，操作符，因为无论定义成员或非成员函数，都无法模拟C++中这3个操作符的行为模式（短路，求值顺序）。  </li>
+<li>for语句头包括3个部分，第1部分是语句，所以可以定义多个变量。第3部分是表达式，所以只能用逗号隔开多个表达式，而不能使用语句（比如调用函数或定义变量）。  </li>
+</ul>
+<h2>Item8</h2>
+<ul>
+<li>placement new类似于new，首先调用operator new，然后调用对象构造函数，然后返回内存指针。<br />
+不同点，是placement new调用的operator new的原型和实现如下：  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-20T19:25:00.951568" pubdate>2013-10-20</time></p>
+</header>
+
+  <div class="entry-content"><h2>Introduction</h2>
+<ul>
+<li>没有实现bool类型的编译器，替代方案：<br />
+(1)enum bool{false,true};<br />
+缺点：无法int赋值给bool变量<br />
+(2)typedef int bool;<br />
+const bool false=0;<br />
+const bool true=1;<br />
+缺点：无法重载bool和int参数的函数  </li>
+<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
+</ul>
+<h2>Item1</h2>
+<ul>
+<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">//使用指针  </span>
+<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
+    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
+<span class="c1">//使用引用  </span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
+</pre></div>
+
+
+<h2>Item2</h2>
+<ul>
+<li>const_cast用于改变constnest和valatileness  </li>
+<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针  </li>
+</ul>
+<div class="highlight"><pre><span class="k">typedef ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </h1>
           <p class="meta"><time datetime="2013-10-19T21:51:21.052547" pubdate>2013-10-19</time></p>
@@ -117,47 +190,6 @@
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-17T21:33:57.257420" pubdate>2013-10-17</time></p>
-</header>
-
-  <div class="entry-content"><h2>Introduction</h2>
-<ul>
-<li>没有实现bool类型的编译器，替代方案：<br />
-(1)enum bool{false,true};<br />
-缺点：无法int赋值给bool变量<br />
-(2)typedef int bool;<br />
-const bool false=0;<br />
-const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </li>
-<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
-</ul>
-<h2>Item1</h2>
-<ul>
-<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">//使用指针  </span>
-<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
-    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
-<span class="c1">//使用引用  </span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
-</pre></div>
-
-
-<h2>Item2</h2>
-<ul>
-<li>const_cast用于改变constnest和valatileness  </li>
-<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针  </li>
-</ul>
-<div class="highlight"><pre><span class="k">typedef ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-15T15:20:21.500588" pubdate>2013-10-15</time></p>
@@ -176,47 +208,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T15:16:41.124578" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p>两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  </p>
-<ul>
-<li>例子：  </li>
-</ul>
-<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
-<span class="k">struct</span> <span class="n">X</span>  
-<span class="p">{</span>  
-        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
-<span class="p">};</span>  
-<span class="k">struct</span> <span class="n">Y</span>  
-<span class="p">{</span>  
-        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
-<span class="p">};</span>  
-
-<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
-<span class="p">{</span>  
-        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
-        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
-<span class="p">}</span>  
-</pre></div>
-
-
-<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
-<ul>
-<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
-</ul>
-<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
-<span class="k">operator ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index2.html">&larr; Older</a>
   
@@ -227,19 +218,19 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++（1）</a>
-      </li>
-            <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </li>
           </ul>
   </section>
