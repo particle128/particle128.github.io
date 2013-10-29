@@ -61,7 +61,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">MoreEffectiveC++(2)</h1>
-          <p class="meta"><time datetime="2013-10-20T19:26:34.439573" pubdate>2013-10-20</time></p>
+          <p class="meta"><time datetime="2013-10-26T14:38:22.600052" pubdate>2013-10-26</time></p>
 </header>
 
   <div class="entry-content"><h2>Item6</h2>
@@ -141,14 +141,14 @@
 2.允许的类型转换很少<br />
 3.按catch子句出现的顺序匹配，而不是最佳匹配  </li>
 </ul>
-<h2>Item14 以引用方式捕获异常</h2>
+<h2>Item13 以引用方式捕获异常</h2>
 <ul>
 <li>原因：<br />
 1.by-pointer:不知道是全局和静态对象，还是动态对象，所以不知道要不要delete；和语言本身可能抛出的异常(bad_alloc等)不符合<br />
 2.by-value:切割对象，无法多态；复制对象成本高<br />
 3.by-reference:没上面的问题  </li>
 </ul>
-<h2>Item15 异常说明符</h2>
+<h2>Item14 异常说明符</h2>
 <ul>
 <li>try和catch后面的语句必须用大括号包围，即使只有1条语句。  </li>
 <li>当抛出exception specification中没有出现的异常时，unexpected函数会被系统调用，默认调用terminate中止程序。<br />
@@ -170,13 +170,21 @@
 </pre></div>
 
 
-<p><strong>注意</strong>：采用了上面任一种方式后，需要在函数的异常说明符中加入UnexpectedException或bad_exception，否则还是会terminate。  </p></div>
+<p><strong>注意</strong>：采用了上面任一种方式后，需要在函数的异常说明符中加入UnexpectedException或bad_exception，否则还是会terminate。  </p>
+<h2>Item15 understand exception handling's cost</h2>
+<ul>
+<li>即使从未使用exception处理机制，程序为了支持exception，也需要放置一些数据结构占用空间，维护这些数据结构占用时间。  </li>
+<li>try语句，以及异常说明，会导致代码膨胀和速度下降5%~10%（一些测试结果，并未很准确）。异常的真正抛出，会比正常函数返回，慢3个数量级（同上，不准确）。  </li>
+<li>代价很大，所以仅在非用不可的时候才使用，不要像写python那样轻易使用。  </li>
+<li>如果确保自己的程序中没有用到exception机制，并且确保调用的标准库没有用到，例如没有try catch throw关键字，那么可以通过编译器的选项禁止。<br />
+g++下的禁止方式是<code>-fno-exceptions</code>。如果有异常抛出（new无法分配等），直接调用std::abort()进行中止。  </li>
+</ul></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-20T19:26:34.439573" pubdate>2013-10-20</time>    <span class="categories">
+  <time datetime="2013-10-26T14:38:22.600052" pubdate>2013-10-26</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
       </span>
   </p>    </footer>
@@ -192,6 +200,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
       </li>
             <li class="post">
@@ -202,9 +213,6 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </li>
           </ul>
   </section>

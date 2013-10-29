@@ -147,7 +147,7 @@ const bool true=1;<br />
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-20T19:26:34.439573" pubdate>2013-10-20</time></p>
+          <p class="meta"><time datetime="2013-10-26T14:38:22.600052" pubdate>2013-10-26</time></p>
 </header>
 
   <div class="entry-content"><h2>Item6</h2>
@@ -177,26 +177,19 @@ const bool true=1;<br />
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
+        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
       </h1>
-          <p class="meta"><time datetime="2013-09-08T10:01:27.753871" pubdate>2013-09-08</time></p>
+          <p class="meta"><time datetime="2013-10-29T09:20:10.610984" pubdate>2013-10-29</time></p>
 </header>
 
-  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
-<p>r：可以查看文件内容<br />
-w：可以修改文件内容<br />
-x：可以执行文件内容  </p>
-<p><strong>Note：</strong> <br />
-一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
-<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
-<p>r：可以查看目录结构（ls）<br />
-w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
-x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
-<p><strong>Note：</strong><br />
-一个目录开放浏览，需要r+x权限。<br />
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
+  <div class="entry-content"><p><strong>下面项目，是关于效率的</strong>  </p>
+<h2>Item16 80-20 principal</h2>
+<ul>
+<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
+<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
+<li>Offer as much data as possible to the profiler, to ...</li></ul></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
