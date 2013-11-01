@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MoreEffectiveC++(4)</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">MoreEffectiveC++(4)</h1>
+          <p class="meta"><time datetime="2013-11-01T11:22:57.983014" pubdate>2013-11-01</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
+<h2>Item25 构造函数、非成员函数的虚化</h2>
+<ul>
+<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
+<li>3种语义上的虚化：<br />
+1.虚构造函数<br />
+根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
+2.虚拷贝构造函数<br />
+定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
+3.虚非成员函数<br />
+定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c.print(s);}</code>。  </li>
+</ul>
+<h2>Item26 限制一个类所能产生的对象数量</h2>
+<ul>
+<li>杂类知识：<br />
+1.不能在类成员变量里定义自身类型的对象，否则编译器报错<code>incomplete type</code>。但是可以在类成员函数（包括inline构造函数）中定义该类类型的对象。<br />
+2.希望该类不能实例化对象，声明protected ctor；希望该类不能被继承和实例化对象，声明private ctor。<br />
+3.基类指针、引用指向派生类对象，必须是public继承，private和protected继承都会报错<code>'Base' is an inaccessible base of 'Derived'</code>。一般允许当作基类的类都要定义virtual dtor，但是如果该基类只被private或protected继承的话，不需要定义虚析构函数。  </li>
+<li>限制对象数量，方法如下：<br />
+(1)声明private ctor，友元/静态成员函数定义如下  </li>
+</ul>
+<div class="highlight"><pre><span class="n">Printer</span><span class="o">&amp;</span> <span class="n">thePrinter</span><span class="p">()</span>  
+<span class="p">{</span>  
+    <span class="k">static</span> <span class="n">Printer</span> <span class="n">p</span><span class="p">;</span>  
+    <span class="k">return</span> <span class="n">p</span><span class="p">;</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>评价：仅限于只允许一个对象的情况<br />
+(2)类中定义静态数据成员count，定义一个异常类TooManyObject，构造函数计算count并抛出异常<br />
+评价：允许多个对象；但是，继承或包含该类的类的定义，也会造成count累积抛出异常。<br />
+(3)同上，另外构造函数私有化，提供友元/静态成员函数<code>makePrinter(){return new Printer()}</code>。<br />
+评价：允许多个对象，不会出现上述问题，因为直接就不让继承该类或定义该类的对象了；但是，只能产生heap上的对象，需要手动delete或放到智能指针里。<br />
+(4)定义计数类模版  </p>
+<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span><span class="c1">//每个class类型有一个计数器（maxObjects），所以定义成模版  </span>
+<span class="k">class</span> <span class="nc">Counted</span><span class="p">{</span>  
+<span class="nl">public:</span>  
+    <span class="k">class</span> <span class="nc">TwoManObjects</span><span class="p">{};</span>  
+<span class="nl">protected:</span>  
+    <span class="n">Counted</span><span class="p">();</span><span class="c1">//protected构造函数，防止实例化  </span>
+<span class="nl">private:</span>  
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">numObjects</span><span class="p">;</span>  
+    <span class="k">static</span> <span class="k">const</span> <span class="kt">size_t</span> <span class="n">maxObjects</span><span class="p">;</span>  
+<span class="p">};</span>  
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>  
+<span class="kt">int</span> <span class="n">Counted</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">numObjects</span><span class="p">;</span>  
+<span class="c1">//不定义maxObjects，让用户自己定义，比如const size_t Counted&lt;Printer&gt;::maxObjects=10;  </span>
+<span class="c1">//私有继承，语义上是：implemented in terms of；功能上是：防止基类指针/引用访问派生类对象  </span>
+<span class="k">class</span> <span class="nc">Printer</span><span class="o">:</span><span class="k">private</span> <span class="n">Counted</span><span class="o">&lt;</span><span class="n">Printer</span><span class="o">&gt;</span>  
+<span class="p">{</span>  
+<span class="nl">public:</span>  
+    <span class="k">using</span> <span class="n">Counted</span><span class="o">&lt;</span><span class="n">Printer</span><span class="o">&gt;::</span><span class="n">TwoManObjects</span><span class="p">;</span>  
+<span class="p">};</span>  
+</pre></div>
+
+
+<h2>Item27 要求，或禁止对象产生于堆上</h2>
+<ul>
+<li>为什么需要对象产生于堆上：<br />
+需要一种对象，可以在作用域离开之前撤销自己，即<code>delete this</code>的功能。  </li>
+<li>为什么需要对象禁止在堆上产生：<br />
+嵌入式系统中堆上的资源比较有限  </li>
+<li>要求对象产生于堆上：<br />
+1.private/protected dtor,public ctors<br />
+2.定义<code>public void destory const(){delete this;}</code><br />
+这样，只能通过Obj* po=new Obj;调用，只能通过po-&gt;destory()释放。因为定义类的对象（Obj o;）的时候会检查ctor和dtor的可访问性，有一个不可访问就会编译出错。<br />
+<strong>注意</strong>：<br />
+1.private ctors也可以限制构造对象，但是构造函数比较多，都需要一一定义为private，不如析构函数方便<br />
+2.如果需要保证继承，将dtor定义为protected.  </li>
+<li>禁止对象产生于堆上：<br />
+定义private限定的operator new，operator delete，operator new[]，operator delete[]<br />
+<strong>注意</strong>:基类的operator new私有化，那么派生类如果不在public里重新定义operator new，调用Derived *pd=new Derived;就会出错。只要Derived类中存在operator new，即使不可访问（private或protected），new操作符也不会转而调用全局作用域的operator new。  </li>
+<li>没有具备移植性的正确的办法，可以判断一个对象位于堆内。<br />
+1.定义类内static bool isOnHeap，类内operator new设置isOnHeap，构造函数判断isOnHeap的值，并在最后恢复isOnHeap为false<br />
+缺点：线程不安全；new一个数组会出错，即使定义了operator new<a href="分配一次，构造多次，第二个构造中isOnHeap为false"></a><br />
+2.根据进程在内存中的布局（栈位于最高地址，向下增长；静态存储区位于最低地址，向上增长；堆位于静态存储区上，向上增长）  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">bool</span> <span class="nf">isOnHeap</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">addr</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span><span class="c1">//栈顶，最低地址  </span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="n">c</span><span class="o">&gt;</span><span class="n">addr</span><span class="p">;</span><span class="c1">//只有堆地址或静态存储区才小于栈地址  </span>
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>缺点：布局依赖操作系统实现，不具备移植性；无法区分静态和堆上的对象  </p>
+<ul>
+<li>无法明确确定位于堆上，但是可以比较容易的判断是否可以delete<br />
+1.定义全局operator new，分配空间的同时，保存这个地址在一个全局list里。全局operator delete判断全局list里是否存在该地址<br />
+缺点：污染其他代码；效率；Base1* pb=new Derived()，多重继承下基类地址可能不同于派生类对象地址，造成判断错误<br />
+2.定义abstract mixin base class（抽象混合式基类），把operator new,operator delete，list都保存于其中  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">bool</span> <span class="n">HeapTrack</span><span class="o">::</span><span class="n">isOnHeap</span><span class="p">()</span> <span class="k">const</span>  
+<span class="p">{</span>  
+    <span class="c1">//解决上述第3个问题，把基类this指针转换成派生类对象地址  </span>
+    <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">rawAddr</span><span class="o">=</span><span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">void</span><span class="o">*&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>  
+    <span class="cm">/*判断list中是否包含rawAddr*/</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p><strong>注意</strong>：派生类中的基类函数，参数this的类型为指向基类类型的指针常量。否则一个类被多个类继承，该类的所有函数就要有多份重载的代码。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-11-01T11:22:57.983014" pubdate>2013-11-01</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
+        <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/11/MoreEffectiveCpp(4).html';
+          var disqus_url = 'http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html';
+          var disqus_title = 'MoreEffectiveC++(4)';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

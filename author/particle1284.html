@@ -61,6 +61,29 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-01T11:22:57.983014" pubdate>2013-11-01</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
+<h2>Item25 构造函数、非成员函数的虚化</h2>
+<ul>
+<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
+<li>3种语义上的虚化：<br />
+1.虚构造函数<br />
+根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
+2.虚拷贝构造函数<br />
+定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
+3.虚非成员函数<br />
+定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c ...</code></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
       </h1>
           <p class="meta"><time datetime="2013-09-08T10:01:27.753871" pubdate>2013-09-08</time></p>
@@ -171,26 +194,6 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
 <span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T14:00:41.520375" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
-<h3>Domain Name System</h3>
-<p>host name &lt; - &gt; ip address<br />
-主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
-如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
-<h3>名字/域名服务器层次结构：</h3>
-<p>root name server 根域名服务器（无名）<br />
-TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/dns.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
