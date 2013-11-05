@@ -61,6 +61,46 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-29T10:05:01.187104" pubdate>2013-10-29</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>Introduction</strong>  </p>
+<ul>
+<li>没有实现bool类型的编译器，替代方案：<br />
+(1)enum bool{false,true};<br />
+缺点：无法int赋值给bool变量<br />
+(2)typedef int bool;<br />
+const bool false=0;<br />
+const bool true=1;<br />
+缺点：无法重载bool和int参数的函数  </li>
+<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
+</ul>
+<p><strong>基础议题Basics</strong></p>
+<h2>Item1</h2>
+<ul>
+<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">//使用指针  </span>
+<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
+    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
+<span class="c1">//使用引用  </span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
+</pre></div>
+
+
+<h2>Item2</h2>
+<ul>
+<li>const_cast用于改变constnest和valatileness  </li>
+<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-29T10:03:05.903099" pubdate>2013-10-29</time></p>
@@ -164,27 +204,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T15:20:21.500588" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>【补充概念】</strong><br />
-<strong>类型安全</strong>：<br />
-<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
-<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
-printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
-(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
-(2) SomeClass a;AnotherClass b;<br />
-   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
-(3) #define max(a,b) ((a ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
   
@@ -196,6 +215,9 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
       </li>
             <li class="post">
@@ -206,9 +228,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
       </li>
           </ul>
   </section>
@@ -227,7 +246,7 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
 
     
     <section>

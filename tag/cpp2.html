@@ -61,6 +61,47 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T15:16:41.124578" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p>两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  </p>
+<ul>
+<li>例子：  </li>
+</ul>
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
+<span class="k">struct</span> <span class="n">X</span>  
+<span class="p">{</span>  
+        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+<span class="k">struct</span> <span class="n">Y</span>  
+<span class="p">{</span>  
+        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
+        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
+<ul>
+<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="k">operator ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
       </h1>
           <p class="meta"><time datetime="2013-10-14T09:25:05.290524" pubdate>2013-10-14</time></p>
@@ -90,6 +131,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
       </li>
             <li class="post">
@@ -100,9 +144,6 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </li>
           </ul>
   </section>
@@ -121,7 +162,7 @@
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
 
     
     <section>
