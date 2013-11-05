@@ -61,24 +61,30 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">C++中名字查找</h1>
-          <p class="meta"><time datetime="2013-11-05T08:46:53.997592" pubdate>2013-11-05</time></p>
+          <p class="meta"><time datetime="2013-11-05T08:49:06.349598" pubdate>2013-11-05</time></p>
 </header>
 
   <div class="entry-content"><p>今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  </p>
 <h2>名字查找</h2>
 <p>这个<a href="http://blog.csdn.net/xtyyumi301/article/details/662639">链接</a>对我帮助很大，此外还参考了一些SO上的解答，和<a href="http://en.wikipedia.org/wiki/Argument-dependent_name_lookup">wiki</a><br />
-C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：<br />
-<em> 常规查找（normal lookup）<br />
-</em> 实参决定的查找（argument-dependent lookup）<br />
+C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：  </p>
+<ul>
+<li>常规查找（normal lookup）  </li>
+<li>
+<p>实参决定的查找（argument-dependent lookup）<br />
 所有函数调用，都会进行常规查找；只有函数的实参包括 类类型对象 或 指向类类型对象的指针/引用 的时候，才会进行实参确定的查找。<br />
-分别解释如下：<br />
-<em> normal lookup<br />
-从函数被调用的局部作用域开始，逐渐向上层寻找被调用的名字，一旦找到就停止向上寻找。此外，using语句可以将其他作用域的名字引用到当前作用域。<br />
-</em> argument-dependent lookup(ADL)<br />
+分别解释如下：  </p>
+</li>
+<li>
+<p>normal lookup<br />
+从函数被调用的局部作用域开始，逐渐向上层寻找被调用的名字，一旦找到就停止向上寻找。此外，using语句可以将其他作用域的名字引用到当前作用域。  </p>
+</li>
+<li>argument-dependent lookup(ADL)<br />
 从第一个类类型参数开始，依次遍历所有类类型参数。<br />
 对于每一个参数，进入其类型定义所在的作用域（类内友元函数也包括在内），并依次进入其基类、间接基类……定义所在的作用域，查找同名函数。<br />
 <strong>注意</strong>:在继承体系中上升的过程中，不会因为找到同名函数就停止上升。这不同于normal lookup<br />
-下面的代码，<code>&lt;&lt;</code>就是调用<code>operator&lt;&lt;</code>，ADL根据第一个参数std::cout（std::ostream类型）去std命名空间寻找<code>operator&lt;&lt;</code>函数，最后匹配到<code>std::ostream&amp; std::operator&lt;&lt;(std::ostream&amp;, const char*)</code>  </p>
+下面的代码，<code>&lt;&lt;</code>就是调用<code>operator&lt;&lt;</code>，ADL根据第一个参数std::cout（std::ostream类型）去std命名空间寻找<code>operator&lt;&lt;</code>函数，最后匹配到<code>std::ostream&amp; std::operator&lt;&lt;(std::ostream&amp;, const char*)</code>  </li>
+</ul>
 <div class="highlight"><pre><span class="cp">#include&lt;iostream&gt;  </span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
 <span class="p">{</span>  
@@ -87,7 +93,7 @@ C++的名字查找(name lookup)，作为重载确定(overload resolution)的第�
 </pre></div>
 
 
-<p>怎么样，看到这里，是不是感觉非常复杂难懂？看看示例代码帮助理解，注释部分是有解读：  </p>
+<p>示例代码帮助理解，注意其中的注释：  </p>
 <div class="highlight"><pre><span class="kt">void</span> <span class="nf">func</span><span class="p">(){}</span><span class="c1">//1  </span>
 <span class="c1">//第一个实参所在命名空间  </span>
 <span class="k">namespace</span> <span class="n">Name1</span><span class="p">{</span>  
@@ -133,19 +139,21 @@ C++的名字查找(name lookup)，作为重载确定(overload resolution)的第�
 
 
 <h2>using语句</h2>
-<p>using语句包括两种：<br />
-<em> using directive<br />
+<p>using语句包括两种：  </p>
+<ul>
+<li>using directive<br />
 语法格式为：using namespace XXX;<br />
-没看懂C++标准里写的这一块，但是测试发现，使用这种方法不能将XXX中的func加入重载函数的候选函数，如果当前作用域找不到func，normal lookup会继续向上层寻找。<br />
-</em> using declaration<br />
+没看懂C++标准里写的这一块，但是测试发现，使用这种方法不能将XXX中的func加入重载函数的候选函数，如果当前作用域找不到func，normal lookup会继续向上层寻找。  </li>
+<li>using declaration<br />
 语法格式为：using XXX::func;<br />
-可以使用该方法将func函数加入候选函数集合，且这种方法会阻止normal lookup向外层作用域寻找func。  </p></div>
+可以使用该方法将func函数加入候选函数集合，且这种方法会阻止normal lookup向外层作用域寻找func。  </li>
+</ul></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-11-05T08:46:53.997592" pubdate>2013-11-05</time>    <span class="categories">
+  <time datetime="2013-11-05T08:49:06.349598" pubdate>2013-11-05</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
         <a class="category" href="http://particle128.com/tag/name-lookup.html">name-lookup</a>
       </span>
