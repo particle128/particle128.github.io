@@ -61,6 +61,50 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-13T20:05:09.203575" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 39: Use private inheritance judiciously</h2>
+<p>1.私有继承和复合(composition)意义相同：根据某物实现出（is-implemented-in-terms-of）。<br />
+2.除非必要，尽量用复合实现这种语义。<br />
+3.可以考虑使用private继承的情况：<br />
+（1）需要需要访问protected成员<br />
+（2）需要重写virtual函数。（替代策略:可以派生一个类，重写virtual函数。然后包含这个类的对象）<br />
+（3）如果需要包含的是一个空类对象，用private继承，节省空间。<br />
+Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual函数的类。因为不含非静态成员变量和虚函数，所以一般不需要内存空间。<br />
+注：<br />
+1)类中包含一个空类对象的时候，大多数编译器至少需要1个字节的内存空间。<br />
+2)继承自空类对象，不需要任何内存空间。<br />
+4.尽量复用已有代码，所以平时注意积累自己的工具箱，设计的越通用越好，随时可以拿来复用。  </p>
+<h2>Item 40 ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-13T20:03:58.223572" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32: Make sure public inheritance models "is-a"</h2>
+<p>1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。<br />
+2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：<br />
+企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高<br />
+3.修改”企鹅-&gt;鸟“设计：<br />
+（1）class Bird; class Penguin :public Bird; class FlyingBird: public Bird; //在Bird里不定义fly()，在FlyingBird里定义<br />
+（2）class Bird; class Penguin :public Bird; //在Bird里定义fly ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-13T20:00:59.983564" pubdate>2013-10-13</time></p>
@@ -76,28 +120,6 @@
 2.能用C++风格转型 ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T19:53:49.255545" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 22: Declare data members private</h2>
-<p>1.把变量声明成private，然后通过public函数访问。好处：<br />
-（1）语法一致性。public里都是函数，不用考虑是否需要加括号。<br />
-（2）更精确的访问控制。可以通过get和set设置变量的可都写属性。<br />
-（3）封装。对底层的机制提供很大的弹性，成员变量的修改，不影响客户的使用。（比如averageSoFar()函数，可以返回average变量，也可以直接计算平均值再返回。一个占空间，一个费时间，在不同环境可以选择不同的实现）<br />
-2.只有private有封装性，protected和public都没有封装性。<br />
-因为封装性与“当其内容改变时可能造成的代码破坏量”成反比，内容改变可以理解成把它从class中移除。<br />
-（1）public变量移除，所有使用它的客户代码都会破坏。<br />
-（2）protected变量移除，所有继承自该类的派生类都会破坏。  </p>
-<h2>Item 23: Prefer non-member non-friend functions to member ...</h2></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(6).html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
@@ -154,27 +176,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/10/some-thought.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-04T19:33:09.273884" pubdate>2013-10-04</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 13: Use objects to manage resources</h2>
-<p>1.资源是指，使用完之后需要归还系统的东西。比如动态分配的内存，文件描述符，互斥锁，数据库连接，sockets。<br />
-2.尽管可以手动释放资源（比如delete），但是程序的修改（delete之前返回了），或客户的忘记，可能导致资源释放不了。<br />
-解决办法：用对象管理资源，利用对象在作用域范围之外会自动调用析构函数的机制，释放资源。<br />
-对于heap-based资源（资源new出来的，通过指针访问），有如下两种智能指针可用：<br />
-（1）std::auto_ptr<Investment> pInv(createInvestment()); <br />
-缺点：指向同一对象的auto_ptr，进行赋值或拷贝构造，会导致原ptr变成null。这样的目的，释放多次同一个资源。<br />
-（2）std::tr1::shared_ptr<Investment> pInv(createInvestment());<br />
-注意：不存在上面的问题，因为是RCSP ...</investment></investment></p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index6.html">&larr; Older</a>
   
@@ -186,19 +187,19 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </li>
           </ul>
   </section>

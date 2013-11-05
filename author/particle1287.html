@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Linux权限小结</title>
+  <title>particle128's Blog - Articles by particle128</title>
   <meta name="author" content="particle128">
 
     
@@ -57,83 +57,50 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div>
-  <article class="hentry" role="article">
-    <header>
-          <h1 class="entry-title">Linux权限小结</h1>
-          <p class="meta"><time datetime="2013-09-08T10:01:27.753871" pubdate>2013-09-08</time></p>
+      <div class="blog-index">
+    	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-14T11:11:55.358809" pubdate>2013-10-14</time></p>
 </header>
 
-  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
-<p>r：可以查看文件内容<br />
-w：可以修改文件内容<br />
-x：可以执行文件内容  </p>
-<p><strong>Note：</strong> <br />
-一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
-<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
-<p>r：可以查看目录结构（ls）<br />
-w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
-x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
-<p><strong>Note：</strong><br />
-一个目录开放浏览，需要r+x权限。<br />
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号；<br />
-有x没r，可以cd进去，不能ls查看内容。【所谓不能，是指执行该操作会返回“Permission denied”】<br />
-仅有w，无法修改目录结构，因为命令进入不进去这个目录，需要x权限配合w才能完成修改目录的作用。</p>
-<h4>3、umask：初始权限中需要屏蔽的部分，ubuntu12.04下默认是0002，去掉其他用户的写权限。</h4>
-<p>文件初始权限：-rw-rw-rw- （0666）<br />
-文件默认权限：初始-umask。0666-0002=0664，即-rw-rw-r--<br />
-文件夹初始权限：drwxrwxrwx（0777）<br />
-文件夹默认权限：初始-umask。0777-0002=0775，即drwxrwxr-x  </p>
-<p><strong>Note：</strong><br />
-所有者和同组用户权限相同，其他用户剥夺写权限。<br />
-命令：</p>
-<div class="highlight"><pre><span class="n">umask</span> <span class="mo">022</span> <span class="err">#</span> <span class="err">修改</span><span class="n">umask</span><span class="err">默认值</span>
-<span class="n">umask</span> <span class="o">-</span><span class="n">S</span> <span class="err">#</span> <span class="err">以字符的形式显示</span><span class="n">umask</span><span class="err">之后的效果，</span><span class="mo">0002</span><span class="err">对应</span> <span class="n">u</span><span class="o">=</span><span class="n">rwx</span><span class="p">,</span><span class="n">g</span><span class="o">=</span><span class="n">rwx</span><span class="p">,</span><span class="n">o</span><span class="o">=</span><span class="n">rx</span><span class="err">。</span>
-</pre></div>
-
-
-<h4>4、三个特殊权限：</h4>
-<p><strong>SUID（SetUID）</strong>：ls-l显示所有者权限x-&gt;s<br />
-例子：/usr/bin/passwd。普通用户可以执行passwd修改自己的密码，执行该程序后默认UID变为root（passwd的所有者），因此可以修改仅仅root可读的/etc/shadow</p>
-<p><strong>SGID（SetGID）</strong>：ls-l显示组权限x-&gt;s<br />
-例子：/usr/bin/locate。普通用户执行locate定位文件，执行该程序后默认GID变为slocate（locate的所属用户组），因此可以查询仅仅mlocate组内用户可以访问的mlocate.db<br />
-另：作用于目录时，相当于用户cd进该目录后有效用户组就变成该目录的用户组了，影响此后新建的文件的所属用户组。  </p>
-<p><strong>SBIT（Sticky Bit）</strong>：ls-l显示其他权限x-&gt;t<br />
-例子：/tmp。用户进入/tmp下新建的文件，只有root和文件所有者可以删除，其他用户即使对/tmp有w权限也没用。</p></div>
-    <footer>
-      <p class="meta">
-  <span class="byline author vcard">
-    Posted by <span class="fn">particle128</span>
-  </span>
-  <time datetime="2013-09-08T10:01:27.753871" pubdate>2013-09-08</time>    <span class="categories">
-        <a class="category" href="http://particle128.com/tag/linux.html">linux</a>
-      </span>
-  </p>    </footer>
-  </article>
-
-    <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
-  </section>
-  </div>
+  <div class="entry-content"><h2>Chapter 2</h2>
+<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
+gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
+[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
+宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
+gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
+[2]编译  把源文件生成汇编代码 (调用cc1)<br />
+gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  	<div class="pagination">
+  
+            <a class="next" href="http://particle128.com/author/particle1286.html">Newer &rarr;</a>
+        <br />
+</div>  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
           </ul>
   </section>
@@ -177,9 +144,6 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-                var disqus_identifier = '/posts/2013/09/authority.html';
-          var disqus_url = 'http://particle128.com/posts/2013/09/authority.html';
-          var disqus_title = 'Linux权限小结';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

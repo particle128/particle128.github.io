@@ -61,6 +61,28 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-04T21:06:31.471719" pubdate>2013-11-04</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 22: Declare data members private</h2>
+<p>1.把变量声明成private，然后通过public函数访问。好处：<br />
+（1）语法一致性。public里都是函数，不用考虑是否需要加括号。<br />
+（2）更精确的访问控制。可以通过get和set设置变量的可都写属性。<br />
+（3）封装。对底层的机制提供很大的弹性，成员变量的修改，不影响客户的使用。（比如averageSoFar()函数，可以返回average变量，也可以直接计算平均值再返回。一个占空间，一个费时间，在不同环境可以选择不同的实现）<br />
+2.只有private有封装性，protected和public都没有封装性。<br />
+因为封装性与“当其内容改变时可能造成的代码破坏量”成反比，内容改变可以理解成把它从class中移除。<br />
+（1）public变量移除，所有使用它的客户代码都会破坏。<br />
+（2）protected变量移除，所有继承自该类的派生类都会破坏。  </p>
+<h2>Item 23: Prefer non-member non-friend functions to member ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-18T14:53:19.016843" pubdate>2013-10-18</time></p>
@@ -147,32 +169,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T20:06:53.727580" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 44: Factor parameter-independent code out of templates</h2>
-<p>1.类模版成员函数函数，只有被使用时才被具现化。类似类的合成版本的构造/复制构造/赋值操作符/析构函数。<br />
-2.模版的时候减少了源代码量，但是可能导致目标代码增加，因为每具现化一个版本，就多一份目标码。<br />
-策略：把与模版参数（类型参数或非类型参数）无关的代码，剥离出模版类。<br />
-（1）非类型参数<br />
-例如：  </p>
-<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span><span class="kt">size_t</span> <span class="n">n</span><span class="o">&gt;</span>  
-<span class="k">class</span> <span class="nc">SquareMatrix</span><span class="p">{</span> <span class="c1">//方形矩阵  </span>
-  <span class="nl">public:</span>  
-          <span class="kt">void</span> <span class="n">invert</span><span class="p">();</span>     
-<span class="p">};</span>  
-<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">10</span><span class="o">&gt;</span> <span class="n">sm1</span><span class="p">;</span>  
-<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">5</span><span class="o">&gt;</span> <span class="n">sm2</span><span class="p">;</span>  
-<span class="n">sm1</span><span class="p">.</span><span class="n">invert</span><span class="p">();</span><span class="c1">//具现化一次invert ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/tag/effectivecpp2.html">&larr; Older</a>
   
@@ -182,6 +178,9 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
@@ -193,9 +192,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
       </li>
           </ul>
   </section>

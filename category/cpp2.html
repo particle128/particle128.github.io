@@ -61,6 +61,43 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-29T10:02:10.479096" pubdate>2013-10-29</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
+<h2>Item16 80-20 principal</h2>
+<ul>
+<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
+<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
+<li>Offer as much data as possible to the profiler, to find ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-18T14:53:19.016843" pubdate>2013-10-18</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
+<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
+2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
+3.唯有这4个函数被调用时，才被产生出来。  <br />
+4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
+5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
+<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-15T15:20:21.500588" pubdate>2013-10-15</time></p>
@@ -140,52 +177,6 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-14T09:25:05.290524" pubdate>2013-10-14</time></p>
-</header>
-
-  <div class="entry-content"><ul>
-<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
-<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
-甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
-<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
-<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
-<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
-<span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T20:15:25.707603" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 30: Understand the ins and outs of inlining.</h2>
-<p>1.inline（函数体代替函数调用）的好处：<br />
-（1）没有函数调用的开销，速度快。<br />
-（2）使编译器能对起进行outlined的函数所不具备的优化，因为上下文更明显了。<br />
-坏处：<br />
-（1）可能导致代码膨胀，如果inline函数内语句比较多的话。<br />
-（2）如果inline函数是程序库的一部分，对它的改动，需要使用者重新编译。（outline的话，直接链接即可，动态链接的话，使用者甚至不知道函数库的修改）<br />
-（3）大部分调试器不能调试inline函数。<br />
-2.inline是对编译器的申请，不是强制。<br />
-如下情况编译器”可能“拒绝inline（gcc -Winline会发出不能inline的警告，但是我尝试了递归和循环，没有发出警告）：<br />
-（1）函数太过复杂（包含递归或循环）。<br />
-（2）函数中调用virtual函数，因为多态是运行期行为，而inline是编译期行为 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/category/cpp3.html">&larr; Older</a>
   
@@ -197,6 +188,12 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
       </li>
             <li class="post">
@@ -204,12 +201,6 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
           </ul>
   </section>

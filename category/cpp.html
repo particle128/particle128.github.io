@@ -61,6 +61,57 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-04T21:06:31.471719" pubdate>2013-11-04</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 22: Declare data members private</h2>
+<p>1.把变量声明成private，然后通过public函数访问。好处：<br />
+（1）语法一致性。public里都是函数，不用考虑是否需要加括号。<br />
+（2）更精确的访问控制。可以通过get和set设置变量的可都写属性。<br />
+（3）封装。对底层的机制提供很大的弹性，成员变量的修改，不影响客户的使用。（比如averageSoFar()函数，可以返回average变量，也可以直接计算平均值再返回。一个占空间，一个费时间，在不同环境可以选择不同的实现）<br />
+2.只有private有封装性，protected和public都没有封装性。<br />
+因为封装性与“当其内容改变时可能造成的代码破坏量”成反比，内容改变可以理解成把它从class中移除。<br />
+（1）public变量移除，所有使用它的客户代码都会破坏。<br />
+（2）protected变量移除，所有继承自该类的派生类都会破坏。  </p>
+<h2>Item 23: Prefer non-member non-friend functions to member ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-02T11:21:27.627193" pubdate>2013-11-02</time></p>
+</header>
+
+  <div class="entry-content"><p>例子如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
+
+<span class="k">class</span> <span class="nc">Base</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+<span class="p">};</span>  
+<span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span><span class="k">public</span> <span class="n">Base</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//Base中函数的重写  </span>
+        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="c1">//Base中函数的重载  </span>
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func</span><span class="p">;</span>  
+        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func1 ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
       </h1>
           <p class="meta"><time datetime="2013-11-01T11:22:57.983014" pubdate>2013-11-01</time></p>
@@ -153,43 +204,6 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-29T10:02:10.479096" pubdate>2013-10-29</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
-<h2>Item16 80-20 principal</h2>
-<ul>
-<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
-<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
-<li>Offer as much data as possible to the profiler, to find ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-18T14:53:19.016843" pubdate>2013-10-18</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
-<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
-2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
-3.唯有这4个函数被调用时，才被产生出来。  <br />
-4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
-5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
-<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/category/cpp2.html">&larr; Older</a>
   
@@ -200,6 +214,12 @@ const bool true=1;<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
       </li>
             <li class="post">
@@ -207,12 +227,6 @@ const bool true=1;<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
           </ul>
   </section>

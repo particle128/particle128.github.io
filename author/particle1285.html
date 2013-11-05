@@ -61,6 +61,28 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-14T09:25:05.290524" pubdate>2013-10-14</time></p>
+</header>
+
+  <div class="entry-content"><ul>
+<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
+<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
+甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
+<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
+<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
+<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
+<span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
       </h1>
           <p class="meta"><time datetime="2013-10-15T14:00:41.520375" pubdate>2013-10-15</time></p>
@@ -81,15 +103,15 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/headache.html">Headache</a>
+        <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-15T14:18:14.904422" pubdate>2013-10-15</time></p>
+          <p class="meta"><time datetime="2013-11-04T15:07:48.598760" pubdate>2013-11-04</time></p>
 </header>
 
   <div class="entry-content"><p>Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.<br />
 Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/headache.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/headache.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
@@ -165,27 +187,6 @@ chmod a+r aa.txt
 <p>记录 用户名 对应的UID ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/09/linux_user.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T13:52:20.816353" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>subprocess是python的一个内置模块，用来产生子进程，和子进程通过pipe通信。</strong>  </p>
-<h3>3个便捷函数</h3>
-<p>如果仅仅想要调用一个子进程完成一个任务，不需要父进程与其通信，并且等待子进程退出的话，选择便捷函数。  </p>
-<div class="highlight"><pre><span class="c"># 返回returncode，0成功，非0出错。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
-<span class="c"># 返回0或引发CalledProcessError异常。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
-<span class="c"># 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/py-subprocess.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
