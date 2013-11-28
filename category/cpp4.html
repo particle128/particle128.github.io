@@ -61,6 +61,28 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-14T09:25:05.290524" pubdate>2013-10-14</time></p>
+</header>
+
+  <div class="entry-content"><ul>
+<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
+<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
+甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
+<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
+<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
+<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
+<span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-13T20:09:29.927587" pubdate>2013-10-13</time></p>
@@ -153,34 +175,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Effective C++学习笔记(5)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-11T16:34:30.926289" pubdate>2013-10-11</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item18:  Make interfaces easy to use correctly and hard to use incorrectly</h2>
-<p>1.促进接口被正确使用：<br />
-（1）接口一致性：stl中所有容器都具有size() 函数，而不像Java和.Net。<br />
-（2）与内置类型行为兼容：想想和int类比。<br />
-2.阻止接口被误用（！！！不正确的行为，编译都不能通过）：<br />
-例子：  </p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Date</span>  
-<span class="p">{</span>  
-    <span class="n">Date</span><span class="p">(</span><span class="kt">int</span> <span class="n">month</span><span class="p">,</span><span class="kt">int</span> <span class="n">day</span><span class="p">,</span><span class="kt">int</span> <span class="n">year</span><span class="p">);</span>  
-<span class="p">}</span>  
-</pre></div>
-
-
-<p>（1）建立新类型，防止调用顺序错乱，比如(2013,1,10)。  </p>
-<div class="highlight"><pre><span class="c1">//定义Month,Day,Year类型（struct，只含一个val变量和一个explicit单个参数构造函数即可）  </span>
-<span class="n">Date ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/category/cpp5.html">&larr; Older</a>
   
@@ -192,6 +186,9 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
       </li>
             <li class="post">
@@ -202,9 +199,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
       </li>
           </ul>
   </section>

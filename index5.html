@@ -61,6 +61,26 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-14T11:11:55.358809" pubdate>2013-10-14</time></p>
+</header>
+
+  <div class="entry-content"><h2>Chapter 2</h2>
+<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
+gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
+[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
+宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
+gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
+[2]编译  把源文件生成汇编代码 (调用cc1)<br />
+gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
       </h1>
           <p class="meta"><time datetime="2013-10-14T09:25:05.290524" pubdate>2013-10-14</time></p>
@@ -156,25 +176,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T20:03:58.223572" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 32: Make sure public inheritance models "is-a"</h2>
-<p>1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。<br />
-2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：<br />
-企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高<br />
-3.修改”企鹅-&gt;鸟“设计：<br />
-（1）class Bird; class Penguin :public Bird; class FlyingBird: public Bird; //在Bird里不定义fly()，在FlyingBird里定义<br />
-（2）class Bird; class Penguin :public Bird; //在Bird里定义fly ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index6.html">&larr; Older</a>
   
@@ -186,6 +187,9 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
       </li>
             <li class="post">
@@ -196,9 +200,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
       </li>
           </ul>
   </section>

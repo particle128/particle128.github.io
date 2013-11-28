@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Linux下的用户和用户组小结</title>
+  <title>C++中指向成员函数的指针</title>
   <meta name="author" content="particle128">
 
     
@@ -60,88 +60,71 @@
       <div>
   <article class="hentry" role="article">
     <header>
-          <h1 class="entry-title">Linux下的用户和用户组小结</h1>
-          <p class="meta"><time datetime="2013-09-08T08:32:29.231066" pubdate>2013-09-08</time></p>
+          <h1 class="entry-title">C++中指向成员函数的指针</h1>
+          <p class="meta"><time datetime="2013-11-28T10:48:38.498387" pubdate>2013-11-28</time></p>
 </header>
 
-  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
+  <div class="entry-content"><p>在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。<br />
+<strong>注意</strong>：类的static成员函数和普通函数的指针是一样的。  </p>
+<ul>
+<li>普通函数指针：可以通过直接调用  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (*)(int)&quot;  </span>
 </pre></div>
 
 
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
+<ul>
+<li>非静态成员函数指针：只能通过类对象调用  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">Mat</span><span class="o">::</span><span class="n">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (Mat::*)(int)&quot;  </span>
 </pre></div>
 
 
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
+<p><strong>指向成员函数的指针和普通指针，是两种不同类型指针，C++实现机制是不一样的（例如成员函数指针不一定包含具体函数的内存地址），如果强制进行两者之间的转换，结果是未定义的</strong>  </p>
+<p>使用方法如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="k">class</span> <span class="nc">A</span>  
+<span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//定义指向成员函数的指针类型  </span>
+        <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="n">A</span><span class="o">::*</span><span class="n">method</span><span class="p">)();</span>  
+
+        <span class="n">method</span> <span class="n">p</span><span class="p">;</span>  
+        <span class="n">A</span><span class="p">(){</span>  
+            <span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">foo</span><span class="p">;</span> <span class="c1">// 用类成员函数给指针赋值  </span>
+            <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">p</span><span class="p">)();</span> <span class="c1">// 类内调用  </span>
+        <span class="p">}</span>  
+        <span class="kt">int</span> <span class="n">foo</span><span class="p">(){</span>  
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;A::foo&quot;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  
+            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+        <span class="p">}</span>  
+<span class="p">};</span>  
+<span class="kt">int</span> <span class="nf">foo</span><span class="p">()</span>  
+<span class="p">{</span>  
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;global::foo&quot;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+<span class="p">}</span>  
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+    <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">method</span><span class="p">)();</span>  
+    <span class="n">method</span> <span class="n">pf</span><span class="o">=</span><span class="n">foo</span><span class="p">;</span> <span class="c1">//或者 method pf=&amp;foo;  </span>
+    <span class="n">pf</span><span class="p">();</span> <span class="c1">//或者(*pf)();  </span>
+    <span class="n">A</span> <span class="n">a</span><span class="p">;</span>  
+    <span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">p</span><span class="p">)();</span> <span class="c1">// 类外调用  </span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+<span class="p">}</span>  
 </pre></div>
 
 
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  </p>
-<h4>/etc/shadow</h4>
-<p>记录 用户名 对应的密码（加密后）  </p>
-<h4>/etc/group</h4>
-<p>记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）</p>
-<h3>3. 概念区分</h3>
-<h4>初始用户组：</h4>
-<p>useradd或usermod，-g参数后的组名。保存在/etc/passwd中。<br />
-实际意义是，/etc/group里少写一个用户名。。。  </p>
-<h4>有效用户组：</h4>
-<p>groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。<br />
-实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。</p>
-<h3>4. 用户分类</h3>
-<p>ubuntu12.04下，根据/etc/login.defs<br />
-UID=0  系统管理员<br />
-UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)<br />
-UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  </p>
-<h3>5. linux命令</h3>
-<h4>1) useradd</h4>
-<div class="highlight"><pre>useradd -u <span class="o">[</span>UID<span class="o">]</span> -g <span class="o">[</span>initial group name<span class="o">]</span> -G <span class="o">[</span>other group name<span class="o">]</span> -d <span class="o">[</span>home dir<span class="o">]</span> -s <span class="o">[</span>shell<span class="o">]</span> -r <span class="o">[</span>用户名<span class="o">]</span>
-</pre></div>
-
-
-<p>没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。<br />
--r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）</p>
-<h4>2) usermod</h4>
-<p>同useradd</p>
-<h4>3) passwd</h4>
-<div class="highlight"><pre>passwd <span class="o">[</span>用户名<span class="o">]</span> 
-passwd
-</pre></div>
-
-
-<p>无参数修改自己的密码</p>
-<h4>4) userdel</h4>
-<div class="highlight"><pre>userdel -r <span class="o">[</span>用户名<span class="o">]</span>
-</pre></div>
-
-
-<p>加上-r，连同主文件夹也一同删除</p>
-<h4>5) groupadd</h4>
-<div class="highlight"><pre>groupadd -g <span class="o">[</span>GID<span class="o">]</span> -r <span class="o">[</span>组名<span class="o">]</span>
-</pre></div>
-
-
-<p>-g 指定GID，-r 创建系统组</p>
-<h4>6) groupdel</h4>
-<div class="highlight"><pre>groupdel <span class="o">[</span>组名<span class="o">]</span>
-</pre></div></div>
+<p><strong>注意</strong>:普通函数，和指向普通函数的指针，可以隐式互相转换；但是非静态成员函数和其指针之间不能进行任何转换，所以*和&amp;符号不能省略。  </p></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-09-08T08:32:29.231066" pubdate>2013-09-08</time>    <span class="categories">
-        <a class="category" href="http://particle128.com/tag/linux.html">linux</a>
-        <a class="category" href="http://particle128.com/tag/user.html">user</a>
+  <time datetime="2013-11-28T10:48:38.498387" pubdate>2013-11-28</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
       </span>
   </p>    </footer>
   </article>
@@ -212,9 +195,9 @@ passwd
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-                var disqus_identifier = '/posts/2013/09/linux_user.html';
-          var disqus_url = 'http://particle128.com/posts/2013/09/linux_user.html';
-          var disqus_title = 'Linux下的用户和用户组小结';
+                var disqus_identifier = '/posts/2013/11/pointer-to-member-func.html';
+          var disqus_url = 'http://particle128.com/posts/2013/11/pointer-to-member-func.html';
+          var disqus_title = 'C++中指向成员函数的指针';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
