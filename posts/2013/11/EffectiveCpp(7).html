@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Effective C++学习笔记(7)</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">Effective C++学习笔记(7)</h1>
+          <p class="meta"><time datetime="2013-11-06T11:24:54.805702" pubdate>2013-11-06</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 26: Postpone variable definitions as long as possible.</h2>
+<p>1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。<br />
+2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点<br />
+(1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分<br />
+因为：缩小变量的作用域，对于程序的可理解性和易维护性好。  </p>
+<h2>Item 27:Minimizing casting</h2>
+<p>1.C++风格类型转换中，<code>dynamic_cast&lt;T&gt;(expr)</code>是唯一一个无法用旧式语法（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。<br />
+2.能用C++风格转型，就不用旧式语法。因为它们容易在代码中被辨识出来，因为简化了"找出类型系统在哪个地点被破坏"的过程。<br />
+3.显示构造：  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Widget</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span> <span class="k">explicit</span> <span class="n">Widget</span><span class="p">(</span><span class="kt">int</span> <span class="n">size</span><span class="p">);</span>  
+<span class="p">}</span>  
+<span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="k">const</span> <span class="n">Widget</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">);</span>  
+<span class="c1">//func的调用方式，包括3种强制类型转换的方式：  </span>
+<span class="n">func</span><span class="p">(</span><span class="n">Widget</span><span class="p">(</span><span class="mi">15</span><span class="p">));</span> <span class="c1">//Cstyle函数式类型转换，也理解为构造一个临时的Widget对象</span>
+<span class="n">func</span><span class="p">((</span><span class="n">Widget</span><span class="p">)</span><span class="mi">15</span><span class="p">);</span> <span class="c1">//Cstyle标准类型转换  </span>
+<span class="n">func</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">Widget</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">15</span><span class="p">));</span> <span class="c1">//C++style类型转换  </span>
+</pre></div>
+
+
+<p>4.单一对象可能有一个以上的地址。Base<em>指向它和Derived</em>指向它时的地址可能不同，这依赖于编译器将C++的对象如何布局。<br />
+而且，一旦多重继承，多个基类的指针指向同一个对象，地址一定是不一样的。<br />
+5.以上例子表明，类型转换并不仅仅是让编译器把某种类型视为另一种类型，其他什么也没做。<br />
+6.派生类虚函数中调用基类的版本，错误做法：  </p>
+<div class="highlight"><pre><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">Window</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">).</span><span class="n">onResize</span><span class="p">();</span> <span class="c1">//调用onResize的不是this的base部分，而是强制类型转换所建立的临时对象  </span>
+<span class="k">static_cast</span><span class="o">&lt;</span><span class="n">Window</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">).</span><span class="n">onResize</span><span class="p">();</span> <span class="c1">//因为是虚函数，且是基类的引用，会调用自己，无穷递归。  </span>
+</pre></div>
+
+
+<p>正确做法：  </p>
+<div class="highlight"><pre><span class="n">WIndow</span><span class="o">::</span><span class="n">onResize</span><span class="p">();</span>  
+</pre></div>
+
+
+<p>7.应该尽量避免dynamic_cast，因为很多实现版本效率很低（比如调用多个strcmp，逐层比较class name）。<br />
+办法是，让父类定义空virtual函数，运用多态自动调用派生类的相应函数。<br />
+8.来自Cpp Primer：<br />
+dynamic_cast（成功返回相应指针或引用，失败返回NULL或抛出异常）：处理含有virtual函数的基类引用或指针，返回动态类型。<br />
+typeid（返回type_info对象，支持相等比较运算和name()方法）：处理含有virtual函数的基类，返回动态类型。  </p>
+<h2>Item 28:Avoid returning handles to object internals</h2>
+<p>1.以下句子编译可以通过，但是是错误的，因为这样的话外部就可以修改内部数据了，与const矛盾了。这是因为const成员函数实现的是bitwise const，而不是logical const  </p>
+<div class="highlight"><pre><span class="n">Point</span><span class="o">&amp;</span> <span class="n">upperLeft</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span><span class="k">return</span> <span class="n">pData</span><span class="o">-&gt;</span><span class="n">ulhc</span><span class="p">;}</span>  
+<span class="c1">//修改成：  </span>
+<span class="k">const</span> <span class="n">Point</span><span class="o">&amp;</span> <span class="n">upperLeft</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span><span class="k">return</span> <span class="n">pData</span><span class="o">-&gt;</span><span class="n">ulhc</span><span class="p">;}</span>  
+</pre></div>
+
+
+<p>2.引用、指针和迭代器都是所谓的handle，返回一个指向内部数据的handle，降低封装性，而且可能导致悬垂handle（即handle所指向的对象被销毁了，因为handle生存期可能比对象长）。<br />
+因此，尽量避免返回指向内部对象的handle，除非像string和vector的operator[]方法，不得不做的时候。  </p>
+<h2>Item 29: Strive for exception-safe code.</h2>
+<p>错误例子：  </p>
+<div class="highlight"><pre><span class="p">{</span>  
+    <span class="n">lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>  
+    <span class="k">delete</span> <span class="n">bgImage</span><span class="p">;</span>  
+    <span class="o">++</span><span class="n">imageChanges</span><span class="p">;</span>  
+    <span class="n">bgImage</span><span class="o">=</span><span class="k">new</span> <span class="n">Image</span><span class="p">(</span><span class="n">imgSrc</span><span class="p">);</span>  
+    <span class="n">unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>1.“异常安全”两个条件：<br />
+（1）不泄露任何资源<br />
+（2）不允许数据败坏<br />
+例子中，如果new出错（时刻注意，new分配内存的时候可能因为内存不足而抛出异常），mutex资源泄露，bgImage指针悬空。<br />
+“异常安全的函数”满足两个条件后，还分3个等级：<br />
+（1）基本承诺，即保证：任何事物在有效状态下，只是调用者不确切知道处于哪种状态。<br />
+（2）强烈保证，即保证：函数成功就完全成功；失败，就回到调用前的状态。<br />
+（3）不抛异常保证，即保证：只成功不失败，不抛出异常。<br />
+2.不抛出异常：只能靠程序保证。如下声明：  </p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">doSomething</span><span class="p">()</span> <span class="k">throw</span><span class="p">();</span>  
+</pre></div>
+
+
+<p>只是告诉调用者，不打算抛出异常。但是“完全可能”抛出异常，那时候会有一个函数被调用（std::set_unexpected函数的参数绑定的异常处理函数，该函数会在抛出非声明的类型的异常时执行）。<br />
+3.强烈保证：<br />
+变换语句顺序有时候可以做到；copy-and-swap一般可以做到。<br />
+（1）变换语句顺序：delete 和 ++放到new后面。当然用对象管理资源更安全和简洁  </p>
+<div class="highlight"><pre><span class="p">{</span>  
+     <span class="n">Lock</span> <span class="n">ml</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>  
+     <span class="n">bgImage</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">Image</span><span class="p">(</span><span class="n">imgSrc</span><span class="p">));</span> <span class="c1">//reset的过程中，原image会delete  </span>
+     <span class="o">++</span><span class="n">imageChanges</span><span class="p">;</span>  
+<span class="p">}</span><span class="c1">//函数退出后，Lock析构会释放mutex  </span>
+</pre></div>
+
+
+<p>（2）copy-and-swap：把打算修改的对象复制一份，然后修改副本，再把副本和原对象交换。<br />
+4.尽量让函数等级更高，但是不抛出异常很难保证，因为很多库函数都可能抛出异常；强烈保证可能耗费很大的代价，比如copy and swap方法，复制构造和赋值操作的代价。<br />
+权衡的过程：tradeoff。<br />
+但是，要在文档上说明清楚可能抛出的异常等，以及为什么没有实现安全级别更高的代码。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-11-06T11:24:54.805702" pubdate>2013-11-06</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/11/EffectiveCpp(7).html';
+          var disqus_url = 'http://particle128.com/posts/2013/11/EffectiveCpp(7).html';
+          var disqus_title = 'Effective C++学习笔记(7)';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MoreEffectiveC++(5)</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">MoreEffectiveC++(5)</h1>
+          <p class="meta"><time datetime="2013-11-28T10:29:34.838336" pubdate>2013-11-28</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item28 Smart pointer</h2>
+<ul>
+<li>智能指针相比于内置指针的优势：<br />
+1.构造和析构：分别防止空指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
+2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
+3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
+<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
+<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
+<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
+<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断<code>if (this==&amp;rhs)</code>，因为之后会<code>delete rhs</code>。<br />
+不需要判断，只调整语句顺序的情况：<br />
+1.new+delete都有的函数:deep copy<br />
+2.new+delete都没有的函数:复制值  </li>
+<li><code>auto_ptr</code>的对象，如果保存的不是new分配的堆对象，释放的时候会段错误，编译没有错误。  </li>
+<li>pt是一个对象，<code>pt-&gt;display()</code>会被编译器翻译成<code>(pt.operator-&gt;())-&gt;display()</code>，返回的对象要调用<code>-&gt;</code>操作符，要么返回。  </li>
+<li>提供功能，测试智能指针是否为null<br />
+1.添加成员函数<code>isNull()</code>：不直观，无法调用if(ptn)或if(ptn==0)或if(!ptn)<br />
+2.重载<code>operator bool()</code>，或<code>opertor!()</code>：前者3种形式都满足，但是可能允许不同类型的指针互相比较，后者则只能实现第3种语义<br />
+3.转换操作符<code>operator T*()</code>：3种形式都满足，但是允许用户delete SmartPtr类型对象，会导致内存泄露。<br />
+总结：可以使用第二种方法，但是定义const get()成员函数返回原始指针。  </li>
+<li>要实现<code>SmartPtr&lt;Base&gt;</code>的指针或引用，指向<code>SmartPtr&lt;Derived&gt;</code>对象：<br />
+1.特化<code>SmartPtr&lt;Derived&gt;</code>，并定义如下转换操作符:  </li>
+</ul>
+<div class="highlight"><pre><span class="k">operator</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">Base</span><span class="o">&gt;</span><span class="p">()</span>  
+<span class="p">{</span><span class="k">return</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">Base</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pointee</span><span class="p">);}</span>  
+</pre></div>
+
+
+<p>缺点：必须所有派生类，而且必须给每一个派生类特化版本定义到所有基类（包括间接基类）的转换函数，因为不允许2次类类型转换.<br />
+2.在SmartPtr模版里定义如下成员模版：  </p>
+<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">U</span><span class="o">&gt;</span>  
+<span class="k">operator</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span>  
+<span class="p">{</span><span class="k">return</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pointee</span><span class="p">);}</span>  
+</pre></div>
+
+
+<p>优点：不仅适用于派生体系，只要raw pointer可以隐式转换，包裹在外面的SmartPtr都可以隐式转换，比如non-const指针转成const指针；non-void指针转成void指针。  </p>
+<div class="highlight"><pre><span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">;</span>  
+<span class="n">SmartPtr</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">T</span><span class="o">&gt;</span> <span class="n">sp_con</span><span class="o">=</span><span class="n">sp</span><span class="p">;</span>  
+<span class="n">SmartPtr</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">sp_void</span><span class="o">=</span><span class="n">sp</span><span class="p">;</span>  
+<span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">Base_of_T</span><span class="o">&gt;</span> <span class="n">sp_base</span><span class="o">=</span><span class="n">sp</span><span class="p">;</span>  
+<span class="c1">//此处函数参数必须为常量引用，因为转换操作符返回一个临时对象  </span>
+<span class="c1">//(临时对象：源码中不可见的对象，比如函数返回值、异常对象、表达式结果对象(比如1+2))  </span>
+<span class="c1">//临时对象不能传递给非常量引用，因此编译器不允许调用转换操作符  </span>
+<span class="c1">//这是C++对函数参数的一个语义限制，因为非常量引用在函数中可能被修改  </span>
+<span class="c1">//而如果该修改作用在临时对象上，函数返回之前会被销毁，无法传递给程序，所以不允许.  </span>
+<span class="kt">void</span> <span class="nf">test</span><span class="p">(</span><span class="k">const</span> <span class="n">SmartPtr</span><span class="o">&lt;</span><span class="n">Base_of_T</span><span class="o">&gt;&amp;</span><span class="p">){...}</span>  
+<span class="n">test</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>  
+</pre></div>
+
+
+<p><strong>再次强调，非常量引用不能指向临时对象</strong><br />
+<strong>注意</strong>：以上两种实现中，都含有SmartPtr的构造函数，参数是原始指针。原始指针出现在继承体系的两个对象中，所以不能使用auto_ptr的构造和析构函数，否则会出现多次delete同一块内存的情况，应当使用reference counting。<br />
+<em> 派生类指针，转换成距离自己更近的基类指针的代价更小，不会造成二义性。<br />
+</em> const T * const 对应的智能指针版本就是：const SmartPtr<const T>  </p>
+<h2>Item29 Reference counting(引用计数)</h2>
+<p>略  </p>
+<h2>Item30 Proxy classes(代理类)</h2>
+<ul>
+<li>代理类的使用场景<br />
+1.抑制单参构造函数所引起的隐式类类型转换<br />
+在不支持explicit的情形下，可以通过代理类模拟explicit的行为。<br />
+思路:类类型转换只能进行一次，让参数进行一次，那么所要限制的类本身就不能隐式类型转换了。  </li>
+</ul>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Array</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="k">class</span> <span class="nc">ArraySize</span><span class="p">{</span><span class="c1">//代理类，用来代理Array构造函数的参数  </span>
+            <span class="nl">public:</span>  
+                <span class="n">ArraySize</span><span class="p">(</span><span class="kt">int</span> <span class="n">size</span><span class="p">)</span><span class="o">:</span><span class="n">theSize</span><span class="p">(</span><span class="n">size</span><span class="p">){}</span>  
+                <span class="kt">int</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span><span class="k">return</span> <span class="n">theSize</span><span class="p">;}</span>  
+            <span class="k">private</span><span class="o">:</span>  
+                <span class="kt">int</span> <span class="n">theSize</span><span class="p">;</span>  
+        <span class="p">};</span>  
+        <span class="n">Array</span><span class="p">(</span><span class="n">ArraySize</span> <span class="n">size</span><span class="p">);</span>  
+<span class="p">};</span>  
+</pre></div>
+
+
+<p>2.构造出多维数组类型，且使用起来像arr[1][2]<br />
+C++标准中不支持每维都是变量的多维数组（C99中好像支持），自定义类类型Array2D。<br />
+C++中又不能重载operator[][]函数，所以通过代理类模拟Array2D[1][2]的访问方式。<br />
+思路:Array2D的operator[]返回返回一个代理类对象Array1D，Array1D支持operator[]返回一个实际对象  </p>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>  
+<span class="k">class</span> <span class="nc">Array2D</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="n">Array1D</span><span class="p">{</span><span class="c1">//代理类，用来代理第一维的operator[]的返回值  </span>
+            <span class="nl">public:</span>  
+                <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">idx</span><span class="p">);</span>  
+                <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">idx</span><span class="p">)</span> <span class="k">const</span> <span class="p">;</span>  
+        <span class="p">};</span>  
+        <span class="n">Array1D</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">idx</span><span class="p">);</span><span class="c1">//Array1D是函数内局部对象，所以不返回引用  </span>
+        <span class="k">const</span> <span class="n">Array1D</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">idx</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>  
+<span class="p">};</span>  
+</pre></div>
+
+
+<p><strong>PS</strong>:如果可以接受array(1,2)这种访问二维数组的方式，可以重载operator(int idx1,int idx2)函数<br />
+3.区分operator[]的读写行为  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">String</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="k">class</span> <span class="nc">CharProxy</span><span class="p">{</span>  
+            <span class="k">public</span><span class="o">:</span>  
+                <span class="n">CharProxy</span><span class="p">(</span><span class="n">String</span><span class="o">&amp;</span><span class="p">,</span><span class="kt">int</span> <span class="n">idx</span><span class="p">);</span>  
+                <span class="n">CharProxy</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">CharProxy</span><span class="o">&amp;</span><span class="p">);</span><span class="c1">//写  </span>
+                <span class="n">CharProxy</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="kt">char</span><span class="p">);</span><span class="c1">//写  </span>
+                <span class="k">operator</span> <span class="kt">char</span><span class="p">()</span><span class="k">const</span><span class="p">;</span><span class="c1">//读  </span>
+            <span class="nl">private:</span>  
+                <span class="kt">int</span> <span class="n">idx</span><span class="p">;</span>  
+                <span class="n">String</span><span class="o">&amp;</span> <span class="n">theString</span><span class="p">;</span>  
+        <span class="p">};</span>  
+        <span class="n">CharProxy</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">idx</span><span class="p">);</span><span class="c1">//省略const版本  </span>
+<span class="p">};</span>  
+</pre></div>
+
+
+<ul>
+<li>代理类有其限制  </li>
+</ul>
+<div class="highlight"><pre><span class="n">String</span> <span class="n">s</span><span class="p">;</span>  
+<span class="kt">char</span> <span class="o">*</span><span class="n">p</span><span class="o">=&amp;</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="c1">//&amp;不可以  </span>
+<span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+=</span><span class="mi">5</span><span class="p">;</span>  
+<span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>  
+<span class="n">swap</span><span class="p">(</span><span class="kt">char</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="kt">char</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>  
+<span class="n">swap</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span><span class="c1">//传递给reference-to-non-const出错，因为是代理类的临时对象而不是引用  </span>
+</pre></div>
+
+
+<p>有些限制可以通过重载操作符来实现，非常麻烦。而传递参数的问题则没法避免。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-11-28T10:29:34.838336" pubdate>2013-11-28</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
+        <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/11/MoreEffectiveCpp(5).html';
+          var disqus_url = 'http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html';
+          var disqus_title = 'MoreEffectiveC++(5)';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

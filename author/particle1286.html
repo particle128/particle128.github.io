@@ -61,6 +61,40 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/linux_user.html">Linux下的用户和用户组小结</a>
+      </h1>
+          <p class="meta"><time datetime="2013-09-08T08:32:29.231066" pubdate>2013-09-08</time></p>
+</header>
+
+  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
+<h4>chown 修改文件所有者</h4>
+<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
+chown mashu aa.txt <span class="c"># 修改所有者</span>
+chown .mashu aa.txt <span class="c"># 修改组</span>
+</pre></div>
+
+
+<h4>chgrp 修改文件所属用户组</h4>
+<div class="highlight"><pre>chgrp mashu aa.txt 修改组
+</pre></div>
+
+
+<h4>chmod 修改权限</h4>
+<div class="highlight"><pre>chmod 777 aa.txt   
+chmod a+r aa.txt
+</pre></div>
+
+
+<h3>2. 3个重要文件</h3>
+<h4>/etc/passwd</h4>
+<p>记录 用户名 对应的UID ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/linux_user.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
       </h1>
           <p class="meta"><time datetime="2013-11-05T08:50:42.333603" pubdate>2013-11-05</time></p>
@@ -156,27 +190,6 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
 <h3>2 ...</h3></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-str.html">Python学习笔记-字符串</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-22T17:52:45.919950" pubdate>2013-09-22</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
-<h3>（一） 具备的操作</h3>
-<p>str作为序列元素，包含其他序列共同的操作：<br />
-1. “hello” [not] in "hello world"<br />
-2. "hello" + " world"<br />
-3. 5<em>"hello" 或 “hello”</em>5<br />
-4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
-5. len("hello")  min("hello")  max("hello")<br />
-6. "hello".index('o')   "hello".count('l ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-str.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">

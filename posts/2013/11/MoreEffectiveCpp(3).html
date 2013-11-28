@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MoreEffectiveC++(3)</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">MoreEffectiveC++(3)</h1>
+          <p class="meta"><time datetime="2013-11-28T09:15:50.566139" pubdate>2013-11-28</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
+<h2>Item16 80-20 principal</h2>
+<ul>
+<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
+<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
+<li>Offer as much data as possible to the profiler, to find the real bottle-neck.  </li>
+<li>Make sure that every group of data is representative(典型的，可重现的).  </li>
+</ul>
+<h2>Item17 consider to use Lazy Evaluation(缓式评估)</h2>
+<ul>
+<li>First of all, let me quote a sentence：  <blockquote>
+<p>从效率的观点来看，最好的运算是从未被执行的运算。  </p>
+</blockquote>
+</li>
+<li>Lazy evaluation means you should write your class in the way that calculation should be made only when it's urgent.<br />
+Three usages:<br />
+1.reference counting<br />
+Maybe some copy behaviour is no use.  </li>
+</ul>
+<div class="highlight"><pre><span class="n">MyStr</span> <span class="n">s1</span><span class="o">=</span><span class="s">&quot;abcd&quot;</span><span class="p">;</span>  
+<span class="n">MyStr</span> <span class="n">s2</span><span class="o">=</span><span class="n">s1</span><span class="p">;</span><span class="c1">//need not malloc and copy,just assign a pointer  </span>
+<span class="n">s2</span><span class="p">.</span><span class="n">ConvertToUpper</span><span class="p">();</span><span class="c1">//need to malloc and copy  </span>
+</pre></div>
+
+
+<p>2.lazy fetching<br />
+Maybe a large table only need a small part.  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">LargeObject</span>  
+<span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="n">LargeObject</span><span class="p">(</span><span class="n">ObjectID</span> <span class="n">id</span><span class="p">);</span><span class="c1">//just assign private pointers to 0  </span>
+        <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">field1</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span><span class="c1">//connect to the database and fetch data  </span>
+        <span class="kt">int</span> <span class="n">field2</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>  
+    <span class="k">private</span><span class="o">:</span>  
+        <span class="n">ObjectID</span> <span class="n">oid</span><span class="p">;</span>  
+        <span class="k">mutable</span> <span class="n">string</span> <span class="o">*</span><span class="n">fieldValue1</span><span class="p">;</span>  
+        <span class="k">mutable</span> <span class="kt">int</span> <span class="o">*</span><span class="n">filedValue2</span><span class="p">;</span>  
+<span class="p">};</span>  
+</pre></div>
+
+
+<p>3.lazy expression evaluation<br />
+Maybe you just need to calculate some parts.  </p>
+<div class="highlight"><pre><span class="n">Matrix</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">m1</span><span class="o">=</span><span class="n">m2</span><span class="o">*</span><span class="n">m3</span><span class="p">;</span><span class="c1">//just store two pointers to m2 and m3,and a enum indicating it&#39;s addition  </span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">m1</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="c1">//only calculate the fourth line//define operator[]  </span>
+<span class="n">m2</span><span class="o">=</span><span class="n">m3</span><span class="o">+</span><span class="n">m4</span><span class="p">;</span><span class="c1">//have to change m1,which has a pointer to m2.//reload operator+  </span>
+</pre></div>
+
+
+<ul>
+<li>Don't over do it.  </li>
+</ul>
+<h2>Item18 consider to use Over-Eager Evaluation(超急评估)</h2>
+<ul>
+<li>Two usages:<br />
+1.caching  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">find</span> <span class="nf">CubicleNumber</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="k">typedef</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">CubicleMap</span><span class="p">;</span>  
+    <span class="k">static</span> <span class="n">Cubicle</span> <span class="n">cubes</span><span class="p">;</span><span class="c1">//访问数据库耗时，访问缓存快速  </span>
+    <span class="n">CubicleMap</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span><span class="o">=</span><span class="n">cubes</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>  
+    <span class="k">if</span><span class="p">(</span><span class="n">it</span><span class="o">==</span><span class="n">cubes</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>  
+    <span class="p">{</span> <span class="cm">/*get info from the databse and update cubes*/</span><span class="p">}</span>  
+    <span class="k">else</span>  
+    <span class="p">{</span><span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">).</span><span class="n">second</span><span class="p">;</span><span class="c1">//more portable than it-&gt;second}  </span>
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>2.prefetching<br />
+when it needs x spaces, allocate 2x spaces.//系统调用（operator new中malloc）耗时，调用进程内函数快速<br />
+* Trade space for time.  </p>
+<h2>Item19 understand the sources of Temporary Objects</h2>
+<ul>
+<li>C++中的临时对象是在栈上分配的匿名对象或不可见对象。</li>
+<li>匿名对象举例：</li>
+</ul>
+<div class="highlight"><pre><span class="n">string</span> <span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">);</span> 
+<span class="n">X</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<ul>
+<li>不可见对象两种情况：<br />
+1.隐式类型转换得到的对象。
+<strong>Note</strong>:reference-to-non-const参数不能接受需要隐式类型转换的对象，因为参数可能会在函数中被修改，而修改仅仅作用于临时对象，C++禁止这种行为，编译失败，报错<code>invalid initialization of non-const reference of type ‘std::string&amp; {aka std::basic_string&lt;char&gt;&amp;}’ from an rvalue of type ‘char*’</code><br />
+2.返回对象。  </li>
+</ul>
+<h2>Item20 降低返回值临时对象的成本return value optimization(RVO)</h2>
+<ul>
+<li>书上说在return表达式中，返回匿名临时对象（比如<code>return Rational(lhs.num()*rhs.num(),lhs.den()*rhs.den())</code>），可以让编译器进行返回值优化（消除匿名临时对象以及返回值临时对象的构造和析构函数成本。把函数中return语句后面的内容提到调用者作用域中，<code>Rational c=a*b;</code>中仅有c的构造成本）。  </li>
+<li>注释又说“1996年ISO/ANSI标准委员会又宣布，返回命名对象和匿名对象都可以借助RVO被优化去掉。”后者可能在编译器下具备更好的优化性能。  </li>
+</ul>
+<h2>Item21 消除参数临时对象的成本use overload</h2>
+<ul>
+<li>可以重载一堆函数，来代替隐式类型转换，来消除参数临时对象的构造和析构成本。<br />
+<strong>Note</strong>:每个重载操作符，都必须获得至少一个“用户定制类型”的自变量。  </li>
+</ul>
+<h2>Item22 操作符符合形式效率&gt;独身形式</h2>
+<ul>
+<li>如果编译器无法进行RVO，那么operator+运算，会构造并析构两个对象：局部对象和返回值临时对象。替换成类内成员函数operator+=，则无需构造这两个对象。  </li>
+<li>可行的方案是：类内定义operator+=，类外定义模版operator+（使用对象的operator+=）。<br />
+<strong>Note</strong>:匿名对象比命名对象容易被消除，所以尽量选择前者。  </li>
+</ul>
+<h2>Item23 考虑使用其他程序库</h2>
+<ul>
+<li>使用benchmark(性能评估软件)，判断某个程序库在特定软件里，性能如何，然后做出取舍。  </li>
+<li>iostream比stdio的速度慢20%~200%，程序大小也大很多，但是如果io不是瓶颈，不需要用stdio代替iostream，毕竟类型安全。  </li>
+</ul>
+<h2>Item24 了解虚函数等的成本</h2>
+<ul>
+<li>看完Inside C++ Object Model回来看，现在看的不是很透彻。  </li>
+</ul></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-11-28T09:15:50.566139" pubdate>2013-11-28</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
+        <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/11/MoreEffectiveCpp(3).html';
+          var disqus_url = 'http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html';
+          var disqus_title = 'MoreEffectiveC++(3)';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>
