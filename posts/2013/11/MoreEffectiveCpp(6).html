@@ -61,7 +61,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">MoreEffectiveC++(6)</h1>
-          <p class="meta"><time datetime="2013-11-29T18:32:45.581314" pubdate>2013-11-29</time></p>
+          <p class="meta"><time datetime="2013-11-29T18:41:24.217338" pubdate>2013-11-29</time></p>
 </header>
 
   <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
@@ -184,7 +184,7 @@ collide位于类内，每次新增一个GameObject子类，都要修改修改既
 <p><strong>注意：不要将void func(Derived&amp;)函数用reinterpret_cast强制类型转换成void func(Base&amp;)之后调用。<br />
 多继承(包括菱形继承)情况下，基类引用（实质：指针）和派生类引用不一定相等，实际传入的地址是派生对象中某个基类的地址，但是函数中却认为这个地址是派生类的地址，所以之后取得的任何成员都有错误，因为成员是通过基地址的偏移取得的。</strong><br />
 优点：<br />
-虽然同第1种解法一样：结合虚函数和RTTI.但是RTTI是用映射完成的，代码简洁如第2种解法<br />
+虽然同第2种解法一样：结合虚函数和RTTI.但是RTTI是用映射完成的，代码简洁如第3种解法<br />
 缺点：<br />
 hitXXX位于类内，每次新增一个GameObject子类，都要修改修改既有类的定义（增加一个hitXXX函数），重新编译既有类和所有使用既有类的文件(头文件变了);<br />
 失去封装性，每个兄弟类都要相互知道;  </p>
@@ -209,7 +209,7 @@ hitXXX位于类内，每次新增一个GameObject子类，都要修改修改既�
 
 <p>优点：<br />
 不需要重新编译既有文件，只需要修改processCollision定义所在的文件;<br />
-速度比方法0快，由线性探查(if-else或switch)改为map形式查找（二叉树之类的）<br />
+速度比方法1快，由线性探查(if-else或switch)改为map形式查找（二叉树之类的）<br />
 PS:<br />
 如果想要动态登记和撤销实际碰撞函数的映射，可以再定义一个CollisionMap类，里面包含<code>addEntry(const string&amp; type1,const string&amp; type2,HitFuncPtr func)</code>和<code>removeEntry(...)</code>等函数，就可以更加灵活的修改映射，而不需要去动processCollision定义所在文件内函数的代码。  </p></div>
     <footer>
@@ -217,7 +217,7 @@ PS:<br />
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-11-29T18:32:45.581314" pubdate>2013-11-29</time>    <span class="categories">
+  <time datetime="2013-11-29T18:41:24.217338" pubdate>2013-11-29</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
         <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
       </span>
