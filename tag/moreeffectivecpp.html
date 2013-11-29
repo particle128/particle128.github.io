@@ -63,7 +63,7 @@
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
       </h1>
-          <p class="meta"><time datetime="2013-11-29T18:41:24.217338" pubdate>2013-11-29</time></p>
+          <p class="meta"><time datetime="2013-11-29T18:42:31.205341" pubdate>2013-11-29</time></p>
 </header>
 
   <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
@@ -74,15 +74,12 @@
 需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
 因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
 <li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
-<li>
-<p>解决方法：  </p>
-</li>
-<li>
-<p>double-RTTI（书中没提到）<br />
+<li>解决方法：  </li>
+</ul>
+<p>1.double-RTTI（书中没提到）<br />
 直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
 <strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
-优点：<br />
-如果实际碰撞函数位于类外的话 ...</p></li></ul></div>
+优点 ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
   </footer>
