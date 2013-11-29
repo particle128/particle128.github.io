@@ -61,6 +61,25 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-13T20:03:58.223572" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32: Make sure public inheritance models "is-a"</h2>
+<p>1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。<br />
+2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：<br />
+企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高<br />
+3.修改”企鹅-&gt;鸟“设计：<br />
+（1）class Bird; class Penguin :public Bird; class FlyingBird: public Bird; //在Bird里不定义fly()，在FlyingBird里定义<br />
+（2）class Bird; class Penguin :public Bird; //在Bird里定义fly ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Effective C++学习笔记(5)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-11T16:34:30.926289" pubdate>2013-10-11</time></p>
@@ -138,6 +157,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
       </li>
             <li class="post">
@@ -148,9 +170,6 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
       </li>
           </ul>
   </section>

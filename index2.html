@@ -61,6 +61,30 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-06T11:21:12.997692" pubdate>2013-11-06</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 30: Understand the ins and outs of inlining.</h2>
+<p>1.inline（函数体代替函数调用）的好处：<br />
+（1）没有函数调用的开销，速度快。<br />
+（2）使编译器能对起进行outlined的函数所不具备的优化，因为上下文更明显了。<br />
+坏处：<br />
+（1）可能导致代码膨胀，如果inline函数内语句比较多的话。<br />
+（2）如果inline函数是程序库的一部分，对它的改动，需要使用者重新编译。（outline的话，直接链接即可，动态链接的话，使用者甚至不知道函数库的修改）<br />
+（3）大部分调试器不能调试inline函数。<br />
+2.inline是对编译器的申请，不是强制。<br />
+如下情况编译器”可能“拒绝inline（gcc -Winline会发出不能inline的警告，但是我尝试了递归和循环，没有发出警告）：<br />
+（1）函数太过复杂（包含递归或循环）。<br />
+（2）函数中调用virtual函数，因为多态是运行期行为，而inline是编译期行为 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
       </h1>
           <p class="meta"><time datetime="2013-11-05T08:50:42.333603" pubdate>2013-11-05</time></p>
@@ -149,29 +173,6 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
     <a rel="full-article" href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-01T11:22:57.983014" pubdate>2013-11-01</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
-<h2>Item25 构造函数、非成员函数的虚化</h2>
-<ul>
-<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
-<li>3种语义上的虚化：<br />
-1.虚构造函数<br />
-根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
-2.虚拷贝构造函数<br />
-定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
-3.虚非成员函数<br />
-定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c ...</code></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
   
@@ -183,6 +184,9 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
       </li>
             <li class="post">
@@ -193,9 +197,6 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
       </li>
           </ul>
   </section>

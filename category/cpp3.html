@@ -61,6 +61,46 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-29T10:05:01.187104" pubdate>2013-10-29</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>Introduction</strong>  </p>
+<ul>
+<li>没有实现bool类型的编译器，替代方案：<br />
+(1)enum bool{false,true};<br />
+缺点：无法int赋值给bool变量<br />
+(2)typedef int bool;<br />
+const bool false=0;<br />
+const bool true=1;<br />
+缺点：无法重载bool和int参数的函数  </li>
+<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
+</ul>
+<p><strong>基础议题Basics</strong></p>
+<h2>Item1</h2>
+<ul>
+<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">//使用指针  </span>
+<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
+    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
+<span class="c1">//使用引用  </span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
+</pre></div>
+
+
+<h2>Item2</h2>
+<ul>
+<li>const_cast用于改变constnest和valatileness  </li>
+<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-29T10:03:05.903099" pubdate>2013-10-29</time></p>
@@ -171,26 +211,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-14T11:11:55.358809" pubdate>2013-10-14</time></p>
-</header>
-
-  <div class="entry-content"><h2>Chapter 2</h2>
-<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
-gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
-[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
-宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
-gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
-[2]编译  把源文件生成汇编代码 (调用cc1)<br />
-gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/category/cpp4.html">&larr; Older</a>
   
@@ -202,6 +222,9 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
       </li>
             <li class="post">
@@ -212,9 +235,6 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
       </li>
           </ul>
   </section>

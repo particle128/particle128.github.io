@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MoreEffectiveC++(6)</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">MoreEffectiveC++(6)</h1>
+          <p class="meta"><time datetime="2013-11-29T18:32:45.581314" pubdate>2013-11-29</time></p>
+</header>
+
+  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
+<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
+<ul>
+<li>问题背景：<br />
+假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
+需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
+因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
+<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
+<li>
+<p>解决方法：  </p>
+</li>
+<li>
+<p>double-RTTI（书中没提到）<br />
+直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
+<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
+优点：<br />
+如果实际碰撞函数位于类外的话，这种方法不需要修改既有类的定义（SpaceShip等），也就不需要重新编译了.<br />
+缺点：<br />
+该函数看起来有点乱，随着GameObject子类的增加，函数会逐渐膨胀，假设该游戏是个大型网游，可能有几千几万的类型，函数简直无法维护.  </p>
+</li>
+<li>
+<p>虚函数+RTTI<br />
+碰撞第一个对象用虚函数实现虚化（动态绑定），第二个对象用typeid确定类型并调用类内函数  </p>
+</li>
+</ul>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">CollisionWithUnknownObject</span><span class="p">{</span>  
+    <span class="n">CollisionWithUnknownObject</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span><span class="p">);</span>  
+    <span class="p">...</span>  
+<span class="p">};</span>  
+<span class="kt">void</span> <span class="n">SpaceShip</span><span class="o">::</span><span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">otherObject</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="k">const</span> <span class="n">type_info</span><span class="o">&amp;</span> <span class="n">objectType</span> <span class="o">=</span> <span class="k">typeid</span><span class="p">(</span><span class="n">otherObject</span><span class="p">);</span>  
+    <span class="k">if</span><span class="p">(</span><span class="n">objectType</span><span class="o">==</span><span class="k">typeid</span><span class="p">(</span><span class="n">SpaceShip</span><span class="p">))</span>  
+    <span class="p">{</span>  
+        <span class="n">SpaceShip</span><span class="o">&amp;</span> <span class="n">ss</span><span class="o">=</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">SpaceShip</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">otherObject</span><span class="p">);</span>  
+        <span class="c1">//process...  </span>
+    <span class="p">}</span>  
+    <span class="p">...</span>  
+    <span class="k">else</span><span class="p">{</span><span class="k">throw</span> <span class="n">CollisionWithUnknownObject</span><span class="p">(</span><span class="n">otherObject</span><span class="p">);}</span><span class="c1">//健壮程序都要考虑  </span>
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>优点：<br />
+利用虚函数代替了一个RTTI，代码较上一个简洁;<br />
+也不需要修改既有类的定义，只编译既有类对应的文件，而不需要编译使用既有类的文件（头文件没变）<br />
+缺点：<br />
+collide位于类内，每次新增一个GameObject子类，都要修改既有类的collide实现;<br />
+失去封装性，每个兄弟类都要相互知道;<br />
+collide也会膨胀，虽然没0方案这么厉害，仍然不好维护;  </p>
+<ol>
+<li>double虚函数  </li>
+</ol>
+<div class="highlight"><pre><span class="nl">SpaceShip:</span><span class="k">public</span> <span class="n">GameObject</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="kt">void</span> <span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span><span class="p">);</span><span class="c1">//step1  </span>
+        <span class="kt">void</span> <span class="nf">collide</span><span class="p">(</span><span class="n">SpaceShip</span><span class="o">&amp;</span><span class="p">);</span><span class="c1">//step2  </span>
+        <span class="p">...</span><span class="c1">//step2  </span>
+<span class="p">};</span>  
+<span class="kt">void</span> <span class="n">SpaceShip</span><span class="o">::</span><span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">otherObject</span><span class="p">)</span><span class="c1">//第一步动态调用的函数  </span>
+<span class="p">{</span>  
+    <span class="n">otherObject</span><span class="p">.</span><span class="n">collide</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span><span class="c1">//第二步根据参数动态调用  </span>
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>优点：<br />
+充分利用虚函数来去掉手动使用RTTI，代码简洁<br />
+缺点：<br />
+collide位于类内，每次新增一个GameObject子类，都要修改修改既有类的定义（增加一个collide函数），重新编译既有类和所有使用既有类的文件(头文件变了);<br />
+失去封装性，每个兄弟类都要相互知道  </p>
+<ol>
+<li>自行仿真虚表(用映射来仿真，而不是vptr)，实质是虚函数+RTTI<br />
+第一步仍然用虚函数collide，第二步用预先定义好的map映射，根据参数的实际类型调用对应的函数  </li>
+</ol>
+<div class="highlight"><pre><span class="nl">SpaceShip:</span><span class="k">public</span> <span class="n">GameObject</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="kt">void</span> <span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span><span class="p">);</span>  
+        <span class="k">typedef</span> <span class="nf">void</span> <span class="p">(</span><span class="n">SpaceShip</span><span class="o">::*</span><span class="n">HitFuncPtr</span><span class="p">)(</span><span class="n">GameObject</span><span class="o">&amp;</span><span class="p">);</span>  
+        <span class="c1">//用来仿真虚表的映射。因为C++标准没有定义type_info对象的name()成员函数返回的名字  </span>
+        <span class="c1">//（可能是&quot;SpaceShip&quot;或&quot;class SpaceShip&quot;等），  </span>
+        <span class="c1">//所以更好的做法是map&lt;const type_info*,HitFuncPtr&gt;，  </span>
+        <span class="c1">//因为每一个类型只有一个type_info对象被构造，地址唯一。  </span>
+        <span class="k">typedef</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="n">HitFuncPtr</span><span class="o">&gt;</span> <span class="n">HitMap</span><span class="p">;</span>  
+        <span class="k">static</span> <span class="n">HitFuncPtr</span> <span class="nf">lookup</span><span class="p">(</span><span class="k">const</span> <span class="n">GameObject</span> <span class="o">&amp;</span><span class="p">);</span><span class="c1">//类属函数，所以声明static  </span>
+
+        <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">hitSpaceShip</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">spaceShip</span><span class="p">);</span>  
+        <span class="p">...</span>  
+    <span class="k">private</span><span class="o">:</span>  
+        <span class="k">static</span> <span class="n">initializeCollisionMap</span><span class="p">();</span>  
+<span class="p">};</span>  
+<span class="kt">void</span> <span class="n">SpaceShip</span><span class="o">::</span><span class="n">collide</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">otherObejct</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="n">HitFuncPtr</span> <span class="n">hfp</span><span class="o">=</span><span class="n">lookup</span><span class="p">(</span><span class="n">otherObject</span><span class="p">);</span>  
+    <span class="k">if</span><span class="p">(</span><span class="n">hfp</span><span class="p">)</span> <span class="c1">//健壮程序都要考虑  </span>
+    <span class="p">{(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">hfp</span><span class="p">)(</span><span class="n">otherObject</span><span class="p">);}</span>  
+    <span class="k">else</span>  
+    <span class="p">{</span><span class="k">throw</span> <span class="n">CollisionWithUnknownObject</span><span class="p">(</span><span class="n">otherObject</span><span class="p">);}</span>  
+<span class="p">}</span>  
+<span class="n">SpaceShip</span><span class="o">::</span><span class="n">HitFuncPtr</span> <span class="n">SpaceShip</span><span class="o">::</span><span class="n">lookup</span><span class="p">(</span><span class="k">const</span> <span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="c1">//用static是保证该函数在使用前先初始化了，在main结束后才销毁  </span>
+    <span class="c1">//用auto_ptr是因为动态分配的HitMap，所以销毁的时间跟static应该一样  </span>
+    <span class="c1">//如果initializeCollisionMap使用局部static，返回一个有引用给collisionMap，就不需要auto_ptr包裹了  </span>
+    <span class="k">static</span> <span class="n">autp_ptr</span><span class="o">&lt;</span><span class="n">HitMap</span><span class="o">&gt;</span> <span class="n">collisionMap</span><span class="p">(</span><span class="n">initializeCollisionMap</span><span class="p">());</span>  
+    <span class="p">...</span>  
+<span class="p">}</span>  
+<span class="c1">//!!!只能把初始化语句放到一个函数中，实现只执行一次的目的  </span>
+<span class="n">SpaceShip</span><span class="o">::</span><span class="n">HitMap</span> <span class="n">initializeCollisionMap</span><span class="p">()</span>  
+<span class="p">{</span>  
+    <span class="n">HitMap</span> <span class="o">*</span><span class="n">phm</span><span class="o">=</span><span class="k">new</span> <span class="n">HitMap</span><span class="p">;</span>  
+    <span class="p">(</span><span class="o">*</span><span class="n">phm</span><span class="p">)[</span><span class="s">&quot;SpaceShip&quot;</span><span class="p">]</span><span class="o">=&amp;</span><span class="n">hitSpaceShip</span><span class="p">;</span>  
+    <span class="p">...</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p><strong>注意：不要将void func(Derived&amp;)函数用reinterpret_cast强制类型转换成void func(Base&amp;)之后调用。<br />
+多继承(包括菱形继承)情况下，基类引用（实质：指针）和派生类引用不一定相等，实际传入的地址是派生对象中某个基类的地址，但是函数中却认为这个地址是派生类的地址，所以之后取得的任何成员都有错误，因为成员是通过基地址的偏移取得的。</strong><br />
+优点：<br />
+虽然同第1种解法一样：结合虚函数和RTTI.但是RTTI是用映射完成的，代码简洁如第2种解法<br />
+缺点：<br />
+hitXXX位于类内，每次新增一个GameObject子类，都要修改修改既有类的定义（增加一个hitXXX函数），重新编译既有类和所有使用既有类的文件(头文件变了);<br />
+失去封装性，每个兄弟类都要相互知道;  </p>
+<ol>
+<li>仿真虚表，完全使用非成员函数<br />
+用两个类型名的pair映射实际碰撞函数，实质是double-RTTI，只是用映射的方法使代码的维护更加方便  </li>
+</ol>
+<div class="highlight"><pre><span class="c1">//匿名namespace的每样东西对起所在编译单元（文件）而言都是私有的，相当于所有函数声明为static  </span>
+<span class="c1">//如果在匿名namespace中声明但没有定义一个函数，需要在同一编译单元中另一个匿名namespace中给予实现  </span>
+<span class="k">namespace</span><span class="p">{</span>  
+    <span class="c1">//所有碰撞函数，lookup和initializeCollisionMap函数都在这里  </span>
+    <span class="p">...</span>  
+<span class="p">}</span>  
+<span class="kt">void</span> <span class="n">processCollision</span><span class="p">(</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">obj1</span><span class="p">,</span><span class="n">GameObject</span><span class="o">&amp;</span> <span class="n">obj2</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="n">HitFuncPtr</span> <span class="n">phf</span><span class="o">=</span><span class="n">lookup</span><span class="p">(</span><span class="k">typeid</span><span class="p">(</span><span class="n">obj1</span><span class="p">).</span><span class="n">name</span><span class="p">(),</span><span class="k">typeid</span><span class="p">(</span><span class="n">obj2</span><span class="p">).</span><span class="n">name</span><span class="p">());</span>  
+    <span class="k">if</span> <span class="p">...</span>  
+    <span class="k">else</span> <span class="p">...</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>优点：<br />
+不需要重新编译既有文件，只需要修改processCollision定义所在的文件;<br />
+速度比方法0快，由线性探查(if-else或switch)改为map形式查找（二叉树之类的）<br />
+PS:<br />
+如果想要动态登记和撤销实际碰撞函数的映射，可以再定义一个CollisionMap类，里面包含<code>addEntry(const string&amp; type1,const string&amp; type2,HitFuncPtr func)</code>和<code>removeEntry(...)</code>等函数，就可以更加灵活的修改映射，而不需要去动processCollision定义所在文件内函数的代码。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-11-29T18:32:45.581314" pubdate>2013-11-29</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
+        <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/11/MoreEffectiveCpp(6).html';
+          var disqus_url = 'http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html';
+          var disqus_title = 'MoreEffectiveC++(6)';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

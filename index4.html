@@ -61,6 +61,27 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T15:20:21.500588" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>【补充概念】</strong><br />
+<strong>类型安全</strong>：<br />
+<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
+<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
+printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
+(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
+(2) SomeClass a;AnotherClass b;<br />
+   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
+(3) #define max(a,b) ((a ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </h1>
           <p class="meta"><time datetime="2013-10-15T15:16:41.124578" pubdate>2013-10-15</time></p>
@@ -179,27 +200,6 @@ json——json模块  </p>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/python-configparser.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T13:52:20.816353" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>subprocess是python的一个内置模块，用来产生子进程，和子进程通过pipe通信。</strong>  </p>
-<h3>3个便捷函数</h3>
-<p>如果仅仅想要调用一个子进程完成一个任务，不需要父进程与其通信，并且等待子进程退出的话，选择便捷函数。  </p>
-<div class="highlight"><pre><span class="c"># 返回returncode，0成功，非0出错。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
-<span class="c"># 返回0或引发CalledProcessError异常。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
-<span class="c"># 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/py-subprocess.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index5.html">&larr; Older</a>
   
@@ -211,6 +211,9 @@ json——json模块  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
       </li>
             <li class="post">
@@ -221,9 +224,6 @@ json——json模块  </p>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
       </li>
           </ul>
   </section>
