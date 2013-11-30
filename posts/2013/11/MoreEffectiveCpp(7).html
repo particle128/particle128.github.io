@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog</title>
+  <title>MoreEffectiveC++(7)</title>
   <meta name="author" content="particle128">
 
     
@@ -57,12 +57,10 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
-      </h1>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">MoreEffectiveC++(7)</h1>
           <p class="meta"><time datetime="2013-11-30T21:27:13.733632" pubdate>2013-11-30</time></p>
 </header>
 
@@ -90,118 +88,125 @@
 </ul>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">Animal</span><span class="p">{</span>  
     <span class="k">public</span><span class="o">:</span>  
-        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(7).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-29T18:42:31.205341" pubdate>2013-11-29</time></p>
-</header>
-
-  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
-<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
-<ul>
-<li>问题背景：<br />
-假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
-需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
-因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
-<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
-<li>解决方法：  </li>
-</ul>
-<p>1.double-RTTI（书中没提到）<br />
-直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
-<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
-优点 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-28T10:48:38.498387" pubdate>2013-11-28</time></p>
-</header>
-
-  <div class="entry-content"><p>在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。<br />
-<strong>注意</strong>：类的static成员函数和普通函数的指针是一样的。  </p>
-<ul>
-<li>普通函数指针：可以通过直接调用  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (*)(int)&quot;  </span>
-</pre></div>
-
-
-<ul>
-<li>非静态成员函数指针：只能通过类对象调用  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">int</span> <span class="n">Mat</span><span class="o">::</span><span class="n">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (Mat::*)(int)&quot;  </span>
-</pre></div>
-
-
-<p><strong>指向成员函数的指针和普通指针，是两种不同类型指针，C++实现机制是不一样的（例如成员函数指针不一定包含具体函数的内存地址），如果强制进行两者之间的转换，结果是未定义的</strong>  </p>
-<p>使用方法如下：  </p>
-<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
-<span class="k">class</span> <span class="nc">A</span>  
-<span class="p">{</span>  
+        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Animal</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="p">};</span>  
+<span class="k">class</span> <span class="nc">Lizard</span><span class="o">:</span><span class="k">public</span> <span class="n">Animal</span><span class="p">{</span>  
     <span class="k">public</span><span class="o">:</span>  
-        <span class="c1">//定义指向成员函数的指针类型  </span>
-        <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="n">A ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-28T10:29:34.838336" pubdate>2013-11-28</time></p>
-</header>
+        <span class="k">virtual</span> <span class="n">Lizard</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Animal</span><span class="o">&amp;</span><span class="p">);</span><span class="c1">//C++允许返回值不同，但是参数类型必须相同，否则就是在Lizard中重载了operator=操作符，没有实现多态  </span>
+<span class="p">};</span>  
+</pre></div>
 
-  <div class="entry-content"><h2>Item28 Smart pointer</h2>
-<ul>
-<li>智能指针相比于内置指针的优势：<br />
-1.构造和析构：分别防止空指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
-2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
-3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
-<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
-<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
-<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
-<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-28T09:15:50.566139" pubdate>2013-11-28</time></p>
-</header>
 
-  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
-<h2>Item16 80-20 principal</h2>
+<p><strong>注意</strong>：<code>*pa=*pb</code>这种情况可以利用多态，即根据pa实际指向的对象，调用对应的<code>virtual operator=</code><br />
+问题：允许了如下情形  </p>
+<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">();</span>  
+<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Chicken</span><span class="p">();</span>  
+<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//异型赋值  </span>
+</pre></div>
+
+
+<p>解决：  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Lizard</span><span class="o">:</span><span class="k">public</span> <span class="n">Animal</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//原virtual operator=(const Animal&amp;)里dynamic_cast进行判断，防止异型赋值  </span>
+        <span class="k">virtual</span> <span class="n">Lizard</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Animal</span><span class="o">&amp;</span><span class="p">);</span>  
+        <span class="c1">//重载一个普通版本，降低Lizard对象之间赋值的成本  </span>
+        <span class="n">Lizard</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Lizard</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="p">};</span>  
+</pre></div>
+
+
+<p>2.将Animal中的opeartor=设为protected<br />
+这样做，直接不允许了进行<em>pa=</em>pb这种行为，但是同时也限制了Animal对象之间的赋值。  </p>
 <ul>
-<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
-<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
-<li>Offer as much data as possible to the profiler, to find ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-      <a class="prev" href="http://particle128.com/category/cpp2.html">&larr; Older</a>
-  
-    <br />
-</div>  </div>
+<li>
+<p>终极解决方法：<br />
+将Animal当作和Lizard、chicken一样的类，然后共同继承自抽象类AbstractAnimal类，该类几乎和原Animal一样即可（相同的成员函数，相同的数据成员）。<br />
+这样就限定了<em>pa=</em>pb这种行为，而且没有AbstractAnimal对象之间的赋值问题。  </p>
+</li>
+<li>
+<p>纯虚函数的意义是：使所在类为抽象类；使该函数必须被派生类重定义(否则派生类还是抽象类)。<br />
+一般纯虚函数可以不给予实现，但是如果析构函数是纯虚函数，必须给予实现（即使是空函数也是实现），因为派生类的析构会调用它。  </p>
+</li>
+<li>
+<p>什么时候需要抽象出抽象类？<br />
+答：<br />
+1.具体类被派生时。这可以防止刚才遇到的赋值问题，还有Item3讲到的基类数组参数指向派生类数组的问题（当基类是抽象类时，就不会想要使用基类数组参数了）。<br />
+2.不要在一开始就定义一个抽象类，在前面的发生发生后才做。  </p>
+</li>
+<li>
+<p>如果需要派生第三方类库中的具体类，怎么办？<br />
+答：<br />
+1.派生具体类，但是小心基类指针解引用后的部分赋值问题，还有不要将派生类数组传入基类数组作为参数的函数。<br />
+缺点：容易出错<br />
+2.找找这个类库中有没有上层的抽象类，然后继承自它<br />
+缺点：需要实现很多本来可以继承的东西<br />
+3.将该具体类的对象当作自己要定义的类的数据成员<br />
+缺点：不能享受继承的一些特性：多态<br />
+4.直接用这个具体类，然后加一些非成员函数在外面。<br />
+缺点：代码不够清爽，不好维护。  </p>
+</li>
+</ul>
+<h2>Item34 在同一个程序里结合C++和C</h2>
+<ul>
+<li>extern "C"的使用<br />
+作用：阻止name mangling（名称重整）<br />
+1.C++程序使用C语言写的库函数，需要声明成  </li>
+</ul>
+<div class="highlight"><pre><span class="k">extern</span> <span class="s">&quot;C&quot;</span>  <span class="kt">void</span> <span class="n">func</span><span class="p">();</span> <span class="c1">//调用时不会mangling  </span>
+</pre></div>
+
+
+<p>2.C++程序写一个供C语言调用的库，需要声明成  </p>
+<div class="highlight"><pre><span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kt">void</span> <span class="n">func</span><span class="p">();</span> <span class="c1">//实现时不会mangling  </span>
+</pre></div>
+
+
+<p>3.C或C++要使用C语言写的库函数，加入如下头文件：  </p>
+<div class="highlight"><pre><span class="cp">#ifdef __cplusplus</span><span class="c1">//C++预处理器符号，C语言程序自动跳过该extern &quot;C&quot;块  </span>
+<span class="k">extern</span> <span class="s">&quot;C&quot;</span><span class="p">{</span>  
+<span class="cp">#endif  </span>
+    <span class="kt">void</span> <span class="n">func</span><span class="p">();</span>  
+    <span class="p">...</span>  
+<span class="cp">#ifdef __cplusplus  </span>
+<span class="p">}</span>  
+<span class="cp">#endif  </span>
+</pre></div>
+
+
+<ul>
+<li>statics的初始化<br />
+静态对象包括：全局对象，static对象，namespace内对象，文件范围(file scope)内对象<br />
+C++会在main函数之前，加入一段对静态对象的构造语句，称为static initialization<br />
+同时，会在main函数之后，加入一段对静态对象的析构语句，称为static destruction  </li>
+<li>new和delete，malloc和free必须成对<br />
+否则结果未定义  </li>
+<li>数据结构兼容性<br />
+不能传递的有：<br />
+对象，<br />
+成员函数指针<br />
+可以兼容传递的有：<br />
+普通指针（指向对象、非成员函数/静态成员函数），<br />
+内置类型变量，<br />
+某些struct对象（满足：不含有虚函数，不继承自其他对象）  </li>
+</ul></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-11-30T21:27:13.733632" pubdate>2013-11-30</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
+        <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
@@ -263,6 +268,9 @@
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/11/MoreEffectiveCpp(7).html';
+          var disqus_url = 'http://particle128.com/posts/2013/11/MoreEffectiveCpp(7).html';
+          var disqus_title = 'MoreEffectiveC++(7)';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

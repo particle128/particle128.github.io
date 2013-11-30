@@ -61,6 +61,43 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-30T21:27:13.733632" pubdate>2013-11-30</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32 在未来时态下发展程序</h2>
+<ul>
+<li>面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  </li>
+<li>请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  </li>
+<li>没有virtual destructor的String类，不能用于当作基类(因为当作基类，就有delete指向派生对象的基类指针的可能性)。  </li>
+</ul>
+<h2>Item 33 将非尾端(non-leaf)类设计为抽象类</h2>
+<ul>
+<li>考虑这样一个继承体系<br />
+具体类Animal -&gt;派生Lizard和Chicken<br />
+可能出现部分赋值（partial assignment）的问题：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>  
+<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>  
+<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//Animal部分赋值，Lizard部分没有赋值  </span>
+</pre></div>
+
+
+<ul>
+<li>解决方法：<br />
+1.operator=变成虚函数从而利用多态实现派生类的赋值  </li>
+</ul>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Animal</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(7).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
       </h1>
           <p class="meta"><time datetime="2013-11-29T18:42:31.205341" pubdate>2013-11-29</time></p>
@@ -147,46 +184,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-29T10:05:01.187104" pubdate>2013-10-29</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>Introduction</strong>  </p>
-<ul>
-<li>没有实现bool类型的编译器，替代方案：<br />
-(1)enum bool{false,true};<br />
-缺点：无法int赋值给bool变量<br />
-(2)typedef int bool;<br />
-const bool false=0;<br />
-const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </li>
-<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
-</ul>
-<p><strong>基础议题Basics</strong></p>
-<h2>Item1</h2>
-<ul>
-<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">//使用指针  </span>
-<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
-    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
-<span class="c1">//使用引用  </span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
-</pre></div>
-
-
-<h2>Item2</h2>
-<ul>
-<li>const_cast用于改变constnest和valatileness  </li>
-<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/tag/moreeffectivecpp2.html">&larr; Older</a>
   
@@ -196,6 +193,9 @@ const bool true=1;<br />
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
       </li>
@@ -207,9 +207,6 @@ const bool true=1;<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
       </li>
           </ul>
   </section>

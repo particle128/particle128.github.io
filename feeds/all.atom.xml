@@ -1,5 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-11-29T18:42:31+08:00</updated><entry><title>MoreEffectiveC++(6)</title><link href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html" rel="alternate"></link><updated>2013-11-29T18:42:31+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-29:posts/2013/11/MoreEffectiveCpp(6).html</id><summary type="html">&lt;p&gt;&lt;em&gt;感受&lt;/em&gt;：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-11-30T21:27:13+08:00</updated><entry><title>MoreEffectiveC++(7)</title><link href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(7).html" rel="alternate"></link><updated>2013-11-30T21:27:13+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-30:posts/2013/11/MoreEffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 32 在未来时态下发展程序&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  &lt;/li&gt;
+&lt;li&gt;请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  &lt;/li&gt;
+&lt;li&gt;没有virtual destructor的String类，不能用于当作基类(因为当作基类，就有delete指向派生对象的基类指针的可能性)。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item 33 将非尾端(non-leaf)类设计为抽象类&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;考虑这样一个继承体系&lt;br /&gt;
+具体类Animal -&amp;gt;派生Lizard和Chicken&lt;br /&gt;
+可能出现部分赋值（partial assignment）的问题：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pa&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Lizard&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Lizard&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pa&lt;/span&gt;&lt;span class="o"&gt;=*&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//Animal部分赋值，Lizard部分没有赋值  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;解决方法：&lt;br /&gt;
+1.operator=变成虚函数从而利用多态实现派生类的赋值  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Animal&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+        &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Lizard&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+        &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;Lizard&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//C++允许返回值不同，但是参数类型必须相同，否则就是在Lizard中重载了operator=操作符，没有实现多态  &lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：&lt;code&gt;*pa=*pb&lt;/code&gt;这种情况可以利用多态，即根据pa实际指向的对象，调用对应的&lt;code&gt;virtual operator=&lt;/code&gt;&lt;br /&gt;
+问题：允许了如下情形  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pa&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Lizard&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Chicken&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pa&lt;/span&gt;&lt;span class="o"&gt;=*&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//异型赋值  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;解决：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Lizard&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+        &lt;span class="c1"&gt;//原virtual operator=(const Animal&amp;amp;)里dynamic_cast进行判断，防止异型赋值  &lt;/span&gt;
+        &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;Lizard&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+        &lt;span class="c1"&gt;//重载一个普通版本，降低Lizard对象之间赋值的成本  &lt;/span&gt;
+        &lt;span class="n"&gt;Lizard&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Lizard&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.将Animal中的opeartor=设为protected&lt;br /&gt;
+这样做，直接不允许了进行&lt;em&gt;pa=&lt;/em&gt;pb这种行为，但是同时也限制了Animal对象之间的赋值。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;终极解决方法：&lt;br /&gt;
+将Animal当作和Lizard、chicken一样的类，然后共同继承自抽象类AbstractAnimal类，该类几乎和原Animal一样即可（相同的成员函数，相同的数据成员）。&lt;br /&gt;
+这样就限定了&lt;em&gt;pa=&lt;/em&gt;pb这种行为，而且没有AbstractAnimal对象之间的赋值问题。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;纯虚函数的意义是：使所在类为抽象类；使该函数必须被派生类重定义(否则派生类还是抽象类)。&lt;br /&gt;
+一般纯虚函数可以不给予实现，但是如果析构函数是纯虚函数，必须给予实现（即使是空函数也是实现），因为派生类的析构会调用它。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;什么时候需要抽象出抽象类？&lt;br /&gt;
+答：&lt;br /&gt;
+1.具体类被派生时。这可以防止刚才遇到的赋值问题，还有Item3讲到的基类数组参数指向派生类数组的问题（当基类是抽象类时，就不会想要使用基类数组参数了）。&lt;br /&gt;
+2.不要在一开始就定义一个抽象类，在前面的发生发生后才做。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果需要派生第三方类库中的具体类，怎么办？&lt;br /&gt;
+答：&lt;br /&gt;
+1.派生具体类，但是小心基类指针解引用后的部分赋值问题，还有不要将派生类数组传入基类数组作为参数的函数。&lt;br /&gt;
+缺点：容易出错&lt;br /&gt;
+2.找找这个类库中有没有上层的抽象类，然后继承自它&lt;br /&gt;
+缺点：需要实现很多本来可以继承的东西&lt;br /&gt;
+3.将该具体类的对象当作自己要定义的类的数据成员&lt;br /&gt;
+缺点：不能享受继承的一些特性：多态&lt;br /&gt;
+4.直接用这个具体类，然后加一些非成员函数在外面。&lt;br /&gt;
+缺点：代码不够清爽，不好维护。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item34 在同一个程序里结合C++和C&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;extern "C"的使用&lt;br /&gt;
+作用：阻止name mangling（名称重整）&lt;br /&gt;
+1.C++程序使用C语言写的库函数，需要声明成  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;C&amp;quot;&lt;/span&gt;  &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//调用时不会mangling  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.C++程序写一个供C语言调用的库，需要声明成  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;C&amp;quot;&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//实现时不会mangling  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;3.C或C++要使用C语言写的库函数，加入如下头文件：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#ifdef __cplusplus&lt;/span&gt;&lt;span class="c1"&gt;//C++预处理器符号，C语言程序自动跳过该extern &amp;quot;C&amp;quot;块  &lt;/span&gt;
+&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;C&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+&lt;span class="cp"&gt;#endif  &lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+    &lt;span class="p"&gt;...&lt;/span&gt;  
+&lt;span class="cp"&gt;#ifdef __cplusplus  &lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="cp"&gt;#endif  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;statics的初始化&lt;br /&gt;
+静态对象包括：全局对象，static对象，namespace内对象，文件范围(file scope)内对象&lt;br /&gt;
+C++会在main函数之前，加入一段对静态对象的构造语句，称为static initialization&lt;br /&gt;
+同时，会在main函数之后，加入一段对静态对象的析构语句，称为static destruction  &lt;/li&gt;
+&lt;li&gt;new和delete，malloc和free必须成对&lt;br /&gt;
+否则结果未定义  &lt;/li&gt;
+&lt;li&gt;数据结构兼容性&lt;br /&gt;
+不能传递的有：&lt;br /&gt;
+对象，&lt;br /&gt;
+成员函数指针&lt;br /&gt;
+可以兼容传递的有：&lt;br /&gt;
+普通指针（指向对象、非成员函数/静态成员函数），&lt;br /&gt;
+内置类型变量，&lt;br /&gt;
+某些struct对象（满足：不含有虚函数，不继承自其他对象）  &lt;/li&gt;
+&lt;/ul&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(6)</title><link href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html" rel="alternate"></link><updated>2013-11-29T18:42:31+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-29:posts/2013/11/MoreEffectiveCpp(6).html</id><summary type="html">&lt;p&gt;&lt;em&gt;感受&lt;/em&gt;：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  &lt;/p&gt;
 &lt;h2&gt;Item31: 让函数根据一个以上的对象类型决定如何虚化&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;问题背景：&lt;br /&gt;

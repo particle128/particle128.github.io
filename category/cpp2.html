@@ -61,6 +61,26 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-06T11:24:54.805702" pubdate>2013-11-06</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 26: Postpone variable definitions as long as possible.</h2>
+<p>1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。<br />
+2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点<br />
+(1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分<br />
+因为：缩小变量的作用域，对于程序的可理解性和易维护性好。  </p>
+<h2>Item 27:Minimizing casting</h2>
+<p>1.C++风格类型转换中，<code>dynamic_cast&lt;T&gt;(expr)</code>是唯一一个无法用旧式语法（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。<br />
+2.能用C++风格转型 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
       </h1>
           <p class="meta"><time datetime="2013-11-06T11:21:12.997692" pubdate>2013-11-06</time></p>
@@ -159,29 +179,6 @@ C++的名字查找(name lookup)，作为重载确定(overload resolution)的第�
     <a rel="full-article" href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-01T11:22:57.983014" pubdate>2013-11-01</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
-<h2>Item25 构造函数、非成员函数的虚化</h2>
-<ul>
-<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
-<li>3种语义上的虚化：<br />
-1.虚构造函数<br />
-根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
-2.虚拷贝构造函数<br />
-定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
-3.虚非成员函数<br />
-定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c ...</code></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/category/cpp3.html">&larr; Older</a>
   
@@ -193,6 +190,9 @@ C++的名字查找(name lookup)，作为重载确定(overload resolution)的第�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
       </li>
             <li class="post">
@@ -203,9 +203,6 @@ C++的名字查找(name lookup)，作为重载确定(overload resolution)的第�
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
       </li>
           </ul>
   </section>
