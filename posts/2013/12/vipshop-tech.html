@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>利用selenium开发vip.com抢购助手的相关技术问题</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">利用selenium开发vip.com抢购助手的相关技术问题</h1>
+          <p class="meta"><time datetime="2013-12-01T15:49:43.969749" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>下载selenium chrome driver：<br />
+<a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
+安装selenium ：<code>pip install -U selenium</code>  </p>
+<h2>难点：</h2>
+<p>1.不同操作系统、不同网络状况、不同计算机内存情况，对一个页面的加载速度是不同的，用同一个时间来设置超时太不灵活，设置短了，某些机器可能加载不到东西就退出了；设置长了，可能浪费了一些等待的时间。<br />
+因此，采用标准超时时间每次超时+1的策略，然后把特定于某个机器的超时时间保存与配置文件内！<br />
+2.有些页面在给定的门限（比如2）次超时刷新后仍然加载不上的话，就直接跳过。  </p>
+<h2>遇到的问题和总结：</h2>
+<ul>
+<li>不输入回车直接读入键盘操作，因此需要设置终端输入no buffer模式  </li>
+</ul>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>  
+<span class="kn">import</span> <span class="nn">termios</span>  
+
+<span class="k">try</span><span class="p">:</span>  
+     <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
+     <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
+     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>  
+     <span class="n">new</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>  
+     <span class="n">new</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">termios</span><span class="o">.</span><span class="n">ICANON</span>  
+     <span class="n">termios</span><span class="o">.</span><span class="n">tcsetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">termios</span><span class="o">.</span><span class="n">TCSADRAIN</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>  
+     <span class="c"># code here  </span>
+
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  
+     <span class="k">print</span> <span class="n">e</span>  
+<span class="k">finally</span><span class="p">:</span>  
+      <span class="n">termios</span><span class="o">.</span><span class="n">tcsetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">termios</span><span class="o">.</span><span class="n">TCSADRAIN</span><span class="p">,</span> <span class="n">old</span><span class="p">)</span>  
+</pre></div>
+
+
+<ul>
+<li>经常需要调用某个命令，忽略抛出的异常（一般是TimeoutException），定义如下函数  </li>
+</ul>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">call_with_no_except</span><span class="p">(</span><span class="n">func</span><span class="p">,</span><span class="n">arg</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>  
+     <span class="k">try</span><span class="p">:</span>  
+          <span class="k">if</span> <span class="n">arg</span><span class="p">:</span>  
+               <span class="n">func</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="c">#一个参数  </span>
+          <span class="k">else</span><span class="p">:</span>  
+               <span class="n">func</span><span class="p">()</span> <span class="c">#无参  </span>
+     <span class="k">except</span><span class="p">:</span>  
+          <span class="k">pass</span>  
+</pre></div>
+
+
+<ul>
+<li>
+<p>Selenium模块的driver.find_elements_by_xpath("//tag[@class='pro_list_pic'][2]")有问题，会返回NoSuchElementException，不知道是bug还是没有实现这个功能，用其他函数代替。  </p>
+</li>
+<li>
+<p>读取无缓冲的标准输入  </p>
+</li>
+</ul>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">select</span> <span class="kn">import</span> <span class="n">select</span>  
+<span class="n">rlist</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="o">=</span><span class="n">select</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">],[],[])</span>  
+
+<span class="k">if</span> <span class="n">rlist</span><span class="p">:</span>  
+     <span class="n">c</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
+</pre></div>
+
+
+<p>读取有缓冲的管道输入：  </p>
+<div class="highlight"><pre><span class="n">select</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">],[],[])</span>  
+<span class="n">infos</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span> <span class="c">#不能使用read(2)。readline读出的字符串带有结尾的换行符  </span>
+</pre></div>
+
+
+<ul>
+<li>创建子进程，传递3个参数，并通过管道与其通信（该应用中之需要单向的通信）  </li>
+</ul>
+<div class="highlight"><pre><span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s">&#39;python&#39;</span><span class="p">,</span><span class="s">&#39;slave.py&#39;</span><span class="p">,</span><span class="n">user</span><span class="p">,</span><span class="n">pwd</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">xpos</span><span class="p">)],</span><span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>  
+</pre></div>
+
+
+<ul>
+<li>与子进程的通信  </li>
+</ul>
+<div class="highlight"><pre><span class="k">while</span> <span class="bp">True</span><span class="p">:</span> <span class="c">#找到可用的子进程  </span>
+     <span class="k">if</span> <span class="n">ps</span><span class="p">[</span><span class="n">pIdx</span><span class="p">]</span><span class="o">.</span><span class="n">poll</span><span class="p">():</span> <span class="c">#一定要调用poll()返回returncode，而不是直接查看returncode属性，因为returncode属性是被poll()，wait()和communicate()3个函数设置的。  </span>
+          <span class="k">del</span> <span class="n">ps</span><span class="p">[</span><span class="n">pIdx</span><span class="p">]</span>  
+          <span class="k">print</span> <span class="n">pIdx</span><span class="p">,</span><span class="s">&#39;process quits by accident&#39;</span>  
+          <span class="k">if</span> <span class="n">ps</span><span class="p">:</span>  
+               <span class="n">pIdx</span><span class="o">=</span><span class="p">(</span><span class="n">pIdx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span>  
+         <span class="k">else</span><span class="p">:</span>  
+               <span class="k">print</span> <span class="s">&#39;all processes are dead...&#39;</span>  
+               <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c">#退出  </span>
+     <span class="k">else</span><span class="p">:</span>  
+          <span class="k">break</span>  
+<span class="n">ps</span><span class="p">[</span><span class="n">pIdx</span><span class="p">]</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">href</span><span class="p">)</span>  
+<span class="n">pIdx</span><span class="o">=</span><span class="p">(</span><span class="n">pIdx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span>  
+</pre></div>
+
+
+<ul>
+<li>需要实现的功能如下：  </li>
+</ul>
+<p>[1] get获取页面<br />
+[2] 如果页面超时，忽略，并在页面上find元素<br />
+[3] find元素的时候如果出错（比如页面没加载完全所需元素），刷新，转而进行[2]<br />
+[4] 上面2、3步骤重复上限是MaxReload<br />
+代码如下：  </p>
+<div class="highlight"><pre><span class="n">cnt</span><span class="o">=</span><span class="mi">0</span>  
+<span class="n">ref</span><span class="o">=</span><span class="bp">False</span>  
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>  
+     <span class="k">try</span><span class="p">:</span>  
+          <span class="k">if</span> <span class="n">ref</span><span class="p">:</span>  
+               <span class="n">driver</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>  
+          <span class="c"># 用xpath定位element  </span>
+          <span class="n">ul</span><span class="o">=</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s">&quot;//table[@class=&#39;tab_data&#39;]/tbody/tr/td/div/div/ul&quot;</span><span class="p">)</span>  
+
+         <span class="c"># code here  </span>
+
+     <span class="k">except</span> <span class="n">TimeoutException</span><span class="p">:</span>  
+          <span class="k">print</span> <span class="s">&#39;timeout&#39;</span>  
+          <span class="n">ref</span><span class="o">=</span><span class="bp">False</span>  
+     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  
+          <span class="k">print</span> <span class="n">e</span>  
+          <span class="k">if</span> <span class="n">cnt</span><span class="o">==</span><span class="n">MaxReload</span><span class="p">:</span>  
+               <span class="k">print</span> <span class="s">&#39;get to MaxReload,return&#39;</span>  
+               <span class="k">return</span> <span class="c">#直接函数返回，忽略该商品  </span>
+          <span class="k">else</span><span class="p">:</span>  
+               <span class="n">cnt</span><span class="o">+=</span><span class="mi">1</span>  
+               <span class="n">ref</span><span class="o">=</span><span class="bp">True</span><span class="c">#重新加载该页  </span>
+     <span class="k">else</span><span class="p">:</span>  
+          <span class="k">break</span>  
+</pre></div>
+
+
+<ul>
+<li>设置页面加载超时  </li>
+</ul>
+<div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">set_page_load_timeout</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  
+</pre></div>
+
+
+<p>设置之后，调用driver.get和driver.refresh，如果发生超时，直接抛出TimeoutException异常。<br />
+设置之后，执行  </p>
+<div class="highlight"><pre><span class="n">action</span><span class="o">=</span><span class="n">ActionChains</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>  
+<span class="n">action</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">ele</span><span class="p">)</span>  
+<span class="n">action</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span><span class="err">，会在下一次调用</span><span class="n">driver</span><span class="err">的地方抛出</span><span class="n">TimeoutException</span><span class="err">异常。</span>  
+</pre></div></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-12-01T15:49:43.969749" pubdate>2013-12-01</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/python.html">python</a>
+        <a class="category" href="http://particle128.com/tag/selenium.html">selenium</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">利用selenium开发vip.com抢购助手的相关技术问题</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/12/vipshop-tech.html';
+          var disqus_url = 'http://particle128.com/posts/2013/12/vipshop-tech.html';
+          var disqus_title = '利用selenium开发vip.com抢购助手的相关技术问题';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

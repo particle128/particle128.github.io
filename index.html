@@ -61,6 +61,37 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">利用selenium开发vip.com抢购助手的相关技术问题</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T15:49:43.969749" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>下载selenium chrome driver：<br />
+<a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
+安装selenium ：<code>pip install -U selenium</code>  </p>
+<h2>难点：</h2>
+<p>1.不同操作系统、不同网络状况、不同计算机内存情况，对一个页面的加载速度是不同的，用同一个时间来设置超时太不灵活，设置短了，某些机器可能加载不到东西就退出了；设置长了，可能浪费了一些等待的时间。<br />
+因此，采用标准超时时间每次超时+1的策略，然后把特定于某个机器的超时时间保存与配置文件内！<br />
+2.有些页面在给定的门限（比如2）次超时刷新后仍然加载不上的话，就直接跳过。  </p>
+<h2>遇到的问题和总结：</h2>
+<ul>
+<li>不输入回车直接读入键盘操作，因此需要设置终端输入no buffer模式  </li>
+</ul>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>  
+<span class="kn">import</span> <span class="nn">termios</span>  
+
+<span class="k">try</span><span class="p">:</span>  
+     <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
+     <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
+     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>  
+     <span class="n">new</span> <span class="o">=</span> <span class="n">termios ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
       </h1>
           <p class="meta"><time datetime="2013-12-01T13:46:23.381419" pubdate>2013-12-01</time></p>
@@ -179,24 +210,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-28T09:15:50.566139" pubdate>2013-11-28</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
-<h2>Item16 80-20 principal</h2>
-<ul>
-<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
-<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
-<li>Offer as much data as possible to the profiler, to find ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index2.html">&larr; Older</a>
   
@@ -206,6 +219,9 @@
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">利用selenium开发vip.com抢购助手的相关技术问题</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
       </li>
@@ -217,9 +233,6 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
       </li>
           </ul>
   </section>
@@ -238,7 +251,7 @@
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
 
     
     <section>

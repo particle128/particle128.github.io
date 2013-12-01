@@ -61,6 +61,26 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T14:00:41.520375" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
+<h3>Domain Name System</h3>
+<p>host name &lt; - &gt; ip address<br />
+主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
+如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
+<h3>名字/域名服务器层次结构：</h3>
+<p>root name server 根域名服务器（无名）<br />
+TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/dns.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
       </h1>
           <p class="meta"><time datetime="2013-10-15T13:55:39.804362" pubdate>2013-10-15</time></p>
@@ -150,31 +170,6 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T20:09:29.927587" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><p>关于new和delete的东西，笔记不够详尽，因为新知识比较多，不太方便记录笔记。发现相关知识漏洞的时候，再去查看Cpp Primer和Effective Cpp相关章节。  </p>
-<h2>Item 49: Understand the behavior of the new-handler</h2>
-<p>1.<code>std::set_new_handler()</code>可以绑定一个<code>new_handler</code>（类型为<code>void (*)()</code>），即new获取不到所需内存时调用的客户定制函数。如果不设置函数，或设置null，直接抛出异常<code>std::bad_alloc</code>。<br />
-2.获取<code>new_handler</code>函数的方式：  </p>
-<div class="highlight"><pre><span class="n">handler</span><span class="o">=</span><span class="n">set_new_handler</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  
-<span class="n">set_new_handler</span><span class="p">(</span><span class="n">handler</span><span class="p">);</span>  
-</pre></div>
-
-
-<p>3.new_handler应该具备以下一种功能：<br />
-（1）让更多内存可被使用。否则::operator new会无限循环调用非空的new_handler。例如程序开始分配一个内存池，动态分配不到资源的时候释放一些资源出来。<br />
-（2）安装另一个可以释放更多内存的new_handler函数。<br />
-（3 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index6.html">&larr; Older</a>
   
@@ -186,6 +181,9 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">利用selenium开发vip.com抢购助手的相关技术问题</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
       </li>
             <li class="post">
@@ -196,9 +194,6 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
       </li>
           </ul>
   </section>
@@ -217,7 +212,7 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
 
     
     <section>

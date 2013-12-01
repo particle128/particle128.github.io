@@ -1,5 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/python.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-15T13:55:39+08:00</updated><entry><title>Python学习笔记-ConfigParser模块</title><link href="http://particle128.com/posts/2013/10/python-configparser.html" rel="alternate"></link><updated>2013-10-15T13:55:39+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/python-configparser.html</id><summary type="html">&lt;h3&gt;前言&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/python.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-01T15:49:43+08:00</updated><entry><title>利用selenium开发vip.com抢购助手的相关技术问题</title><link href="http://particle128.com/posts/2013/12/vipshop-tech.html" rel="alternate"></link><updated>2013-12-01T15:49:43+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-tech.html</id><summary type="html">&lt;p&gt;下载selenium chrome driver：&lt;br /&gt;
+&lt;a href="https://code.google.com/p/chromedriver/downloads/list"&gt;url&lt;/a&gt;&lt;br /&gt;
+安装selenium ：&lt;code&gt;pip install -U selenium&lt;/code&gt;  &lt;/p&gt;
+&lt;h2&gt;难点：&lt;/h2&gt;
+&lt;p&gt;1.不同操作系统、不同网络状况、不同计算机内存情况，对一个页面的加载速度是不同的，用同一个时间来设置超时太不灵活，设置短了，某些机器可能加载不到东西就退出了；设置长了，可能浪费了一些等待的时间。&lt;br /&gt;
+因此，采用标准超时时间每次超时+1的策略，然后把特定于某个机器的超时时间保存与配置文件内！&lt;br /&gt;
+2.有些页面在给定的门限（比如2）次超时刷新后仍然加载不上的话，就直接跳过。  &lt;/p&gt;
+&lt;h2&gt;遇到的问题和总结：&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;不输入回车直接读入键盘操作，因此需要设置终端输入no buffer模式  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;termios&lt;/span&gt;  
+
+&lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+     &lt;span class="c"&gt;# 命令行不缓冲直接读入，linux版本  &lt;/span&gt;
+     &lt;span class="n"&gt;fd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fileno&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+     &lt;span class="n"&gt;old&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;termios&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tcgetattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+     &lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;termios&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tcgetattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+     &lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;termios&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ICANON&lt;/span&gt;  
+     &lt;span class="n"&gt;termios&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tcsetattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;termios&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TCSADRAIN&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;new&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+     &lt;span class="c"&gt;# code here  &lt;/span&gt;
+
+&lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;Exception&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+     &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;  
+&lt;span class="k"&gt;finally&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+      &lt;span class="n"&gt;termios&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tcsetattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;termios&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TCSADRAIN&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;old&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;经常需要调用某个命令，忽略抛出的异常（一般是TimeoutException），定义如下函数  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;call_with_no_except&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+     &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+               &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;#一个参数  &lt;/span&gt;
+          &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+               &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c"&gt;#无参  &lt;/span&gt;
+     &lt;span class="k"&gt;except&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+          &lt;span class="k"&gt;pass&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Selenium模块的driver.find_elements_by_xpath("//tag[@class='pro_list_pic'][2]")有问题，会返回NoSuchElementException，不知道是bug还是没有实现这个功能，用其他函数代替。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;读取无缓冲的标准输入  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;select&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;select&lt;/span&gt;  
+&lt;span class="n"&gt;rlist&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;select&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="p"&gt;],[],[])&lt;/span&gt;  
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;rlist&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+     &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;读取有缓冲的管道输入：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;select&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="p"&gt;],[],[])&lt;/span&gt;  
+&lt;span class="n"&gt;infos&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;readline&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c"&gt;#不能使用read(2)。readline读出的字符串带有结尾的换行符  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;创建子进程，传递3个参数，并通过管道与其通信（该应用中之需要单向的通信）  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;slave.py&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xpos&lt;/span&gt;&lt;span class="p"&gt;)],&lt;/span&gt;&lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;PIPE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;与子进程的通信  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c"&gt;#找到可用的子进程  &lt;/span&gt;
+     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;ps&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pIdx&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;poll&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt; &lt;span class="c"&gt;#一定要调用poll()返回returncode，而不是直接查看returncode属性，因为returncode属性是被poll()，wait()和communicate()3个函数设置的。  &lt;/span&gt;
+          &lt;span class="k"&gt;del&lt;/span&gt; &lt;span class="n"&gt;ps&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pIdx&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
+          &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;pIdx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;process quits by accident&amp;#39;&lt;/span&gt;  
+          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;ps&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+               &lt;span class="n"&gt;pIdx&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pIdx&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ps&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+         &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+               &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;all processes are dead...&amp;#39;&lt;/span&gt;  
+               &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;#退出  &lt;/span&gt;
+     &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+          &lt;span class="k"&gt;break&lt;/span&gt;  
+&lt;span class="n"&gt;ps&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pIdx&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;href&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;pIdx&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pIdx&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ps&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;需要实现的功能如下：  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;[1] get获取页面&lt;br /&gt;
+[2] 如果页面超时，忽略，并在页面上find元素&lt;br /&gt;
+[3] find元素的时候如果出错（比如页面没加载完全所需元素），刷新，转而进行[2]&lt;br /&gt;
+[4] 上面2、3步骤重复上限是MaxReload&lt;br /&gt;
+代码如下：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;  
+&lt;span class="n"&gt;ref&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;  
+&lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+     &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;ref&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+               &lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;refresh&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+          &lt;span class="c"&gt;# 用xpath定位element  &lt;/span&gt;
+          &lt;span class="n"&gt;ul&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_element_by_xpath&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;//table[@class=&amp;#39;tab_data&amp;#39;]/tbody/tr/td/div/div/ul&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+
+         &lt;span class="c"&gt;# code here  &lt;/span&gt;
+
+     &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="n"&gt;TimeoutException&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+          &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;timeout&amp;#39;&lt;/span&gt;  
+          &lt;span class="n"&gt;ref&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;  
+     &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;Exception&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+          &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;  
+          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="n"&gt;MaxReload&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+               &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;get to MaxReload,return&amp;#39;&lt;/span&gt;  
+               &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="c"&gt;#直接函数返回，忽略该商品  &lt;/span&gt;
+          &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+               &lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;  
+               &lt;span class="n"&gt;ref&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="c"&gt;#重新加载该页  &lt;/span&gt;
+     &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+          &lt;span class="k"&gt;break&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;设置页面加载超时  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_page_load_timeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;设置之后，调用driver.get和driver.refresh，如果发生超时，直接抛出TimeoutException异常。&lt;br /&gt;
+设置之后，执行  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;action&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;ActionChains&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;action&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;click&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ele&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;action&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;perform&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="err"&gt;，会在下一次调用&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="err"&gt;的地方抛出&lt;/span&gt;&lt;span class="n"&gt;TimeoutException&lt;/span&gt;&lt;span class="err"&gt;异常。&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="selenium"></category></entry><entry><title>Python学习笔记-ConfigParser模块</title><link href="http://particle128.com/posts/2013/10/python-configparser.html" rel="alternate"></link><updated>2013-10-15T13:55:39+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/python-configparser.html</id><summary type="html">&lt;h3&gt;前言&lt;/h3&gt;
 &lt;p&gt;配置文件可以有很多种格式，windows下常用ini格式，网络上常用xml和json格式，分别可以调用的python模块如下：&lt;br /&gt;
 ini——ConfigParser模块&lt;br /&gt;
 xml——xml.etree.ElementTree模块&lt;br /&gt;
