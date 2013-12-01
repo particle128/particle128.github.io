@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MoreEffectiveC++(7)</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">MoreEffectiveC++(7)</h1>
+          <p class="meta"><time datetime="2013-12-01T13:46:23.381419" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32 在未来时态下发展程序</h2>
+<ul>
+<li>面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  </li>
+<li>请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  </li>
+<li>没有virtual destructor的String类，不能用于当作基类(因为当作基类，就有delete指向派生对象的基类指针的可能性)。  </li>
+</ul>
+<h2>Item 33 将非尾端(non-leaf)类设计为抽象类</h2>
+<ul>
+<li>考虑这样一个继承体系<br />
+具体类Animal -&gt;派生Lizard和Chicken<br />
+可能出现部分赋值（partial assignment）的问题：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>  
+<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>  
+<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//Animal部分赋值，Lizard部分没有赋值  </span>
+</pre></div>
+
+
+<ul>
+<li>解决方法：<br />
+1.operator=变成虚函数从而利用多态实现派生类的赋值  </li>
+</ul>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Animal</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Animal</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="p">};</span>  
+<span class="k">class</span> <span class="nc">Lizard</span><span class="o">:</span><span class="k">public</span> <span class="n">Animal</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="k">virtual</span> <span class="n">Lizard</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Animal</span><span class="o">&amp;</span><span class="p">);</span><span class="c1">//C++允许返回值不同，但是参数类型必须相同，否则就是在Lizard中重载了operator=操作符，没有实现多态  </span>
+<span class="p">};</span>  
+</pre></div>
+
+
+<p><strong>注意</strong>：<code>*pa=*pb</code>这种情况可以利用多态，即根据pa实际指向的对象，调用对应的<code>virtual operator=</code><br />
+问题：允许了如下情形  </p>
+<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">();</span>  
+<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Chicken</span><span class="p">();</span>  
+<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//异型赋值  </span>
+</pre></div>
+
+
+<p>解决：<br />
+operator=函数里用dynamic_cast转型； 同时定义一个重载函数。  </p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Lizard</span><span class="o">:</span><span class="k">public</span> <span class="n">Animal</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//原virtual operator=(const Animal&amp;)里dynamic_cast进行判断，防止异型赋值  </span>
+        <span class="k">virtual</span> <span class="n">Lizard</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Animal</span><span class="o">&amp;</span><span class="p">);</span>  
+        <span class="c1">//重载一个普通版本，降低Lizard对象之间赋值的成本  </span>
+        <span class="n">Lizard</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Lizard</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="p">};</span>  
+</pre></div>
+
+
+<p>2.将Animal中的opeartor=设为protected<br />
+这样做，直接不允许了进行<em>pa=</em>pb这种行为，但是同时也限制了Animal对象之间的赋值。  </p>
+<ul>
+<li>
+<p>终极解决方法：<br />
+将Animal当作和Lizard、chicken一样的类，然后共同继承自抽象类AbstractAnimal类，该类几乎和原Animal一样即可（相同的成员函数，相同的数据成员）。<br />
+AbstractAnimal的operator=设为protected。<br />
+这样就限定了<em>pa=</em>pb这种行为，而且没有AbstractAnimal对象之间的赋值问题。<br />
+<strong>注意</strong>：仅仅定义纯虚函数，还是可以<code>*pa=*pb</code>这类部分赋值(更常用的说法是slicing)，因为这并没有实例化抽象类，只是把派生类切割成基类部分，然后进行了赋值。  </p>
+</li>
+<li>
+<p>纯虚函数的意义是：使所在类为抽象类；使该函数必须被派生类重定义(否则派生类还是抽象类)。<br />
+一般纯虚函数可以不给予实现，但是如果析构函数是纯虚函数，必须给予实现（即使是空函数也是实现），因为派生类的析构会调用它。  </p>
+</li>
+<li>
+<p>什么时候需要抽象出抽象类？<br />
+答：<br />
+1.具体类被派生时。这可以防止刚才遇到的赋值问题，还有Item3讲到的基类数组参数指向派生类数组的问题（当基类是抽象类时，就不会想要使用基类数组参数了）。<br />
+2.不要在一开始就定义一个抽象类，在前面的发生发生后才做。  </p>
+</li>
+<li>
+<p>如果需要派生第三方类库中的具体类，怎么办？<br />
+答：<br />
+1.派生具体类，但是小心基类指针解引用后的部分赋值问题，还有不要将派生类数组传入基类数组作为参数的函数。<br />
+缺点：容易出错<br />
+2.找找这个类库中有没有上层的抽象类，然后继承自它<br />
+缺点：需要实现很多本来可以继承的东西<br />
+3.将该具体类的对象当作自己要定义的类的数据成员<br />
+缺点：不能享受继承的一些特性：多态<br />
+4.直接用这个具体类，然后加一些非成员函数在外面。<br />
+缺点：代码不够清爽，不好维护。  </p>
+</li>
+</ul>
+<h2>Item34 在同一个程序里结合C++和C</h2>
+<ul>
+<li>extern "C"的使用<br />
+作用：阻止name mangling（名称重整）<br />
+1.C++程序使用C语言写的库函数，需要声明成  </li>
+</ul>
+<div class="highlight"><pre><span class="k">extern</span> <span class="s">&quot;C&quot;</span>  <span class="kt">void</span> <span class="n">func</span><span class="p">();</span> <span class="c1">//调用时不会mangling  </span>
+</pre></div>
+
+
+<p>2.C++程序写一个供C语言调用的库，需要声明成  </p>
+<div class="highlight"><pre><span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kt">void</span> <span class="n">func</span><span class="p">();</span> <span class="c1">//实现时不会mangling  </span>
+</pre></div>
+
+
+<p>3.C或C++要使用C语言写的库函数，加入如下头文件：  </p>
+<div class="highlight"><pre><span class="cp">#ifdef __cplusplus</span><span class="c1">//C++预处理器符号，C语言程序自动跳过该extern &quot;C&quot;块  </span>
+<span class="k">extern</span> <span class="s">&quot;C&quot;</span><span class="p">{</span>  
+<span class="cp">#endif  </span>
+    <span class="kt">void</span> <span class="n">func</span><span class="p">();</span>  
+    <span class="p">...</span>  
+<span class="cp">#ifdef __cplusplus  </span>
+<span class="p">}</span>  
+<span class="cp">#endif  </span>
+</pre></div>
+
+
+<ul>
+<li>statics的初始化<br />
+静态对象包括：全局对象(program scope)，类静态对象(class scope)，namespace内对象(namespace scope)，文件内静态对象(file scope)<br />
+C++会在main函数之前，加入一段对静态对象的构造语句，称为static initialization<br />
+同时，会在main函数之后，加入一段对静态对象的析构语句，称为static destruction<br />
+<strong>注意</strong>：anonymous namespace的出现，相当于取代了文件静态对象;函数内静态对象不属于“静态对象”的范畴，它的初始化是在第一次调用的时候，而不是main之前。</li>
+<li>new和delete，malloc和free必须成对<br />
+否则结果未定义  </li>
+<li>数据结构兼容性<br />
+不能传递的有：<br />
+对象，<br />
+成员函数指针<br />
+可以兼容传递的有：<br />
+普通指针（指向对象、非成员函数/静态成员函数），<br />
+内置类型变量，<br />
+某些struct对象（满足：不含有虚函数，不继承自其他对象）  </li>
+</ul></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-12-01T13:46:23.381419" pubdate>2013-12-01</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
+        <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/12/MoreEffectiveCpp(7).html';
+          var disqus_url = 'http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html';
+          var disqus_title = 'MoreEffectiveC++(7)';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/cpp.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-11-30T21:27:13+08:00</updated><entry><title>MoreEffectiveC++(7)</title><link href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(7).html" rel="alternate"></link><updated>2013-11-30T21:27:13+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-30:posts/2013/11/MoreEffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 32 在未来时态下发展程序&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/cpp.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-01T13:46:23+08:00</updated><entry><title>MoreEffectiveC++(7)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html" rel="alternate"></link><updated>2013-12-01T13:46:23+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/MoreEffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 32 在未来时态下发展程序&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  &lt;/li&gt;
 &lt;li&gt;请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  &lt;/li&gt;
@@ -40,7 +40,8 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;解决：  &lt;/p&gt;
+&lt;p&gt;解决：&lt;br /&gt;
+operator=函数里用dynamic_cast转型； 同时定义一个重载函数。  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Lizard&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Animal&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
     &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
         &lt;span class="c1"&gt;//原virtual operator=(const Animal&amp;amp;)里dynamic_cast进行判断，防止异型赋值  &lt;/span&gt;
@@ -57,7 +58,9 @@
 &lt;li&gt;
 &lt;p&gt;终极解决方法：&lt;br /&gt;
 将Animal当作和Lizard、chicken一样的类，然后共同继承自抽象类AbstractAnimal类，该类几乎和原Animal一样即可（相同的成员函数，相同的数据成员）。&lt;br /&gt;
-这样就限定了&lt;em&gt;pa=&lt;/em&gt;pb这种行为，而且没有AbstractAnimal对象之间的赋值问题。  &lt;/p&gt;
+AbstractAnimal的operator=设为protected。&lt;br /&gt;
+这样就限定了&lt;em&gt;pa=&lt;/em&gt;pb这种行为，而且没有AbstractAnimal对象之间的赋值问题。&lt;br /&gt;
+&lt;strong&gt;注意&lt;/strong&gt;：仅仅定义纯虚函数，还是可以&lt;code&gt;*pa=*pb&lt;/code&gt;这类部分赋值(更常用的说法是slicing)，因为这并没有实例化抽象类，只是把派生类切割成基类部分，然后进行了赋值。  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;纯虚函数的意义是：使所在类为抽象类；使该函数必须被派生类重定义(否则派生类还是抽象类)。&lt;br /&gt;
@@ -111,9 +114,10 @@
 
 &lt;ul&gt;
 &lt;li&gt;statics的初始化&lt;br /&gt;
-静态对象包括：全局对象，static对象，namespace内对象，文件范围(file scope)内对象&lt;br /&gt;
+静态对象包括：全局对象(program scope)，类静态对象(class scope)，namespace内对象(namespace scope)，文件内静态对象(file scope)&lt;br /&gt;
 C++会在main函数之前，加入一段对静态对象的构造语句，称为static initialization&lt;br /&gt;
-同时，会在main函数之后，加入一段对静态对象的析构语句，称为static destruction  &lt;/li&gt;
+同时，会在main函数之后，加入一段对静态对象的析构语句，称为static destruction&lt;br /&gt;
+&lt;strong&gt;注意&lt;/strong&gt;：anonymous namespace的出现，相当于取代了文件静态对象;函数内静态对象不属于“静态对象”的范畴，它的初始化是在第一次调用的时候，而不是main之前。&lt;/li&gt;
 &lt;li&gt;new和delete，malloc和free必须成对&lt;br /&gt;
 否则结果未定义  &lt;/li&gt;
 &lt;li&gt;数据结构兼容性&lt;br /&gt;
