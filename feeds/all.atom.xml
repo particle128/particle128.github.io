@@ -1,5 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-01T15:49:43+08:00</updated><entry><title>利用selenium开发vip.com抢购助手的相关技术问题</title><link href="http://particle128.com/posts/2013/12/vipshop-tech.html" rel="alternate"></link><updated>2013-12-01T15:49:43+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-tech.html</id><summary type="html">&lt;p&gt;下载selenium chrome driver：&lt;br /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-01T15:59:34+08:00</updated><entry><title>vip.com抢购助手:介绍</title><link href="http://particle128.com/posts/2013/12/vipshop-intro.html" rel="alternate"></link><updated>2013-12-01T15:59:34+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-intro.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
+&lt;h2&gt;Two Modes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;自选模式&lt;br /&gt;
+配置config.ini，运行软件，键盘控制购买哪些看中的物品。&lt;br /&gt;
+打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  &lt;/li&gt;
+&lt;li&gt;全自动模式&lt;br /&gt;
+配置config.ini，运行软件，自动购买符合过滤条件的物品。&lt;br /&gt;
+打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Configuration&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;config.ini&lt;/code&gt;配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  &lt;/p&gt;
+&lt;h3&gt;url&lt;/h3&gt;
+&lt;p&gt;包括登陆界面和主页的url，一般不需要动。  &lt;/p&gt;
+&lt;h3&gt;screen&lt;/h3&gt;
+&lt;p&gt;配置屏幕和选购窗口的大小安排，一般默认即可。  &lt;/p&gt;
+&lt;h3&gt;auto_pick&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;【AutoPickMode】：可选值是True或False。&lt;br /&gt;
+选择True，将使软件进入&lt;strong&gt;全自动模式&lt;/strong&gt;，auto_pick部分配置的其他选项才有意义。&lt;br /&gt;
+选择False，则直接忽略auto_pick部分的其余配置，进入&lt;strong&gt;自选模式&lt;/strong&gt;。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;【PriceSpan】：价格区间，半角逗号分割  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;【DisSpan】：折扣区间，半角逗号分割  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;【Excepts】【Keywords】&lt;br /&gt;
+因为是全自动模式，进入某个品牌的页面之后，软件需要根据条件进行筛选，Keywords是必须包含的关键字，Excepts必须过滤的关键字。&lt;br /&gt;
+例子：  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="na"&gt;PriceSpan&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;100,300  &lt;/span&gt;
+&lt;span class="na"&gt;DisSpan&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;0,5  &lt;/span&gt;
+&lt;span class="na"&gt;Excepts&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;POLO,T恤,紫  &lt;/span&gt;
+&lt;span class="na"&gt;Keywords&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;男  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;解释：软件会筛选价格在￥100~300之间，折扣在0~5之间，商品标题中包含“男”并且不包含“POLO”、”T恤”和”紫”的商品。  &lt;/p&gt;
+&lt;h3&gt;config&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;【TestMode】：可选值是True或False。&lt;br /&gt;
+非正式使用，只是为了熟悉本软件操作方式的时候，设置成False，会跳过刷新首页环节，直接进入所关注的品牌内。&lt;br /&gt;
+正式使用，一定记得设置成True，这样软件才会每隔5s刷新首页等待商品更新。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;【Account】：自己vipshop的账户和密码（冒号分割用户密码，多个账户密码换行即可）&lt;br /&gt;
+之所以要用多个，是因为一个帐号购物袋中最多只能放10个商品，当海选商品的时候，可能10个并不够。况且这样也能加快购买的速度，建议最少两个帐号。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;【Keys】：首页品牌的筛选关键字，空格隔开&lt;br /&gt;
+例子：&lt;code&gt;Keys=男 鞋&lt;/code&gt;&lt;br /&gt;
+解释：首页品牌描述中只有既包括‘男’又包括'鞋'这两个关键字的才可以匹配上。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;【Brands】：中意的品牌，空格隔开&lt;br /&gt;
+例子：&lt;code&gt;Brands=Nike adidas 七匹狼&lt;/code&gt;&lt;br /&gt;
+解释：首页品牌描述中包括 'Nike' ， ’adidas‘ 或 '七匹狼' 其中之一就可以匹配上。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;【Type】【Size】【Empty】【Sort】&lt;br /&gt;
+这几个选项，对应下图中画圈部分。其中，Type和Size的值可以包含多个，空格隔开，但是Type和Size中的值要在对应位置一一对应。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img alt="image" src="images/1.png" /&gt;&lt;br /&gt;
+例子：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;[type]&lt;/span&gt;  
+&lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;上衣 鞋类 男包  &lt;/span&gt;
+&lt;span class="err"&gt;…&lt;/span&gt;  
+&lt;span class="err"&gt;[size]&lt;/span&gt;  
+&lt;span class="na"&gt;Size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;XL 9 均码  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;解释：有时候，你喜欢的品牌有多种商品，你比较感兴趣，比如XL的上衣，9号的鞋，还有均码的男包。这时候，你可以配置成例子所示。&lt;br /&gt;
+程序会先进入"上衣 XL"的商品页面。一旦属于这一类的商品都浏览完毕，就会进入"鞋类 9"的商品页面，最后才会进入"男包 均码"页面。  &lt;/p&gt;
+&lt;h2&gt;Usage&lt;/h2&gt;
+&lt;h3&gt;Steps&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;将dist/下的chromedriver放到PATH中指定的目录下，或者添加本目录进PATH(windows下没有此步骤)。  &lt;/li&gt;
+&lt;li&gt;修改配置文件config.ini。  &lt;/li&gt;
+&lt;li&gt;9点55左右(10点新品开卖)，执行python master.py（windows下双击运行dist/master.exe）。软件会弹出1个选购窗口和多个购买窗口。  &lt;/li&gt;
+&lt;li&gt;如果是自选模式，等待进入品牌商品页，通过在命令行窗口下输入1、2、3、4、j、k键控制选择过程。如果是全自动模式，则免去此步骤。  &lt;/li&gt;
+&lt;li&gt;软件退出，自己在购物袋中选择付款购买。  &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;PS:此软件配合本站的vipshop-notice一起使用，效果更佳~  &lt;/p&gt;
+&lt;h3&gt;Commands&lt;/h3&gt;
+&lt;p&gt;自选模式需要在终端窗口内输入命令,如下&lt;br /&gt;
+导航窗口：&lt;br /&gt;
+j ——窗口向下滚动一行&lt;br /&gt;
+k——窗口向上滚动一行&lt;br /&gt;
+选择当前所在行的物品：&lt;br /&gt;
+1——选择最左边的商品&lt;br /&gt;
+2——选择第2个商品&lt;br /&gt;
+3——选择第3个商品&lt;br /&gt;
+4——选择最右边的商品&lt;br /&gt;
+退出：&lt;br /&gt;
+q——在选择商品的过程中，输入q，退出程序。购物袋中有物品的窗口最大化，没有物品的窗口直接退出。  &lt;/p&gt;</summary><category term="python"></category><category term="selenium"></category></entry><entry><title>vip.com抢购助手:linux到windows的移植问题</title><link href="http://particle128.com/posts/2013/12/vipshop-port.html" rel="alternate"></link><updated>2013-12-01T15:58:33+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-port.html</id><summary type="html">&lt;h2&gt;步骤&lt;/h2&gt;
+&lt;p&gt;0.登陆windows系统  &lt;/p&gt;
+&lt;p&gt;1.安装python2.7&lt;br /&gt;
+google上搜索exe安装包安装之。  &lt;/p&gt;
+&lt;p&gt;2.安装pip&lt;br /&gt;
+参考：http://www.pip-installer.org/en/latest/installing.html&lt;br /&gt;
+下载setuptools源码tar.gz ——&amp;gt; 解压后执行python path/of/the/setuptools/setup.py install&lt;br /&gt;
+——&amp;gt;下载get-pip.py ——&amp;gt;执行python get-pip.py  &lt;/p&gt;
+&lt;p&gt;3.用pip安装需要的扩展包：selenium&lt;br /&gt;
+D:\Python27\Scripts\pip install -U selenium  &lt;/p&gt;
+&lt;p&gt;4.安装py2exe&lt;br /&gt;
+下载地址：http://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/  &lt;/p&gt;
+&lt;p&gt;5.下载selenium chrome driver&lt;br /&gt;
+下载地址：https://code.google.com/p/chromedriver/downloads/list&lt;br /&gt;
+解压后，将其放入master.py和slave.py所在的文件夹。  &lt;/p&gt;
+&lt;p&gt;6.修改源码，见后面。  &lt;/p&gt;
+&lt;p&gt;7.配置文件转成windows下的版本（换行\r\n）  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install dos2unix  
+unix2dos config.ini  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;8.用py2exe将python代码转成exe&lt;br /&gt;
+参考：http://www.py2exe.org/index.cgi/Tutorial&lt;br /&gt;
+(1)在脚本所在文件夹下新建setup_m.py和setup_s.py文件，内容为  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;distutils.core&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;setup&lt;/span&gt;  
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;py2exe&lt;/span&gt;  
+&lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;console&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;master.py&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="c"&gt;#如果是windows应用程序则改成windows，main.py是可执行脚本的名称  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;同理setup_s.py，把master.py改成slave.py  &lt;/p&gt;
+&lt;p&gt;(2)执行python setup_m.py py2exe 和python setup_s.py py2exe。  &lt;/p&gt;
+&lt;p&gt;dist里的master.exe和slave.exe即为转化成的可执行文件。  &lt;/p&gt;
+&lt;p&gt;9.运行master.exe&lt;br /&gt;
+执行期间报错ERROR:textfield.h(162) NOT IMPLEMENTED&lt;br /&gt;
+不过对程序没有影响  &lt;/p&gt;
+&lt;h2&gt;源码修改&lt;/h2&gt;
+&lt;p&gt;【1】增加区分系统的标志，为了支持NON-buffering输入，引入不同的库  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;IsWindows&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;  
+&lt;span class="n"&gt;Line&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;  
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;platform&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Windows&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+     &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;msvcrt&lt;/span&gt;  
+     &lt;span class="n"&gt;IsWindows&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;  
+     &lt;span class="n"&gt;Line&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\r\n&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;  
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c"&gt;#Linux  &lt;/span&gt;
+     &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;termios&lt;/span&gt;  
+     &lt;span class="n"&gt;Line&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;【2】因为windows的终端是gbk编码，所以需要定义输出函数，每次print的时候，如果含有中文就调用print local_str('...')。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;local_str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;IsWindows&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;isinstance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nb"&gt;unicode&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+          &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;gbk&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+     &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+          &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;utf-8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;gbk&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;【3】不缓冲输入  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;msvcrt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getch&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c"&gt;#不回显，或者c=msvcrt.getche()回显  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;【4】linux下可以通过ActionChains对象定义按键事件进行翻页，windows下不知道是不是bug，调用send_keys或key_up或key_down都没有作用。所以，替代方案如下：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;IsWindows&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c"&gt;#windows下每4行要重新获取一下dts，因为是异步加载  &lt;/span&gt;
+     &lt;span class="n"&gt;dts&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_elements_by_class_name&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;pro_list_pic&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;【5】windows下的chrome第一个页面加载巨慢，所以加大了延时  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;IsWindows&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+     &lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_page_load_timeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="c"&gt;#win下chrome第一个页面加载很慢  &lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+     &lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_page_load_timeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="py2exe"></category></entry><entry><title>vip.vom抢购助手:技术问题</title><link href="http://particle128.com/posts/2013/12/vipshop-tech.html" rel="alternate"></link><updated>2013-12-01T15:58:18+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-tech.html</id><summary type="html">&lt;p&gt;下载selenium chrome driver：&lt;br /&gt;
 &lt;a href="https://code.google.com/p/chromedriver/downloads/list"&gt;url&lt;/a&gt;&lt;br /&gt;
 安装selenium ：&lt;code&gt;pip install -U selenium&lt;/code&gt;  &lt;/p&gt;
 &lt;h2&gt;难点：&lt;/h2&gt;

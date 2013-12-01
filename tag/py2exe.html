@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - dns</title>
+  <title>particle128's Blog - py2exe</title>
   <meta name="author" content="particle128">
 
     
@@ -61,21 +61,25 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
+        <a href="http://particle128.com/posts/2013/12/vipshop-port.html">vip.com抢购助手:linux到windows的移植问题</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-15T14:00:41.520375" pubdate>2013-10-15</time></p>
+          <p class="meta"><time datetime="2013-12-01T15:58:33.605773" pubdate>2013-12-01</time></p>
 </header>
 
-  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
-<h3>Domain Name System</h3>
-<p>host name &lt; - &gt; ip address<br />
-主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
-如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
-<h3>名字/域名服务器层次结构：</h3>
-<p>root name server 根域名服务器（无名）<br />
-TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
+  <div class="entry-content"><h2>步骤</h2>
+<p>0.登陆windows系统  </p>
+<p>1.安装python2.7<br />
+google上搜索exe安装包安装之。  </p>
+<p>2.安装pip<br />
+参考：http://www.pip-installer.org/en/latest/installing.html<br />
+下载setuptools源码tar.gz ——&gt; 解压后执行python path/of/the/setuptools/setup.py install<br />
+——&gt;下载get-pip.py ——&gt;执行python get-pip.py  </p>
+<p>3.用pip安装需要的扩展包：selenium<br />
+D:\Python27\Scripts\pip install -U selenium  </p>
+<p>4.安装py2exe<br />
+下载地址：http://sourceforge.net/projects ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/dns.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -87,7 +91,7 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
+          <a href="http://particle128.com/posts/2013/12/vipshop-port.html">vip.com抢购助手:linux到windows的移植问题</a>
       </li>
           </ul>
   </section>

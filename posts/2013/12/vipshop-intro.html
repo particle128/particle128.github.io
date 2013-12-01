@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog</title>
+  <title>vip.com抢购助手:介绍</title>
   <meta name="author" content="particle128">
 
     
@@ -57,116 +57,133 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-str.html">Python学习笔记-字符串</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-22T17:52:45.919950" pubdate>2013-09-22</time></p>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">vip.com抢购助手:介绍</h1>
+          <p class="meta"><time datetime="2013-12-01T15:59:34.209776" pubdate>2013-12-01</time></p>
 </header>
 
-  <div class="entry-content"><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
-<h3>（一） 具备的操作</h3>
-<p>str作为序列元素，包含其他序列共同的操作：<br />
-1. “hello” [not] in "hello world"<br />
-2. "hello" + " world"<br />
-3. 5<em>"hello" 或 “hello”</em>5<br />
-4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
-5. len("hello")  min("hello")  max("hello")<br />
-6. "hello".index('o')   "hello".count('l ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-str.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T10:10:19.289894" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
-<h3>1、各种消息机制的使用场合</h3>
-<p>终端输出来显示一些信息：print()<br />
-报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
-logging.debug()用来诊断错误<br />
-发布一个警告：logging.warning()或warnings.warn()<br />
-报告一个错误：raise an exception<br />
-不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  </p>
-<p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
-<p>level由低到高依次是：<br />
-DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
-<h3>2 ...</h3></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T10:01:27.753871" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
-<p>r：可以查看文件内容<br />
-w：可以修改文件内容<br />
-x：可以执行文件内容  </p>
-<p><strong>Note：</strong> <br />
-一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
-<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
-<p>r：可以查看目录结构（ls）<br />
-w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
-x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
-<p><strong>Note：</strong><br />
-一个目录开放浏览，需要r+x权限。<br />
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/linux_user.html">Linux下的用户和用户组小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T08:32:29.231066" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>Two Modes</h2>
+<ul>
+<li>自选模式<br />
+配置config.ini，运行软件，键盘控制购买哪些看中的物品。<br />
+打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  </li>
+<li>全自动模式<br />
+配置config.ini，运行软件，自动购买符合过滤条件的物品。<br />
+打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  </li>
+</ul>
+<h2>Configuration</h2>
+<p><code>config.ini</code>配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  </p>
+<h3>url</h3>
+<p>包括登陆界面和主页的url，一般不需要动。  </p>
+<h3>screen</h3>
+<p>配置屏幕和选购窗口的大小安排，一般默认即可。  </p>
+<h3>auto_pick</h3>
+<ul>
+<li>
+<p>【AutoPickMode】：可选值是True或False。<br />
+选择True，将使软件进入<strong>全自动模式</strong>，auto_pick部分配置的其他选项才有意义。<br />
+选择False，则直接忽略auto_pick部分的其余配置，进入<strong>自选模式</strong>。  </p>
+</li>
+<li>
+<p>【PriceSpan】：价格区间，半角逗号分割  </p>
+</li>
+<li>
+<p>【DisSpan】：折扣区间，半角逗号分割  </p>
+</li>
+<li>
+<p>【Excepts】【Keywords】<br />
+因为是全自动模式，进入某个品牌的页面之后，软件需要根据条件进行筛选，Keywords是必须包含的关键字，Excepts必须过滤的关键字。<br />
+例子：  </p>
+</li>
+</ul>
+<div class="highlight"><pre><span class="na">PriceSpan</span><span class="o">=</span><span class="s">100,300  </span>
+<span class="na">DisSpan</span><span class="o">=</span><span class="s">0,5  </span>
+<span class="na">Excepts</span><span class="o">=</span><span class="s">POLO,T恤,紫  </span>
+<span class="na">Keywords</span><span class="o">=</span><span class="s">男  </span>
 </pre></div>
 
 
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
+<p>解释：软件会筛选价格在￥100~300之间，折扣在0~5之间，商品标题中包含“男”并且不包含“POLO”、”T恤”和”紫”的商品。  </p>
+<h3>config</h3>
+<ul>
+<li>
+<p>【TestMode】：可选值是True或False。<br />
+非正式使用，只是为了熟悉本软件操作方式的时候，设置成False，会跳过刷新首页环节，直接进入所关注的品牌内。<br />
+正式使用，一定记得设置成True，这样软件才会每隔5s刷新首页等待商品更新。  </p>
+</li>
+<li>
+<p>【Account】：自己vipshop的账户和密码（冒号分割用户密码，多个账户密码换行即可）<br />
+之所以要用多个，是因为一个帐号购物袋中最多只能放10个商品，当海选商品的时候，可能10个并不够。况且这样也能加快购买的速度，建议最少两个帐号。  </p>
+</li>
+<li>
+<p>【Keys】：首页品牌的筛选关键字，空格隔开<br />
+例子：<code>Keys=男 鞋</code><br />
+解释：首页品牌描述中只有既包括‘男’又包括'鞋'这两个关键字的才可以匹配上。  </p>
+</li>
+<li>
+<p>【Brands】：中意的品牌，空格隔开<br />
+例子：<code>Brands=Nike adidas 七匹狼</code><br />
+解释：首页品牌描述中包括 'Nike' ， ’adidas‘ 或 '七匹狼' 其中之一就可以匹配上。  </p>
+</li>
+<li>
+<p>【Type】【Size】【Empty】【Sort】<br />
+这几个选项，对应下图中画圈部分。其中，Type和Size的值可以包含多个，空格隔开，但是Type和Size中的值要在对应位置一一对应。  </p>
+</li>
+</ul>
+<p><img alt="image" src="images/1.png" /><br />
+例子：  </p>
+<div class="highlight"><pre><span class="err">[type]</span>  
+<span class="na">Type</span><span class="o">=</span><span class="s">上衣 鞋类 男包  </span>
+<span class="err">…</span>  
+<span class="err">[size]</span>  
+<span class="na">Size</span><span class="o">=</span><span class="s">XL 9 均码  </span>
 </pre></div>
 
 
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
-</pre></div>
+<p>解释：有时候，你喜欢的品牌有多种商品，你比较感兴趣，比如XL的上衣，9号的鞋，还有均码的男包。这时候，你可以配置成例子所示。<br />
+程序会先进入"上衣 XL"的商品页面。一旦属于这一类的商品都浏览完毕，就会进入"鞋类 9"的商品页面，最后才会进入"男包 均码"页面。  </p>
+<h2>Usage</h2>
+<h3>Steps</h3>
+<ol>
+<li>将dist/下的chromedriver放到PATH中指定的目录下，或者添加本目录进PATH(windows下没有此步骤)。  </li>
+<li>修改配置文件config.ini。  </li>
+<li>9点55左右(10点新品开卖)，执行python master.py（windows下双击运行dist/master.exe）。软件会弹出1个选购窗口和多个购买窗口。  </li>
+<li>如果是自选模式，等待进入品牌商品页，通过在命令行窗口下输入1、2、3、4、j、k键控制选择过程。如果是全自动模式，则免去此步骤。  </li>
+<li>软件退出，自己在购物袋中选择付款购买。  </li>
+</ol>
+<p>PS:此软件配合本站的vipshop-notice一起使用，效果更佳~  </p>
+<h3>Commands</h3>
+<p>自选模式需要在终端窗口内输入命令,如下<br />
+导航窗口：<br />
+j ——窗口向下滚动一行<br />
+k——窗口向上滚动一行<br />
+选择当前所在行的物品：<br />
+1——选择最左边的商品<br />
+2——选择第2个商品<br />
+3——选择第3个商品<br />
+4——选择最右边的商品<br />
+退出：<br />
+q——在选择商品的过程中，输入q，退出程序。购物袋中有物品的窗口最大化，没有物品的窗口直接退出。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-12-01T15:59:34.209776" pubdate>2013-12-01</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/python.html">python</a>
+        <a class="category" href="http://particle128.com/tag/selenium.html">selenium</a>
+      </span>
+  </p>    </footer>
+  </article>
 
-
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/linux_user.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-            <a class="next" href="http://particle128.com/index7.html">Newer &rarr;</a>
-        <br />
-</div>  </div>
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
@@ -228,6 +245,9 @@ chmod a+r aa.txt
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/12/vipshop-intro.html';
+          var disqus_url = 'http://particle128.com/posts/2013/12/vipshop-intro.html';
+          var disqus_title = 'vip.com抢购助手:介绍';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
