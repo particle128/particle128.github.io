@@ -61,9 +61,34 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T16:08:22.377799" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
+<h2>Introduction</h2>
+<p>This project is used to check the airfare in <a href="http://www.qunar.com">www.qunar.com</a>, and send you a SMS message when the price is lower than what you set in config.py  </p>
+<h2>Requirements</h2>
+<p>Download the ChromeDriver in <a href="https://code.google.com/p/chromedriver/downloads/list">here</a>  </p>
+<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">selenium</span>  
+</pre></div>
+
+
+<h2>Configuration</h2>
+<p>see config.py  </p>
+<h2>Usage</h2>
+<div class="highlight"><pre><span class="n">python</span> <span class="n">main ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/qunar.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">vip.com抢购助手:介绍</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T15:59:34.209776" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T16:04:18.585788" pubdate>2013-12-01</time></p>
 </header>
 
   <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
@@ -97,10 +122,11 @@
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop-port.html">vip.com抢购助手:linux到windows的移植问题</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T15:58:33.605773" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T16:03:20.633786" pubdate>2013-12-01</time></p>
 </header>
 
-  <div class="entry-content"><h2>步骤</h2>
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>步骤</h2>
 <p>0.登陆windows系统  </p>
 <p>1.安装python2.7<br />
 google上搜索exe安装包安装之。  </p>
@@ -111,7 +137,7 @@ google上搜索exe安装包安装之。  </p>
 <p>3.用pip安装需要的扩展包：selenium<br />
 D:\Python27\Scripts\pip install -U selenium  </p>
 <p>4.安装py2exe<br />
-下载地址：http://sourceforge.net/projects ...</p></div>
+下载地址：http://sourceforge ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
   </footer>
@@ -121,10 +147,12 @@ D:\Python27\Scripts\pip install -U selenium  </p>
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">vip.vom抢购助手:技术问题</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T15:58:18.001772" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T16:03:02.529785" pubdate>2013-12-01</time></p>
 </header>
 
-  <div class="entry-content"><p>下载selenium chrome driver：<br />
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>环境:</h2>
+<p>下载selenium chrome driver：<br />
 <a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
 安装selenium ：<code>pip install -U selenium</code>  </p>
 <h2>难点：</h2>
@@ -141,8 +169,7 @@ D:\Python27\Scripts\pip install -U selenium  </p>
 <span class="k">try</span><span class="p">:</span>  
      <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
      <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
-     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>  
-     <span class="n">new</span> <span class="o">=</span> <span class="n">termios ...</span></pre></div></div>
+     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr ...</span></pre></div></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
   </footer>
@@ -184,35 +211,6 @@ D:\Python27\Scripts\pip install -U selenium  </p>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/blog-build.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T13:55:39.804362" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><h3>前言</h3>
-<p>配置文件可以有很多种格式，windows下常用ini格式，网络上常用xml和json格式，分别可以调用的python模块如下：<br />
-ini——ConfigParser模块<br />
-xml——xml.etree.ElementTree模块<br />
-json——json模块  </p>
-<h3>参考文档</h3>
-<p><a href="http://docs.python.org/2/library/configparser.html">link</a><br />
-点评：<br />
-前面的文字讲的很晕，没有上下文的情况下就各种说，还不如直接来几个例子。不过我还是硬着头皮看完了。  </p>
-<h3>ini文档的格式</h3>
-<p>1.注释的开始标记是semicolon 和 number sign。semicolon开头的注释可以嵌入在ini文件的行内（和其他文本用一个空白符隔开），number sign开头的注释只能用在单独的一行中。<br />
-2.[section]中可以使用option=value或option: value<br />
-3.可以在value中包含格式化字符串，来自同section，或DEFAULT section，或初始化的时候传入的内容。<br />
-示例：  </p>
-<div class="highlight"><pre><span class="err">[My</span> <span class="err">Section]</span>  
-<span class="err">foodir:</span> <span class="err">%(dir)s/whatever</span>  
-<span class="na">dir</span><span class="o">=</span><span class="s">frob ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/python-configparser.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/tag/python2.html">&larr; Older</a>
   
@@ -222,6 +220,9 @@ json——json模块  </p>
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">vip.com抢购助手:介绍</a>
       </li>
@@ -233,9 +234,6 @@ json——json模块  </p>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
       </li>
           </ul>
   </section>

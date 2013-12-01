@@ -61,9 +61,34 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T16:08:22.377799" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
+<h2>Introduction</h2>
+<p>This project is used to check the airfare in <a href="http://www.qunar.com">www.qunar.com</a>, and send you a SMS message when the price is lower than what you set in config.py  </p>
+<h2>Requirements</h2>
+<p>Download the ChromeDriver in <a href="https://code.google.com/p/chromedriver/downloads/list">here</a>  </p>
+<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">selenium</span>  
+</pre></div>
+
+
+<h2>Configuration</h2>
+<p>see config.py  </p>
+<h2>Usage</h2>
+<div class="highlight"><pre><span class="n">python</span> <span class="n">main ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/qunar.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">vip.com抢购助手:介绍</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T15:59:34.209776" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T16:04:18.585788" pubdate>2013-12-01</time></p>
 </header>
 
   <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
@@ -97,10 +122,11 @@
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop-port.html">vip.com抢购助手:linux到windows的移植问题</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T15:58:33.605773" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T16:03:20.633786" pubdate>2013-12-01</time></p>
 </header>
 
-  <div class="entry-content"><h2>步骤</h2>
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>步骤</h2>
 <p>0.登陆windows系统  </p>
 <p>1.安装python2.7<br />
 google上搜索exe安装包安装之。  </p>
@@ -111,7 +137,7 @@ google上搜索exe安装包安装之。  </p>
 <p>3.用pip安装需要的扩展包：selenium<br />
 D:\Python27\Scripts\pip install -U selenium  </p>
 <p>4.安装py2exe<br />
-下载地址：http://sourceforge.net/projects ...</p></div>
+下载地址：http://sourceforge ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
   </footer>
@@ -121,10 +147,12 @@ D:\Python27\Scripts\pip install -U selenium  </p>
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">vip.vom抢购助手:技术问题</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T15:58:18.001772" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T16:03:02.529785" pubdate>2013-12-01</time></p>
 </header>
 
-  <div class="entry-content"><p>下载selenium chrome driver：<br />
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>环境:</h2>
+<p>下载selenium chrome driver：<br />
 <a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
 安装selenium ：<code>pip install -U selenium</code>  </p>
 <h2>难点：</h2>
@@ -141,8 +169,7 @@ D:\Python27\Scripts\pip install -U selenium  </p>
 <span class="k">try</span><span class="p">:</span>  
      <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
      <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
-     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>  
-     <span class="n">new</span> <span class="o">=</span> <span class="n">termios ...</span></pre></div></div>
+     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr ...</span></pre></div></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
   </footer>
@@ -184,32 +211,6 @@ D:\Python27\Scripts\pip install -U selenium  </p>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-29T18:42:31.205341" pubdate>2013-11-29</time></p>
-</header>
-
-  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
-<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
-<ul>
-<li>问题背景：<br />
-假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
-需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
-因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
-<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
-<li>解决方法：  </li>
-</ul>
-<p>1.double-RTTI（书中没提到）<br />
-直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
-<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
-优点 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index2.html">&larr; Older</a>
   
@@ -219,6 +220,9 @@ D:\Python27\Scripts\pip install -U selenium  </p>
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">vip.com抢购助手:介绍</a>
       </li>
@@ -230,9 +234,6 @@ D:\Python27\Scripts\pip install -U selenium  </p>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
       </li>
           </ul>
   </section>

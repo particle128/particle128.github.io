@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-01T15:59:34+08:00</updated><entry><title>vip.com抢购助手:介绍</title><link href="http://particle128.com/posts/2013/12/vipshop-intro.html" rel="alternate"></link><updated>2013-12-01T15:59:34+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-intro.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-01T16:08:22+08:00</updated><entry><title>去哪儿网机票提醒脚本</title><link href="http://particle128.com/posts/2013/12/qunar.html" rel="alternate"></link><updated>2013-12-01T16:08:22+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/qunar.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/qunar-flight-reminder"&gt;particle128的github&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This project is used to check the airfare in &lt;a href="http://www.qunar.com"&gt;www.qunar.com&lt;/a&gt;, and send you a SMS message when the price is lower than what you set in config.py  &lt;/p&gt;
+&lt;h2&gt;Requirements&lt;/h2&gt;
+&lt;p&gt;Download the ChromeDriver in &lt;a href="https://code.google.com/p/chromedriver/downloads/list"&gt;here&lt;/a&gt;  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt; &lt;span class="n"&gt;selenium&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Configuration&lt;/h2&gt;
+&lt;p&gt;see config.py  &lt;/p&gt;
+&lt;h2&gt;Usage&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category></entry><entry><title>vip.com抢购助手:介绍</title><link href="http://particle128.com/posts/2013/12/vipshop-intro.html" rel="alternate"></link><updated>2013-12-01T16:04:18+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-intro.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
 &lt;h2&gt;Two Modes&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;自选模式&lt;br /&gt;
@@ -68,7 +81,7 @@
 这几个选项，对应下图中画圈部分。其中，Type和Size的值可以包含多个，空格隔开，但是Type和Size中的值要在对应位置一一对应。  &lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img alt="image" src="images/1.png" /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;img alt="image" src="https://github.com/particle128/vipshop-buy/tree/master/images/1.png" /&gt;&lt;br /&gt;
 例子：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;[type]&lt;/span&gt;  
 &lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;上衣 鞋类 男包  &lt;/span&gt;
@@ -101,7 +114,8 @@ k——窗口向上滚动一行&lt;br /&gt;
 3——选择第3个商品&lt;br /&gt;
 4——选择最右边的商品&lt;br /&gt;
 退出：&lt;br /&gt;
-q——在选择商品的过程中，输入q，退出程序。购物袋中有物品的窗口最大化，没有物品的窗口直接退出。  &lt;/p&gt;</summary><category term="python"></category><category term="selenium"></category></entry><entry><title>vip.com抢购助手:linux到windows的移植问题</title><link href="http://particle128.com/posts/2013/12/vipshop-port.html" rel="alternate"></link><updated>2013-12-01T15:58:33+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-port.html</id><summary type="html">&lt;h2&gt;步骤&lt;/h2&gt;
+q——在选择商品的过程中，输入q，退出程序。购物袋中有物品的窗口最大化，没有物品的窗口直接退出。  &lt;/p&gt;</summary><category term="python"></category><category term="selenium"></category></entry><entry><title>vip.com抢购助手:linux到windows的移植问题</title><link href="http://particle128.com/posts/2013/12/vipshop-port.html" rel="alternate"></link><updated>2013-12-01T16:03:20+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-port.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
+&lt;h2&gt;步骤&lt;/h2&gt;
 &lt;p&gt;0.登陆windows系统  &lt;/p&gt;
 &lt;p&gt;1.安装python2.7&lt;br /&gt;
 google上搜索exe安装包安装之。  &lt;/p&gt;
@@ -180,7 +194,9 @@ unix2dos config.ini
      &lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_page_load_timeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="c"&gt;#win下chrome第一个页面加载很慢  &lt;/span&gt;
 &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
      &lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_page_load_timeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="py2exe"></category></entry><entry><title>vip.vom抢购助手:技术问题</title><link href="http://particle128.com/posts/2013/12/vipshop-tech.html" rel="alternate"></link><updated>2013-12-01T15:58:18+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-tech.html</id><summary type="html">&lt;p&gt;下载selenium chrome driver：&lt;br /&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="py2exe"></category></entry><entry><title>vip.vom抢购助手:技术问题</title><link href="http://particle128.com/posts/2013/12/vipshop-tech.html" rel="alternate"></link><updated>2013-12-01T16:03:02+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-tech.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
+&lt;h2&gt;环境:&lt;/h2&gt;
+&lt;p&gt;下载selenium chrome driver：&lt;br /&gt;
 &lt;a href="https://code.google.com/p/chromedriver/downloads/list"&gt;url&lt;/a&gt;&lt;br /&gt;
 安装selenium ：&lt;code&gt;pip install -U selenium&lt;/code&gt;  &lt;/p&gt;
 &lt;h2&gt;难点：&lt;/h2&gt;
