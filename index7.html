@@ -61,6 +61,32 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-13T20:06:53.727580" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 44: Factor parameter-independent code out of templates</h2>
+<p>1.类模版成员函数函数，只有被使用时才被具现化。类似类的合成版本的构造/复制构造/赋值操作符/析构函数。<br />
+2.模版的时候减少了源代码量，但是可能导致目标代码增加，因为每具现化一个版本，就多一份目标码。<br />
+策略：把与模版参数（类型参数或非类型参数）无关的代码，剥离出模版类。<br />
+（1）非类型参数<br />
+例如：  </p>
+<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span><span class="kt">size_t</span> <span class="n">n</span><span class="o">&gt;</span>  
+<span class="k">class</span> <span class="nc">SquareMatrix</span><span class="p">{</span> <span class="c1">//方形矩阵  </span>
+  <span class="nl">public:</span>  
+          <span class="kt">void</span> <span class="n">invert</span><span class="p">();</span>     
+<span class="p">};</span>  
+<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">10</span><span class="o">&gt;</span> <span class="n">sm1</span><span class="p">;</span>  
+<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">5</span><span class="o">&gt;</span> <span class="n">sm2</span><span class="p">;</span>  
+<span class="n">sm1</span><span class="p">.</span><span class="n">invert</span><span class="p">();</span><span class="c1">//具现化一次invert ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-13T20:05:09.203575" pubdate>2013-10-13</time></p>
@@ -133,32 +159,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/some-thought.html">一些反思</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-11T13:37:35.621816" pubdate>2013-10-11</time></p>
-</header>
-
-  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
-<ul>
-<li>目标不具体    </li>
-</ul>
-<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让我坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让我又鼓起斗志。    </p>
-<ul>
-<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
-</ul>
-<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
-<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力，靠目标和纪律来约束自己。    </p>
-<ul>
-<li>方向选择上走了很多弯路。    </li>
-</ul>
-<p>虽然走弯路也有意义，但是会推迟成功到来的时间 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/some-thought.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-04T19:33:09.273884" pubdate>2013-10-04</time></p>
@@ -188,6 +188,9 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/12/some-thought.html">一些反思</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">vip.com抢购助手:介绍</a>
       </li>
             <li class="post">
@@ -198,9 +201,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">vip.vom抢购助手:技术问题</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
       </li>
           </ul>
   </section>
