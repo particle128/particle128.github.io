@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog</title>
+  <title>MoreEffectiveC++(2)</title>
   <meta name="author" content="particle128">
 
     
@@ -57,12 +57,10 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
-      </h1>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">MoreEffectiveC++(2)</h1>
           <p class="meta"><time datetime="2013-12-02T20:14:20.014308" pubdate>2013-12-02</time></p>
 </header>
 
@@ -85,137 +83,119 @@
 <li>placement new类似于new，首先调用operator new，然后调用对象构造函数，然后返回内存指针。<br />
 不同点，是placement new调用的operator new的原型和实现如下：  </li>
 </ul>
-<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location</span><span class="p">)</span><span class="c1">//第一个参数不提供名字 ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-02T20:13:48.066307" pubdate>2013-12-02</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>Introduction</strong>  </p>
-<ul>
-<li>没有实现bool类型的编译器，替代方案：<br />
-(1)enum bool{false,true};<br />
-缺点：无法int赋值给bool变量<br />
-(2)typedef int bool;<br />
-const bool false=0;<br />
-const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </li>
-<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
-</ul>
-<p><strong>基础议题Basics</strong></p>
-<h2>Item1</h2>
-<ul>
-<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">//使用指针  </span>
-<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
-    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
-<span class="c1">//使用引用  </span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
+<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location</span><span class="p">)</span><span class="c1">//第一个参数不提供名字，防止编译器警告。  </span>
+<span class="p">{</span><span class="k">return</span> <span class="n">location</span><span class="p">;}</span>  
 </pre></div>
 
 
-<h2>Item2</h2>
 <ul>
-<li>const_cast用于改变constnest和valatileness  </li>
-<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/some-thought.html">一些反思</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T16:42:21.285890" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
-<ul>
-<li>目标不具体    </li>
+<li>placement new构造的对象，最好不要调用delete来释放，否则未定义。因为delete析构对象之后调用operator delete释放内存，而这段内存不一定是operator new(size_t)分配的。  </li>
 </ul>
-<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让人坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让人又鼓起斗志。当然，这只是举个例子，我锻炼身体的目标有好几个，找妹子只是比重比较小的一个。    </p>
+<p><strong>异常Exception</strong></p>
+<h2>Item9</h2>
 <ul>
-<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
+<li>利用析构函数(smart pointer处理单个对象，vector处理对象数组)避免资源泄露，绝不使用操纵局部资源的指针。<br />
+因为即使加了try和catch语句块包裹可能出现异常的代码，也会把代码变得支离破碎，而且delete会出现两边（正常执行序列的最后，catch中throw到上一层之前）  </li>
+<li>C++加入异常的概念，意义：<br />
+保证错误的发生绝不会被忽略，而C语言中置errno或返回错误代码的方法，都可能因为调用者的不检查而使错误不被发现。  </li>
 </ul>
-<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
-<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/some-thought.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">vip.com抢购助手:介绍</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T16:10:45.757806" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>Two Modes</h2>
+<h2>Item10 在构造函数中阻止资源泄露(resource leak)</h2>
 <ul>
-<li>自选模式<br />
-配置config.ini，运行软件，键盘控制购买哪些看中的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  </li>
-<li>全自动模式<br />
-配置config.ini，运行软件，自动购买符合过滤条件的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  </li>
+<li>对象未构造完全(构造函数中抛出异常)，不会调用其析构函数，但是对象的成员变量会保证释放（如果是类类型，自动调用其析构）。在ctor中动态分配资源可能因为异常的出现，泄露了。<br />
+原因：<br />
+析构函数如果需要在构造不完全的对象上自动执行，就得记录构造函数执行到的位置，代价太大。  </li>
+<li>构造函数动态分配资源的情况下，防止资源泄露的解决办法<br />
+1.构造函数中try+catch<br />
+2.类中使用auto_ptr成员代替指针成员  </li>
 </ul>
-<h2>Configuration</h2>
-<p><code>config.ini</code>配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  </p>
-<h3>url</h3>
-<p>包括登陆界面和主页的url，一般不需要动。  </p>
-<h3>screen</h3>
-<p>配置屏幕和选购窗口的大小安排，一般默认即可。  </p>
-<h3>auto_pick</h3>
+<h2>Item11 禁止异常流出dtor</h2>
 <ul>
-<li>
-<p>【AutoPickMode】：可选值是True或False。<br />
-选择True，将使软件进入<strong>全自动模式</strong>，auto_pick部分配置的其他选项才有意义。<br />
-选择False，则直接忽略auto_pick部分的其余配置，进入<strong>自选模式 ...</strong></p></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-intro.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T16:08:22.377799" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
-<h2>Introduction</h2>
-<p>This project is used to check the airfare in <a href="http://www.qunar.com">www.qunar.com</a>, and send you a SMS message when the price is lower than what you set in config.py  </p>
-<h2>Requirements</h2>
-<p>Download the ChromeDriver in <a href="https://code.google.com/p/chromedriver/downloads/list">here</a>  </p>
-<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">selenium</span>  
+<li>析构函数调用时机<br />
+1.退出作用域<br />
+2.stack unwinding时<br />
+3.delete<br />
+4.手动调用  </li>
+<li>禁止异常流出的原因：<br />
+1.避免在stack unwinding时，析构函数抛出的异常导致terminate函数执行，中止程序。<br />
+考虑上线的软件，因为1个异常就down机了，这绝不是人们想看到的。<br />
+2.协助确保dtor完成了所有事情。<br />
+考虑析构函数有多条语句，第一条语句执行中抛出异常，后面的语句没法执行，但是可能很重要，比如释放对象资源。  </li>
+</ul>
+<h2>Item12 区分异常和函数调用</h2>
+<ul>
+<li>如下示例：  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">void</span> <span class="nf">func</span><span class="p">()</span>  
+<span class="p">{</span>  
+    <span class="p">...</span>  
+    <span class="n">Derived</span> <span class="n">d</span><span class="p">;</span>  
+    <span class="n">Base</span> <span class="o">&amp;</span><span class="n">rw</span><span class="o">=</span><span class="n">d</span>  
+    <span class="k">throw</span> <span class="n">rw</span><span class="p">;</span><span class="c1">//抛出的是类型为Base的异常对象。只有在基类指针或引用指向派生类对象，且调用虚函数的情况下才会看动态类型，其余都是静态类型。  </span>
+<span class="p">}</span>  
 </pre></div>
 
 
-<h2>Configuration</h2>
-<p>see config.py  </p>
-<h2>Usage</h2>
-<div class="highlight"><pre><span class="n">python</span> <span class="n">main ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/qunar.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-      <a class="prev" href="http://particle128.com/index2.html">&larr; Older</a>
-  
-    <br />
-</div>  </div>
+<ul>
+<li>异常对象是抛出对象的副本，是一个临时对象。一般临时对象是常量的。但是catch字句中non-const引用也可以捕获，这是一个特例。  </li>
+<li>异常和函数调用区别：<br />
+1.总会被复制，需要支持复制构造<br />
+2.允许的类型转换很少<br />
+3.按catch子句出现的顺序匹配，而不是最佳匹配  </li>
+</ul>
+<h2>Item13 以引用方式捕获异常</h2>
+<ul>
+<li>原因：<br />
+1.by-pointer:不知道是全局和静态对象，还是动态对象，所以不知道要不要delete；和语言本身可能抛出的异常(bad_alloc等)不符合<br />
+2.by-value:切割对象，无法多态；复制对象成本高<br />
+3.by-reference:没上面的问题  </li>
+</ul>
+<h2>Item14 异常说明符</h2>
+<ul>
+<li>try和catch后面的语句必须用大括号包围，即使只有1条语句。  </li>
+<li>当抛出exception specification中没有出现的异常时，unexpected函数会被系统调用，默认调用terminate中止程序。<br />
+就像不希望析构函数抛出异常一样，必须防止任何中止程序(很可能是需要一直运行的服务程序)的行为，即使有错误发生。<br />
+注意：<br />
+1.不要给模版函数提供异常说明。因为模版的类型实参千变万化，无法预料抛出异常的情况。<br />
+2.需要调用没有异常说明的函数，自己也不要给出异常说明。<br />
+3.不使用默认版本的unexcepted函数：  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">//第一种方式  </span>
+<span class="k">class</span> <span class="nf">UnexpectedException</span><span class="p">();</span>  
+<span class="kt">void</span> <span class="nf">custom</span><span class="p">()</span>  
+<span class="p">{</span><span class="k">throw</span> <span class="n">UnexpectedException</span><span class="p">();}</span>  
+<span class="n">set_unexpected</span><span class="p">(</span><span class="n">custom</span><span class="p">);</span><span class="c1">//用定制版本  </span>
+<span class="c1">//第二种方式  </span>
+<span class="kt">void</span> <span class="nf">custom</span><span class="p">()</span>  
+<span class="p">{</span><span class="k">throw</span> <span class="p">;}</span><span class="c1">//重抛，默认抛出bad_exception  </span>
+<span class="n">set_unexpected</span><span class="p">(</span><span class="n">custom</span><span class="p">);</span><span class="c1">//用定制版本  </span>
+</pre></div>
+
+
+<p><strong>注意</strong>：采用了上面任一种方式后，需要在函数的异常说明符中加入UnexpectedException或bad_exception，否则还是会terminate。  </p>
+<h2>Item15 understand exception handling's cost</h2>
+<ul>
+<li>即使从未使用exception处理机制，程序为了支持exception，也需要放置一些数据结构占用空间，维护这些数据结构占用时间。  </li>
+<li>try语句，以及异常说明，会导致代码膨胀和速度下降5%~10%（一些测试结果，并未很准确）。异常的真正抛出，会比正常函数返回，慢3个数量级（同上，不准确）。  </li>
+<li>代价很大，所以仅在非用不可的时候才使用，不要像写python那样轻易使用。  </li>
+<li>如果确保自己的程序中没有用到exception机制，并且确保调用的标准库没有用到，例如没有try catch throw关键字，那么可以通过编译器的选项禁止。<br />
+g++下的禁止方式是<code>-fno-exceptions</code>。如果有异常抛出（new无法分配等），直接调用std::abort()进行中止。  </li>
+</ul></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-12-02T20:14:20.014308" pubdate>2013-12-02</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
@@ -277,6 +257,9 @@ const bool true=1;<br />
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/12/MoreEffectiveCpp(2).html';
+          var disqus_url = 'http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html';
+          var disqus_title = 'MoreEffectiveC++(2)';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

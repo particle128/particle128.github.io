@@ -104,9 +104,9 @@
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-29T10:05:01.187104" pubdate>2013-10-29</time></p>
+          <p class="meta"><time datetime="2013-12-02T20:13:48.066307" pubdate>2013-12-02</time></p>
 </header>
 
   <div class="entry-content"><p><strong>Introduction</strong>  </p>
@@ -138,15 +138,15 @@ const bool true=1;<br />
 <li>const_cast用于改变constnest和valatileness  </li>
 <li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-29T10:03:05.903099" pubdate>2013-10-29</time></p>
+          <p class="meta"><time datetime="2013-12-02T20:14:20.014308" pubdate>2013-12-02</time></p>
 </header>
 
   <div class="entry-content"><h2>Item6</h2>
@@ -161,16 +161,16 @@ const bool true=1;<br />
 <h2>Item7</h2>
 <ul>
 <li>不要重载&amp;&amp;，||和，操作符，因为无论定义成员或非成员函数，都无法模拟C++中这3个操作符的行为模式（短路，求值顺序）。  </li>
-<li>for语句头包括3个部分，第1部分是语句，所以可以定义多个变量。第3部分是表达式，所以只能用逗号隔开多个表达式，而不能使用语句（比如调用函数或定义变量）。  </li>
+<li>for语句头包括3个部分，第1部分是语句，所以可以定义多个变量。第3部分是表达式，所以只能用逗号隔开多个表达式，而不能使用定义变量。  </li>
 </ul>
 <h2>Item8</h2>
 <ul>
 <li>placement new类似于new，首先调用operator new，然后调用对象构造函数，然后返回内存指针。<br />
 不同点，是placement new调用的operator new的原型和实现如下：  </li>
 </ul>
-<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location ...</span></pre></div></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location</span><span class="p">)</span><span class="c1">//第一个参数不提供名字 ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
