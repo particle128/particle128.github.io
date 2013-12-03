@@ -61,7 +61,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">MoreEffectiveC++(2)</h1>
-          <p class="meta"><time datetime="2013-12-02T20:14:20.014308" pubdate>2013-12-02</time></p>
+          <p class="meta"><time datetime="2013-12-03T20:45:23.517802" pubdate>2013-12-03</time></p>
 </header>
 
   <div class="entry-content"><h2>Item6</h2>
@@ -89,13 +89,13 @@
 
 
 <ul>
-<li>placement new构造的对象，最好不要调用delete来释放，否则未定义。因为delete析构对象之后调用operator delete释放内存，而这段内存不一定是operator new(size_t)分配的。  </li>
+<li>placement new构造的对象，可能位于operator new分配的内存，也可能不是。如果不确定是不是，就不要调用delete来释放，否则可能未定义。因为delete析构对象之后调用operator delete释放内存，而这段内存如果是malloc分配的，或者是静态的内存，用operator delete释放都会出问题。  </li>
 </ul>
 <p><strong>异常Exception</strong></p>
 <h2>Item9</h2>
 <ul>
 <li>利用析构函数(smart pointer处理单个对象，vector处理对象数组)避免资源泄露，绝不使用操纵局部资源的指针。<br />
-因为即使加了try和catch语句块包裹可能出现异常的代码，也会把代码变得支离破碎，而且delete会出现两边（正常执行序列的最后，catch中throw到上一层之前）  </li>
+因为即使加了try和catch语句块包裹可能出现异常的代码，也会把代码变得支离破碎，而且delete会出现两遍（正常执行序列的最后，catch中throw到上一层之前）  </li>
 <li>C++加入异常的概念，意义：<br />
 保证错误的发生绝不会被忽略，而C语言中置errno或返回错误代码的方法，都可能因为调用者的不检查而使错误不被发现。  </li>
 </ul>
@@ -136,10 +136,10 @@
 
 
 <ul>
-<li>异常对象是抛出对象的副本，是一个临时对象。一般临时对象是常量的。但是catch字句中non-const引用也可以捕获，这是一个特例。  </li>
+<li>异常对象是抛出对象的副本，是一个临时对象，一般临时对象不能给非常量引用赋值。但是catch字句中non-const引用也可以捕获，这是一个特例。  </li>
 <li>异常和函数调用区别：<br />
 1.总会被复制，需要支持复制构造<br />
-2.允许的类型转换很少<br />
+2.允许的类型转换很少(非const到const，派生类到基类(指针引用对象都可)，指针到void*，数组到数组指针，函数到函数指针)<br />
 3.按catch子句出现的顺序匹配，而不是最佳匹配  </li>
 </ul>
 <h2>Item13 以引用方式捕获异常</h2>
@@ -160,7 +160,7 @@
 3.不使用默认版本的unexcepted函数：  </li>
 </ul>
 <div class="highlight"><pre><span class="c1">//第一种方式  </span>
-<span class="k">class</span> <span class="nf">UnexpectedException</span><span class="p">();</span>  
+<span class="k">class</span> <span class="nc">UnexpectedException</span><span class="p">{};</span>  
 <span class="kt">void</span> <span class="nf">custom</span><span class="p">()</span>  
 <span class="p">{</span><span class="k">throw</span> <span class="n">UnexpectedException</span><span class="p">();}</span>  
 <span class="n">set_unexpected</span><span class="p">(</span><span class="n">custom</span><span class="p">);</span><span class="c1">//用定制版本  </span>
@@ -185,7 +185,7 @@ g++下的禁止方式是<code>-fno-exceptions</code>。如果有异常抛出（n
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-12-02T20:14:20.014308" pubdate>2013-12-02</time>    <span class="categories">
+  <time datetime="2013-12-03T20:45:23.517802" pubdate>2013-12-03</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
       </span>
   </p>    </footer>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-02T20:14:20+08:00</updated><entry><title>MoreEffectiveC++(2)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html" rel="alternate"></link><updated>2013-12-02T20:14:20+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-02:posts/2013/12/MoreEffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item6&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-03T20:45:23+08:00</updated><entry><title>MoreEffectiveC++(2)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html" rel="alternate"></link><updated>2013-12-03T20:45:23+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-03:posts/2013/12/MoreEffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item6&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;自增自减操作符，两原则：&lt;br /&gt;
 1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  &lt;blockquote&gt;
@@ -24,13 +24,13 @@
 
 
 &lt;ul&gt;
-&lt;li&gt;placement new构造的对象，最好不要调用delete来释放，否则未定义。因为delete析构对象之后调用operator delete释放内存，而这段内存不一定是operator new(size_t)分配的。  &lt;/li&gt;
+&lt;li&gt;placement new构造的对象，可能位于operator new分配的内存，也可能不是。如果不确定是不是，就不要调用delete来释放，否则可能未定义。因为delete析构对象之后调用operator delete释放内存，而这段内存如果是malloc分配的，或者是静态的内存，用operator delete释放都会出问题。  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;异常Exception&lt;/strong&gt;&lt;/p&gt;
 &lt;h2&gt;Item9&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;利用析构函数(smart pointer处理单个对象，vector处理对象数组)避免资源泄露，绝不使用操纵局部资源的指针。&lt;br /&gt;
-因为即使加了try和catch语句块包裹可能出现异常的代码，也会把代码变得支离破碎，而且delete会出现两边（正常执行序列的最后，catch中throw到上一层之前）  &lt;/li&gt;
+因为即使加了try和catch语句块包裹可能出现异常的代码，也会把代码变得支离破碎，而且delete会出现两遍（正常执行序列的最后，catch中throw到上一层之前）  &lt;/li&gt;
 &lt;li&gt;C++加入异常的概念，意义：&lt;br /&gt;
 保证错误的发生绝不会被忽略，而C语言中置errno或返回错误代码的方法，都可能因为调用者的不检查而使错误不被发现。  &lt;/li&gt;
 &lt;/ul&gt;
@@ -71,10 +71,10 @@
 
 
 &lt;ul&gt;
-&lt;li&gt;异常对象是抛出对象的副本，是一个临时对象。一般临时对象是常量的。但是catch字句中non-const引用也可以捕获，这是一个特例。  &lt;/li&gt;
+&lt;li&gt;异常对象是抛出对象的副本，是一个临时对象，一般临时对象不能给非常量引用赋值。但是catch字句中non-const引用也可以捕获，这是一个特例。  &lt;/li&gt;
 &lt;li&gt;异常和函数调用区别：&lt;br /&gt;
 1.总会被复制，需要支持复制构造&lt;br /&gt;
-2.允许的类型转换很少&lt;br /&gt;
+2.允许的类型转换很少(非const到const，派生类到基类(指针引用对象都可)，指针到void*，数组到数组指针，函数到函数指针)&lt;br /&gt;
 3.按catch子句出现的顺序匹配，而不是最佳匹配  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Item13 以引用方式捕获异常&lt;/h2&gt;
@@ -95,7 +95,7 @@
 3.不使用默认版本的unexcepted函数：  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//第一种方式  &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nf"&gt;UnexpectedException&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UnexpectedException&lt;/span&gt;&lt;span class="p"&gt;{};&lt;/span&gt;  
 &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;custom&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
 &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;UnexpectedException&lt;/span&gt;&lt;span class="p"&gt;();}&lt;/span&gt;  
 &lt;span class="n"&gt;set_unexpected&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;custom&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//用定制版本  &lt;/span&gt;
