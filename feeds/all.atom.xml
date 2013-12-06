@@ -1,5 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-03T20:45:23+08:00</updated><entry><title>MoreEffectiveC++(2)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html" rel="alternate"></link><updated>2013-12-03T20:45:23+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-03:posts/2013/12/MoreEffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item6&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-06T11:09:41+08:00</updated><entry><title>MoreEffectiveC++(3)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html" rel="alternate"></link><updated>2013-12-06T11:09:41+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-06:posts/2013/12/MoreEffectiveCpp(3).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;效率Efficiency&lt;/strong&gt;  &lt;/p&gt;
+&lt;h2&gt;Item16 80-20 principal&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  &lt;/li&gt;
+&lt;li&gt;The accurate way to do this is to use program profiler(程序分析器).  &lt;/li&gt;
+&lt;li&gt;Offer as much data as possible to the profiler, to find the real bottle-neck.  &lt;/li&gt;
+&lt;li&gt;Make sure that every group of data is representative(典型的，可重现的).  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item17 consider to use Lazy Evaluation(缓式评估)&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;First of all, let me quote a sentence：  &lt;blockquote&gt;
+&lt;p&gt;从效率的观点来看，最好的运算是从未被执行的运算。  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;Lazy evaluation means you should write your class in the way that calculation should be made only when it's urgent.&lt;br /&gt;
+Three usages:&lt;br /&gt;
+1.reference counting&lt;br /&gt;
+Maybe some copy behaviour is no use.  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;MyStr&lt;/span&gt; &lt;span class="n"&gt;s1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;abcd&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="n"&gt;MyStr&lt;/span&gt; &lt;span class="n"&gt;s2&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;s1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//need not malloc and copy,just assign a pointer  &lt;/span&gt;
+&lt;span class="n"&gt;s2&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ConvertToUpper&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="c1"&gt;//need to malloc and copy  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.lazy fetching&lt;br /&gt;
+Maybe a large table only need a small part.  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;LargeObject&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+        &lt;span class="n"&gt;LargeObject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ObjectID&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//just assign private pointers to 0  &lt;/span&gt;
+        &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;field1&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//connect to the database and fetch data  &lt;/span&gt;
+        &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;field2&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+        &lt;span class="n"&gt;ObjectID&lt;/span&gt; &lt;span class="n"&gt;oid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+        &lt;span class="k"&gt;mutable&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;fieldValue1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+        &lt;span class="k"&gt;mutable&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;filedValue2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;3.lazy expression evaluation&lt;br /&gt;
+Maybe you just need to calculate some parts.  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Matrix&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m2&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;m3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//just store two pointers to m2 and m3,and a enum indicating it&amp;#39;s addition  &lt;/span&gt;
+&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;&lt;span class="c1"&gt;//only calculate the fourth line//define operator[]  &lt;/span&gt;
+&lt;span class="n"&gt;m2&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m3&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;m4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//have to change m1,which has a pointer to m2.//overload operator+  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Don't over do it.  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item18 consider to use Over-Eager Evaluation(超急评估)&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Two usages:&lt;br /&gt;
+1.caching  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="nf"&gt;CubicleNumber&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;CubicleMap&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;Cubicle&lt;/span&gt; &lt;span class="n"&gt;cubes&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//访问数据库耗时，访问缓存快速  &lt;/span&gt;
+    &lt;span class="n"&gt;CubicleMap&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;iterator&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;cubes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="n"&gt;cubes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;  
+    &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="cm"&gt;/*get info from the databse and update cubes*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;  
+    &lt;span class="k"&gt;else&lt;/span&gt;  
+    &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;second&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//more portable than it-&amp;gt;second}  &lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.prefetching&lt;br /&gt;
+when it needs x spaces, allocate 2x spaces.
+因为系统调用（operator new中malloc）耗时，所以尽量一次分配更多的空间。调用进程内函数快速。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Trade space for time.  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item19 understand the sources of Temporary Objects&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;C++中的临时对象是在栈上分配的匿名对象或不可见对象。&lt;/li&gt;
+&lt;li&gt;匿名对象举例：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; 
+&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="nf"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;不可见对象两种情况：&lt;br /&gt;
+1.隐式类型转换得到的对象。
+&lt;strong&gt;Note&lt;/strong&gt;:reference-to-non-const参数不能接受需要隐式类型转换的对象，因为参数可能会在函数中被修改，而修改仅仅作用于临时对象，C++禁止这种行为，编译失败，报错&lt;code&gt;invalid initialization of non-const reference of type ‘std::string&amp;amp; {aka std::basic_string&amp;lt;char&amp;gt;&amp;amp;}’ from an rvalue of type ‘char*’&lt;/code&gt;&lt;br /&gt;
+2.返回对象。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item20 降低返回值临时对象的成本return value optimization(RVO)&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;书上说在return表达式中，返回匿名临时对象（比如&lt;code&gt;return Rational(lhs.num()*rhs.num(),lhs.den()*rhs.den())&lt;/code&gt;），可以让编译器进行返回值优化（消除匿名临时对象以及返回值临时对象的构造和析构函数成本。把函数中return语句后面的内容提到调用者作用域中，&lt;code&gt;Rational c=a*b;&lt;/code&gt;中仅有c的构造成本）。  &lt;/li&gt;
+&lt;li&gt;注释又说“1996年ISO/ANSI标准委员会又宣布，返回命名对象和匿名对象都可以借助RVO被优化去掉。”后者可能在编译器下具备更好的优化性能。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item21 消除参数临时对象的成本use overload&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;可以重载一堆函数，来代替隐式类型转换，来消除参数临时对象的构造和析构成本。&lt;br /&gt;
+&lt;strong&gt;Note&lt;/strong&gt;:每个重载操作符，都必须获得至少一个“用户定制类型”的自变量。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item22 操作符复合形式效率&amp;gt;独身形式&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;如果编译器无法进行RVO，那么operator+运算，会构造并析构两个对象：局部对象和返回值临时对象。替换成类内成员函数operator+=，则无需构造这两个对象。  &lt;/li&gt;
+&lt;li&gt;可行的方案是：类内定义operator+=，类外定义模版operator+（使用对象的operator+=）。&lt;br /&gt;
+&lt;strong&gt;Note&lt;/strong&gt;:匿名对象比命名对象容易被消除，所以尽量选择前者。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item23 考虑使用其他程序库&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;使用benchmark(性能评估软件)，判断某个程序库在特定软件里，性能如何，然后做出取舍。  &lt;/li&gt;
+&lt;li&gt;iostream比stdio的速度慢20%~200%，程序大小也大很多，但是如果io不是瓶颈，不需要用stdio代替iostream，毕竟类型安全。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item24 了解虚函数等的成本&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;看完Inside C++ Object Model回来看，现在看的不是很透彻。  &lt;/li&gt;
+&lt;/ul&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(2)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html" rel="alternate"></link><updated>2013-12-03T20:45:23+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-03:posts/2013/12/MoreEffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item6&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;自增自减操作符，两原则：&lt;br /&gt;
 1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  &lt;blockquote&gt;
@@ -1019,123 +1138,7 @@ C++中又不能重载operator[][]函数，所以通过代理类模拟Array2D[1][
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;有些限制可以通过重载操作符来实现，非常麻烦。而传递参数的问题则没法避免。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(3)</title><link href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(3).html" rel="alternate"></link><updated>2013-11-28T09:15:50+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-28:posts/2013/11/MoreEffectiveCpp(3).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;效率Efficiency&lt;/strong&gt;  &lt;/p&gt;
-&lt;h2&gt;Item16 80-20 principal&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  &lt;/li&gt;
-&lt;li&gt;The accurate way to do this is to use program profiler(程序分析器).  &lt;/li&gt;
-&lt;li&gt;Offer as much data as possible to the profiler, to find the real bottle-neck.  &lt;/li&gt;
-&lt;li&gt;Make sure that every group of data is representative(典型的，可重现的).  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Item17 consider to use Lazy Evaluation(缓式评估)&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;First of all, let me quote a sentence：  &lt;blockquote&gt;
-&lt;p&gt;从效率的观点来看，最好的运算是从未被执行的运算。  &lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;Lazy evaluation means you should write your class in the way that calculation should be made only when it's urgent.&lt;br /&gt;
-Three usages:&lt;br /&gt;
-1.reference counting&lt;br /&gt;
-Maybe some copy behaviour is no use.  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;MyStr&lt;/span&gt; &lt;span class="n"&gt;s1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;abcd&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="n"&gt;MyStr&lt;/span&gt; &lt;span class="n"&gt;s2&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;s1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//need not malloc and copy,just assign a pointer  &lt;/span&gt;
-&lt;span class="n"&gt;s2&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ConvertToUpper&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="c1"&gt;//need to malloc and copy  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;2.lazy fetching&lt;br /&gt;
-Maybe a large table only need a small part.  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;LargeObject&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-        &lt;span class="n"&gt;LargeObject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ObjectID&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//just assign private pointers to 0  &lt;/span&gt;
-        &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;field1&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//connect to the database and fetch data  &lt;/span&gt;
-        &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;field2&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-        &lt;span class="n"&gt;ObjectID&lt;/span&gt; &lt;span class="n"&gt;oid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-        &lt;span class="k"&gt;mutable&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;fieldValue1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-        &lt;span class="k"&gt;mutable&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;filedValue2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;3.lazy expression evaluation&lt;br /&gt;
-Maybe you just need to calculate some parts.  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Matrix&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m2&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;m3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//just store two pointers to m2 and m3,and a enum indicating it&amp;#39;s addition  &lt;/span&gt;
-&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;m1&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;&lt;span class="c1"&gt;//only calculate the fourth line//define operator[]  &lt;/span&gt;
-&lt;span class="n"&gt;m2&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;m3&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;m4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//have to change m1,which has a pointer to m2.//reload operator+  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;Don't over do it.  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Item18 consider to use Over-Eager Evaluation(超急评估)&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Two usages:&lt;br /&gt;
-1.caching  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="nf"&gt;CubicleNumber&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;CubicleMap&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;Cubicle&lt;/span&gt; &lt;span class="n"&gt;cubes&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//访问数据库耗时，访问缓存快速  &lt;/span&gt;
-    &lt;span class="n"&gt;CubicleMap&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;iterator&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;cubes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="n"&gt;cubes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;  
-    &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="cm"&gt;/*get info from the databse and update cubes*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;  
-    &lt;span class="k"&gt;else&lt;/span&gt;  
-    &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;second&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//more portable than it-&amp;gt;second}  &lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;2.prefetching&lt;br /&gt;
-when it needs x spaces, allocate 2x spaces.//系统调用（operator new中malloc）耗时，调用进程内函数快速&lt;br /&gt;
-* Trade space for time.  &lt;/p&gt;
-&lt;h2&gt;Item19 understand the sources of Temporary Objects&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;C++中的临时对象是在栈上分配的匿名对象或不可见对象。&lt;/li&gt;
-&lt;li&gt;匿名对象举例：&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; 
-&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="nf"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;不可见对象两种情况：&lt;br /&gt;
-1.隐式类型转换得到的对象。
-&lt;strong&gt;Note&lt;/strong&gt;:reference-to-non-const参数不能接受需要隐式类型转换的对象，因为参数可能会在函数中被修改，而修改仅仅作用于临时对象，C++禁止这种行为，编译失败，报错&lt;code&gt;invalid initialization of non-const reference of type ‘std::string&amp;amp; {aka std::basic_string&amp;lt;char&amp;gt;&amp;amp;}’ from an rvalue of type ‘char*’&lt;/code&gt;&lt;br /&gt;
-2.返回对象。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Item20 降低返回值临时对象的成本return value optimization(RVO)&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;书上说在return表达式中，返回匿名临时对象（比如&lt;code&gt;return Rational(lhs.num()*rhs.num(),lhs.den()*rhs.den())&lt;/code&gt;），可以让编译器进行返回值优化（消除匿名临时对象以及返回值临时对象的构造和析构函数成本。把函数中return语句后面的内容提到调用者作用域中，&lt;code&gt;Rational c=a*b;&lt;/code&gt;中仅有c的构造成本）。  &lt;/li&gt;
-&lt;li&gt;注释又说“1996年ISO/ANSI标准委员会又宣布，返回命名对象和匿名对象都可以借助RVO被优化去掉。”后者可能在编译器下具备更好的优化性能。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Item21 消除参数临时对象的成本use overload&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;可以重载一堆函数，来代替隐式类型转换，来消除参数临时对象的构造和析构成本。&lt;br /&gt;
-&lt;strong&gt;Note&lt;/strong&gt;:每个重载操作符，都必须获得至少一个“用户定制类型”的自变量。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Item22 操作符符合形式效率&amp;gt;独身形式&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;如果编译器无法进行RVO，那么operator+运算，会构造并析构两个对象：局部对象和返回值临时对象。替换成类内成员函数operator+=，则无需构造这两个对象。  &lt;/li&gt;
-&lt;li&gt;可行的方案是：类内定义operator+=，类外定义模版operator+（使用对象的operator+=）。&lt;br /&gt;
-&lt;strong&gt;Note&lt;/strong&gt;:匿名对象比命名对象容易被消除，所以尽量选择前者。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Item23 考虑使用其他程序库&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;使用benchmark(性能评估软件)，判断某个程序库在特定软件里，性能如何，然后做出取舍。  &lt;/li&gt;
-&lt;li&gt;iostream比stdio的速度慢20%~200%，程序大小也大很多，但是如果io不是瓶颈，不需要用stdio代替iostream，毕竟类型安全。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Item24 了解虚函数等的成本&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;看完Inside C++ Object Model回来看，现在看的不是很透彻。  &lt;/li&gt;
-&lt;/ul&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(7)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html" rel="alternate"></link><updated>2013-11-06T11:24:54+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 26: Postpone variable definitions as long as possible.&lt;/h2&gt;
+&lt;p&gt;有些限制可以通过重载操作符来实现，非常麻烦。而传递参数的问题则没法避免。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(7)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html" rel="alternate"></link><updated>2013-11-06T11:24:54+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 26: Postpone variable definitions as long as possible.&lt;/h2&gt;
 &lt;p&gt;1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。&lt;br /&gt;
 2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点&lt;br /&gt;
 (1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分&lt;br /&gt;
