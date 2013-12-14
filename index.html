@@ -61,6 +61,28 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-14T10:31:02.321337" pubdate>2013-12-14</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item28 Smart pointer</h2>
+<ul>
+<li>智能指针相比于内置指针的优势：<br />
+1.构造和析构：分别防止wild指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
+2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
+3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
+<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
+<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
+<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
+<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
       </h1>
           <p class="meta"><time datetime="2013-12-14T08:44:43.521053" pubdate>2013-12-14</time></p>
@@ -171,28 +193,6 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/some-thought.html">一些反思</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T16:42:21.285890" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
-<ul>
-<li>目标不具体    </li>
-</ul>
-<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让人坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让人又鼓起斗志。当然，这只是举个例子，我锻炼身体的目标有好几个，找妹子只是比重比较小的一个。    </p>
-<ul>
-<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
-</ul>
-<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
-<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/some-thought.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index2.html">&larr; Older</a>
   
@@ -202,6 +202,9 @@ const bool true=1;<br />
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
       </li>
@@ -213,9 +216,6 @@ const bool true=1;<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/some-thought.html">一些反思</a>
       </li>
           </ul>
   </section>

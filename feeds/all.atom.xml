@@ -1,5 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-14T08:44:43+08:00</updated><entry><title>MoreEffectiveC++(4)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html" rel="alternate"></link><updated>2013-12-14T08:44:43+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(4).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;技术Techniques,Idioms,Patterns&lt;/strong&gt;  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-14T10:31:02+08:00</updated><entry><title>MoreEffectiveC++(5)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html" rel="alternate"></link><updated>2013-12-14T10:31:02+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(5).html</id><summary type="html">&lt;h2&gt;Item28 Smart pointer&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;智能指针相比于内置指针的优势：&lt;br /&gt;
+1.构造和析构：分别防止wild指针（默认实参是0）和内存泄露（dtor内delete对象）&lt;br /&gt;
+2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制&lt;br /&gt;
+3.解引用(dereference)：包括&lt;code&gt;-&amp;gt;&lt;/code&gt;和&lt;code&gt;*&lt;/code&gt;操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  &lt;/li&gt;
+&lt;li&gt;志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  &lt;/li&gt;
+&lt;li&gt;&lt;code&gt;auto_ptr&lt;/code&gt;作为参数，必须引用传递，否则调用之后，原&lt;code&gt;auto_ptr&lt;/code&gt;对象中的指针为0，不能访问了。&lt;br /&gt;
+&lt;strong&gt;注意&lt;/strong&gt;：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  &lt;/li&gt;
+&lt;li&gt;&lt;code&gt;auto_ptr&lt;/code&gt;的operator=操作符，需要在开始处判断&lt;code&gt;if (this==&amp;amp;rhs)&lt;/code&gt;，因为之后会&lt;code&gt;delete rhs&lt;/code&gt;。&lt;br /&gt;
+不需要判断，只调整语句顺序的情况：&lt;br /&gt;
+1.new+delete都有的函数:deep copy&lt;br /&gt;
+2.new+delete都没有的函数:复制值  &lt;/li&gt;
+&lt;li&gt;&lt;code&gt;auto_ptr&lt;/code&gt;的对象，如果保存的不是new分配的堆对象，释放的时候会段错误，编译没有错误。  &lt;/li&gt;
+&lt;li&gt;pt是一个对象，&lt;code&gt;pt-&amp;gt;display()&lt;/code&gt;会被编译器翻译成&lt;code&gt;(pt.operator-&amp;gt;())-&amp;gt;display()&lt;/code&gt;，(1)返回的对象keyi调用&lt;code&gt;-&amp;gt;&lt;/code&gt;操作符，(2)返回a pointer。  &lt;/li&gt;
+&lt;li&gt;提供功能，测试智能指针是否为null&lt;br /&gt;
+1.添加成员函数&lt;code&gt;isNull()&lt;/code&gt;：不直观，无法调用if(ptn)或if(ptn==0)或if(!ptn)&lt;br /&gt;
+2.重载&lt;code&gt;operator bool()&lt;/code&gt;，或&lt;code&gt;opertor!()&lt;/code&gt;：前者3种形式都满足，但是可能允许不同类型的指针互相比较，后者则只能实现第3种语义&lt;br /&gt;
+3.转换操作符&lt;code&gt;operator T*()&lt;/code&gt;：3种形式都满足，但是允许用户delete SmartPtr类型对象，会导致内存泄露。&lt;br /&gt;
+总结：可以使用第二种方法，但是定义const get()成员函数返回原始指针。  &lt;/li&gt;
+&lt;li&gt;要实现&lt;code&gt;SmartPtr&amp;lt;Base&amp;gt;&lt;/code&gt;的指针或引用，指向&lt;code&gt;SmartPtr&amp;lt;Derived&amp;gt;&lt;/code&gt;对象：&lt;br /&gt;
+1.特化&lt;code&gt;SmartPtr&amp;lt;Derived&amp;gt;&lt;/code&gt;，并定义如下转换操作符:  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pointee&lt;/span&gt;&lt;span class="p"&gt;);}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;缺点：必须所有派生类，而且必须给每一个派生类特化版本定义到所有基类（包括间接基类）的转换函数，因为不允许2次类类型转换.&lt;br /&gt;
+2.在SmartPtr模版里定义如下成员模版：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pointee&lt;/span&gt;&lt;span class="p"&gt;);}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;优点：不仅适用于派生体系，只要raw pointer可以隐式转换，包裹在外面的SmartPtr都可以隐式转换，比如non-const指针转成const指针；non-void指针转成void指针。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp_con&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp_void&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Base_of_T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp_base&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="c1"&gt;//此处函数参数必须为常量引用，因为转换操作符返回一个临时对象  &lt;/span&gt;
+&lt;span class="c1"&gt;//(临时对象：源码中不可见的对象，比如函数返回值、异常对象、表达式结果对象(比如1+2))  &lt;/span&gt;
+&lt;span class="c1"&gt;//临时对象不能传递给非常量引用，因此编译器不允许调用转换操作符  &lt;/span&gt;
+&lt;span class="c1"&gt;//这是C++对函数参数的一个语义限制，因为非常量引用在函数中可能被修改  &lt;/span&gt;
+&lt;span class="c1"&gt;//而如果该修改作用在临时对象上，函数返回之前会被销毁，无法传递给程序，所以不允许.  &lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Base_of_T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;){...}&lt;/span&gt;  
+&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;再次强调，非常量引用不能指向临时对象&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;注意&lt;/strong&gt;：以上两种实现中，都含有SmartPtr的构造函数，参数是原始指针。原始指针出现在继承体系的两个对象中，所以不能使用auto_ptr的构造和析构函数，否则会出现多次delete同一块内存的情况，应当使用reference counting。&lt;br /&gt;
+&lt;em&gt; 派生类指针，转换成距离自己更近的基类指针的代价更小，不会造成二义性。&lt;br /&gt;
+&lt;/em&gt; const T * const 对应的智能指针版本就是：&lt;code&gt;const SmartPtr&amp;lt;const T&amp;gt;&lt;/code&gt;  &lt;/p&gt;
+&lt;h2&gt;Item29 Reference counting(引用计数)&lt;/h2&gt;
+&lt;p&gt;略  &lt;/p&gt;
+&lt;h2&gt;Item30 Proxy classes(代理类)&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;代理类的使用场景&lt;br /&gt;
+1.抑制单参构造函数所引起的隐式类类型转换&lt;br /&gt;
+在不支持explicit的情形下，可以通过代理类模拟explicit的行为。&lt;br /&gt;
+思路:类类型转换只能进行一次，让参数进行一次，那么所要限制的类本身就不能隐式类型转换了。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+        &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ArraySize&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="c1"&gt;//代理类，用来代理Array构造函数的参数  &lt;/span&gt;
+            &lt;span class="nl"&gt;public:&lt;/span&gt;  
+                &lt;span class="n"&gt;ArraySize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;theSize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;){}&lt;/span&gt;  
+                &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;theSize&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
+            &lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+                &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;theSize&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+        &lt;span class="p"&gt;};&lt;/span&gt;  
+        &lt;span class="n"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ArraySize&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.构造出多维数组类型，且使用起来像arr[1][2]&lt;br /&gt;
+C++标准中不支持每维都是变量的多维数组（C99中好像支持），自定义类类型Array2D。&lt;br /&gt;
+C++中又不能重载operator[][]函数，所以通过代理类模拟Array2D[1][2]的访问方式。&lt;br /&gt;
+思路:Array2D的operator[]返回返回一个代理类对象Array1D，Array1D支持operator[]返回一个实际对象  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Array2D&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+        &lt;span class="n"&gt;Array1D&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="c1"&gt;//代理类，用来代理第一维的operator[]的返回值  &lt;/span&gt;
+            &lt;span class="nl"&gt;public:&lt;/span&gt;  
+                &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+                &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
+        &lt;span class="p"&gt;};&lt;/span&gt;  
+        &lt;span class="n"&gt;Array1D&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//Array1D是函数内局部对象，所以不返回引用  &lt;/span&gt;
+        &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Array1D&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;PS&lt;/strong&gt;:如果可以接受array(1,2)这种访问二维数组的方式，可以重载operator(int idx1,int idx2)函数&lt;br /&gt;
+3.区分operator[]的读写行为  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;String&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+        &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CharProxy&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+            &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+                &lt;span class="n"&gt;CharProxy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+                &lt;span class="n"&gt;CharProxy&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;CharProxy&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//写  &lt;/span&gt;
+                &lt;span class="n"&gt;CharProxy&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//写  &lt;/span&gt;
+                &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//读  &lt;/span&gt;
+            &lt;span class="nl"&gt;private:&lt;/span&gt;  
+                &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+                &lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;theString&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+        &lt;span class="p"&gt;};&lt;/span&gt;  
+        &lt;span class="n"&gt;CharProxy&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//省略const版本  &lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;代理类有其限制  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;=&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;&lt;span class="c1"&gt;//&amp;amp;不可以  &lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;&lt;span class="c1"&gt;//传递给reference-to-non-const出错，因为是代理类的临时对象而不是引用  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;有些限制可以通过重载操作符来实现，非常麻烦。而传递参数的问题则没法避免。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(4)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html" rel="alternate"></link><updated>2013-12-14T08:44:43+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(4).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;技术Techniques,Idioms,Patterns&lt;/strong&gt;  &lt;/p&gt;
 &lt;h2&gt;Item25 构造函数、非成员函数的虚化&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  &lt;/li&gt;
@@ -1114,134 +1241,7 @@ PS:&lt;br /&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:普通函数，和指向普通函数的指针，可以隐式互相转换；但是非静态成员函数和其指针之间不能进行任何转换，所以*和&amp;amp;符号不能省略。  &lt;/p&gt;</summary><category term="cpp"></category></entry><entry><title>MoreEffectiveC++(5)</title><link href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html" rel="alternate"></link><updated>2013-11-28T10:29:34+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-28:posts/2013/11/MoreEffectiveCpp(5).html</id><summary type="html">&lt;h2&gt;Item28 Smart pointer&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;智能指针相比于内置指针的优势：&lt;br /&gt;
-1.构造和析构：分别防止空指针（默认实参是0）和内存泄露（dtor内delete对象）&lt;br /&gt;
-2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制&lt;br /&gt;
-3.解引用(dereference)：包括&lt;code&gt;-&amp;gt;&lt;/code&gt;和&lt;code&gt;*&lt;/code&gt;操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  &lt;/li&gt;
-&lt;li&gt;志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  &lt;/li&gt;
-&lt;li&gt;&lt;code&gt;auto_ptr&lt;/code&gt;作为参数，必须引用传递，否则调用之后，原&lt;code&gt;auto_ptr&lt;/code&gt;对象中的指针为0，不能访问了。&lt;br /&gt;
-&lt;strong&gt;注意&lt;/strong&gt;：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  &lt;/li&gt;
-&lt;li&gt;&lt;code&gt;auto_ptr&lt;/code&gt;的operator=操作符，需要在开始处判断&lt;code&gt;if (this==&amp;amp;rhs)&lt;/code&gt;，因为之后会&lt;code&gt;delete rhs&lt;/code&gt;。&lt;br /&gt;
-不需要判断，只调整语句顺序的情况：&lt;br /&gt;
-1.new+delete都有的函数:deep copy&lt;br /&gt;
-2.new+delete都没有的函数:复制值  &lt;/li&gt;
-&lt;li&gt;&lt;code&gt;auto_ptr&lt;/code&gt;的对象，如果保存的不是new分配的堆对象，释放的时候会段错误，编译没有错误。  &lt;/li&gt;
-&lt;li&gt;pt是一个对象，&lt;code&gt;pt-&amp;gt;display()&lt;/code&gt;会被编译器翻译成&lt;code&gt;(pt.operator-&amp;gt;())-&amp;gt;display()&lt;/code&gt;，返回的对象要调用&lt;code&gt;-&amp;gt;&lt;/code&gt;操作符，要么返回。  &lt;/li&gt;
-&lt;li&gt;提供功能，测试智能指针是否为null&lt;br /&gt;
-1.添加成员函数&lt;code&gt;isNull()&lt;/code&gt;：不直观，无法调用if(ptn)或if(ptn==0)或if(!ptn)&lt;br /&gt;
-2.重载&lt;code&gt;operator bool()&lt;/code&gt;，或&lt;code&gt;opertor!()&lt;/code&gt;：前者3种形式都满足，但是可能允许不同类型的指针互相比较，后者则只能实现第3种语义&lt;br /&gt;
-3.转换操作符&lt;code&gt;operator T*()&lt;/code&gt;：3种形式都满足，但是允许用户delete SmartPtr类型对象，会导致内存泄露。&lt;br /&gt;
-总结：可以使用第二种方法，但是定义const get()成员函数返回原始指针。  &lt;/li&gt;
-&lt;li&gt;要实现&lt;code&gt;SmartPtr&amp;lt;Base&amp;gt;&lt;/code&gt;的指针或引用，指向&lt;code&gt;SmartPtr&amp;lt;Derived&amp;gt;&lt;/code&gt;对象：&lt;br /&gt;
-1.特化&lt;code&gt;SmartPtr&amp;lt;Derived&amp;gt;&lt;/code&gt;，并定义如下转换操作符:  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pointee&lt;/span&gt;&lt;span class="p"&gt;);}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;缺点：必须所有派生类，而且必须给每一个派生类特化版本定义到所有基类（包括间接基类）的转换函数，因为不允许2次类类型转换.&lt;br /&gt;
-2.在SmartPtr模版里定义如下成员模版：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pointee&lt;/span&gt;&lt;span class="p"&gt;);}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;优点：不仅适用于派生体系，只要raw pointer可以隐式转换，包裹在外面的SmartPtr都可以隐式转换，比如non-const指针转成const指针；non-void指针转成void指针。  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp_con&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp_void&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Base_of_T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp_base&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="c1"&gt;//此处函数参数必须为常量引用，因为转换操作符返回一个临时对象  &lt;/span&gt;
-&lt;span class="c1"&gt;//(临时对象：源码中不可见的对象，比如函数返回值、异常对象、表达式结果对象(比如1+2))  &lt;/span&gt;
-&lt;span class="c1"&gt;//临时对象不能传递给非常量引用，因此编译器不允许调用转换操作符  &lt;/span&gt;
-&lt;span class="c1"&gt;//这是C++对函数参数的一个语义限制，因为非常量引用在函数中可能被修改  &lt;/span&gt;
-&lt;span class="c1"&gt;//而如果该修改作用在临时对象上，函数返回之前会被销毁，无法传递给程序，所以不允许.  &lt;/span&gt;
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;SmartPtr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Base_of_T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;){...}&lt;/span&gt;  
-&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;strong&gt;再次强调，非常量引用不能指向临时对象&lt;/strong&gt;&lt;br /&gt;
-&lt;strong&gt;注意&lt;/strong&gt;：以上两种实现中，都含有SmartPtr的构造函数，参数是原始指针。原始指针出现在继承体系的两个对象中，所以不能使用auto_ptr的构造和析构函数，否则会出现多次delete同一块内存的情况，应当使用reference counting。&lt;br /&gt;
-&lt;em&gt; 派生类指针，转换成距离自己更近的基类指针的代价更小，不会造成二义性。&lt;br /&gt;
-&lt;/em&gt; const T * const 对应的智能指针版本就是：const SmartPtr&lt;const T&gt;  &lt;/p&gt;
-&lt;h2&gt;Item29 Reference counting(引用计数)&lt;/h2&gt;
-&lt;p&gt;略  &lt;/p&gt;
-&lt;h2&gt;Item30 Proxy classes(代理类)&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;代理类的使用场景&lt;br /&gt;
-1.抑制单参构造函数所引起的隐式类类型转换&lt;br /&gt;
-在不支持explicit的情形下，可以通过代理类模拟explicit的行为。&lt;br /&gt;
-思路:类类型转换只能进行一次，让参数进行一次，那么所要限制的类本身就不能隐式类型转换了。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-        &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ArraySize&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="c1"&gt;//代理类，用来代理Array构造函数的参数  &lt;/span&gt;
-            &lt;span class="nl"&gt;public:&lt;/span&gt;  
-                &lt;span class="n"&gt;ArraySize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;theSize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;){}&lt;/span&gt;  
-                &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;theSize&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
-            &lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-                &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;theSize&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-        &lt;span class="p"&gt;};&lt;/span&gt;  
-        &lt;span class="n"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ArraySize&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;2.构造出多维数组类型，且使用起来像arr[1][2]&lt;br /&gt;
-C++标准中不支持每维都是变量的多维数组（C99中好像支持），自定义类类型Array2D。&lt;br /&gt;
-C++中又不能重载operator[][]函数，所以通过代理类模拟Array2D[1][2]的访问方式。&lt;br /&gt;
-思路:Array2D的operator[]返回返回一个代理类对象Array1D，Array1D支持operator[]返回一个实际对象  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Array2D&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-        &lt;span class="n"&gt;Array1D&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="c1"&gt;//代理类，用来代理第一维的operator[]的返回值  &lt;/span&gt;
-            &lt;span class="nl"&gt;public:&lt;/span&gt;  
-                &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-                &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
-        &lt;span class="p"&gt;};&lt;/span&gt;  
-        &lt;span class="n"&gt;Array1D&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//Array1D是函数内局部对象，所以不返回引用  &lt;/span&gt;
-        &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Array1D&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;strong&gt;PS&lt;/strong&gt;:如果可以接受array(1,2)这种访问二维数组的方式，可以重载operator(int idx1,int idx2)函数&lt;br /&gt;
-3.区分operator[]的读写行为  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;String&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-        &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CharProxy&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-            &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-                &lt;span class="n"&gt;CharProxy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-                &lt;span class="n"&gt;CharProxy&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;CharProxy&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//写  &lt;/span&gt;
-                &lt;span class="n"&gt;CharProxy&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//写  &lt;/span&gt;
-                &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//读  &lt;/span&gt;
-            &lt;span class="nl"&gt;private:&lt;/span&gt;  
-                &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-                &lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;theString&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-        &lt;span class="p"&gt;};&lt;/span&gt;  
-        &lt;span class="n"&gt;CharProxy&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//省略const版本  &lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;ul&gt;
-&lt;li&gt;代理类有其限制  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;=&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;&lt;span class="c1"&gt;//&amp;amp;不可以  &lt;/span&gt;
-&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;&lt;span class="c1"&gt;//传递给reference-to-non-const出错，因为是代理类的临时对象而不是引用  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;有些限制可以通过重载操作符来实现，非常麻烦。而传递参数的问题则没法避免。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(7)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html" rel="alternate"></link><updated>2013-11-06T11:24:54+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 26: Postpone variable definitions as long as possible.&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:普通函数，和指向普通函数的指针，可以隐式互相转换；但是非静态成员函数和其指针之间不能进行任何转换，所以*和&amp;amp;符号不能省略。  &lt;/p&gt;</summary><category term="cpp"></category></entry><entry><title>Effective C++学习笔记(7)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html" rel="alternate"></link><updated>2013-11-06T11:24:54+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 26: Postpone variable definitions as long as possible.&lt;/h2&gt;
 &lt;p&gt;1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。&lt;br /&gt;
 2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点&lt;br /&gt;
 (1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分&lt;br /&gt;

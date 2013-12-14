@@ -61,6 +61,43 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T13:46:23.381419" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32 在未来时态下发展程序</h2>
+<ul>
+<li>面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  </li>
+<li>请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  </li>
+<li>没有virtual destructor的String类，不能用于当作基类(因为当作基类，就有delete指向派生对象的基类指针的可能性)。  </li>
+</ul>
+<h2>Item 33 将非尾端(non-leaf)类设计为抽象类</h2>
+<ul>
+<li>考虑这样一个继承体系<br />
+具体类Animal -&gt;派生Lizard和Chicken<br />
+可能出现部分赋值（partial assignment）的问题：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>  
+<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>  
+<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//Animal部分赋值，Lizard部分没有赋值  </span>
+</pre></div>
+
+
+<ul>
+<li>解决方法：<br />
+1.operator=变成虚函数从而利用多态实现派生类的赋值  </li>
+</ul>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Animal</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
       </h1>
           <p class="meta"><time datetime="2013-11-29T18:42:31.205341" pubdate>2013-11-29</time></p>
@@ -123,28 +160,6 @@
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-28T10:29:34.838336" pubdate>2013-11-28</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item28 Smart pointer</h2>
-<ul>
-<li>智能指针相比于内置指针的优势：<br />
-1.构造和析构：分别防止空指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
-2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
-3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
-<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
-<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
-<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
-<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
       </h1>
           <p class="meta"><time datetime="2013-11-06T11:24:54.805702" pubdate>2013-11-06</time></p>
@@ -197,6 +212,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
       </li>
             <li class="post">
@@ -207,9 +225,6 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/some-thought.html">一些反思</a>
       </li>
           </ul>
   </section>
