@@ -61,6 +61,32 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-29T18:42:31.205341" pubdate>2013-11-29</time></p>
+</header>
+
+  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
+<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
+<ul>
+<li>问题背景：<br />
+假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
+需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
+因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
+<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
+<li>解决方法：  </li>
+</ul>
+<p>1.double-RTTI（书中没提到）<br />
+直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
+<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
+优点 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
       </h1>
           <p class="meta"><time datetime="2013-11-28T10:29:34.838336" pubdate>2013-11-28</time></p>
@@ -80,29 +106,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(5).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-01T11:22:57.983014" pubdate>2013-11-01</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
-<h2>Item25 构造函数、非成员函数的虚化</h2>
-<ul>
-<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
-<li>3种语义上的虚化：<br />
-1.虚构造函数<br />
-根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
-2.虚拷贝构造函数<br />
-定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
-3.虚非成员函数<br />
-定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c ...</code></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
   
             <a class="next" href="http://particle128.com/tag/moreeffectivecpp.html">Newer &rarr;</a>
@@ -112,6 +115,9 @@
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
       </li>
@@ -123,9 +129,6 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
       </li>
           </ul>
   </section>
