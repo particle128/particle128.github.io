@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-14T08:43:14+08:00</updated><entry><title>MoreEffectiveC++(4)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html" rel="alternate"></link><updated>2013-12-14T08:43:14+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(4).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;技术Techniques,Idioms,Patterns&lt;/strong&gt;  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-14T08:44:43+08:00</updated><entry><title>MoreEffectiveC++(4)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html" rel="alternate"></link><updated>2013-12-14T08:44:43+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(4).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;技术Techniques,Idioms,Patterns&lt;/strong&gt;  &lt;/p&gt;
 &lt;h2&gt;Item25 构造函数、非成员函数的虚化&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  &lt;/li&gt;
@@ -16,7 +16,7 @@
 &lt;li&gt;杂类知识：&lt;br /&gt;
 1.不能在类成员变量里定义自身类型的对象，否则编译器报错&lt;code&gt;incomplete type&lt;/code&gt;。但是可以在类成员函数（包括inline构造函数）中定义该类类型的对象。&lt;br /&gt;
 2.希望该类不能实例化对象，声明protected ctor；希望该类不能被继承和实例化对象，声明private ctor。&lt;br /&gt;
-&lt;strong&gt;Note&lt;/strong&gt;:The above method can only restrict the construction of objects on the stack. Because you can define a static/friend function, in which new an object and return a pointer to that.
+&lt;strong&gt;Note&lt;/strong&gt;:The above method can only restrict the construction of objects on the stack. Because you can define a static/friend function, in which new an object and return a pointer to that.&lt;br /&gt;
 3.基类指针、引用指向派生类对象，必须是public继承，private和protected继承都会报错&lt;code&gt;'Base' is an inaccessible base of 'Derived'&lt;/code&gt;。一般允许当作基类的类都要定义virtual dtor，但是如果该基类只被private或protected继承的话，不需要定义虚析构函数。  &lt;/li&gt;
 &lt;li&gt;限制对象数量，方法如下：&lt;br /&gt;
 (1)声明private ctor，友元/静态成员函数定义如下  &lt;/li&gt;

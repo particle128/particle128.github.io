@@ -61,7 +61,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">MoreEffectiveC++(4)</h1>
-          <p class="meta"><time datetime="2013-12-14T08:43:14.069049" pubdate>2013-12-14</time></p>
+          <p class="meta"><time datetime="2013-12-14T08:44:43.521053" pubdate>2013-12-14</time></p>
 </header>
 
   <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
@@ -81,7 +81,7 @@
 <li>杂类知识：<br />
 1.不能在类成员变量里定义自身类型的对象，否则编译器报错<code>incomplete type</code>。但是可以在类成员函数（包括inline构造函数）中定义该类类型的对象。<br />
 2.希望该类不能实例化对象，声明protected ctor；希望该类不能被继承和实例化对象，声明private ctor。<br />
-<strong>Note</strong>:The above method can only restrict the construction of objects on the stack. Because you can define a static/friend function, in which new an object and return a pointer to that.
+<strong>Note</strong>:The above method can only restrict the construction of objects on the stack. Because you can define a static/friend function, in which new an object and return a pointer to that.<br />
 3.基类指针、引用指向派生类对象，必须是public继承，private和protected继承都会报错<code>'Base' is an inaccessible base of 'Derived'</code>。一般允许当作基类的类都要定义virtual dtor，但是如果该基类只被private或protected继承的话，不需要定义虚析构函数。  </li>
 <li>限制对象数量，方法如下：<br />
 (1)声明private ctor，友元/静态成员函数定义如下  </li>
@@ -173,7 +173,7 @@
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-12-14T08:43:14.069049" pubdate>2013-12-14</time>    <span class="categories">
+  <time datetime="2013-12-14T08:44:43.521053" pubdate>2013-12-14</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
         <a class="category" href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>
       </span>

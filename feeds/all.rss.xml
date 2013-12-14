@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description></description><atom:link href="http://particle128.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 14 Dec 2013 08:43:14 +0800</lastBuildDate><item><title>MoreEffectiveC++(4)</title><link>http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html</link><description>&lt;p&gt;&lt;strong&gt;技术Techniques,Idioms,Patterns&lt;/strong&gt;  &lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description></description><atom:link href="http://particle128.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 14 Dec 2013 08:44:43 +0800</lastBuildDate><item><title>MoreEffectiveC++(4)</title><link>http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html</link><description>&lt;p&gt;&lt;strong&gt;技术Techniques,Idioms,Patterns&lt;/strong&gt;  &lt;/p&gt;
 &lt;h2&gt;Item25 构造函数、非成员函数的虚化&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  &lt;/li&gt;
@@ -16,7 +16,7 @@
 &lt;li&gt;杂类知识：&lt;br /&gt;
 1.不能在类成员变量里定义自身类型的对象，否则编译器报错&lt;code&gt;incomplete type&lt;/code&gt;。但是可以在类成员函数（包括inline构造函数）中定义该类类型的对象。&lt;br /&gt;
 2.希望该类不能实例化对象，声明protected ctor；希望该类不能被继承和实例化对象，声明private ctor。&lt;br /&gt;
-&lt;strong&gt;Note&lt;/strong&gt;:The above method can only restrict the construction of objects on the stack. Because you can define a static/friend function, in which new an object and return a pointer to that.
+&lt;strong&gt;Note&lt;/strong&gt;:The above method can only restrict the construction of objects on the stack. Because you can define a static/friend function, in which new an object and return a pointer to that.&lt;br /&gt;
 3.基类指针、引用指向派生类对象，必须是public继承，private和protected继承都会报错&lt;code&gt;'Base' is an inaccessible base of 'Derived'&lt;/code&gt;。一般允许当作基类的类都要定义virtual dtor，但是如果该基类只被private或protected继承的话，不需要定义虚析构函数。  &lt;/li&gt;
 &lt;li&gt;限制对象数量，方法如下：&lt;br /&gt;
 (1)声明private ctor，友元/静态成员函数定义如下  &lt;/li&gt;
@@ -102,7 +102,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：派生类中的基类函数，参数this的类型为指向基类类型的指针常量。否则一个类被多个类继承，该类的所有函数就要有多份重载的代码。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 14 Dec 2013 08:43:14 +0800</pubDate><guid>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(4).html</guid><category>cpp</category><category>MoreEffectiveCpp</category></item><item><title>MoreEffectiveC++(3)</title><link>http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html</link><description>&lt;p&gt;&lt;strong&gt;效率Efficiency&lt;/strong&gt;  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：派生类中的基类函数，参数this的类型为指向基类类型的指针常量。否则一个类被多个类继承，该类的所有函数就要有多份重载的代码。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 14 Dec 2013 08:44:43 +0800</pubDate><guid>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(4).html</guid><category>cpp</category><category>MoreEffectiveCpp</category></item><item><title>MoreEffectiveC++(3)</title><link>http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html</link><description>&lt;p&gt;&lt;strong&gt;效率Efficiency&lt;/strong&gt;  &lt;/p&gt;
 &lt;h2&gt;Item16 80-20 principal&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  &lt;/li&gt;
