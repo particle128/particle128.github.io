@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog</title>
+  <title>常量map容器只能调用find来获取元素</title>
   <meta name="author" content="particle128">
 
     
@@ -57,12 +57,10 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
-      </h1>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">常量map容器只能调用find来获取元素</h1>
           <p class="meta"><time datetime="2013-12-18T21:05:00.545751" pubdate>2013-12-18</time></p>
 </header>
 
@@ -82,111 +80,66 @@
     <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">status_code</span><span class="o">=</span><span class="n">init_status_code</span><span class="p">();</span>  
 <span class="p">}</span>  
 
-<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-14T10:31:02.321337" pubdate>2013-12-14</time></p>
-</header>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="c1">//??? why can&#39;t define const status_map_t&amp; status_code=init_status_code();  </span>
+    <span class="n">strcpy</span><span class="p">(</span><span class="o">*</span><span class="n">pstr</span><span class="p">,</span><span class="n">status_code</span><span class="p">[</span><span class="mi">200</span><span class="p">]);</span>  
+    <span class="o">*</span><span class="n">pstr</span><span class="o">+=</span><span class="n">strlen</span><span class="p">(</span><span class="n">status_code</span><span class="p">[</span><span class="mi">200</span><span class="p">]);</span>  
+<span class="p">}</span>  
+</pre></div>
 
-  <div class="entry-content"><h2>Item28 Smart pointer</h2>
-<ul>
-<li>智能指针相比于内置指针的优势：<br />
-1.构造和析构：分别防止wild指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
-2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
-3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
-<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
-<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
-<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
-<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-14T08:44:43.521053" pubdate>2013-12-14</time></p>
-</header>
 
-  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
-<h2>Item25 构造函数、非成员函数的虚化</h2>
-<ul>
-<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
-<li>3种语义上的虚化：<br />
-1.虚构造函数<br />
-根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
-2.虚拷贝构造函数<br />
-定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
-3.虚非成员函数<br />
-定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c ...</code></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-06T11:09:41.378436" pubdate>2013-12-06</time></p>
-</header>
+<p>报错如下  </p>
+<div class="highlight"><pre><span class="n">error</span><span class="o">:</span> <span class="n">passing</span> <span class="err">‘</span><span class="kd">const</span> <span class="n">status_map_t</span> <span class="o">{</span><span class="n">aka</span> <span class="kd">const</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">int</span><span class="o">,</span> <span class="kd">const</span> <span class="n">char</span><span class="o">*&gt;}</span><span class="err">’</span> <span class="k">as</span> <span class="err">‘</span><span class="k">this</span><span class="err">’</span> <span class="n">argument</span> <span class="n">of</span> <span class="err">‘</span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">_Key</span><span class="o">,</span> <span class="n">_Tp</span><span class="o">,</span> <span class="n">_Compare</span><span class="o">,</span> <span class="n">_Alloc</span><span class="o">&gt;::</span><span class="n">mapped_type</span><span class="o">&amp;</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">_Key</span><span class="o">,</span> <span class="n">_Tp</span><span class="o">,</span> <span class="n">_Compare</span><span class="o">,</span> <span class="n">_Alloc</span><span class="o">&gt;::</span><span class="n">operator</span><span class="o">[](</span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">_Key</span><span class="o">,</span> <span class="n">_Tp</span><span class="o">,</span> <span class="n">_Compare</span><span class="o">,</span> <span class="n">_Alloc</span><span class="o">&gt;::</span><span class="n">key_type</span><span class="o">&amp;&amp;)</span> <span class="o">[</span><span class="k">with</span> <span class="n">_Key</span> <span class="o">=</span> <span class="n">int</span><span class="o">,</span> <span class="n">_Tp</span> <span class="o">=</span> <span class="kd">const</span> <span class="n">char</span><span class="o">*,</span> <span class="n">_Compare</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">less</span><span class="o">&lt;</span><span class="n">int</span><span class="o">&gt;,</span> <span class="n">_Alloc</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">allocator</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kd">const</span> <span class="n">int</span><span class="o">,</span> <span class="kd">const</span> <span class="n">char</span><span class="o">*&gt;</span> <span class="o">&gt;,</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">_Key</span><span class="o">,</span> <span class="n">_Tp</span><span class="o">,</span> <span class="n">_Compare</span><span class="o">,</span> <span class="n">_Alloc</span><span class="o">&gt;::</span><span class="n">mapped_type</span> <span class="o">=</span> <span class="kd">const</span> <span class="n">char</span><span class="o">*,</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">_Key</span><span class="o">,</span> <span class="n">_Tp</span><span class="o">,</span> <span class="n">_Compare</span><span class="o">,</span> <span class="n">_Alloc</span><span class="o">&gt;::</span><span class="n">key_type</span> <span class="o">=</span> <span class="n">int</span><span class="o">]</span><span class="err">’</span> <span class="n">discards</span> <span class="n">qualifiers</span>  
+</pre></div>
 
-  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
-<h2>Item16 80-20 principal</h2>
-<ul>
-<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
-<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
-<li>Offer as much data as possible to the profiler, to find ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-03T20:45:23.517802" pubdate>2013-12-03</time></p>
-</header>
 
-  <div class="entry-content"><h2>Item6</h2>
+<h2>Analysis</h2>
 <ul>
-<li>自增自减操作符，两原则：<br />
-1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  <blockquote>
-<p>设计类的一条无上宝典就是：一旦有疑虑，试看int行为如何并遵循之。  </p>
-</blockquote>
-</li>
+<li>编译错误，去掉[]中的类型解释，去掉复杂的map类型信息，得简化版本如下：  </li>
 </ul>
-<p>2.后自增和自减应该调用前自增和自减，而不是自己写函数，这样只需要维护前自增。  </p>
-<h2>Item7</h2>
+<div class="highlight"><pre><span class="n">error</span><span class="o">:</span> <span class="n">passing</span> <span class="kd">const</span> <span class="n">status_map_t</span> <span class="k">as</span> <span class="s1">&#39;this&#39;</span> <span class="n">argument</span> <span class="n">of</span> <span class="s1">&#39;mapped_type&amp; operator[](key_type&amp;)&#39;</span>  
+</pre></div>
+
+
+<p>问题很明显了，<strong>const对象不能调用non-const成员函数，而operator[]是map的non-const成员函数</strong>。  </p>
 <ul>
-<li>不要重载&amp;&amp;，||和，操作符，因为无论定义成员或非成员函数，都无法模拟C++中这3个操作符的行为模式（短路，求值顺序）。  </li>
-<li>for语句头包括3个部分，第1部分是语句，所以可以定义多个变量。第3部分是表达式，所以只能用逗号隔开多个表达式，而不能使用定义变量。  </li>
+<li>为什么map容器不提供operator[]的const版本呢？<br />
+operator[]的原理是：如果存在给定的键，则返回对应的值；如果不存在给定的键，则插入一个(key,mapped_type())，并返回这个缺省值。<br />
+既然operator[]可能对map进行insert操作，肯定不能定义const版本了。<br />
+m[k]等价于<code>m.insert(value_type(k,mapped_type())).first-&gt;second</code><br />
+注意：insert的原型如下  </li>
 </ul>
-<h2>Item8</h2>
-<ul>
-<li>placement new类似于new，首先调用operator new，然后调用对象构造函数，然后返回内存指针。<br />
-不同点，是placement new调用的operator new的原型和实现如下：  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location</span><span class="p">)</span><span class="c1">//第一个参数不提供名字 ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-      <a class="prev" href="http://particle128.com/category/cpp2.html">&larr; Older</a>
-  
-    <br />
-</div>  </div>
+<div class="highlight"><pre><span class="c1">//bool=true，返回的iterator指向新插入的元素；bool=false，返回的iterator指向对应key的原来的元素  </span>
+<span class="n">pair</span><span class="o">&lt;</span><span class="n">iterator</span><span class="p">,</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">map</span><span class="o">::</span><span class="n">insert</span><span class="p">(</span><span class="k">const</span> <span class="n">value_type</span><span class="o">&amp;</span><span class="p">);</span>  
+</pre></div>
+
+
+<h2>Solution</h2>
+<p>operator[]可以用find和insert来代替，const map只能使用find函数来获取元素  </p>
+<div class="highlight"><pre><span class="kr">inline</span> <span class="kt">void</span> <span class="nf">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="n">strcpy</span><span class="p">(</span><span class="o">*</span><span class="n">pstr</span><span class="p">,</span><span class="n">status_code</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">);</span>  
+    <span class="o">*</span><span class="n">pstr</span><span class="o">+=</span><span class="n">strlen</span><span class="p">(</span><span class="n">status_code</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-12-18T21:05:00.545751" pubdate>2013-12-18</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/stl.html">STL</a>
+        <a class="category" href="http://particle128.com/tag/map.html">map</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
@@ -248,6 +201,9 @@
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/12/map-operator.html';
+          var disqus_url = 'http://particle128.com/posts/2013/12/map-operator.html';
+          var disqus_title = '常量map容器只能调用find来获取元素';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
