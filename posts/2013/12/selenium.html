@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - selenium</title>
+  <title>关于Selenium WebDriver</title>
   <meta name="author" content="particle128">
 
     
@@ -57,12 +57,10 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
-      </h1>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">关于Selenium WebDriver</h1>
           <p class="meta"><time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time></p>
 </header>
 
@@ -81,93 +79,48 @@
 <h3>极限编程（extreme programming）</h3>
 <p>是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备）等。  </p>
 <h2>Introduction</h2>
-<p>selenium是一个自动化测试工具（test automation），常被用来进行回归测试（regression test ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/selenium.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">vip.com抢购助手:介绍</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
+<p>selenium是一个自动化测试工具（test automation），常被用来进行回归测试（regression test），因为回归测试在每次增加新的功能或修复bug之后都要进行，每次都人力测试太麻烦了。<br />
+它其实是一个软件集(Tool Suite)，包含4个工具：<br />
+<em> Selenium 2（aka. Selenium Webdriver）：向下兼容Selenium RC，额外提供了面向对象的API<br />
+</em> Selenium 1 (aka. Selenium RC or Remote Control)：支持多种语言，Java，C#，Javascript，Ruby，Perl，PHP，Python<br />
+<em> Selenium IDE：Firefox的一个插件，提供类似VS自带的自动化测试工具的功能<br />
+</em> Selenium-Grid：使Selenium RC可以在多台机器上并行处理<br />
+它支持多种浏览器和平台，至少支持Windows，Linux，MacOS支持，至少支持Chrome,Firefox,IE。  </p>
+<h2>Selenium WebDriver</h2></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/selenium.html">selenium</a>
+      </span>
+  </p>    </footer>
+  </article>
 
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>Two Modes</h2>
-<ul>
-<li>自选模式<br />
-配置config.ini，运行软件，键盘控制购买哪些看中的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  </li>
-<li>全自动模式<br />
-配置config.ini，运行软件，自动购买符合过滤条件的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  </li>
-</ul>
-<h2>Configuration</h2>
-<p><code>config.ini</code>配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  </p>
-<h3>url</h3>
-<p>包括登陆界面和主页的url，一般不需要动。  </p>
-<h3>screen</h3>
-<p>配置屏幕和选购窗口的大小安排，一般默认即可。  </p>
-<h3>auto_pick</h3>
-<ul>
-<li>
-<p>【AutoPickMode】：可选值是True或False。<br />
-选择True，将使软件进入<strong>全自动模式</strong>，auto_pick部分配置的其他选项才有意义。<br />
-选择False，则直接忽略auto_pick部分的其余配置，进入<strong>自选模式 ...</strong></p></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-intro.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">vip.vom抢购助手:技术问题</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>环境:</h2>
-<p>下载selenium chrome driver：<br />
-<a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
-安装selenium ：<code>pip install -U selenium</code>  </p>
-<h2>难点：</h2>
-<p>1.不同操作系统、不同网络状况、不同计算机内存情况，对一个页面的加载速度是不同的，用同一个时间来设置超时太不灵活，设置短了，某些机器可能加载不到东西就退出了；设置长了，可能浪费了一些等待的时间。<br />
-因此，采用标准超时时间每次超时+1的策略，然后把特定于某个机器的超时时间保存与配置文件内！<br />
-2.有些页面在给定的门限（比如2）次超时刷新后仍然加载不上的话，就直接跳过。  </p>
-<h2>遇到的问题和总结：</h2>
-<ul>
-<li>不输入回车直接读入键盘操作，因此需要设置终端输入no buffer模式  </li>
-</ul>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>  
-<span class="kn">import</span> <span class="nn">termios</span>  
-
-<span class="k">try</span><span class="p">:</span>  
-     <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
-     <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
-     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-    <br />
-</div>  </div>
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">vip.com抢购助手:介绍</a>
+          <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">vip.vom抢购助手:技术问题</a>
+          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
       </li>
           </ul>
   </section>
@@ -211,6 +164,9 @@
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/12/selenium.html';
+          var disqus_url = 'http://particle128.com/posts/2013/12/selenium.html';
+          var disqus_title = '关于Selenium WebDriver';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

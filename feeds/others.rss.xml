@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/others.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-10-19T21:51:21+08:00</updated><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.com/posts/2013/10/blog-build.html" rel="alternate"></link><updated>2013-10-19T21:51:21+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-19:posts/2013/10/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/others.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-27T00:00:00+08:00</updated><entry><title>关于Selenium WebDriver</title><link href="http://particle128.com/posts/2013/12/selenium.html" rel="alternate"></link><updated>2013-12-27T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-27:posts/2013/12/selenium.html</id><summary type="html">&lt;p&gt;用Selenium Webdriver有段时间了，一直learning on demand，浏览了大部分API，并没有对这个工具进行详细和彻底的学习。&lt;br /&gt;
+今天正好闲下来，梳理一下相关知识。  &lt;/p&gt;
+&lt;h2&gt;Some Links&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://code.google.com/p/selenium/"&gt;工程主页&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://www.seleniumhq.org/docs"&gt;文档主页&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html"&gt;Python文档&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://selenium-python.readthedocs.org/en/latest/index.html"&gt;Python非官方文档&lt;/a&gt;  &lt;/p&gt;
+&lt;h2&gt;Some Concepts&lt;/h2&gt;
+&lt;h3&gt;敏捷开发（Agile development）&lt;/h3&gt;
+&lt;p&gt;是一个软件开发方法学，强调3点：&lt;br /&gt;
+(1)adaptive&amp;gt;predictive (2)iterative&amp;gt;waterfall (3)codes&amp;gt;documents&lt;br /&gt;
+强调软件快速迭代，随着需求变化而修改或重构程序，而不是一开始就为将来可能出现的所有需求来设计。  &lt;/p&gt;
+&lt;h3&gt;极限编程（extreme programming）&lt;/h3&gt;
+&lt;p&gt;是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备）等。  &lt;/p&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;selenium是一个自动化测试工具（test automation），常被用来进行回归测试（regression test），因为回归测试在每次增加新的功能或修复bug之后都要进行，每次都人力测试太麻烦了。&lt;br /&gt;
+它其实是一个软件集(Tool Suite)，包含4个工具：&lt;br /&gt;
+&lt;em&gt; Selenium 2（aka. Selenium Webdriver）：向下兼容Selenium RC，额外提供了面向对象的API&lt;br /&gt;
+&lt;/em&gt; Selenium 1 (aka. Selenium RC or Remote Control)：支持多种语言，Java，C#，Javascript，Ruby，Perl，PHP，Python&lt;br /&gt;
+&lt;em&gt; Selenium IDE：Firefox的一个插件，提供类似VS自带的自动化测试工具的功能&lt;br /&gt;
+&lt;/em&gt; Selenium-Grid：使Selenium RC可以在多台机器上并行处理&lt;br /&gt;
+它支持多种浏览器和平台，至少支持Windows，Linux，MacOS支持，至少支持Chrome,Firefox,IE。  &lt;/p&gt;
+&lt;h2&gt;Selenium WebDriver&lt;/h2&gt;</summary><category term="selenium"></category></entry><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.com/posts/2013/10/blog-build.html" rel="alternate"></link><updated>2013-10-19T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-19:posts/2013/10/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;ubuntu12.04LTS(自带python2.7)  &lt;/li&gt;
 &lt;/ul&gt;
