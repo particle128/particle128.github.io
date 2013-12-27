@@ -1084,7 +1084,7 @@ C++会在main函数之前，加入一段对静态对象的构造语句，称为s
 这几个选项，对应下图中画圈部分。其中，Type和Size的值可以包含多个，空格隔开，但是Type和Size中的值要在对应位置一一对应。  &lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img alt="image" src="https://github.com/particle128/vipshop-buy/images/1.png" /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;img alt="image" src="https://raw.github.com/particle128/vipshop-buy/master/images/1.png" /&gt;&lt;br /&gt;
 例子：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;[type]&lt;/span&gt;  
 &lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;上衣 鞋类 男包  &lt;/span&gt;
