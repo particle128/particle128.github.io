@@ -66,21 +66,21 @@
 
   <div class="entry-content"><p>用Selenium Webdriver有段时间了，一直learning on demand，浏览了大部分API，并没有对这个工具进行详细和彻底的学习。<br />
 今天正好闲下来，梳理一下相关知识。  </p>
-<h1>Some Links</h1>
+<h2>Some Links</h2>
 <p><a href="http://code.google.com/p/selenium/">工程主页</a><br />
 <a href="http://www.seleniumhq.org/docs">文档主页</a><br />
 <a href="http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html">Python文档</a><br />
 <a href="http://selenium-python.readthedocs.org/en/latest/index.html">Python非官方文档</a><br />
 本人的两个使用Selenium的小项目
 <a href="https://github.com/particle128/vipshop-buy">vip.com shop assistant</a> <a href="https://github.com/particle128/qunar-flight-reminder">qunar flight-fare reminder</a></p>
-<h1>Some Concepts</h1>
-<h2>敏捷开发（Agile development）</h2>
+<h2>Some Concepts</h2>
+<h3>敏捷开发（Agile development）</h3>
 <p>是一个软件开发方法学，强调3点：<br />
 (1)adaptive&gt;predictive (2)iterative&gt;waterfall (3)codes&gt;documents<br />
 强调软件快速迭代，随着需求变化而修改或重构程序，而不是一开始就为将来可能出现的所有需求来设计。  </p>
-<h2>极限编程（extreme programming）</h2>
+<h3>极限编程（extreme programming）</h3>
 <p>是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备）等。  </p>
-<h1>Introduction</h1>
+<h2>Introduction</h2>
 <p>selenium是一个自动化测试工具（test automation），常被用来进行回归测试（regression test），因为回归测试在每次增加新的功能或修复bug之后都要进行，每次都人力测试太麻烦了。<br />
 它其实是一个软件集(Tool Suite)，包含4个工具：<br />
 <em> Selenium 2（aka. Selenium Webdriver）：向下兼容Selenium RC，额外提供了面向对象的API<br />
@@ -88,20 +88,20 @@
 <em> Selenium IDE：Firefox的一个插件，提供类似VS自带的自动化测试工具的功能<br />
 </em> Selenium-Grid：使Selenium RC可以在多台机器上并行处理<br />
 它支持多种浏览器和平台，至少支持Windows，Linux，MacOS支持，至少支持Chrome,Firefox,IE。  </p>
-<h1>Selenium WebDriver</h1>
-<h2>原理</h2>
+<h2>Selenium WebDriver</h2>
+<h3>原理</h3>
 <ul>
 <li>Selenium RC : 对于所有浏览器，都注入(inject)同样的javascript代码，通过调用js代码实现对浏览器的操作</li>
 <li>Selenium WebDriver : 直接调用浏览器原生的接口来<em>控制浏览器</em>，不同浏览器为自动化留的接口不同。</li>
 </ul>
-<h2>Selenium-Server</h2>
+<h3>Selenium-Server</h3>
 <p>一般情况只使用WebDriver就可以满足要求，以下情况还要安装Server</p>
 <ul>
 <li>使用Selenium-Grid</li>
 <li>测试脚本和浏览器不在同一台机器上</li>
 </ul>
-<h2>API Commands and Operations</h2>
-<h3>fetching a page</h3>
+<h3>API Commands and Operations</h3>
+<h4>fetching a page</h4>
 <div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;http://www.google.com&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -109,7 +109,7 @@
 <p>不同操作系统/浏览器的搭配，可能使get方法有不同的效果：有的等待页面加载完返回，有的不等待直接返回。
 Linux/ChromeDriver的情况是：等待加载完才返回。
 出于健壮性考虑，建议使用Explicit/Implicit waits</p>
-<h3>locating web elements</h3>
+<h4>locating web elements</h4>
 <div class="highlight"><pre><span class="n">ele</span><span class="o">=</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="n">_by_id</span><span class="o">/</span><span class="n">name</span><span class="o">/</span><span class="n">class_name</span><span class="o">/</span><span class="n">tag_name</span><span class="o">/</span><span class="n">link_text</span><span class="o">/</span><span class="n">css_selector</span><span class="o">/</span><span class="n">xpath</span>
 <span class="n">inputs</span><span class="o">=</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s">&#39;var inputs=...return inputs&#39;</span><span class="p">)</span> <span class="c"># 保证返回element对象</span>
 </pre></div>
@@ -117,7 +117,7 @@ Linux/ChromeDriver的情况是：等待加载完才返回。
 
 <p>其中<code>css_selector</code>参考 <a href="http://www.w3.org/TR/CSS/#selectors">标准格式</a>
 xpath参考 <a href="http://www.w3school.com.cn/xpath">w3c文档</a></p>
-<h3>user input</h3>
+<h4>user input</h4>
 <p>下拉列表的处理</p>
 <div class="highlight"><pre><span class="c"># available since 2.12</span>
 <span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="kn">import</span> <span class="n">Select</span>
@@ -135,20 +135,20 @@ xpath参考 <a href="http://www.w3school.com.cn/xpath">w3c文档</a></p>
 </pre></div>
 
 
-<h3>moving between windows and frames</h3>
+<h4>moving between windows and frames</h4>
 <p>默认在当前window和当前frame中定位元素，切换窗口和帧</p>
 <div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="s">&#39;window1&#39;</span><span class="p">)</span>
 <span class="n">driver</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s">&#39;frameName.0.child&#39;</span><span class="p">)</span> <span class="c">#frameName的第一个子frame的名叫child的子frame</span>
 </pre></div>
 
 
-<h3>弹出对话框的处理</h3>
+<h4>弹出对话框的处理</h4>
 <div class="highlight"><pre><span class="n">alert</span><span class="o">=</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_alert</span><span class="p">()</span> <span class="c">#适用于alerts,confirms,prompts</span>
 <span class="n">alert</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span><span class="o">/</span><span class="n">dismiss</span><span class="p">()</span><span class="o">/</span><span class="err">读取和写入</span>
 </pre></div>
 
 
-<h3>前进后退，cookies</h3>
+<h4>前进后退，cookies</h4>
 <div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span>
 <span class="n">driver</span><span class="o">.</span><span class="n">back</span><span class="p">()</span>
 
@@ -157,7 +157,7 @@ xpath参考 <a href="http://www.w3school.com.cn/xpath">w3c文档</a></p>
 </pre></div>
 
 
-<h3>托拽</h3>
+<h4>托拽</h4>
 <div class="highlight"><pre><span class="kn">from</span> <span class="nn">selenium.webdriver.common.action_chains</span> <span class="kn">import</span> <span class="n">ActionChains</span>
 <span class="n">element</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_name</span><span class="p">(</span><span class="s">&quot;source&quot;</span><span class="p">)</span>
 <span class="n">target</span> <span class="o">=</span>  <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_name</span><span class="p">(</span><span class="s">&quot;target&quot;</span><span class="p">)</span>
@@ -166,7 +166,7 @@ xpath参考 <a href="http://www.w3school.com.cn/xpath">w3c文档</a></p>
 </pre></div>
 
 
-<h3>显式和隐式等待</h3>
+<h4>显式和隐式等待</h4>
 <p>explicit wait</p>
 <div class="highlight"><pre><span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
 <span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
