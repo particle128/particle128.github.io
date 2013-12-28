@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Search</title>
+  <title>DNS相关</title>
   <meta name="author" content="particle128">
 
     
@@ -58,26 +58,109 @@
   <div id="main">
     <div id="content">
       <div>
-  <article role="article">
+  <article class="hentry" role="article">
     <header>
-      <h1 class="entry-title">Search</h1>
-    </header>
-    <script>  
-  (function() {  
-    var cx = '002731089661746738200:zcsi3r1_fx0';  
-    var gcse = document.createElement('script');  
-    gcse.type = 'text/javascript';  
-    gcse.async = true;  
-    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +  
-        '//www.google.com/cse/cse.js?cx=' + cx;  
-    var s = document.getElementsByTagName('script')[0];  
-    s.parentNode.insertBefore(gcse, s);  
-  })();  
-</script>
+          <h1 class="entry-title">DNS相关</h1>
+          <p class="meta"><time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time></p>
+</header>
 
-<p><gcse:search></gcse:search>  </p>
+  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
+<h3>Domain Name System</h3>
+<p>host name &lt; - &gt; ip address<br />
+主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
+如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
+<h3>名字/域名服务器层次结构：</h3>
+<p>root name server 根域名服务器（无名）<br />
+TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa，普通域com等，和国家域cn等）<br />
+authoritative name server 授权域名服务器<br />
+local name server 本地域名服务器  </p>
+<h3>DNS查询过程：</h3>
+<p>本地主机高速缓存里有记录的话，不用查找了。<br />
+本地主机缓存里记录过期或没有，以递归方式查找local。<br />
+local没有记录的话，一般以迭代方式分别查找root,TLD,authoritative，直到找到，返回给local。<br />
+以本地主机的视角，就看到查找local并得到local的回应了，local的查找过程时透明的。  </p>
+<h3>解析器的配置文件/etc/resolv.conf：</h3>
+<p>格式：  </p>
+<div class="highlight"><pre><span class="n">search</span> <span class="n">example</span><span class="p">.</span><span class="n">com</span> <span class="n">local</span><span class="p">.</span><span class="n">lan</span>  
+<span class="n">nameserver</span> <span class="mf">172.16.1.254</span>  
+<span class="n">nameserver</span> <span class="mf">172.16.2.254</span>  
+</pre></div>
+
+
+<h3>资源记录（resource record）</h3>
+<p>都可以简略理解成&lt;域名，数据&gt;对，数据有时候是ip地址，有时候是域名。PTR也不例外。<br />
+DNS中的常用RR：  </p>
+<blockquote>
+<p>A（address）：host name-&gt;ipv4<br />
+AAAA：host name-&gt;ipv6<br />
+PTR(pointer)：ipv4/ipv6-&gt;hostname<br />
+MX(mail exchanger)：host name-&gt;its mail exchanger<br />
+CNAME(canonical name):server name-&gt; host name<br />
+NS（name server）:domain-&gt;authoritive name server of this domain  </p>
+</blockquote>
+<h3>指针查询</h3>
+<p>一个组织申请一个域名的时候，同时给其分配一个in-addr.arpa下的域名。<br />
+比如申请210.30.97.139的域名为www.mashu.com，那么名字服务器上会增加两条记录：  </p>
+<div class="highlight"><pre><span class="n">www</span><span class="p">.</span><span class="n">mashu</span><span class="p">.</span><span class="n">com</span>                   <span class="n">A</span>      <span class="mf">210.30.97.139</span>  
+<span class="mf">139.97.30.210</span><span class="p">.</span><span class="n">in</span><span class="o">-</span><span class="n">addr</span><span class="p">.</span><span class="n">arpa</span> <span class="n">PTR</span> <span class="n">www</span><span class="p">.</span><span class="n">mashu</span><span class="p">.</span><span class="n">com</span>  
+</pre></div>
+
+
+<p>这样，ip地址反向查找域名就直接找PTR记录即可，而不用遍历所有A记录了。<br />
+注：我理解的逆序有一定好处是，一个区域的ip地址高字节都是相同的，比如都是210.30，区分每一台主机的主要是低位的字节，所以把低字节排在前面，查找更迅速。<br />
+设想学校的local：逆序，第一个字节符合要求的就1个记录；正序，第一个字节所有记录都匹配。  </p>
+<h3>传输层协议：</h3>
+<p>DNS请求一般是解析器（resolver）发出的，解析器是应用程序的一部分（以模块的形式加入应用程序），而不是内核的一部分。<br />
+DNS一般都使用UDP数据报，只有2个特例：<br />
+1）DNS响应报文超过UDP的上限512B，解析器就会用TCP重发原来的请求。<br />
+2）一个域的辅助名字服务器从主名字服务器上拉取数据的时候，区域传送使用TCP。  </p>
+<h3>备份</h3>
+<p>除了本地名字服务器，网上有OpenDNS和googleDNS服务器的ip地址，应该是被墙了，现在访问不到。所以一旦学校的本地名字服务器崩了，就没办法通过主机名访问外网了。<br />
+常用网站ip地址：<br />
+google : 74.125.31.106  173.194.45.20 <br />
+yinxiang : 119.254.30.32/Home.action<br />
+youdao dict : 121.195.178.201  </p>
+<h3>查看DNS解析的linux工具：</h3>
+<p>[1] host<br />
+格式：$ host [-t type]{name} [server]<br />
+说明：<br />
+DNS解析工具。<br />
+name如果是一个主机名，就解析出其ip地址；name如果是ip地址，就反解析出其主机名。<br />
+server可选参数。默认从/etc/resolv.conf读取名字服务器（nameserver），加上该参数（ip地址或主机名形式均可）后，就采用该名字服务器。<br />
+-t后面接类型，比如cname，a等<br />
+示例：  </p>
+<div class="highlight"><pre><span class="nv">$host</span> google.com    
+<span class="nv">$host</span> google.com 202.118.66.6    
+<span class="nv">$host</span> 127.0.0.1  
+</pre></div>
+
+
+<p>[2] nslookup<br />
+格式：$ nslookup [name] [server]<br />
+说明：交互式(interactve)DNS解析工具，输入nslookup之后出现交互式操作提示符“&gt;”，之后就可以多次输入需要解析的host name。给出的解析结果相对host详细一些。  </p>
+<p>[3] dig(domain information groper)<br />
+格式： $ dig [server] {name} [type]<br />
+示例：  </p>
+<div class="highlight"><pre><span class="nv">$dig</span> google.com （默认只寻找资源类型A）  
+<span class="nv">$dig</span> google.com ANY  
+<span class="nv">$dig</span> google.com MX  
+</pre></div></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/dns.html">dns</a>
+      </span>
+  </p>    </footer>
   </article>
-</div>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
@@ -139,6 +222,9 @@
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/12/dns.html';
+          var disqus_url = 'http://particle128.com/posts/2013/12/dns.html';
+          var disqus_title = 'DNS相关';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

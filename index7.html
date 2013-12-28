@@ -61,26 +61,68 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+        <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-13T20:09:29.927587" pubdate>2013-10-13</time></p>
+          <p class="meta"><time datetime="2013-10-14T00:00:00" pubdate>2013-10-14</time></p>
 </header>
 
-  <div class="entry-content"><p>关于new和delete的东西，笔记不够详尽，因为新知识比较多，不太方便记录笔记。发现相关知识漏洞的时候，再去查看Cpp Primer和Effective Cpp相关章节。  </p>
-<h2>Item 49: Understand the behavior of the new-handler</h2>
-<p>1.<code>std::set_new_handler()</code>可以绑定一个<code>new_handler</code>（类型为<code>void (*)()</code>），即new获取不到所需内存时调用的客户定制函数。如果不设置函数，或设置null，直接抛出异常<code>std::bad_alloc</code>。<br />
-2.获取<code>new_handler</code>函数的方式：  </p>
-<div class="highlight"><pre><span class="n">handler</span><span class="o">=</span><span class="n">set_new_handler</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  
-<span class="n">set_new_handler</span><span class="p">(</span><span class="n">handler</span><span class="p">);</span>  
-</pre></div>
-
-
-<p>3.new_handler应该具备以下一种功能：<br />
-（1）让更多内存可被使用。否则::operator new会无限循环调用非空的new_handler。例如程序开始分配一个内存池，动态分配不到资源的时候释放一些资源出来。<br />
-（2）安装另一个可以释放更多内存的new_handler函数。<br />
-（3 ...</p></div>
+  <div class="entry-content"><ul>
+<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
+<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
+甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
+<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
+<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
+<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
+<span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-14T00:00:00" pubdate>2013-10-14</time></p>
+</header>
+
+  <div class="entry-content"><h2>Chapter 2</h2>
+<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
+gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
+[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
+宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
+gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
+[2]编译  把源文件生成汇编代码 (调用cc1)<br />
+gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 39: Use private inheritance judiciously</h2>
+<p>1.私有继承和复合(composition)意义相同：根据某物实现出（is-implemented-in-terms-of）。<br />
+2.除非必要，尽量用复合实现这种语义。<br />
+3.可以考虑使用private继承的情况：<br />
+（1）需要需要访问protected成员<br />
+（2）需要重写virtual函数。（替代策略:可以派生一个类，重写virtual函数。然后包含这个类的对象）<br />
+（3）如果需要包含的是一个空类对象，用private继承，节省空间。<br />
+Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual函数的类。因为不含非静态成员变量和虚函数，所以一般不需要内存空间。<br />
+注：<br />
+1)类中包含一个空类对象的时候，大多数编译器至少需要1个字节的内存空间。<br />
+2)继承自空类对象，不需要任何内存空间。<br />
+4.尽量复用已有代码，所以平时注意积累自己的工具箱，设计的越通用越好，随时可以拿来复用。  </p>
+<h2>Item 40 ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
@@ -88,7 +130,7 @@
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-13T20:06:53.727580" pubdate>2013-10-13</time></p>
+          <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
 </header>
 
   <div class="entry-content"><h2>Item 44: Factor parameter-independent code out of templates</h2>
@@ -112,73 +154,26 @@
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-13T20:05:09.203575" pubdate>2013-10-13</time></p>
+          <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
 </header>
 
-  <div class="entry-content"><h2>Item 39: Use private inheritance judiciously</h2>
-<p>1.私有继承和复合(composition)意义相同：根据某物实现出（is-implemented-in-terms-of）。<br />
-2.除非必要，尽量用复合实现这种语义。<br />
-3.可以考虑使用private继承的情况：<br />
-（1）需要需要访问protected成员<br />
-（2）需要重写virtual函数。（替代策略:可以派生一个类，重写virtual函数。然后包含这个类的对象）<br />
-（3）如果需要包含的是一个空类对象，用private继承，节省空间。<br />
-Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual函数的类。因为不含非静态成员变量和虚函数，所以一般不需要内存空间。<br />
-注：<br />
-1)类中包含一个空类对象的时候，大多数编译器至少需要1个字节的内存空间。<br />
-2)继承自空类对象，不需要任何内存空间。<br />
-4.尽量复用已有代码，所以平时注意积累自己的工具箱，设计的越通用越好，随时可以拿来复用。  </p>
-<h2>Item 40 ...</h2></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T20:03:58.223572" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 32: Make sure public inheritance models "is-a"</h2>
-<p>1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。<br />
-2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：<br />
-企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高<br />
-3.修改”企鹅-&gt;鸟“设计：<br />
-（1）class Bird; class Penguin :public Bird; class FlyingBird: public Bird; //在Bird里不定义fly()，在FlyingBird里定义<br />
-（2）class Bird; class Penguin :public Bird; //在Bird里定义fly ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Effective C++学习笔记(5)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-11T16:34:30.926289" pubdate>2013-10-11</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item18:  Make interfaces easy to use correctly and hard to use incorrectly</h2>
-<p>1.促进接口被正确使用：<br />
-（1）接口一致性：stl中所有容器都具有size() 函数，而不像Java和.Net。<br />
-（2）与内置类型行为兼容：想想和int类比。<br />
-2.阻止接口被误用（！！！不正确的行为，编译都不能通过）：<br />
-例子：  </p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Date</span>  
-<span class="p">{</span>  
-    <span class="n">Date</span><span class="p">(</span><span class="kt">int</span> <span class="n">month</span><span class="p">,</span><span class="kt">int</span> <span class="n">day</span><span class="p">,</span><span class="kt">int</span> <span class="n">year</span><span class="p">);</span>  
-<span class="p">}</span>  
+  <div class="entry-content"><p>关于new和delete的东西，笔记不够详尽，因为新知识比较多，不太方便记录笔记。发现相关知识漏洞的时候，再去查看Cpp Primer和Effective Cpp相关章节。  </p>
+<h2>Item 49: Understand the behavior of the new-handler</h2>
+<p>1.<code>std::set_new_handler()</code>可以绑定一个<code>new_handler</code>（类型为<code>void (*)()</code>），即new获取不到所需内存时调用的客户定制函数。如果不设置函数，或设置null，直接抛出异常<code>std::bad_alloc</code>。<br />
+2.获取<code>new_handler</code>函数的方式：  </p>
+<div class="highlight"><pre><span class="n">handler</span><span class="o">=</span><span class="n">set_new_handler</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  
+<span class="n">set_new_handler</span><span class="p">(</span><span class="n">handler</span><span class="p">);</span>  
 </pre></div>
 
 
-<p>（1）建立新类型，防止调用顺序错乱，比如(2013,1,10)。  </p>
-<div class="highlight"><pre><span class="c1">//定义Month,Day,Year类型（struct，只含一个val变量和一个explicit单个参数构造函数即可）  </span>
-<span class="n">Date ...</span></pre></div></div>
+<p>3.new_handler应该具备以下一种功能：<br />
+（1）让更多内存可被使用。否则::operator new会无限循环调用非空的new_handler。例如程序开始分配一个内存池，动态分配不到资源的时候释放一些资源出来。<br />
+（2）安装另一个可以释放更多内存的new_handler函数。<br />
+（3 ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -192,19 +187,19 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </li>
-            <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
       </li>
           </ul>
   </section>
@@ -223,7 +218,7 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

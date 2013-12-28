@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - cpp</title>
+  <title>Linux下的用户和用户组小结</title>
   <meta name="author" content="particle128">
 
     
@@ -57,52 +57,118 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-14T00:00:00" pubdate>2013-10-14</time></p>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">Linux下的用户和用户组小结</h1>
+          <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
 </header>
 
-  <div class="entry-content"><ul>
-<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
-<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
-甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
-<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
-<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
-<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
-<span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-            <a class="next" href="http://particle128.com/tag/cpp2.html">Newer &rarr;</a>
-        <br />
-</div>  </div>
+  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
+<h4>chown 修改文件所有者</h4>
+<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
+chown mashu aa.txt <span class="c"># 修改所有者</span>
+chown .mashu aa.txt <span class="c"># 修改组</span>
+</pre></div>
+
+
+<h4>chgrp 修改文件所属用户组</h4>
+<div class="highlight"><pre>chgrp mashu aa.txt 修改组
+</pre></div>
+
+
+<h4>chmod 修改权限</h4>
+<div class="highlight"><pre>chmod 777 aa.txt   
+chmod a+r aa.txt
+</pre></div>
+
+
+<h3>2. 3个重要文件</h3>
+<h4>/etc/passwd</h4>
+<p>记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  </p>
+<h4>/etc/shadow</h4>
+<p>记录 用户名 对应的密码（加密后）  </p>
+<h4>/etc/group</h4>
+<p>记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）</p>
+<h3>3. 概念区分</h3>
+<h4>初始用户组：</h4>
+<p>useradd或usermod，-g参数后的组名。保存在/etc/passwd中。<br />
+实际意义是，/etc/group里少写一个用户名。。。  </p>
+<h4>有效用户组：</h4>
+<p>groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。<br />
+实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。</p>
+<h3>4. 用户分类</h3>
+<p>ubuntu12.04下，根据/etc/login.defs<br />
+UID=0  系统管理员<br />
+UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)<br />
+UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  </p>
+<h3>5. linux命令</h3>
+<h4>1) useradd</h4>
+<div class="highlight"><pre>useradd -u <span class="o">[</span>UID<span class="o">]</span> -g <span class="o">[</span>initial group name<span class="o">]</span> -G <span class="o">[</span>other group name<span class="o">]</span> -d <span class="o">[</span>home dir<span class="o">]</span> -s <span class="o">[</span>shell<span class="o">]</span> -r <span class="o">[</span>用户名<span class="o">]</span>
+</pre></div>
+
+
+<p>没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。<br />
+-r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）</p>
+<h4>2) usermod</h4>
+<p>同useradd</p>
+<h4>3) passwd</h4>
+<div class="highlight"><pre>passwd <span class="o">[</span>用户名<span class="o">]</span> 
+passwd
+</pre></div>
+
+
+<p>无参数修改自己的密码</p>
+<h4>4) userdel</h4>
+<div class="highlight"><pre>userdel -r <span class="o">[</span>用户名<span class="o">]</span>
+</pre></div>
+
+
+<p>加上-r，连同主文件夹也一同删除</p>
+<h4>5) groupadd</h4>
+<div class="highlight"><pre>groupadd -g <span class="o">[</span>GID<span class="o">]</span> -r <span class="o">[</span>组名<span class="o">]</span>
+</pre></div>
+
+
+<p>-g 指定GID，-r 创建系统组</p>
+<h4>6) groupdel</h4>
+<div class="highlight"><pre>groupdel <span class="o">[</span>组名<span class="o">]</span>
+</pre></div></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/linux.html">linux</a>
+        <a class="category" href="http://particle128.com/tag/user.html">user</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
       </li>
           </ul>
   </section>
@@ -146,6 +212,9 @@
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/12/linux_user.html';
+          var disqus_url = 'http://particle128.com/posts/2013/12/linux_user.html';
+          var disqus_title = 'Linux下的用户和用户组小结';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

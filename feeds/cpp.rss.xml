@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/cpp.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-18T21:09:06+08:00</updated><entry><title>常量map容器只能调用find来获取元素</title><link href="http://particle128.com/posts/2013/12/map-operator.html" rel="alternate"></link><updated>2013-12-18T21:09:06+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-18:posts/2013/12/map-operator.html</id><summary type="html">&lt;h2&gt;Problem&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/cpp.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-18T00:00:00+08:00</updated><entry><title>常量map容器只能调用find来获取元素</title><link href="http://particle128.com/posts/2013/12/map-operator.html" rel="alternate"></link><updated>2013-12-18T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-18:posts/2013/12/map-operator.html</id><summary type="html">&lt;h2&gt;Problem&lt;/h2&gt;
 &lt;p&gt;做我的http server的时候，遇到了个错误，出错相关代码如下  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;namespace&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
     &lt;span class="cm"&gt;/* ... */&lt;/span&gt;  
@@ -63,7 +63,110 @@ m[k]等价于&lt;code&gt;m.insert(value_type(k,mapped_type())).first-&amp;gt;sec
     &lt;span class="n"&gt;strcpy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pstr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;status_code&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;second&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
     &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pstr&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="n"&gt;strlen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;status_code&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;second&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
 &lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="STL"></category><category term="map"></category></entry><entry><title>MoreEffectiveC++(5)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html" rel="alternate"></link><updated>2013-12-14T10:31:02+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(5).html</id><summary type="html">&lt;h2&gt;Item28 Smart pointer&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="STL"></category><category term="map"></category></entry><entry><title>MoreEffectiveC++(4)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html" rel="alternate"></link><updated>2013-12-14T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(4).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;技术Techniques,Idioms,Patterns&lt;/strong&gt;  &lt;/p&gt;
+&lt;h2&gt;Item25 构造函数、非成员函数的虚化&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  &lt;/li&gt;
+&lt;li&gt;3种语义上的虚化：&lt;br /&gt;
+1.虚构造函数&lt;br /&gt;
+根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于&lt;code&gt;list&amp;lt;Base*&amp;gt;&lt;/code&gt;中&lt;br /&gt;
+2.虚拷贝构造函数&lt;br /&gt;
+定义虚函数clone，返回一个指针，指向调用者副本（&lt;code&gt;return new TextBlock(*this);&lt;/code&gt;），复制构造函数通过基类指针调用不同的clone&lt;br /&gt;
+3.虚非成员函数&lt;br /&gt;
+定义虚函数print，参数和返回值都是ostream&amp;amp;，定义非成员函数&lt;code&gt;inline ostream&amp;amp; operator&amp;lt;&amp;lt;(ostream&amp;amp; s,const Base&amp;amp; c){return c.print(s);}&lt;/code&gt;。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Item26 限制一个类所能产生的对象数量&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;杂类知识：&lt;br /&gt;
+1.不能在类成员变量里定义自身类型的对象，否则编译器报错&lt;code&gt;incomplete type&lt;/code&gt;。但是可以在类成员函数（包括inline构造函数）中定义该类类型的对象。&lt;br /&gt;
+2.希望该类不能实例化对象，声明protected ctor；希望该类不能被继承和实例化对象，声明private ctor。&lt;br /&gt;
+&lt;strong&gt;Note&lt;/strong&gt;:The above method can only restrict the construction of objects on the stack. Because you can define a static/friend function, in which new an object and return a pointer to that.&lt;br /&gt;
+3.基类指针、引用指向派生类对象，必须是public继承，private和protected继承都会报错&lt;code&gt;'Base' is an inaccessible base of 'Derived'&lt;/code&gt;。一般允许当作基类的类都要定义virtual dtor，但是如果该基类只被private或protected继承的话，不需要定义虚析构函数。  &lt;/li&gt;
+&lt;li&gt;限制对象数量，方法如下：&lt;br /&gt;
+(1)声明private ctor，友元/静态成员函数定义如下  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Printer&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;thePrinter&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;Printer&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;评价：仅限于只允许一个对象的情况&lt;br /&gt;
+(2)类中定义静态数据成员count，定义一个异常类TooManyObject，构造函数计算count并抛出异常&lt;br /&gt;
+评价：允许多个对象；但是，继承或包含该类的类的定义，也会造成count累积抛出异常。&lt;br /&gt;
+(3)同上，另外构造函数私有化，提供友元/静态成员函数&lt;code&gt;makePrinter(){return new Printer()}&lt;/code&gt;。&lt;br /&gt;
+评价：允许多个对象，不会出现上述问题，因为直接就不让继承该类或定义该类的对象了；但是，只能产生heap上的对象，需要手动delete或放到智能指针里。&lt;br /&gt;
+(4)定义计数类模版  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="c1"&gt;//每个class类型有一个计数器（maxObjects），所以定义成模版  &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Counted&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+&lt;span class="nl"&gt;public:&lt;/span&gt;  
+    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TwoManObjects&lt;/span&gt;&lt;span class="p"&gt;{};&lt;/span&gt;  
+&lt;span class="nl"&gt;protected:&lt;/span&gt;  
+    &lt;span class="n"&gt;Counted&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="c1"&gt;//protected构造函数，防止实例化  &lt;/span&gt;
+&lt;span class="nl"&gt;private:&lt;/span&gt;  
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;numObjects&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;maxObjects&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;Counted&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;numObjects&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="c1"&gt;//不定义maxObjects，让用户自己定义，比如const size_t Counted&amp;lt;Printer&amp;gt;::maxObjects=10;  &lt;/span&gt;
+&lt;span class="c1"&gt;//私有继承，语义上是：implemented in terms of；功能上是：防止基类指针/引用访问派生类对象  &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Printer&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="k"&gt;private&lt;/span&gt; &lt;span class="n"&gt;Counted&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Printer&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+&lt;span class="nl"&gt;public:&lt;/span&gt;  
+    &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;Counted&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Printer&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;TwoManObjects&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Item27 要求，或禁止对象产生于堆上&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;为什么需要对象产生于堆上：&lt;br /&gt;
+需要一种对象，可以在作用域离开之前撤销自己，即&lt;code&gt;delete this&lt;/code&gt;的功能。  &lt;/li&gt;
+&lt;li&gt;为什么需要对象禁止在堆上产生：&lt;br /&gt;
+嵌入式系统中堆上的资源比较有限  &lt;/li&gt;
+&lt;li&gt;要求对象产生于堆上：&lt;br /&gt;
+1.private/protected dtor,public ctors&lt;br /&gt;
+2.定义&lt;code&gt;public void destory const(){delete this;}&lt;/code&gt;&lt;br /&gt;
+这样，只能通过Obj* po=new Obj;调用，只能通过po-&amp;gt;destory()释放。因为定义类的对象（Obj o;）的时候会检查ctor和dtor的可访问性，有一个不可访问就会编译出错。&lt;br /&gt;
+&lt;strong&gt;注意&lt;/strong&gt;：&lt;br /&gt;
+1.private ctors也可以限制构造对象，但是构造函数比较多，都需要一一定义为private，不如析构函数方便&lt;br /&gt;
+2.如果需要保证继承，将dtor定义为protected.  &lt;/li&gt;
+&lt;li&gt;禁止对象产生于堆上：&lt;br /&gt;
+定义private限定的operator new，operator delete，operator new[]，operator delete[]&lt;br /&gt;
+&lt;strong&gt;注意&lt;/strong&gt;:基类的operator new私有化，那么派生类如果不在public里重新定义operator new，调用Derived *pd=new Derived;就会出错。只要Derived类中存在operator new，即使不可访问（private或protected），new操作符也不会转而调用全局作用域的operator new。  &lt;/li&gt;
+&lt;li&gt;没有具备移植性的正确的办法，可以判断一个对象位于堆内。&lt;br /&gt;
+1.定义类内static bool isOnHeap，类内operator new设置isOnHeap，构造函数判断isOnHeap的值，并在最后恢复isOnHeap为false&lt;br /&gt;
+缺点：线程不安全；new一个数组会出错，即使定义了operator new&lt;a href="分配一次，构造多次，第二个构造中isOnHeap为false"&gt;&lt;/a&gt;&lt;br /&gt;
+2.根据进程在内存中的布局（栈位于最高地址，向下增长；静态存储区位于最低地址，向上增长；堆位于静态存储区上，向上增长）  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;isOnHeap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//栈顶，最低地址  &lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//只有堆地址或静态存储区才小于栈地址  &lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;缺点：布局依赖操作系统实现，不具备移植性；无法区分静态和堆上的对象  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;无法明确确定位于堆上，但是可以比较容易的判断是否可以delete&lt;br /&gt;
+1.定义全局operator new，分配空间的同时，保存这个地址在一个全局list里。全局operator delete判断全局list里是否存在该地址&lt;br /&gt;
+缺点：污染其他代码；效率；Base1* pb=new Derived()，多重继承下基类地址可能不同于派生类对象地址，造成判断错误&lt;br /&gt;
+2.定义abstract mixin base class（抽象混合式基类），把operator new,operator delete，list都保存于其中  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;HeapTrack&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;isOnHeap&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="c1"&gt;//解决上述第3个问题，把基类this指针转换成派生类对象地址  &lt;/span&gt;
+    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;rawAddr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;dynamic_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+    &lt;span class="cm"&gt;/*判断list中是否包含rawAddr*/&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：派生类中的基类函数，参数this的类型为指向基类类型的指针常量。否则一个类被多个类继承，该类的所有函数就要有多份重载的代码。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(5)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html" rel="alternate"></link><updated>2013-12-14T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(5).html</id><summary type="html">&lt;h2&gt;Item28 Smart pointer&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;智能指针相比于内置指针的优势：&lt;br /&gt;
 1.构造和析构：分别防止wild指针（默认实参是0）和内存泄露（dtor内delete对象）&lt;br /&gt;
@@ -190,110 +293,7 @@ C++中又不能重载operator[][]函数，所以通过代理类模拟Array2D[1][
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;有些限制可以通过重载操作符来实现，非常麻烦。而传递参数的问题则没法避免。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(4)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html" rel="alternate"></link><updated>2013-12-14T08:44:43+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-14:posts/2013/12/MoreEffectiveCpp(4).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;技术Techniques,Idioms,Patterns&lt;/strong&gt;  &lt;/p&gt;
-&lt;h2&gt;Item25 构造函数、非成员函数的虚化&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  &lt;/li&gt;
-&lt;li&gt;3种语义上的虚化：&lt;br /&gt;
-1.虚构造函数&lt;br /&gt;
-根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于&lt;code&gt;list&amp;lt;Base*&amp;gt;&lt;/code&gt;中&lt;br /&gt;
-2.虚拷贝构造函数&lt;br /&gt;
-定义虚函数clone，返回一个指针，指向调用者副本（&lt;code&gt;return new TextBlock(*this);&lt;/code&gt;），复制构造函数通过基类指针调用不同的clone&lt;br /&gt;
-3.虚非成员函数&lt;br /&gt;
-定义虚函数print，参数和返回值都是ostream&amp;amp;，定义非成员函数&lt;code&gt;inline ostream&amp;amp; operator&amp;lt;&amp;lt;(ostream&amp;amp; s,const Base&amp;amp; c){return c.print(s);}&lt;/code&gt;。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Item26 限制一个类所能产生的对象数量&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;杂类知识：&lt;br /&gt;
-1.不能在类成员变量里定义自身类型的对象，否则编译器报错&lt;code&gt;incomplete type&lt;/code&gt;。但是可以在类成员函数（包括inline构造函数）中定义该类类型的对象。&lt;br /&gt;
-2.希望该类不能实例化对象，声明protected ctor；希望该类不能被继承和实例化对象，声明private ctor。&lt;br /&gt;
-&lt;strong&gt;Note&lt;/strong&gt;:The above method can only restrict the construction of objects on the stack. Because you can define a static/friend function, in which new an object and return a pointer to that.&lt;br /&gt;
-3.基类指针、引用指向派生类对象，必须是public继承，private和protected继承都会报错&lt;code&gt;'Base' is an inaccessible base of 'Derived'&lt;/code&gt;。一般允许当作基类的类都要定义virtual dtor，但是如果该基类只被private或protected继承的话，不需要定义虚析构函数。  &lt;/li&gt;
-&lt;li&gt;限制对象数量，方法如下：&lt;br /&gt;
-(1)声明private ctor，友元/静态成员函数定义如下  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Printer&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;thePrinter&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;Printer&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;评价：仅限于只允许一个对象的情况&lt;br /&gt;
-(2)类中定义静态数据成员count，定义一个异常类TooManyObject，构造函数计算count并抛出异常&lt;br /&gt;
-评价：允许多个对象；但是，继承或包含该类的类的定义，也会造成count累积抛出异常。&lt;br /&gt;
-(3)同上，另外构造函数私有化，提供友元/静态成员函数&lt;code&gt;makePrinter(){return new Printer()}&lt;/code&gt;。&lt;br /&gt;
-评价：允许多个对象，不会出现上述问题，因为直接就不让继承该类或定义该类的对象了；但是，只能产生heap上的对象，需要手动delete或放到智能指针里。&lt;br /&gt;
-(4)定义计数类模版  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="c1"&gt;//每个class类型有一个计数器（maxObjects），所以定义成模版  &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Counted&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-&lt;span class="nl"&gt;public:&lt;/span&gt;  
-    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TwoManObjects&lt;/span&gt;&lt;span class="p"&gt;{};&lt;/span&gt;  
-&lt;span class="nl"&gt;protected:&lt;/span&gt;  
-    &lt;span class="n"&gt;Counted&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="c1"&gt;//protected构造函数，防止实例化  &lt;/span&gt;
-&lt;span class="nl"&gt;private:&lt;/span&gt;  
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;numObjects&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;maxObjects&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;  
-&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;Counted&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;numObjects&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="c1"&gt;//不定义maxObjects，让用户自己定义，比如const size_t Counted&amp;lt;Printer&amp;gt;::maxObjects=10;  &lt;/span&gt;
-&lt;span class="c1"&gt;//私有继承，语义上是：implemented in terms of；功能上是：防止基类指针/引用访问派生类对象  &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Printer&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="k"&gt;private&lt;/span&gt; &lt;span class="n"&gt;Counted&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Printer&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-&lt;span class="nl"&gt;public:&lt;/span&gt;  
-    &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;Counted&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Printer&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;TwoManObjects&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;Item27 要求，或禁止对象产生于堆上&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;为什么需要对象产生于堆上：&lt;br /&gt;
-需要一种对象，可以在作用域离开之前撤销自己，即&lt;code&gt;delete this&lt;/code&gt;的功能。  &lt;/li&gt;
-&lt;li&gt;为什么需要对象禁止在堆上产生：&lt;br /&gt;
-嵌入式系统中堆上的资源比较有限  &lt;/li&gt;
-&lt;li&gt;要求对象产生于堆上：&lt;br /&gt;
-1.private/protected dtor,public ctors&lt;br /&gt;
-2.定义&lt;code&gt;public void destory const(){delete this;}&lt;/code&gt;&lt;br /&gt;
-这样，只能通过Obj* po=new Obj;调用，只能通过po-&amp;gt;destory()释放。因为定义类的对象（Obj o;）的时候会检查ctor和dtor的可访问性，有一个不可访问就会编译出错。&lt;br /&gt;
-&lt;strong&gt;注意&lt;/strong&gt;：&lt;br /&gt;
-1.private ctors也可以限制构造对象，但是构造函数比较多，都需要一一定义为private，不如析构函数方便&lt;br /&gt;
-2.如果需要保证继承，将dtor定义为protected.  &lt;/li&gt;
-&lt;li&gt;禁止对象产生于堆上：&lt;br /&gt;
-定义private限定的operator new，operator delete，operator new[]，operator delete[]&lt;br /&gt;
-&lt;strong&gt;注意&lt;/strong&gt;:基类的operator new私有化，那么派生类如果不在public里重新定义operator new，调用Derived *pd=new Derived;就会出错。只要Derived类中存在operator new，即使不可访问（private或protected），new操作符也不会转而调用全局作用域的operator new。  &lt;/li&gt;
-&lt;li&gt;没有具备移植性的正确的办法，可以判断一个对象位于堆内。&lt;br /&gt;
-1.定义类内static bool isOnHeap，类内operator new设置isOnHeap，构造函数判断isOnHeap的值，并在最后恢复isOnHeap为false&lt;br /&gt;
-缺点：线程不安全；new一个数组会出错，即使定义了operator new&lt;a href="分配一次，构造多次，第二个构造中isOnHeap为false"&gt;&lt;/a&gt;&lt;br /&gt;
-2.根据进程在内存中的布局（栈位于最高地址，向下增长；静态存储区位于最低地址，向上增长；堆位于静态存储区上，向上增长）  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;isOnHeap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//栈顶，最低地址  &lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//只有堆地址或静态存储区才小于栈地址  &lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;缺点：布局依赖操作系统实现，不具备移植性；无法区分静态和堆上的对象  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;无法明确确定位于堆上，但是可以比较容易的判断是否可以delete&lt;br /&gt;
-1.定义全局operator new，分配空间的同时，保存这个地址在一个全局list里。全局operator delete判断全局list里是否存在该地址&lt;br /&gt;
-缺点：污染其他代码；效率；Base1* pb=new Derived()，多重继承下基类地址可能不同于派生类对象地址，造成判断错误&lt;br /&gt;
-2.定义abstract mixin base class（抽象混合式基类），把operator new,operator delete，list都保存于其中  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;HeapTrack&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;isOnHeap&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="c1"&gt;//解决上述第3个问题，把基类this指针转换成派生类对象地址  &lt;/span&gt;
-    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;rawAddr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;dynamic_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-    &lt;span class="cm"&gt;/*判断list中是否包含rawAddr*/&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：派生类中的基类函数，参数this的类型为指向基类类型的指针常量。否则一个类被多个类继承，该类的所有函数就要有多份重载的代码。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(3)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html" rel="alternate"></link><updated>2013-12-06T11:09:41+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-06:posts/2013/12/MoreEffectiveCpp(3).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;效率Efficiency&lt;/strong&gt;  &lt;/p&gt;
+&lt;p&gt;有些限制可以通过重载操作符来实现，非常麻烦。而传递参数的问题则没法避免。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(3)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html" rel="alternate"></link><updated>2013-12-06T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-06:posts/2013/12/MoreEffectiveCpp(3).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;效率Efficiency&lt;/strong&gt;  &lt;/p&gt;
 &lt;h2&gt;Item16 80-20 principal&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  &lt;/li&gt;
@@ -412,7 +412,7 @@ when it needs x spaces, allocate 2x spaces.
 &lt;h2&gt;Item24 了解虚函数等的成本&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;看完Inside C++ Object Model回来看，现在看的不是很透彻。  &lt;/li&gt;
-&lt;/ul&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(2)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html" rel="alternate"></link><updated>2013-12-03T20:45:23+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-03:posts/2013/12/MoreEffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item6&lt;/h2&gt;
+&lt;/ul&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(2)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html" rel="alternate"></link><updated>2013-12-03T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-03:posts/2013/12/MoreEffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item6&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;自增自减操作符，两原则：&lt;br /&gt;
 1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  &lt;blockquote&gt;
@@ -527,7 +527,7 @@ when it needs x spaces, allocate 2x spaces.
 &lt;li&gt;代价很大，所以仅在非用不可的时候才使用，不要像写python那样轻易使用。  &lt;/li&gt;
 &lt;li&gt;如果确保自己的程序中没有用到exception机制，并且确保调用的标准库没有用到，例如没有try catch throw关键字，那么可以通过编译器的选项禁止。&lt;br /&gt;
 g++下的禁止方式是&lt;code&gt;-fno-exceptions&lt;/code&gt;。如果有异常抛出（new无法分配等），直接调用std::abort()进行中止。  &lt;/li&gt;
-&lt;/ul&gt;</summary><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(1)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html" rel="alternate"></link><updated>2013-12-02T20:13:48+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-02:posts/2013/12/MoreEffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Introduction&lt;/strong&gt;  &lt;/p&gt;
+&lt;/ul&gt;</summary><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(1)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html" rel="alternate"></link><updated>2013-12-02T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-02:posts/2013/12/MoreEffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Introduction&lt;/strong&gt;  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;没有实现bool类型的编译器，替代方案：&lt;br /&gt;
 (1)enum bool{false,true};&lt;br /&gt;
@@ -636,7 +636,7 @@ const bool true=1;&lt;br /&gt;
         &lt;span class="p"&gt;};&lt;/span&gt;  
     &lt;span class="n"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ArraySize&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
 &lt;span class="p"&gt;};&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(7)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html" rel="alternate"></link><updated>2013-12-01T13:46:23+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/MoreEffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 32 在未来时态下发展程序&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(7)</title><link href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html" rel="alternate"></link><updated>2013-12-01T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/MoreEffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 32 在未来时态下发展程序&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  &lt;/li&gt;
 &lt;li&gt;请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  &lt;/li&gt;
@@ -765,7 +765,7 @@ C++会在main函数之前，加入一段对静态对象的构造语句，称为s
 普通指针（指向对象、非成员函数/静态成员函数），&lt;br /&gt;
 内置类型变量，&lt;br /&gt;
 某些struct对象（满足：不含有虚函数，不继承自其他对象）  &lt;/li&gt;
-&lt;/ul&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(6)</title><link href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html" rel="alternate"></link><updated>2013-11-29T18:42:31+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-29:posts/2013/11/MoreEffectiveCpp(6).html</id><summary type="html">&lt;p&gt;&lt;em&gt;感受&lt;/em&gt;：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  &lt;/p&gt;
+&lt;/ul&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>MoreEffectiveC++(6)</title><link href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html" rel="alternate"></link><updated>2013-11-29T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-29:posts/2013/11/MoreEffectiveCpp(6).html</id><summary type="html">&lt;p&gt;&lt;em&gt;感受&lt;/em&gt;：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  &lt;/p&gt;
 &lt;h2&gt;Item31: 让函数根据一个以上的对象类型决定如何虚化&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;问题背景：&lt;br /&gt;
@@ -900,7 +900,7 @@ hitXXX位于类内，每次新增一个GameObject子类，都要修改修改既�
 不需要重新编译既有文件，只需要修改processCollision定义所在的文件;&lt;br /&gt;
 速度比方法1快，由线性探查(if-else或switch)改为map形式查找（二叉树之类的）&lt;br /&gt;
 PS:&lt;br /&gt;
-如果想要动态登记和撤销实际碰撞函数的映射，可以再定义一个CollisionMap类，里面包含&lt;code&gt;addEntry(const string&amp;amp; type1,const string&amp;amp; type2,HitFuncPtr func)&lt;/code&gt;和&lt;code&gt;removeEntry(...)&lt;/code&gt;等函数，就可以更加灵活的修改映射，而不需要去动processCollision定义所在文件内函数的代码。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>C++中指向成员函数的指针</title><link href="http://particle128.com/posts/2013/11/pointer-to-member-func.html" rel="alternate"></link><updated>2013-11-28T10:48:38+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-28:posts/2013/11/pointer-to-member-func.html</id><summary type="html">&lt;p&gt;在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。&lt;br /&gt;
+如果想要动态登记和撤销实际碰撞函数的映射，可以再定义一个CollisionMap类，里面包含&lt;code&gt;addEntry(const string&amp;amp; type1,const string&amp;amp; type2,HitFuncPtr func)&lt;/code&gt;和&lt;code&gt;removeEntry(...)&lt;/code&gt;等函数，就可以更加灵活的修改映射，而不需要去动processCollision定义所在文件内函数的代码。  &lt;/p&gt;</summary><category term="cpp"></category><category term="MoreEffectiveCpp"></category></entry><entry><title>C++中指向成员函数的指针</title><link href="http://particle128.com/posts/2013/11/pointer-to-member-func.html" rel="alternate"></link><updated>2013-11-28T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-28:posts/2013/11/pointer-to-member-func.html</id><summary type="html">&lt;p&gt;在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。&lt;br /&gt;
 &lt;strong&gt;注意&lt;/strong&gt;：类的static成员函数和普通函数的指针是一样的。  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;普通函数指针：可以通过直接调用  &lt;/li&gt;
@@ -953,7 +953,7 @@ PS:&lt;br /&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:普通函数，和指向普通函数的指针，可以隐式互相转换；但是非静态成员函数和其指针之间不能进行任何转换，所以*和&amp;amp;符号不能省略。  &lt;/p&gt;</summary><category term="cpp"></category></entry><entry><title>Effective C++学习笔记(7)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html" rel="alternate"></link><updated>2013-11-06T11:24:54+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 26: Postpone variable definitions as long as possible.&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:普通函数，和指向普通函数的指针，可以隐式互相转换；但是非静态成员函数和其指针之间不能进行任何转换，所以*和&amp;amp;符号不能省略。  &lt;/p&gt;</summary><category term="cpp"></category></entry><entry><title>Effective C++学习笔记(7)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html" rel="alternate"></link><updated>2013-11-06T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(7).html</id><summary type="html">&lt;h2&gt;Item 26: Postpone variable definitions as long as possible.&lt;/h2&gt;
 &lt;p&gt;1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。&lt;br /&gt;
 2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点&lt;br /&gt;
 (1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分&lt;br /&gt;
@@ -1042,7 +1042,7 @@ typeid（返回type_info对象，支持相等比较运算和name()方法）：�
 &lt;p&gt;（2）copy-and-swap：把打算修改的对象复制一份，然后修改副本，再把副本和原对象交换。&lt;br /&gt;
 4.尽量让函数等级更高，但是不抛出异常很难保证，因为很多库函数都可能抛出异常；强烈保证可能耗费很大的代价，比如copy and swap方法，复制构造和赋值操作的代价。&lt;br /&gt;
 权衡的过程：tradeoff。&lt;br /&gt;
-但是，要在文档上说明清楚可能抛出的异常等，以及为什么没有实现安全级别更高的代码。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(8)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html" rel="alternate"></link><updated>2013-11-06T11:21:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(8).html</id><summary type="html">&lt;h2&gt;Item 30: Understand the ins and outs of inlining.&lt;/h2&gt;
+但是，要在文档上说明清楚可能抛出的异常等，以及为什么没有实现安全级别更高的代码。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(8)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html" rel="alternate"></link><updated>2013-11-06T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(8).html</id><summary type="html">&lt;h2&gt;Item 30: Understand the ins and outs of inlining.&lt;/h2&gt;
 &lt;p&gt;1.inline（函数体代替函数调用）的好处：&lt;br /&gt;
 （1）没有函数调用的开销，速度快。&lt;br /&gt;
 （2）使编译器能对起进行outlined的函数所不具备的优化，因为上下文更明显了。&lt;br /&gt;
@@ -1130,7 +1130,7 @@ interface class不好用：std::tr1::shared_ptr&lt;Person&gt; pp(Person::create(
 handle class没法扩展。&lt;br /&gt;
 interface class方便扩展，基类可以有多个相同接口的派生类。比如create中增加一个参数，可以选择create哪个派生类。&lt;br /&gt;
 4.句柄和接口类，会速度降低、内存消耗增大，但是的确可以带来松耦合的好处。&lt;br /&gt;
-原则：开发过程中，用句柄和接口类；当它们导致的性能损失比较严重时，改成具象类。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>C++中名字查找</title><link href="http://particle128.com/posts/2013/11/name-lookup.html" rel="alternate"></link><updated>2013-11-05T08:50:42+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-05:posts/2013/11/name-lookup.html</id><summary type="html">&lt;p&gt;今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  &lt;/p&gt;
+原则：开发过程中，用句柄和接口类；当它们导致的性能损失比较严重时，改成具象类。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>C++中名字查找</title><link href="http://particle128.com/posts/2013/11/name-lookup.html" rel="alternate"></link><updated>2013-11-05T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-05:posts/2013/11/name-lookup.html</id><summary type="html">&lt;p&gt;今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  &lt;/p&gt;
 &lt;h2&gt;名字查找&lt;/h2&gt;
 &lt;p&gt;这个&lt;a href="http://blog.csdn.net/xtyyumi301/article/details/662639"&gt;链接&lt;/a&gt;对我帮助很大，此外还参考了一些SO上的解答，和&lt;a href="http://en.wikipedia.org/wiki/Argument-dependent_name_lookup"&gt;wiki&lt;/a&gt;&lt;br /&gt;
 C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：  &lt;/p&gt;
@@ -1211,7 +1211,7 @@ C++的名字查找(name lookup)，作为重载确定(overload resolution)的第�
 &lt;li&gt;using declaration&lt;br /&gt;
 语法格式为：using XXX::func;&lt;br /&gt;
 可以使用该方法将func函数加入候选函数集合，且这种方法会阻止normal lookup向外层作用域寻找func。  &lt;/li&gt;
-&lt;/ul&gt;</summary><category term="cpp"></category><category term="name-lookup"></category></entry><entry><title>Effective C++学习笔记(6)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html" rel="alternate"></link><updated>2013-11-04T21:06:31+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-04:posts/2013/11/EffectiveCpp(6).html</id><summary type="html">&lt;h2&gt;Item 22: Declare data members private&lt;/h2&gt;
+&lt;/ul&gt;</summary><category term="cpp"></category><category term="name-lookup"></category></entry><entry><title>Effective C++学习笔记(6)</title><link href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html" rel="alternate"></link><updated>2013-11-04T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-04:posts/2013/11/EffectiveCpp(6).html</id><summary type="html">&lt;h2&gt;Item 22: Declare data members private&lt;/h2&gt;
 &lt;p&gt;1.把变量声明成private，然后通过public函数访问。好处：&lt;br /&gt;
 （1）语法一致性。public里都是函数，不用考虑是否需要加括号。&lt;br /&gt;
 （2）更精确的访问控制。可以通过get和set设置变量的可都写属性。&lt;br /&gt;
@@ -1300,7 +1300,7 @@ Widget类：WidgetImpl *pImpl;&lt;br /&gt;
 (1)exact match精确匹配（类型一致，比如形参和实参都是int）&lt;br /&gt;
 (2)promotion整型提升（比如short转化成int）&lt;br /&gt;
 (3)standard conversion标准转换（除类型提升外的隐式转换，比如bool转化成int，short转换成long）&lt;br /&gt;
-(4)class-type conversion类类型转换（含有one-parameter-non-explicit构造函数的类，用构造函数参数类型转化成类类型）  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>继承层次中的重载、重写的函数调用和this指针的关系</title><link href="http://particle128.com/posts/2013/11/Overwrite-Overload.html" rel="alternate"></link><updated>2013-11-02T11:21:27+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-02:posts/2013/11/Overwrite-Overload.html</id><summary type="html">&lt;p&gt;例子如下：  &lt;/p&gt;
+(4)class-type conversion类类型转换（含有one-parameter-non-explicit构造函数的类，用构造函数参数类型转化成类类型）  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>继承层次中的重载、重写的函数调用和this指针的关系</title><link href="http://particle128.com/posts/2013/11/Overwrite-Overload.html" rel="alternate"></link><updated>2013-11-02T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-11-02:posts/2013/11/Overwrite-Overload.html</id><summary type="html">&lt;p&gt;例子如下：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include &amp;lt;iostream&amp;gt;  &lt;/span&gt;
 &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
 
@@ -1361,7 +1361,7 @@ Widget类：WidgetImpl *pImpl;&lt;br /&gt;
     &lt;span class="c1"&gt;//解释：静态类型最佳匹配是non-virtual函数，所以直接调用&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="cpp"></category></entry><entry><title>Effective C++学习笔记(2)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html" rel="alternate"></link><updated>2013-10-18T14:53:19+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-18:posts/2013/10/EffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item 05: Know what functions C++ silently writes and calls&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="cpp"></category></entry><entry><title>Effective C++学习笔记(2)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html" rel="alternate"></link><updated>2013-10-18T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-18:posts/2013/10/EffectiveCpp(2).html</id><summary type="html">&lt;h2&gt;Item 05: Know what functions C++ silently writes and calls&lt;/h2&gt;
 &lt;p&gt;1.默认生成的4种函数，都是public+inline类型的。  &lt;br /&gt;
 2.复制构造函数原型：&lt;code&gt;Empty(const Empty&amp;amp;);&lt;/code&gt; 赋值操作符原型：&lt;code&gt;Empty&amp;amp; operator=(const Empty&amp;amp;);&lt;/code&gt; 为了和内置类型的赋值操作意义相同，返回左值的引用  &lt;br /&gt;
 3.唯有这4个函数被调用时，才被产生出来。  &lt;br /&gt;
@@ -1401,7 +1401,7 @@ Widget类：WidgetImpl *pImpl;&lt;br /&gt;
           &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="cm"&gt;/*记录该事件；要么结束程序要么吞下异常*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;  
      &lt;span class="p"&gt;}&lt;/span&gt;  
 &lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-15T15:20:21+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(1)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html" rel="alternate"></link><updated>2013-10-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/EffectiveCpp(1).html</id><summary type="html">&lt;p&gt;&lt;strong&gt;【补充概念】&lt;/strong&gt;&lt;br /&gt;
 &lt;strong&gt;类型安全&lt;/strong&gt;：&lt;br /&gt;
 &lt;em&gt;MSDN上的权威解释&lt;/em&gt;：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。&lt;br /&gt;
 &lt;em&gt;简单理解&lt;/em&gt;：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。&lt;br /&gt;
@@ -1508,7 +1508,7 @@ const成员函数内隐藏的this指针是&lt;code&gt;const type *&lt;/code&gt; 
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>两个类定义相互转换时的二义性</title><link href="http://particle128.com/posts/2013/10/inter-convert.html" rel="alternate"></link><updated>2013-10-15T15:16:41+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/inter-convert.html</id><summary type="html">&lt;p&gt;两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  &lt;/p&gt;
+&lt;p&gt;原因：C++保证，函数内local static 对象会在该函数被调用期间，首次遇上该对象的定义式时被初始化。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>两个类定义相互转换时的二义性</title><link href="http://particle128.com/posts/2013/10/inter-convert.html" rel="alternate"></link><updated>2013-10-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/inter-convert.html</id><summary type="html">&lt;p&gt;两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;例子：  &lt;/li&gt;
 &lt;/ul&gt;
@@ -1568,7 +1568,33 @@ const成员函数内隐藏的this指针是&lt;code&gt;const type *&lt;/code&gt; 
 &lt;li&gt;static_cast&lt;B&gt;(A)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;注意：强制类型转换不看最佳匹配，所以即使构造函数的代价比转换操作符代价大，比如const constructor和non-const operator，也是如此。&lt;/p&gt;
-&lt;p&gt;花了好久才涨了这点姿势，不过得出一个结论：&lt;strong&gt;纸上得来终觉浅，绝知此事要躬行&lt;/strong&gt;。  &lt;/p&gt;</summary><category term="conversion"></category><category term="cpp"></category></entry><entry><title>程序员的自我修养 笔记</title><link href="http://particle128.com/posts/2013/10/ziwoxiuyang.html" rel="alternate"></link><updated>2013-10-14T11:11:55+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/ziwoxiuyang.html</id><summary type="html">&lt;h2&gt;Chapter 2&lt;/h2&gt;
+&lt;p&gt;花了好久才涨了这点姿势，不过得出一个结论：&lt;strong&gt;纸上得来终觉浅，绝知此事要躬行&lt;/strong&gt;。  &lt;/p&gt;</summary><category term="conversion"></category><category term="cpp"></category></entry><entry><title>C++提供的数据封装，只是访问控制，而不是信息隐藏</title><link href="http://particle128.com/posts/2013/10/cpp-encapsulation.html" rel="alternate"></link><updated>2013-10-14T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/cpp-encapsulation.html</id><summary type="html">&lt;ul&gt;
+&lt;li&gt;C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  &lt;/li&gt;
+&lt;li&gt;C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。&lt;br /&gt;
+甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科&lt;a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)"&gt;Encapsulation词条&lt;/a&gt;。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// Header file &amp;quot;api.h&amp;quot;  &lt;/span&gt;
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// Opaque structure with hidden members  &lt;/span&gt;
+&lt;span class="c1"&gt;// API functions that operate on &amp;#39;Entity&amp;#39; objects  &lt;/span&gt;
+&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nf"&gt;open_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;process_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;close_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+
+
+
+&lt;span class="c1"&gt;// Implementation file &amp;quot;api.c&amp;quot;  &lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;quot;api.h&amp;quot;  &lt;/span&gt;
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;ent_id&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// ID number  &lt;/span&gt;
+&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;ent_name&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt; &lt;span class="c1"&gt;// Name  &lt;/span&gt;
+&lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt; &lt;span class="n"&gt;members&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;span class="c1"&gt;// API function implementations  &lt;/span&gt;
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nf"&gt;open_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;process_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;close_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="cpp"></category><category term="encapsulation"></category></entry><entry><title>程序员的自我修养 笔记</title><link href="http://particle128.com/posts/2013/10/ziwoxiuyang.html" rel="alternate"></link><updated>2013-10-14T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/ziwoxiuyang.html</id><summary type="html">&lt;h2&gt;Chapter 2&lt;/h2&gt;
 &lt;p&gt;所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。&lt;br /&gt;
 gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器&lt;br /&gt;
 [1]预处理   主要处理预处理指令（#开头的），主要工作如下：&lt;br /&gt;
@@ -1664,112 +1690,107 @@ api：dlopen（可以通过参数设置延迟绑定，当通过dlsym加载的函
 2）/etc/ld.so.cache指定的库路径（ldconfig执行的时候，除了建立SO-NAME软链接外，还在ld.so.cache中保存这些软链接的信息，方便动态链接器查找共享库）。（包括/usr/local/lib目录下的库）&lt;br /&gt;
 3）/usr/lib，/lib。&lt;br /&gt;
 [5] 环境变量&lt;code&gt;LD_PRELOAD&lt;/code&gt;里指定的文件会在动态链接器按照固定规则搜索共享库之前装载，无论程序是否依赖他们。由于“全局符号介入”机制，这里面的库中定义的符号，会让后来再加载的库中定义的同名符号失效。&lt;br /&gt;
-[6] &lt;code&gt;gcc -W1,-soname,my_soname&lt;/code&gt;，-W1参数表示将指定参数传递给链接器。-soname参数指定共享库的SO-NAME，否则建立的共享库没有SO-NAME，ldconfig不会理睬这个库。  &lt;/p&gt;</summary><category term="link"></category><category term="load"></category></entry><entry><title>C++提供的数据封装，只是访问控制，而不是信息隐藏</title><link href="http://particle128.com/posts/2013/10/cpp-encapsulation.html" rel="alternate"></link><updated>2013-10-14T09:25:05+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-14:posts/2013/10/cpp-encapsulation.html</id><summary type="html">&lt;ul&gt;
-&lt;li&gt;C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  &lt;/li&gt;
-&lt;li&gt;C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。&lt;br /&gt;
-甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科&lt;a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)"&gt;Encapsulation词条&lt;/a&gt;。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// Header file &amp;quot;api.h&amp;quot;  &lt;/span&gt;
-&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// Opaque structure with hidden members  &lt;/span&gt;
-&lt;span class="c1"&gt;// API functions that operate on &amp;#39;Entity&amp;#39; objects  &lt;/span&gt;
-&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nf"&gt;open_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;process_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;close_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-
-
-
-&lt;span class="c1"&gt;// Implementation file &amp;quot;api.c&amp;quot;  &lt;/span&gt;
-&lt;span class="cp"&gt;#include &amp;quot;api.h&amp;quot;  &lt;/span&gt;
-&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;ent_id&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// ID number  &lt;/span&gt;
-&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;ent_name&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt; &lt;span class="c1"&gt;// Name  &lt;/span&gt;
-&lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt; &lt;span class="n"&gt;members&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;  
+[6] &lt;code&gt;gcc -W1,-soname,my_soname&lt;/code&gt;，-W1参数表示将指定参数传递给链接器。-soname参数指定共享库的SO-NAME，否则建立的共享库没有SO-NAME，ldconfig不会理睬这个库。  &lt;/p&gt;</summary><category term="link"></category><category term="load"></category></entry><entry><title>Effective C++学习笔记(10)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html" rel="alternate"></link><updated>2013-10-13T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(10).html</id><summary type="html">&lt;h2&gt;Item 39: Use private inheritance judiciously&lt;/h2&gt;
+&lt;p&gt;1.私有继承和复合(composition)意义相同：根据某物实现出（is-implemented-in-terms-of）。&lt;br /&gt;
+2.除非必要，尽量用复合实现这种语义。&lt;br /&gt;
+3.可以考虑使用private继承的情况：&lt;br /&gt;
+（1）需要需要访问protected成员&lt;br /&gt;
+（2）需要重写virtual函数。（替代策略:可以派生一个类，重写virtual函数。然后包含这个类的对象）&lt;br /&gt;
+（3）如果需要包含的是一个空类对象，用private继承，节省空间。&lt;br /&gt;
+Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual函数的类。因为不含非静态成员变量和虚函数，所以一般不需要内存空间。&lt;br /&gt;
+注：&lt;br /&gt;
+1)类中包含一个空类对象的时候，大多数编译器至少需要1个字节的内存空间。&lt;br /&gt;
+2)继承自空类对象，不需要任何内存空间。&lt;br /&gt;
+4.尽量复用已有代码，所以平时注意积累自己的工具箱，设计的越通用越好，随时可以拿来复用。  &lt;/p&gt;
+&lt;h2&gt;Item 40: Use multiple inheritance judiciously&lt;/h2&gt;
+&lt;p&gt;1.多重继承尽量不用，因为它比单一继承复杂，比如引起二义性（ambiguity），还有可能需要虚继承（虚基类）&lt;br /&gt;
+合理用途：&lt;br /&gt;
+public继承一个接口类，private继承一个协助实现的类（需要复用它的一些成员，但是需要重写virtual）。&lt;br /&gt;
+2.二义性例子：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base1&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+          &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;checkOut&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Base1:public&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
 &lt;span class="p"&gt;};&lt;/span&gt;  
-&lt;span class="c1"&gt;// API function implementations  &lt;/span&gt;
-&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nf"&gt;open_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;process_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;close_entity&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Entity&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="cpp"></category><category term="encapsulation"></category></entry><entry><title>Effective C++学习笔记(12)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html" rel="alternate"></link><updated>2013-10-13T20:09:29+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(12).html</id><summary type="html">&lt;p&gt;关于new和delete的东西，笔记不够详尽，因为新知识比较多，不太方便记录笔记。发现相关知识漏洞的时候，再去查看Cpp Primer和Effective Cpp相关章节。  &lt;/p&gt;
-&lt;h2&gt;Item 49: Understand the behavior of the new-handler&lt;/h2&gt;
-&lt;p&gt;1.&lt;code&gt;std::set_new_handler()&lt;/code&gt;可以绑定一个&lt;code&gt;new_handler&lt;/code&gt;（类型为&lt;code&gt;void (*)()&lt;/code&gt;），即new获取不到所需内存时调用的客户定制函数。如果不设置函数，或设置null，直接抛出异常&lt;code&gt;std::bad_alloc&lt;/code&gt;。&lt;br /&gt;
-2.获取&lt;code&gt;new_handler&lt;/code&gt;函数的方式：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;handler&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;set_new_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="n"&gt;set_new_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;handler&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
 
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base2&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+          &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;checkOut&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Base2:private&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;  
 
-&lt;p&gt;3.new_handler应该具备以下一种功能：&lt;br /&gt;
-（1）让更多内存可被使用。否则::operator new会无限循环调用非空的new_handler。例如程序开始分配一个内存池，动态分配不到资源的时候释放一些资源出来。&lt;br /&gt;
-（2）安装另一个可以释放更多内存的new_handler函数。&lt;br /&gt;
-（3）卸除new_handler，这样::operator new就会直接throw std::bad_alloc()异常了。&lt;br /&gt;
-（4）抛出bad_alloc异常。不等operator new抛，自己就抛了。&lt;br /&gt;
-（5）调用exit或abort直接退出程序。  &lt;/p&gt;
-&lt;h2&gt;Item 50: Understand when it makes sense to replace new and delete&lt;/h2&gt;
-&lt;p&gt;重写operator new和operator delete的原因：&lt;br /&gt;
-（1）检查所分配内存上的运用错误：每次new的时候，在要分配空间的前后多分配一段内存，存放签名。delete的时候检查签名是否正确。如果前面的签名错了，发生了underrun（数据写到分配内存的前面了）；如果后面的签名错了，发生了overrun（ditto）。&lt;br /&gt;
-（2）收集动态分配内存的使用情况：每次new的时候都要统计一些信息，比如分配了多少，等等&lt;br /&gt;
-（3）加快速度：定制版本处理的情况比通用版本少，所以速度往往更快。&lt;br /&gt;
-（4）降低空间开销：通用版本往往会分配额外一些内存来保存一些信息。小型对象分配器：Boost的Pool&lt;br /&gt;
-（5）弥补缺省allocator非最佳齐位（alignment）：好多编译器上的new都声称保证16bit齐位，double变量需要32bit齐位，才能获得最佳的访问速度。&lt;br /&gt;
-（6）获得非传统的行为：比如delete释放的时候，空间覆盖为0.  &lt;/p&gt;
-&lt;h2&gt;Item 51:Adhere to convention when writing new and deletes(固守常规)&lt;/h2&gt;
-&lt;p&gt;1.自定义operator new的时候，需要注意的几点&lt;br /&gt;
-（1）尽量和::operator new行为一致，即while(true)下循环尝试分配内存，如果new_handle非0就调用，否则bad_alloc&lt;br /&gt;
-（2）用户分配大小为0的空间  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;   &lt;span class="c1"&gt;//size是operator new的参数  &lt;/span&gt;
-     &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;   
-&lt;/pre&gt;&lt;/div&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Derived&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Base1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Base2&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
+          &lt;span class="c1"&gt;//using Base1::checkOut;  //解决二义性的方法1  &lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;  
 
-
-&lt;p&gt;（3）基类的operator new，需要首先执行  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;  
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//如果new派生类的话，使用全局版本的operator new  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;2.自定义operator delete的时候，需要注意的几点&lt;br /&gt;
-（1）用户delete一个空指针  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;   &lt;span class="c1"&gt;//ptr是operator delete的参数  &lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;（2）基类的operator delete  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;   &lt;span class="c1"&gt;//size是operator delete的第二个参数  &lt;/span&gt;
-    &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;Item 52: Write placement delete if you write placement new.&lt;/h2&gt;
-&lt;p&gt;1.placement new，C++ Primer上翻译为定位new，理解为：特定位置（第二个参数指定的指针位置）上的new比较好。&lt;br /&gt;
-2.编写placement new的时候，也要编写对应版本的placement delete。  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;   
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;否则，可能内存泄露。&lt;br /&gt;
-因为，new表达式执行中，如果第一步operator new分配内存成功，但是构造函数抛出异常，C++运行期系统需要保证内存不发生泄露，就会自动调用&lt;strong&gt;对应版本&lt;/strong&gt;的operator delete释放内存。如果找不到对应版本的operator delete，就会造成内存泄露。&lt;br /&gt;
-3.global作用域定义了3种形式的operator new和对应3种形式的operator delete  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;bad_alloc&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;nothrow_t&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;对应delete版本就是第一个参数换成void*，全部不抛出异常。&lt;br /&gt;
-4.定义于类内的operator new，不管是placement还是非placement，都会掩盖全局的3个版本。如果需要使用，重写这6个函数：函数体只是调用全局作用域的版本。&lt;br /&gt;
-例如：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;bad_alloc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
 &lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+     &lt;span class="n"&gt;Derived&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+
+     &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;checkOut&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;   
+      &lt;span class="c1"&gt;//d.Base1::checkOut();  //解决二义性的方法2  &lt;/span&gt;
+
 &lt;span class="p"&gt;}&lt;/span&gt;  
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;注意：&lt;strong&gt;不能在类内简单的using ::operator new，否则报错using-declaration for non-member at class scope。&lt;/strong&gt;只能using基类的被覆盖的名字，不能using全局的，但是可以用作用域限定符(::)调用全局的函数。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(11)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html" rel="alternate"></link><updated>2013-10-13T20:06:53+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(11).html</id><summary type="html">&lt;h2&gt;Item 44: Factor parameter-independent code out of templates&lt;/h2&gt;
+&lt;p&gt;原因：C++首选确定对调用而言的最佳匹配（此处两个checkOut都是最佳匹配），之后才检查其可取用性。&lt;br /&gt;
+所以，虽然private明显不能用，编译器还是返回错误：request for member 'checkOut' is ambigous。&lt;br /&gt;
+解决：见程序注释。&lt;br /&gt;
+3.钻石型多重继承，如果不希望最上层基类的成员在下层派生类中有多个副本，需要使用虚继承。&lt;br /&gt;
+虚基类：所有派生自基类的类都采用virtual继承，该基类就被成为virtual base class&lt;br /&gt;
+例子：STL中basic_ios ——&amp;gt;basic_istrem，basic_ostrem——&amp;gt;basic_iostrem&lt;br /&gt;
+4.虚基类的初始化责任由继承体系的最底层（most derived）类负责。这样才可以避免虚基类被初始化多次。&lt;br /&gt;
+5.虚继承有代价，所以一般不要用：虚继承的派生类占内存多，虚基类访问速度慢。&lt;br /&gt;
+6.如果非要使用虚基类，尽量不要在里面放置数据，做一个接口类。类似与C#和Java中的Interfaces。  &lt;/p&gt;
+&lt;h2&gt;Item 41: Understand implicit interfaces and compile-time-polymorphism&lt;/h2&gt;
+&lt;p&gt;1.OOP的世界，显式接口（类的public接口，函数原型）和运行期多态 （virtual调用）。&lt;br /&gt;
+Generic Programming，除了上面两者之外，还有隐式接口（typename需要支持的操作），和编译期多态（具现化）。&lt;br /&gt;
+2.例子：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;doSth&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="n"&gt;someWidget&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+     &lt;span class="p"&gt;{...}&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;隐式接口是：w.size()&amp;gt;10 &amp;amp;&amp;amp; w!=someWidget返回bool类型。&lt;br /&gt;
+可能w.size()返回数值型，或w有operator&amp;gt;成员，或opeartor&amp;gt;函数第一个参数接受T类型（或隐式转化成T类型），&lt;br /&gt;
+可能operator&amp;amp;&amp;amp;被重载，返回一个bool类型。。。  &lt;/p&gt;
+&lt;h2&gt;Item 42: Understand the two meaning of typename.&lt;/h2&gt;
+&lt;p&gt;1.嵌套从属类型名称(nested dependent type name)需要在前面加typename，以表明它是类型名，否则编译器会假设它不是类型，而是一个变量。&lt;br /&gt;
+举例：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;const_iterator&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;编译期默认const_iterator是T中的静态变量，x可能全局变量之类的，它们做相乘。。。&lt;br /&gt;
+声明其为类型：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;const_iterator&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//函数模版  &lt;/span&gt;
+&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;Nested&lt;/span&gt; &lt;span class="n"&gt;temp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;//类模版  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.两个特例不能加typename：&lt;br /&gt;
+（1）继承的基类列表（base class list）&lt;br /&gt;
+（2）构造函数成员初始化列表（member initialization list）  &lt;/p&gt;
+&lt;h2&gt;Item 43: Know how to access names in templatized base classes&lt;/h2&gt;
+&lt;p&gt;1.跟模版没关的一个话题：&lt;br /&gt;
+当需要在派生类定义一个函数，是对基类函数的扩充，但是基类函数是non-virtual函数，这时候就用一个不同的名字。比如Base::sendClear()，Derived::sendClearMsg()&lt;br /&gt;
+2.模版派生类，调用模版基类的函数时，不能不加任何修饰符的调用，因为编译期拒绝向模版基类的定义中寻找这个函数的声明。否则会在编译期"解析该模版类的定义式"时就报错。&lt;br /&gt;
+原因：模版基类（templatized base class）可能存在特化版本，而这个特化版本中没有定义模版派生类要调用的那个函数。编译期在检查模版定义式的时候，没法确定具体是什么类型来具现化这个模版派生类。&lt;br /&gt;
+解决：&lt;br /&gt;
+（1）this-&amp;gt;修饰函数&lt;br /&gt;
+（2）using Base&lt;T&gt;:: 引入相应名字&lt;br /&gt;
+（3）Base&lt;T&gt;::修饰函数（最差的解决方法，因为会关闭virtual绑定行为）&lt;br /&gt;
+3.编译器诊断模版相关的东西，分两个阶段&lt;br /&gt;
+（1）解析模版的定义式。如上一条所列，可能报错。&lt;br /&gt;
+（2）用实参具现化模版。如果this引入了基类的函数，但是基类相应特化版本的确不含有那个函数，这时候报错。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(11)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html" rel="alternate"></link><updated>2013-10-13T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(11).html</id><summary type="html">&lt;h2&gt;Item 44: Factor parameter-independent code out of templates&lt;/h2&gt;
 &lt;p&gt;1.类模版成员函数函数，只有被使用时才被具现化。类似类的合成版本的构造/复制构造/赋值操作符/析构函数。&lt;br /&gt;
 2.模版的时候减少了源代码量，但是可能导致目标代码增加，因为每具现化一个版本，就多一份目标码。&lt;br /&gt;
 策略：把与模版参数（类型参数或非类型参数）无关的代码，剥离出模版类。&lt;br /&gt;
@@ -1877,107 +1898,86 @@ api：dlopen（可以通过参数设置延迟绑定，当通过dlsym加载的函
 &lt;span class="p"&gt;};&lt;/span&gt;  
 &lt;span class="c1"&gt;//使用：  &lt;/span&gt;
 &lt;span class="n"&gt;Factorial&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(10)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html" rel="alternate"></link><updated>2013-10-13T20:05:09+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(10).html</id><summary type="html">&lt;h2&gt;Item 39: Use private inheritance judiciously&lt;/h2&gt;
-&lt;p&gt;1.私有继承和复合(composition)意义相同：根据某物实现出（is-implemented-in-terms-of）。&lt;br /&gt;
-2.除非必要，尽量用复合实现这种语义。&lt;br /&gt;
-3.可以考虑使用private继承的情况：&lt;br /&gt;
-（1）需要需要访问protected成员&lt;br /&gt;
-（2）需要重写virtual函数。（替代策略:可以派生一个类，重写virtual函数。然后包含这个类的对象）&lt;br /&gt;
-（3）如果需要包含的是一个空类对象，用private继承，节省空间。&lt;br /&gt;
-Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual函数的类。因为不含非静态成员变量和虚函数，所以一般不需要内存空间。&lt;br /&gt;
-注：&lt;br /&gt;
-1)类中包含一个空类对象的时候，大多数编译器至少需要1个字节的内存空间。&lt;br /&gt;
-2)继承自空类对象，不需要任何内存空间。&lt;br /&gt;
-4.尽量复用已有代码，所以平时注意积累自己的工具箱，设计的越通用越好，随时可以拿来复用。  &lt;/p&gt;
-&lt;h2&gt;Item 40: Use multiple inheritance judiciously&lt;/h2&gt;
-&lt;p&gt;1.多重继承尽量不用，因为它比单一继承复杂，比如引起二义性（ambiguity），还有可能需要虚继承（虚基类）&lt;br /&gt;
-合理用途：&lt;br /&gt;
-public继承一个接口类，private继承一个协助实现的类（需要复用它的一些成员，但是需要重写virtual）。&lt;br /&gt;
-2.二义性例子：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base1&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-          &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;checkOut&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Base1:public&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(12)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html" rel="alternate"></link><updated>2013-10-13T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(12).html</id><summary type="html">&lt;p&gt;关于new和delete的东西，笔记不够详尽，因为新知识比较多，不太方便记录笔记。发现相关知识漏洞的时候，再去查看Cpp Primer和Effective Cpp相关章节。  &lt;/p&gt;
+&lt;h2&gt;Item 49: Understand the behavior of the new-handler&lt;/h2&gt;
+&lt;p&gt;1.&lt;code&gt;std::set_new_handler()&lt;/code&gt;可以绑定一个&lt;code&gt;new_handler&lt;/code&gt;（类型为&lt;code&gt;void (*)()&lt;/code&gt;），即new获取不到所需内存时调用的客户定制函数。如果不设置函数，或设置null，直接抛出异常&lt;code&gt;std::bad_alloc&lt;/code&gt;。&lt;br /&gt;
+2.获取&lt;code&gt;new_handler&lt;/code&gt;函数的方式：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;handler&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;set_new_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="n"&gt;set_new_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;handler&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
 
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base2&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-          &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;checkOut&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Base2:private&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;  
 
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Derived&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Base1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Base2&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  
-          &lt;span class="c1"&gt;//using Base1::checkOut;  //解决二义性的方法1  &lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;  
+&lt;p&gt;3.new_handler应该具备以下一种功能：&lt;br /&gt;
+（1）让更多内存可被使用。否则::operator new会无限循环调用非空的new_handler。例如程序开始分配一个内存池，动态分配不到资源的时候释放一些资源出来。&lt;br /&gt;
+（2）安装另一个可以释放更多内存的new_handler函数。&lt;br /&gt;
+（3）卸除new_handler，这样::operator new就会直接throw std::bad_alloc()异常了。&lt;br /&gt;
+（4）抛出bad_alloc异常。不等operator new抛，自己就抛了。&lt;br /&gt;
+（5）调用exit或abort直接退出程序。  &lt;/p&gt;
+&lt;h2&gt;Item 50: Understand when it makes sense to replace new and delete&lt;/h2&gt;
+&lt;p&gt;重写operator new和operator delete的原因：&lt;br /&gt;
+（1）检查所分配内存上的运用错误：每次new的时候，在要分配空间的前后多分配一段内存，存放签名。delete的时候检查签名是否正确。如果前面的签名错了，发生了underrun（数据写到分配内存的前面了）；如果后面的签名错了，发生了overrun（ditto）。&lt;br /&gt;
+（2）收集动态分配内存的使用情况：每次new的时候都要统计一些信息，比如分配了多少，等等&lt;br /&gt;
+（3）加快速度：定制版本处理的情况比通用版本少，所以速度往往更快。&lt;br /&gt;
+（4）降低空间开销：通用版本往往会分配额外一些内存来保存一些信息。小型对象分配器：Boost的Pool&lt;br /&gt;
+（5）弥补缺省allocator非最佳齐位（alignment）：好多编译器上的new都声称保证16bit齐位，double变量需要32bit齐位，才能获得最佳的访问速度。&lt;br /&gt;
+（6）获得非传统的行为：比如delete释放的时候，空间覆盖为0.  &lt;/p&gt;
+&lt;h2&gt;Item 51:Adhere to convention when writing new and deletes(固守常规)&lt;/h2&gt;
+&lt;p&gt;1.自定义operator new的时候，需要注意的几点&lt;br /&gt;
+（1）尽量和::operator new行为一致，即while(true)下循环尝试分配内存，如果new_handle非0就调用，否则bad_alloc&lt;br /&gt;
+（2）用户分配大小为0的空间  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;   &lt;span class="c1"&gt;//size是operator new的参数  &lt;/span&gt;
+     &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;   
+&lt;/pre&gt;&lt;/div&gt;
 
-&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+
+&lt;p&gt;（3）基类的operator new，需要首先执行  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;  
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//如果new派生类的话，使用全局版本的operator new  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.自定义operator delete的时候，需要注意的几点&lt;br /&gt;
+（1）用户delete一个空指针  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;   &lt;span class="c1"&gt;//ptr是operator delete的参数  &lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;（2）基类的operator delete  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;   &lt;span class="c1"&gt;//size是operator delete的第二个参数  &lt;/span&gt;
+    &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Item 52: Write placement delete if you write placement new.&lt;/h2&gt;
+&lt;p&gt;1.placement new，C++ Primer上翻译为定位new，理解为：特定位置（第二个参数指定的指针位置）上的new比较好。&lt;br /&gt;
+2.编写placement new的时候，也要编写对应版本的placement delete。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;   
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;否则，可能内存泄露。&lt;br /&gt;
+因为，new表达式执行中，如果第一步operator new分配内存成功，但是构造函数抛出异常，C++运行期系统需要保证内存不发生泄露，就会自动调用&lt;strong&gt;对应版本&lt;/strong&gt;的operator delete释放内存。如果找不到对应版本的operator delete，就会造成内存泄露。&lt;br /&gt;
+3.global作用域定义了3种形式的operator new和对应3种形式的operator delete  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;bad_alloc&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;nothrow_t&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;对应delete版本就是第一个参数换成void*，全部不抛出异常。&lt;br /&gt;
+4.定义于类内的operator new，不管是placement还是非placement，都会掩盖全局的3个版本。如果需要使用，重写这6个函数：函数体只是调用全局作用域的版本。&lt;br /&gt;
+例如：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="nf"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;bad_alloc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
 &lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="n"&gt;Derived&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-
-     &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;checkOut&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;   
-      &lt;span class="c1"&gt;//d.Base1::checkOut();  //解决二义性的方法2  &lt;/span&gt;
-
+     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
 &lt;span class="p"&gt;}&lt;/span&gt;  
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;原因：C++首选确定对调用而言的最佳匹配（此处两个checkOut都是最佳匹配），之后才检查其可取用性。&lt;br /&gt;
-所以，虽然private明显不能用，编译器还是返回错误：request for member 'checkOut' is ambigous。&lt;br /&gt;
-解决：见程序注释。&lt;br /&gt;
-3.钻石型多重继承，如果不希望最上层基类的成员在下层派生类中有多个副本，需要使用虚继承。&lt;br /&gt;
-虚基类：所有派生自基类的类都采用virtual继承，该基类就被成为virtual base class&lt;br /&gt;
-例子：STL中basic_ios ——&amp;gt;basic_istrem，basic_ostrem——&amp;gt;basic_iostrem&lt;br /&gt;
-4.虚基类的初始化责任由继承体系的最底层（most derived）类负责。这样才可以避免虚基类被初始化多次。&lt;br /&gt;
-5.虚继承有代价，所以一般不要用：虚继承的派生类占内存多，虚基类访问速度慢。&lt;br /&gt;
-6.如果非要使用虚基类，尽量不要在里面放置数据，做一个接口类。类似与C#和Java中的Interfaces。  &lt;/p&gt;
-&lt;h2&gt;Item 41: Understand implicit interfaces and compile-time-polymorphism&lt;/h2&gt;
-&lt;p&gt;1.OOP的世界，显式接口（类的public接口，函数原型）和运行期多态 （virtual调用）。&lt;br /&gt;
-Generic Programming，除了上面两者之外，还有隐式接口（typename需要支持的操作），和编译期多态（具现化）。&lt;br /&gt;
-2.例子：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;doSth&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="n"&gt;someWidget&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-     &lt;span class="p"&gt;{...}&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;隐式接口是：w.size()&amp;gt;10 &amp;amp;&amp;amp; w!=someWidget返回bool类型。&lt;br /&gt;
-可能w.size()返回数值型，或w有operator&amp;gt;成员，或opeartor&amp;gt;函数第一个参数接受T类型（或隐式转化成T类型），&lt;br /&gt;
-可能operator&amp;amp;&amp;amp;被重载，返回一个bool类型。。。  &lt;/p&gt;
-&lt;h2&gt;Item 42: Understand the two meaning of typename.&lt;/h2&gt;
-&lt;p&gt;1.嵌套从属类型名称(nested dependent type name)需要在前面加typename，以表明它是类型名，否则编译器会假设它不是类型，而是一个变量。&lt;br /&gt;
-举例：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;const_iterator&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;编译期默认const_iterator是T中的静态变量，x可能全局变量之类的，它们做相乘。。。&lt;br /&gt;
-声明其为类型：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;const_iterator&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//函数模版  &lt;/span&gt;
-&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;Nested&lt;/span&gt; &lt;span class="n"&gt;temp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;//类模版  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;2.两个特例不能加typename：&lt;br /&gt;
-（1）继承的基类列表（base class list）&lt;br /&gt;
-（2）构造函数成员初始化列表（member initialization list）  &lt;/p&gt;
-&lt;h2&gt;Item 43: Know how to access names in templatized base classes&lt;/h2&gt;
-&lt;p&gt;1.跟模版没关的一个话题：&lt;br /&gt;
-当需要在派生类定义一个函数，是对基类函数的扩充，但是基类函数是non-virtual函数，这时候就用一个不同的名字。比如Base::sendClear()，Derived::sendClearMsg()&lt;br /&gt;
-2.模版派生类，调用模版基类的函数时，不能不加任何修饰符的调用，因为编译期拒绝向模版基类的定义中寻找这个函数的声明。否则会在编译期"解析该模版类的定义式"时就报错。&lt;br /&gt;
-原因：模版基类（templatized base class）可能存在特化版本，而这个特化版本中没有定义模版派生类要调用的那个函数。编译期在检查模版定义式的时候，没法确定具体是什么类型来具现化这个模版派生类。&lt;br /&gt;
-解决：&lt;br /&gt;
-（1）this-&amp;gt;修饰函数&lt;br /&gt;
-（2）using Base&lt;T&gt;:: 引入相应名字&lt;br /&gt;
-（3）Base&lt;T&gt;::修饰函数（最差的解决方法，因为会关闭virtual绑定行为）&lt;br /&gt;
-3.编译器诊断模版相关的东西，分两个阶段&lt;br /&gt;
-（1）解析模版的定义式。如上一条所列，可能报错。&lt;br /&gt;
-（2）用实参具现化模版。如果this引入了基类的函数，但是基类相应特化版本的确不含有那个函数，这时候报错。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(9)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html" rel="alternate"></link><updated>2013-10-13T20:03:58+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(9).html</id><summary type="html">&lt;h2&gt;Item 32: Make sure public inheritance models "is-a"&lt;/h2&gt;
+&lt;p&gt;注意：&lt;strong&gt;不能在类内简单的using ::operator new，否则报错using-declaration for non-member at class scope。&lt;/strong&gt;只能using基类的被覆盖的名字，不能using全局的，但是可以用作用域限定符(::)调用全局的函数。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(9)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html" rel="alternate"></link><updated>2013-10-13T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(9).html</id><summary type="html">&lt;h2&gt;Item 32: Make sure public inheritance models "is-a"&lt;/h2&gt;
 &lt;p&gt;1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。&lt;br /&gt;
 2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：&lt;br /&gt;
 企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高&lt;br /&gt;
@@ -2059,7 +2059,7 @@ typedef std::tr1::function&lt;int (const GameCharacter&amp;)&gt; HealthCalcFunc;
 （1）has-a（包含）关系：应用域，比如人包含名字、地址&lt;br /&gt;
 （2）is-implemented-in-terms-of（根据某物实现出）关系：实现域，比如set是根据linked list实现出的。&lt;br /&gt;
 3.区分is-a和is-implemented-in-terms-of：&lt;br /&gt;
-is-a的话，对基类为真的每一件事，对派生类也为真。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(5)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html" rel="alternate"></link><updated>2013-10-11T16:34:30+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-11:posts/2013/10/EffectiveCpp(5).html</id><summary type="html">&lt;h2&gt;Item18:  Make interfaces easy to use correctly and hard to use incorrectly&lt;/h2&gt;
+is-a的话，对基类为真的每一件事，对派生类也为真。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(5)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html" rel="alternate"></link><updated>2013-10-11T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-11:posts/2013/10/EffectiveCpp(5).html</id><summary type="html">&lt;h2&gt;Item18:  Make interfaces easy to use correctly and hard to use incorrectly&lt;/h2&gt;
 &lt;p&gt;1.促进接口被正确使用：&lt;br /&gt;
 （1）接口一致性：stl中所有容器都具有size() 函数，而不像Java和.Net。&lt;br /&gt;
 （2）与内置类型行为兼容：想想和int类比。&lt;br /&gt;
@@ -2129,7 +2129,66 @@ is-a的话，对基类为真的每一件事，对派生类也为真。  &lt;/p&g
 &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
 &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;  &lt;span class="c1"&gt;//总是返回true，因为返回的都是同一个static对象  &lt;/span&gt;
 &lt;span class="p"&gt;{...}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(4)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html" rel="alternate"></link><updated>2013-10-04T19:33:09+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-04:posts/2013/10/EffectiveCpp(4).html</id><summary type="html">&lt;h2&gt;Item 13: Use objects to manage resources&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(3)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html" rel="alternate"></link><updated>2013-10-04T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-04:posts/2013/10/EffectiveCpp(3).html</id><summary type="html">&lt;h2&gt;Item 09: Never call virtual functions in constructions and destructions&lt;/h2&gt;
+&lt;p&gt;1.derived class对象构造时，base class构造函数先被调用，在其中调用/间接调用的虚函数是是父类的版本。原因有二：&lt;br /&gt;
+（1）父类构造时，子类成员变量尚未初始化，处于未定义状态，C++不允许调用子类virtual函数（几乎必然会访问成员变量）&lt;br /&gt;
+（2）父类构造函数执行时，动态类型是父类。&lt;br /&gt;
+同理，析构函数。&lt;br /&gt;
+2.替代策略：对于每个子类都要调用的函数，不声明virtual&lt;br /&gt;
+（1）每个子类构造函数分别调用相应函数。例如logTransaction()&lt;br /&gt;
+（2）子类构造函数显示调用父类构造函数，传递参数上去。例如&lt;code&gt;BaseClass(createLogString(para))&lt;/code&gt;，其中createLogString是static成员，保证不会访问子类对象的成员变量。  &lt;/p&gt;
+&lt;h2&gt;Item 11: Handle assignment to self in operator=&lt;/h2&gt;
+&lt;p&gt;示例代码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+&lt;span class="nl"&gt;public:&lt;/span&gt;  
+     &lt;span class="n"&gt;Bitmap&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+     &lt;span class="p"&gt;{&lt;/span&gt;  
+         &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+         &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+     &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;问题：自我赋值安全性，异常安全性。&lt;br /&gt;
+解决：&lt;br /&gt;
+（1）证同测试 identity test  -》解决了自我赋值安全性  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;==&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;    &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  &lt;span class="c1"&gt;//测试是否是自我赋值  &lt;/span&gt;
+     &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+     &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//异常可能发生，比如内存不足，复制构造函数有异常抛出。如果外面捕获了该异常，并继续执行程序，那么pb将指向被释放了的空间，之后任何操作都会引起未定义行为。  &lt;/span&gt;
+     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;（2）调整语句顺序 -》解决异常安全性，同时解决自我赋值安全性  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="n"&gt;Bitmap&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pOrig&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+     &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//先构造，后删除  &lt;/span&gt;
+     &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;pOrig&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;（3）copy and swap -》解决异常安全性，同时解决自我赋值安全性&lt;br /&gt;
+思想就是用参数构造一个临时对象，然后和类内对象交换。具体代码略。  &lt;/p&gt;
+&lt;h2&gt;Item 12： Copy all parts of an object&lt;/h2&gt;
+&lt;p&gt;1.如果类中新增了一个成员变量，一定记得同时修改构造函数、复制构造函数和赋值操作符，确保新成员变量被合理的初始化和赋值。&lt;br /&gt;
+2.派生类定义的复制构造函数，和赋值操作符，需要调用基类的相应函数，否则前者隐式调用基类的默认构造函数，后者则不会调用基类的赋值操作符。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Derived&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;),...&lt;/span&gt; &lt;span class="p"&gt;{...}&lt;/span&gt;  
+&lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;//也可以使用if(this==&amp;amp;rhs)包裹函数体，跳过自我赋值。这需要权衡自我赋值的次数，以及增加这一条判断语句的代价。一般可以不加这句话。  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;注意：编译器合成的版本，会自动调用基类的复制构造和赋值操作，就像上面实现的一样。&lt;br /&gt;
+3.重复代码放到私有函数init里，不要复制构造调用赋值操作符，或反过来。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(4)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html" rel="alternate"></link><updated>2013-10-04T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-04:posts/2013/10/EffectiveCpp(4).html</id><summary type="html">&lt;h2&gt;Item 13: Use objects to manage resources&lt;/h2&gt;
 &lt;p&gt;1.资源是指，使用完之后需要归还系统的东西。比如动态分配的内存，文件描述符，互斥锁，数据库连接，sockets。&lt;br /&gt;
 2.尽管可以手动释放资源（比如delete），但是程序的修改（delete之前返回了），或客户的忘记，可能导致资源释放不了。&lt;br /&gt;
 解决办法：用对象管理资源，利用对象在作用域范围之外会自动调用析构函数的机制，释放资源。&lt;br /&gt;
@@ -2197,63 +2256,4 @@ delete执行过程：在该内存有一个或多个（delete [] arr）析构函�
 &lt;p&gt;解决办法：独立语句中将动态分配的对象存入智能指针。  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nl"&gt;tr1&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nl"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;pw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
 &lt;span class="nx"&gt;processWidget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;priority&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;   
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Effective C++学习笔记(3)</title><link href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html" rel="alternate"></link><updated>2013-10-04T19:28:25+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-04:posts/2013/10/EffectiveCpp(3).html</id><summary type="html">&lt;h2&gt;Item 09: Never call virtual functions in constructions and destructions&lt;/h2&gt;
-&lt;p&gt;1.derived class对象构造时，base class构造函数先被调用，在其中调用/间接调用的虚函数是是父类的版本。原因有二：&lt;br /&gt;
-（1）父类构造时，子类成员变量尚未初始化，处于未定义状态，C++不允许调用子类virtual函数（几乎必然会访问成员变量）&lt;br /&gt;
-（2）父类构造函数执行时，动态类型是父类。&lt;br /&gt;
-同理，析构函数。&lt;br /&gt;
-2.替代策略：对于每个子类都要调用的函数，不声明virtual&lt;br /&gt;
-（1）每个子类构造函数分别调用相应函数。例如logTransaction()&lt;br /&gt;
-（2）子类构造函数显示调用父类构造函数，传递参数上去。例如&lt;code&gt;BaseClass(createLogString(para))&lt;/code&gt;，其中createLogString是static成员，保证不会访问子类对象的成员变量。  &lt;/p&gt;
-&lt;h2&gt;Item 11: Handle assignment to self in operator=&lt;/h2&gt;
-&lt;p&gt;示例代码：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-&lt;span class="nl"&gt;public:&lt;/span&gt;  
-     &lt;span class="n"&gt;Bitmap&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-     &lt;span class="p"&gt;{&lt;/span&gt;  
-         &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-         &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-     &lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;问题：自我赋值安全性，异常安全性。&lt;br /&gt;
-解决：&lt;br /&gt;
-（1）证同测试 identity test  -》解决了自我赋值安全性  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;==&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;    &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  &lt;span class="c1"&gt;//测试是否是自我赋值  &lt;/span&gt;
-     &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-     &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="c1"&gt;//异常可能发生，比如内存不足，复制构造函数有异常抛出。如果外面捕获了该异常，并继续执行程序，那么pb将指向被释放了的空间，之后任何操作都会引起未定义行为。  &lt;/span&gt;
-     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;（2）调整语句顺序 -》解决异常安全性，同时解决自我赋值安全性  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="n"&gt;Bitmap&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pOrig&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-     &lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pb&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//先构造，后删除  &lt;/span&gt;
-     &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;pOrig&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;（3）copy and swap -》解决异常安全性，同时解决自我赋值安全性&lt;br /&gt;
-思想就是用参数构造一个临时对象，然后和类内对象交换。具体代码略。  &lt;/p&gt;
-&lt;h2&gt;Item 12： Copy all parts of an object&lt;/h2&gt;
-&lt;p&gt;1.如果类中新增了一个成员变量，一定记得同时修改构造函数、复制构造函数和赋值操作符，确保新成员变量被合理的初始化和赋值。&lt;br /&gt;
-2.派生类定义的复制构造函数，和赋值操作符，需要调用基类的相应函数，否则前者隐式调用基类的默认构造函数，后者则不会调用基类的赋值操作符。  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Derived&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;),...&lt;/span&gt; &lt;span class="p"&gt;{...}&lt;/span&gt;  
-&lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Derived&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="c1"&gt;//也可以使用if(this==&amp;amp;rhs)包裹函数体，跳过自我赋值。这需要权衡自我赋值的次数，以及增加这一条判断语句的代价。一般可以不加这句话。  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;注意：编译器合成的版本，会自动调用基类的复制构造和赋值操作，就像上面实现的一样。&lt;br /&gt;
-3.重复代码放到私有函数init里，不要复制构造调用赋值操作符，或反过来。  &lt;/p&gt;</summary><category term="EffectiveCpp"></category></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry></feed>

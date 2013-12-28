@@ -63,7 +63,7 @@
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T16:08:22.377799" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
 </header>
 
   <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
@@ -86,9 +86,37 @@
   	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time></p>
+</header>
+
+  <div class="entry-content"><p>用Selenium Webdriver有段时间了，一直learning on demand，浏览了大部分API，并没有对这个工具进行详细和彻底的学习。<br />
+今天正好闲下来，梳理一下相关知识。  </p>
+<h2>Some Links</h2>
+<p><a href="http://code.google.com/p/selenium/">工程主页</a><br />
+<a href="http://www.seleniumhq.org/docs">文档主页</a><br />
+<a href="http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html">Python文档</a><br />
+<a href="http://selenium-python.readthedocs.org/en/latest/index.html">Python非官方文档</a><br />
+本人的两个使用Selenium的小项目
+<a href="https://github.com/particle128/vipshop-buy">vip.com shop assistant</a> <a href="https://github.com/particle128/qunar-flight-reminder">qunar flight-fare reminder</a></p>
+<h2>Some Concepts</h2>
+<h3>敏捷开发（Agile development）</h3>
+<p>是一个软件开发方法学，强调3点：<br />
+(1)adaptive&gt;predictive (2)iterative&gt;waterfall (3)codes&gt;documents<br />
+强调软件快速迭代，随着需求变化而修改或重构程序，而不是一开始就为将来可能出现的所有需求来设计。  </p>
+<h3>极限编程（extreme programming）</h3>
+<p>是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/selenium.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/some-thought.html">一些反思</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T16:42:21.285890" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
 </header>
 
   <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
@@ -110,7 +138,7 @@
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">vip.com抢购助手:介绍</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T16:10:45.757806" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
 </header>
 
   <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
@@ -144,7 +172,7 @@
           <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop-port.html">vip.com抢购助手:linux到windows的移植问题</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T16:03:20.633786" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
 </header>
 
   <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
@@ -162,38 +190,6 @@ D:\Python27\Scripts\pip install -U selenium  </p>
 下载地址：http://sourceforge ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">vip.vom抢购助手:技术问题</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T16:03:02.529785" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>环境:</h2>
-<p>下载selenium chrome driver：<br />
-<a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
-安装selenium ：<code>pip install -U selenium</code>  </p>
-<h2>难点：</h2>
-<p>1.不同操作系统、不同网络状况、不同计算机内存情况，对一个页面的加载速度是不同的，用同一个时间来设置超时太不灵活，设置短了，某些机器可能加载不到东西就退出了；设置长了，可能浪费了一些等待的时间。<br />
-因此，采用标准超时时间每次超时+1的策略，然后把特定于某个机器的超时时间保存与配置文件内！<br />
-2.有些页面在给定的门限（比如2）次超时刷新后仍然加载不上的话，就直接跳过。  </p>
-<h2>遇到的问题和总结：</h2>
-<ul>
-<li>不输入回车直接读入键盘操作，因此需要设置终端输入no buffer模式  </li>
-</ul>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>  
-<span class="kn">import</span> <span class="nn">termios</span>  
-
-<span class="k">try</span><span class="p">:</span>  
-     <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
-     <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
-     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -238,7 +234,7 @@ D:\Python27\Scripts\pip install -U selenium  </p>
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

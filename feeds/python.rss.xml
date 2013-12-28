@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/python.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-01T16:10:45+08:00</updated><entry><title>vip.com抢购助手:介绍</title><link href="http://particle128.com/posts/2013/12/vipshop-intro.html" rel="alternate"></link><updated>2013-12-01T16:10:45+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-intro.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/python.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2013-12-01T00:00:00+08:00</updated><entry><title>去哪儿网机票提醒脚本</title><link href="http://particle128.com/posts/2013/12/qunar.html" rel="alternate"></link><updated>2013-12-01T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/qunar.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/qunar-flight-reminder"&gt;particle128的github&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This project is used to check the airfare in &lt;a href="http://www.qunar.com"&gt;www.qunar.com&lt;/a&gt;, and send you a SMS message when the price is lower than what you set in config.py  &lt;/p&gt;
+&lt;h2&gt;Requirements&lt;/h2&gt;
+&lt;p&gt;Download the ChromeDriver in &lt;a href="https://code.google.com/p/chromedriver/downloads/list"&gt;here&lt;/a&gt;  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt; &lt;span class="n"&gt;selenium&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Configuration&lt;/h2&gt;
+&lt;p&gt;see config.py  &lt;/p&gt;
+&lt;h2&gt;Usage&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category></entry><entry><title>vip.com抢购助手:介绍</title><link href="http://particle128.com/posts/2013/12/vipshop-intro.html" rel="alternate"></link><updated>2013-12-01T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-intro.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
 &lt;h2&gt;Two Modes&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;自选模式&lt;br /&gt;
@@ -68,7 +81,7 @@
 这几个选项，对应下图中画圈部分。其中，Type和Size的值可以包含多个，空格隔开，但是Type和Size中的值要在对应位置一一对应。  &lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img alt="image" src="https://github.com/particle128/vipshop-buy/blob/master/images/1.png" /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;img alt="image" src="https://raw.github.com/particle128/vipshop-buy/master/images/1.png" /&gt;&lt;br /&gt;
 例子：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;[type]&lt;/span&gt;  
 &lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;上衣 鞋类 男包  &lt;/span&gt;
@@ -101,20 +114,7 @@ k——窗口向上滚动一行&lt;br /&gt;
 3——选择第3个商品&lt;br /&gt;
 4——选择最右边的商品&lt;br /&gt;
 退出：&lt;br /&gt;
-q——在选择商品的过程中，输入q，退出程序。购物袋中有物品的窗口最大化，没有物品的窗口直接退出。  &lt;/p&gt;</summary><category term="python"></category><category term="selenium"></category></entry><entry><title>去哪儿网机票提醒脚本</title><link href="http://particle128.com/posts/2013/12/qunar.html" rel="alternate"></link><updated>2013-12-01T16:08:22+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/qunar.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/qunar-flight-reminder"&gt;particle128的github&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;This project is used to check the airfare in &lt;a href="http://www.qunar.com"&gt;www.qunar.com&lt;/a&gt;, and send you a SMS message when the price is lower than what you set in config.py  &lt;/p&gt;
-&lt;h2&gt;Requirements&lt;/h2&gt;
-&lt;p&gt;Download the ChromeDriver in &lt;a href="https://code.google.com/p/chromedriver/downloads/list"&gt;here&lt;/a&gt;  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt; &lt;span class="n"&gt;selenium&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;Configuration&lt;/h2&gt;
-&lt;p&gt;see config.py  &lt;/p&gt;
-&lt;h2&gt;Usage&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category></entry><entry><title>vip.com抢购助手:linux到windows的移植问题</title><link href="http://particle128.com/posts/2013/12/vipshop-port.html" rel="alternate"></link><updated>2013-12-01T16:03:20+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-port.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
+q——在选择商品的过程中，输入q，退出程序。购物袋中有物品的窗口最大化，没有物品的窗口直接退出。  &lt;/p&gt;</summary><category term="python"></category><category term="selenium"></category></entry><entry><title>vip.com抢购助手:linux到windows的移植问题</title><link href="http://particle128.com/posts/2013/12/vipshop-port.html" rel="alternate"></link><updated>2013-12-01T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-port.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
 &lt;h2&gt;步骤&lt;/h2&gt;
 &lt;p&gt;0.登陆windows系统  &lt;/p&gt;
 &lt;p&gt;1.安装python2.7&lt;br /&gt;
@@ -194,7 +194,7 @@ unix2dos config.ini
      &lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_page_load_timeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="c"&gt;#win下chrome第一个页面加载很慢  &lt;/span&gt;
 &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
      &lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_page_load_timeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="py2exe"></category></entry><entry><title>vip.vom抢购助手:技术问题</title><link href="http://particle128.com/posts/2013/12/vipshop-tech.html" rel="alternate"></link><updated>2013-12-01T16:03:02+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-tech.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="py2exe"></category></entry><entry><title>vip.vom抢购助手:技术问题</title><link href="http://particle128.com/posts/2013/12/vipshop-tech.html" rel="alternate"></link><updated>2013-12-01T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-01:posts/2013/12/vipshop-tech.html</id><summary type="html">&lt;p&gt;源码参见&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;  &lt;/p&gt;
 &lt;h2&gt;环境:&lt;/h2&gt;
 &lt;p&gt;下载selenium chrome driver：&lt;br /&gt;
 &lt;a href="https://code.google.com/p/chromedriver/downloads/list"&gt;url&lt;/a&gt;&lt;br /&gt;
@@ -335,7 +335,49 @@ unix2dos config.ini
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;action&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;ActionChains&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
 &lt;span class="n"&gt;action&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;click&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ele&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
 &lt;span class="n"&gt;action&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;perform&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="err"&gt;，会在下一次调用&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="err"&gt;的地方抛出&lt;/span&gt;&lt;span class="n"&gt;TimeoutException&lt;/span&gt;&lt;span class="err"&gt;异常。&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="selenium"></category></entry><entry><title>Python学习笔记-ConfigParser模块</title><link href="http://particle128.com/posts/2013/10/python-configparser.html" rel="alternate"></link><updated>2013-10-15T13:55:39+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/python-configparser.html</id><summary type="html">&lt;h3&gt;前言&lt;/h3&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="selenium"></category></entry><entry><title>Python学习笔记-subprocess模块</title><link href="http://particle128.com/posts/2013/10/py-subprocess.html" rel="alternate"></link><updated>2013-10-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/py-subprocess.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;subprocess是python的一个内置模块，用来产生子进程，和子进程通过pipe通信。&lt;/strong&gt;  &lt;/p&gt;
+&lt;h3&gt;3个便捷函数&lt;/h3&gt;
+&lt;p&gt;如果仅仅想要调用一个子进程完成一个任务，不需要父进程与其通信，并且等待子进程退出的话，选择便捷函数。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 返回returncode，0成功，非0出错。  &lt;/span&gt;
+&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="c"&gt;# 返回0或引发CalledProcessError异常。  &lt;/span&gt;
+&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;check_call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="c"&gt;# 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  &lt;/span&gt;
+&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;check_output&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;universal_newlines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;参数：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;args是调用的命令和参数，可以是字符串，或字符串列表（带参数）。  &lt;/li&gt;
+&lt;li&gt;是省略的一些关键字参数，不常用。  &lt;/li&gt;
+&lt;li&gt;stdin,stdout,stderr是标准io，默认不重定向，可以给他们重定向到subprocess.PIPE，或文件对象（open函数的返回），或文件描述符。&lt;br /&gt;
+注意：需要和子进程进行PIPE通信，不要用这三个函数。因为父进程在调用这三个函数的时候会阻塞，所以没法去都去PIPE里的信息或向管道传递信息。  &lt;/li&gt;
+&lt;li&gt;shell设置为True的话，args指定的字符串将作为shell的参数，调用shell。  &lt;/li&gt;
+&lt;li&gt;universal_newlines如果设置为True，那么stdout和stderr都会使用统一的换行符\n，而不区分操作系统。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Popen类&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bufsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;executable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;preexec_fn&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;close_fds&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cwd&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;universal_newlines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;startupinfo&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;creationflags&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;参数：&lt;br /&gt;
+bufsize设置缓冲区大小，默认是0表示无缓冲，即每次write都直接执行io操作，而不是先放到缓冲区里，等待某个时机（换行符，或缓冲区满时才执行真正的io）&lt;br /&gt;
+方法： &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 检查进程是否中止，返回returncode属性  &lt;/span&gt;
+&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;poll&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="c"&gt;# 等待进程中止，返回returncode属性  &lt;/span&gt;
+&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wait&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="c"&gt;# 和进程交互，发送数据到stdin，在stdout和stderr接收数据。前提是构造函数中对应io设置成PIPE  &lt;/span&gt;
+&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;communicate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;input&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="c"&gt;# returns a tuple (stdoutdata, stderrdata)  &lt;/span&gt;
+&lt;span class="c"&gt;# 发送信号给进程  &lt;/span&gt;
+&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send_signal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;signal&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;此外还有terminate（），kill（）函数&lt;br /&gt;
+stdin，stdout，stderr，pid，returncode属性  &lt;/p&gt;</summary><category term="python"></category><category term="subprocess"></category></entry><entry><title>Python学习笔记-ConfigParser模块</title><link href="http://particle128.com/posts/2013/10/python-configparser.html" rel="alternate"></link><updated>2013-10-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/python-configparser.html</id><summary type="html">&lt;h3&gt;前言&lt;/h3&gt;
 &lt;p&gt;配置文件可以有很多种格式，windows下常用ini格式，网络上常用xml和json格式，分别可以调用的python模块如下：&lt;br /&gt;
 ini——ConfigParser模块&lt;br /&gt;
 xml——xml.etree.ElementTree模块&lt;br /&gt;
@@ -403,49 +445,7 @@ Transforms the option name option as found in an input file or as passed in by c
 &lt;p&gt;解决：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#调用的时候转换成小写  &lt;/span&gt;
 &lt;span class="n"&gt;new_url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;originUrl&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;?q=0|&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TYPE&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="n"&gt;SIZE&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lower&lt;/span&gt;&lt;span class="p"&gt;()],&lt;/span&gt;&lt;span class="n"&gt;EMPTY&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="n"&gt;SORT&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Sort&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="ConfigParser"></category><category term="python"></category></entry><entry><title>Python学习笔记-subprocess模块</title><link href="http://particle128.com/posts/2013/10/py-subprocess.html" rel="alternate"></link><updated>2013-10-15T13:52:20+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-10-15:posts/2013/10/py-subprocess.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;subprocess是python的一个内置模块，用来产生子进程，和子进程通过pipe通信。&lt;/strong&gt;  &lt;/p&gt;
-&lt;h3&gt;3个便捷函数&lt;/h3&gt;
-&lt;p&gt;如果仅仅想要调用一个子进程完成一个任务，不需要父进程与其通信，并且等待子进程退出的话，选择便捷函数。  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 返回returncode，0成功，非0出错。  &lt;/span&gt;
-&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="c"&gt;# 返回0或引发CalledProcessError异常。  &lt;/span&gt;
-&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;check_call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="c"&gt;# 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  &lt;/span&gt;
-&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;check_output&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;universal_newlines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;参数：  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;args是调用的命令和参数，可以是字符串，或字符串列表（带参数）。  &lt;/li&gt;
-&lt;li&gt;是省略的一些关键字参数，不常用。  &lt;/li&gt;
-&lt;li&gt;stdin,stdout,stderr是标准io，默认不重定向，可以给他们重定向到subprocess.PIPE，或文件对象（open函数的返回），或文件描述符。&lt;br /&gt;
-注意：需要和子进程进行PIPE通信，不要用这三个函数。因为父进程在调用这三个函数的时候会阻塞，所以没法去都去PIPE里的信息或向管道传递信息。  &lt;/li&gt;
-&lt;li&gt;shell设置为True的话，args指定的字符串将作为shell的参数，调用shell。  &lt;/li&gt;
-&lt;li&gt;universal_newlines如果设置为True，那么stdout和stderr都会使用统一的换行符\n，而不区分操作系统。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Popen类&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bufsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;executable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;preexec_fn&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;close_fds&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cwd&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;universal_newlines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;startupinfo&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;creationflags&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;参数：&lt;br /&gt;
-bufsize设置缓冲区大小，默认是0表示无缓冲，即每次write都直接执行io操作，而不是先放到缓冲区里，等待某个时机（换行符，或缓冲区满时才执行真正的io）&lt;br /&gt;
-方法： &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 检查进程是否中止，返回returncode属性  &lt;/span&gt;
-&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;poll&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
-&lt;span class="c"&gt;# 等待进程中止，返回returncode属性  &lt;/span&gt;
-&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wait&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
-&lt;span class="c"&gt;# 和进程交互，发送数据到stdin，在stdout和stderr接收数据。前提是构造函数中对应io设置成PIPE  &lt;/span&gt;
-&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;communicate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;input&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="c"&gt;# returns a tuple (stdoutdata, stderrdata)  &lt;/span&gt;
-&lt;span class="c"&gt;# 发送信号给进程  &lt;/span&gt;
-&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send_signal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;signal&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;此外还有terminate（），kill（）函数&lt;br /&gt;
-stdin，stdout，stderr，pid，returncode属性  &lt;/p&gt;</summary><category term="python"></category><category term="subprocess"></category></entry><entry><title>Python学习笔记-字符串</title><link href="http://particle128.com/posts/2013/09/python-str.html" rel="alternate"></link><updated>2013-09-22T17:52:45+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-22:posts/2013/09/python-str.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="ConfigParser"></category><category term="python"></category></entry><entry><title>Python学习笔记-字符串</title><link href="http://particle128.com/posts/2013/09/python-str.html" rel="alternate"></link><updated>2013-09-22T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-22:posts/2013/09/python-str.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
 &lt;h3&gt;（一） 具备的操作&lt;/h3&gt;
 &lt;p&gt;str作为序列元素，包含其他序列共同的操作：&lt;br /&gt;
 1. “hello” [not] in "hello world"&lt;br /&gt;
@@ -491,7 +491,7 @@ string.lowercase&lt;br /&gt;
 string.uppercase&lt;br /&gt;
 string.whitespace&lt;br /&gt;
 string.punctuation&lt;br /&gt;
-string.printable  &lt;/p&gt;</summary><category term="python"></category><category term="str"></category></entry><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.com/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T10:10:19+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
+string.printable  &lt;/p&gt;</summary><category term="python"></category><category term="str"></category></entry><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.com/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
 &lt;h3&gt;1、各种消息机制的使用场合&lt;/h3&gt;
 &lt;p&gt;终端输出来显示一些信息：print()&lt;br /&gt;
 报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，&lt;br /&gt;

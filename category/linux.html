@@ -61,9 +61,63 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
+</header>
+
+  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
+<h4>chown 修改文件所有者</h4>
+<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
+chown mashu aa.txt <span class="c"># 修改所有者</span>
+chown .mashu aa.txt <span class="c"># 修改组</span>
+</pre></div>
+
+
+<h4>chgrp 修改文件所属用户组</h4>
+<div class="highlight"><pre>chgrp mashu aa.txt 修改组
+</pre></div>
+
+
+<h4>chmod 修改权限</h4>
+<div class="highlight"><pre>chmod 777 aa.txt   
+chmod a+r aa.txt
+</pre></div>
+
+
+<h3>2. 3个重要文件</h3>
+<h4>/etc/passwd</h4>
+<p>记录 用户名 对应的UID ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/linux_user.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time></p>
+</header>
+
+  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
+<h3>Domain Name System</h3>
+<p>host name &lt; - &gt; ip address<br />
+主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
+如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
+<h3>名字/域名服务器层次结构：</h3>
+<p>root name server 根域名服务器（无名）<br />
+TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/dns.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-15T14:01:14.284377" pubdate>2013-10-15</time></p>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
 </header>
 
   <div class="entry-content"><h3>概念</h3>
@@ -92,29 +146,9 @@
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T14:00:41.520375" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
-<h3>Domain Name System</h3>
-<p>host name &lt; - &gt; ip address<br />
-主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
-如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
-<h3>名字/域名服务器层次结构：</h3>
-<p>root name server 根域名服务器（无名）<br />
-TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/dns.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
       </h1>
-          <p class="meta"><time datetime="2013-09-08T10:01:27.753871" pubdate>2013-09-08</time></p>
+          <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
 </header>
 
   <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
@@ -134,40 +168,6 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
     <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/linux_user.html">Linux下的用户和用户组小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T08:32:29.231066" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
-</pre></div>
-
-
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
-</pre></div>
-
-
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
-</pre></div>
-
-
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/linux_user.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
   
     <br />
@@ -177,16 +177,16 @@ chmod a+r aa.txt
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/dns.html">DNS相关</a>
-      </li>
-            <li class="post">
           <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/09/linux_user.html">Linux下的用户和用户组小结</a>
       </li>
           </ul>
   </section>
@@ -205,7 +205,7 @@ chmod a+r aa.txt
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>
