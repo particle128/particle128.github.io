@@ -166,7 +166,20 @@ xpath参考 <a href="http://www.w3school.com.cn/xpath">w3c文档</a></p>
 </pre></div>
 
 
-<h3>高级用法</h3></div>
+<h4>显式和隐式等待</h4>
+<p>explicit wait</p>
+<div class="highlight"><pre>    <span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+    <span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+    <span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="kn">import</span> <span class="n">WebDriverWait</span> <span class="c"># available since 2.4.0</span>
+    <span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span> <span class="c"># available since 2.26.0</span>
+
+    <span class="n">ff</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">()</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;http://somedomain/url_that_delays_loading&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">WebDriverWait</span><span class="p">(</span><span class="n">ff</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s">&quot;myDynamicElement&quot;</span><span class="p">)))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">ff</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
