@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Bargain Snatcher:linux到windows的移植问题</title>
+  <title>Bargain Snatcher：全自动极速抢购脚本</title>
   <meta name="author" content="particle128">
 
     
@@ -60,99 +60,33 @@
       <div>
   <article class="hentry" role="article">
     <header>
-          <h1 class="entry-title">Bargain Snatcher:linux到windows的移植问题</h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+          <h1 class="entry-title">Bargain Snatcher：全自动极速抢购脚本</h1>
+          <p class="meta"><time datetime="2013-12-30T00:00:00" pubdate>2013-12-30</time></p>
 </header>
 
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>步骤</h2>
-<p>0.登陆windows系统  </p>
-<p>1.安装python2.7<br />
-google上搜索exe安装包安装之。  </p>
-<p>2.安装pip<br />
-参考：http://www.pip-installer.org/en/latest/installing.html<br />
-下载setuptools源码tar.gz ——&gt; 解压后执行python path/of/the/setuptools/setup.py install<br />
-——&gt;下载get-pip.py ——&gt;执行python get-pip.py  </p>
-<p>3.用pip安装需要的扩展包：selenium<br />
-D:\Python27\Scripts\pip install -U selenium  </p>
-<p>4.安装py2exe<br />
-下载地址：http://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/  </p>
-<p>5.下载selenium chrome driver<br />
-下载地址：https://code.google.com/p/chromedriver/downloads/list<br />
-解压后，将其放入master.py和slave.py所在的文件夹。  </p>
-<p>6.修改源码，见后面。  </p>
-<p>7.配置文件转成windows下的版本（换行\r\n）  </p>
-<div class="highlight"><pre>sudo apt-get install dos2unix  
-unix2dos config.ini  
-</pre></div>
-
-
-<p>8.用py2exe将python代码转成exe<br />
-参考：http://www.py2exe.org/index.cgi/Tutorial<br />
-(1)在脚本所在文件夹下新建setup_m.py和setup_s.py文件，内容为  </p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>  
-<span class="kn">import</span> <span class="nn">py2exe</span>  
-<span class="n">setup</span><span class="p">(</span><span class="n">console</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;master.py&#39;</span><span class="p">])</span> <span class="c">#如果是windows应用程序则改成windows，main.py是可执行脚本的名称  </span>
-</pre></div>
-
-
-<p>同理setup_s.py，把master.py改成slave.py  </p>
-<p>(2)执行python setup_m.py py2exe 和python setup_s.py py2exe。  </p>
-<p>dist里的master.exe和slave.exe即为转化成的可执行文件。  </p>
-<p>9.运行master.exe<br />
-执行期间报错ERROR:textfield.h(162) NOT IMPLEMENTED<br />
-不过对程序没有影响  </p>
-<h2>源码修改</h2>
-<p>【1】增加区分系统的标志，为了支持NON-buffering输入，引入不同的库  </p>
-<div class="highlight"><pre><span class="n">IsWindows</span><span class="o">=</span><span class="bp">False</span>  
-<span class="n">Line</span><span class="o">=</span><span class="s">&#39;&#39;</span>  
-<span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="o">==</span><span class="s">&quot;Windows&quot;</span><span class="p">:</span>  
-     <span class="kn">import</span> <span class="nn">msvcrt</span>  
-     <span class="n">IsWindows</span><span class="o">=</span><span class="bp">True</span>  
-     <span class="n">Line</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span>  
-<span class="k">else</span><span class="p">:</span> <span class="c">#Linux  </span>
-     <span class="kn">import</span> <span class="nn">termios</span>  
-     <span class="n">Line</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>  
-</pre></div>
-
-
-<p>【2】因为windows的终端是gbk编码，所以需要定义输出函数，每次print的时候，如果含有中文就调用print local_str('...')。  </p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">local_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>  
-<span class="k">if</span> <span class="n">IsWindows</span><span class="p">:</span>  
-     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">unicode</span><span class="p">):</span>  
-          <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;gbk&#39;</span><span class="p">)</span>  
-     <span class="k">else</span><span class="p">:</span>  
-          <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;gbk&#39;</span><span class="p">)</span>  
-<span class="k">else</span><span class="p">:</span>  
-     <span class="k">return</span> <span class="n">s</span>  
-</pre></div>
-
-
-<p>【3】不缓冲输入  </p>
-<div class="highlight"><pre><span class="n">c</span><span class="o">=</span><span class="n">msvcrt</span><span class="o">.</span><span class="n">getch</span><span class="p">()</span> <span class="c">#不回显，或者c=msvcrt.getche()回显  </span>
-</pre></div>
-
-
-<p>【4】linux下可以通过ActionChains对象定义按键事件进行翻页，windows下不知道是不是bug，调用send_keys或key_up或key_down都没有作用。所以，替代方案如下：  </p>
-<div class="highlight"><pre><span class="k">if</span> <span class="n">IsWindows</span> <span class="ow">and</span> <span class="n">idx</span><span class="o">%</span><span class="mi">16</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="c">#windows下每4行要重新获取一下dts，因为是异步加载  </span>
-     <span class="n">dts</span><span class="o">=</span><span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_class_name</span><span class="p">(</span><span class="s">&#39;pro_list_pic&#39;</span><span class="p">)</span>  
-</pre></div>
-
-
-<p>【5】windows下的chrome第一个页面加载巨慢，所以加大了延时  </p>
-<div class="highlight"><pre><span class="k">if</span> <span class="n">IsWindows</span><span class="p">:</span>  
-     <span class="n">driver</span><span class="o">.</span><span class="n">set_page_load_timeout</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="c">#win下chrome第一个页面加载很慢  </span>
-<span class="k">else</span><span class="p">:</span>  
-     <span class="n">driver</span><span class="o">.</span><span class="n">set_page_load_timeout</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>  
-</pre></div></div>
+  <div class="entry-content"><p>以下汇总的内容均来自本人的博客，或github站点。</p>
+<h3>源码</h3>
+<ul>
+<li><a href="https://github.com/particle128/vipshop-buy">particle128的github</a></li>
+</ul>
+<h3>所用到的技术</h3>
+<ul>
+<li><a href="http://particle128.com/posts/2013/12/selenium.html">Selenium WebDriver总结</a></li>
+</ul>
+<h3>项目相关总结</h3>
+<ul>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-intro.html">使用方法</a></li>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-tech.html">技术问题</a></li>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-port.html">移植到windows</a></li>
+</ul></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time>    <span class="categories">
+  <time datetime="2013-12-30T00:00:00" pubdate>2013-12-30</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/python.html">python</a>
-        <a class="category" href="http://particle128.com/tag/py2exe.html">py2exe</a>
+        <a class="category" href="http://particle128.com/tag/selenium.html">selenium</a>
       </span>
   </p>    </footer>
   </article>
@@ -223,9 +157,9 @@ unix2dos config.ini
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-                var disqus_identifier = '/posts/2013/12/vipshop-port.html';
-          var disqus_url = 'http://particle128.com/posts/2013/12/vipshop-port.html';
-          var disqus_title = 'Bargain Snatcher:linux到windows的移植问题';
+                var disqus_identifier = '/posts/2013/12/vipshop.html';
+          var disqus_url = 'http://particle128.com/posts/2013/12/vipshop.html';
+          var disqus_title = 'Bargain Snatcher：全自动极速抢购脚本';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
