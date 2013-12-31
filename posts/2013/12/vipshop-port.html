@@ -119,7 +119,7 @@ unix2dos config.ini
 <p>【2】因为windows的终端是gbk编码，所以需要定义输出函数，每次print的时候，如果含有中文就调用print local_str('...')。  </p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">local_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>  
 <span class="k">if</span> <span class="n">IsWindows</span><span class="p">:</span>  
-     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">unicode</span><span class="p">):</span>  
+     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="nb">unicode</span><span class="p">):</span>  
           <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;gbk&#39;</span><span class="p">)</span>  
      <span class="k">else</span><span class="p">:</span>  
           <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;gbk&#39;</span><span class="p">)</span>  
