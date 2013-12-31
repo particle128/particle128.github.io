@@ -182,6 +182,165 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-02T00:00:00" pubdate>2013-12-02</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>Introduction</strong>  </p>
+<ul>
+<li>没有实现bool类型的编译器，替代方案：<br />
+(1)enum bool{false,true};<br />
+缺点：无法int赋值给bool变量<br />
+(2)typedef int bool;<br />
+const bool false=0;<br />
+const bool true=1;<br />
+缺点：无法重载bool和int参数的函数  </li>
+<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
+</ul>
+<p><strong>基础议题Basics</strong></p>
+<h2>Item1</h2>
+<ul>
+<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">//使用指针  </span>
+<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
+    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
+<span class="c1">//使用引用  </span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
+</pre></div>
+
+
+<h2>Item2</h2>
+<ul>
+<li>const_cast用于改变constnest和valatileness  </li>
+<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32 在未来时态下发展程序</h2>
+<ul>
+<li>面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  </li>
+<li>请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  </li>
+<li>没有virtual destructor的String类，不能用于当作基类(因为当作基类，就有delete指向派生对象的基类指针的可能性)。  </li>
+</ul>
+<h2>Item 33 将非尾端(non-leaf)类设计为抽象类</h2>
+<ul>
+<li>考虑这样一个继承体系<br />
+具体类Animal -&gt;派生Lizard和Chicken<br />
+可能出现部分赋值（partial assignment）的问题：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>  
+<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>  
+<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//Animal部分赋值，Lizard部分没有赋值  </span>
+</pre></div>
+
+
+<ul>
+<li>解决方法：<br />
+1.operator=变成虚函数从而利用多态实现派生类的赋值  </li>
+</ul>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Animal</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-29T00:00:00" pubdate>2013-11-29</time></p>
+</header>
+
+  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
+<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
+<ul>
+<li>问题背景：<br />
+假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
+需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
+因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
+<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
+<li>解决方法：  </li>
+</ul>
+<p>1.double-RTTI（书中没提到）<br />
+直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
+<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
+优点 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-28T00:00:00" pubdate>2013-11-28</time></p>
+</header>
+
+  <div class="entry-content"><p>在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。<br />
+<strong>注意</strong>：类的static成员函数和普通函数的指针是一样的。  </p>
+<ul>
+<li>普通函数指针：可以通过直接调用  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (*)(int)&quot;  </span>
+</pre></div>
+
+
+<ul>
+<li>非静态成员函数指针：只能通过类对象调用  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">Mat</span><span class="o">::</span><span class="n">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (Mat::*)(int)&quot;  </span>
+</pre></div>
+
+
+<p><strong>指向成员函数的指针和普通指针，是两种不同类型指针，C++实现机制是不一样的（例如成员函数指针不一定包含具体函数的内存地址），如果强制进行两者之间的转换，结果是未定义的</strong>  </p>
+<p>使用方法如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="k">class</span> <span class="nc">A</span>  
+<span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//定义指向成员函数的指针类型  </span>
+        <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="n">A ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-06T00:00:00" pubdate>2013-11-06</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 26: Postpone variable definitions as long as possible.</h2>
+<p>1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。<br />
+2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点<br />
+(1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分<br />
+因为：缩小变量的作用域，对于程序的可理解性和易维护性好。  </p>
+<h2>Item 27:Minimizing casting</h2>
+<p>1.C++风格类型转换中，<code>dynamic_cast&lt;T&gt;(expr)</code>是唯一一个无法用旧式语法（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。<br />
+2.能用C++风格转型 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Read On &crarr;</a>
+  </footer>
+  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/category/cpp2.html">&larr; Older</a>
   

@@ -61,138 +61,268 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+        <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
+          <p class="meta"><time datetime="2013-11-28T00:00:00" pubdate>2013-11-28</time></p>
 </header>
 
-  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
-<h2>Item25 构造函数、非成员函数的虚化</h2>
+  <div class="entry-content"><p>在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。<br />
+<strong>注意</strong>：类的static成员函数和普通函数的指针是一样的。  </p>
 <ul>
-<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
-<li>3种语义上的虚化：<br />
-1.虚构造函数<br />
-根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
-2.虚拷贝构造函数<br />
-定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
-3.虚非成员函数<br />
-定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c ...</code></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item28 Smart pointer</h2>
-<ul>
-<li>智能指针相比于内置指针的优势：<br />
-1.构造和析构：分别防止wild指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
-2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
-3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
-<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
-<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
-<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
-<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-29T00:00:00" pubdate>2013-11-29</time></p>
-</header>
-
-  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
-<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
-<ul>
-<li>问题背景：<br />
-假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
-需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
-因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
-<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
-<li>解决方法：  </li>
+<li>普通函数指针：可以通过直接调用  </li>
 </ul>
-<p>1.double-RTTI（书中没提到）<br />
-直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
-<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
-优点 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 32 在未来时态下发展程序</h2>
-<ul>
-<li>面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  </li>
-<li>请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  </li>
-<li>没有virtual destructor的String类，不能用于当作基类(因为当作基类，就有delete指向派生对象的基类指针的可能性)。  </li>
-</ul>
-<h2>Item 33 将非尾端(non-leaf)类设计为抽象类</h2>
-<ul>
-<li>考虑这样一个继承体系<br />
-具体类Animal -&gt;派生Lizard和Chicken<br />
-可能出现部分赋值（partial assignment）的问题：  </li>
-</ul>
-<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>  
-<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>  
-<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//Animal部分赋值，Lizard部分没有赋值  </span>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (*)(int)&quot;  </span>
 </pre></div>
 
 
 <ul>
-<li>解决方法：<br />
-1.operator=变成虚函数从而利用多态实现派生类的赋值  </li>
+<li>非静态成员函数指针：只能通过类对象调用  </li>
 </ul>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Animal</span><span class="p">{</span>  
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">Mat</span><span class="o">::</span><span class="n">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (Mat::*)(int)&quot;  </span>
+</pre></div>
+
+
+<p><strong>指向成员函数的指针和普通指针，是两种不同类型指针，C++实现机制是不一样的（例如成员函数指针不一定包含具体函数的内存地址），如果强制进行两者之间的转换，结果是未定义的</strong>  </p>
+<p>使用方法如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="k">class</span> <span class="nc">A</span>  
+<span class="p">{</span>  
     <span class="k">public</span><span class="o">:</span>  
-        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator ...</span></pre></div></div>
+        <span class="c1">//定义指向成员函数的指针类型  </span>
+        <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="n">A ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+        <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
       </h1>
-          <p class="meta"><time datetime="2013-11-02T00:00:00" pubdate>2013-11-02</time></p>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
 </header>
 
-  <div class="entry-content"><p>例子如下：  </p>
-<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
-
-<span class="k">class</span> <span class="nc">Base</span><span class="p">{</span>  
-    <span class="k">public</span><span class="o">:</span>  
-        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
-        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
-<span class="p">};</span>  
-<span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span><span class="k">public</span> <span class="n">Base</span><span class="p">{</span>  
-    <span class="k">public</span><span class="o">:</span>  
-        <span class="c1">//Base中函数的重写  </span>
-        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
-        <span class="c1">//Base中函数的重载  </span>
-        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
-        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func</span><span class="p">;</span>  
-        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func1 ...</span></pre></div></div>
+  <div class="entry-content"><p><strong>subprocess是python的一个内置模块，用来产生子进程，和子进程通过pipe通信。</strong>  </p>
+<h3>3个便捷函数</h3>
+<p>如果仅仅想要调用一个子进程完成一个任务，不需要父进程与其通信，并且等待子进程退出的话，选择便捷函数。  </p>
+<div class="highlight"><pre><span class="c"># 返回returncode，0成功，非0出错。  </span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
+<span class="c"># 返回0或引发CalledProcessError异常。  </span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
+<span class="c"># 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  </span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/py-subprocess.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><h3>前言</h3>
+<p>配置文件可以有很多种格式，windows下常用ini格式，网络上常用xml和json格式，分别可以调用的python模块如下：<br />
+ini——ConfigParser模块<br />
+xml——xml.etree.ElementTree模块<br />
+json——json模块  </p>
+<h3>参考文档</h3>
+<p><a href="http://docs.python.org/2/library/configparser.html">link</a><br />
+点评：<br />
+前面的文字讲的很晕，没有上下文的情况下就各种说，还不如直接来几个例子。不过我还是硬着头皮看完了。  </p>
+<h3>ini文档的格式</h3>
+<p>1.注释的开始标记是semicolon 和 number sign。semicolon开头的注释可以嵌入在ini文件的行内（和其他文本用一个空白符隔开），number sign开头的注释只能用在单独的一行中。<br />
+2.[section]中可以使用option=value或option: value<br />
+3.可以在value中包含格式化字符串，来自同section，或DEFAULT section，或初始化的时候传入的内容。<br />
+示例：  </p>
+<div class="highlight"><pre><span class="err">[My</span> <span class="err">Section]</span>  
+<span class="err">foodir:</span> <span class="err">%(dir)s/whatever</span>  
+<span class="na">dir</span><span class="o">=</span><span class="s">frob ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/python-configparser.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
+      </h1>
+          <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
+</header>
+
+  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
+<h3>1、各种消息机制的使用场合</h3>
+<p>终端输出来显示一些信息：print()<br />
+报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
+logging.debug()用来诊断错误<br />
+发布一个警告：logging.warning()或warnings.warn()<br />
+报告一个错误：raise an exception<br />
+不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  </p>
+<p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
+<p>level由低到高依次是：<br />
+DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
+<h3>2 ...</h3></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/python-str.html">Python学习笔记-字符串</a>
+      </h1>
+          <p class="meta"><time datetime="2013-09-22T00:00:00" pubdate>2013-09-22</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
+<h3>（一） 具备的操作</h3>
+<p>str作为序列元素，包含其他序列共同的操作：<br />
+1. “hello” [not] in "hello world"<br />
+2. "hello" + " world"<br />
+3. 5<em>"hello" 或 “hello”</em>5<br />
+4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
+5. len("hello")  min("hello")  max("hello")<br />
+6. "hello".index('o')   "hello".count('l ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-str.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
+<h2>Introduction</h2>
+<p>This project is used to check the airfare in <a href="http://www.qunar.com">www.qunar.com</a>, and send you a SMS message when the price is lower than what you set in config.py  </p>
+<h2>Requirements</h2>
+<p>Download the ChromeDriver in <a href="https://code.google.com/p/chromedriver/downloads/list">here</a>  </p>
+<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">selenium</span>  
+</pre></div>
+
+
+<h2>Configuration</h2>
+<p>see config.py  </p>
+<h2>Usage</h2>
+<div class="highlight"><pre><span class="n">python</span> <span class="n">main ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/qunar.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-28T00:00:00" pubdate>2013-12-28</time></p>
+</header>
+
+  <div class="entry-content"><p>用Selenium Webdriver有段时间了，一直learning on demand，浏览了大部分API，并没有对这个工具进行详细和彻底的学习。<br />
+今天正好闲下来，梳理一下相关知识。  </p>
+<h2>Some Links</h2>
+<p><a href="http://code.google.com/p/selenium/">工程主页</a><br />
+<a href="http://www.seleniumhq.org/docs">文档主页</a><br />
+<a href="http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html">Python文档</a><br />
+<a href="http://selenium-python.readthedocs.org/en/latest/index.html">Python非官方文档</a><br />
+本人的两个使用Selenium的小项目
+<a href="https://github.com/particle128/vipshop-buy">vip.com shop assistant</a> <a href="https://github.com/particle128/qunar-flight-reminder">qunar flight-fare reminder</a></p>
+<h2>Some Concepts</h2>
+<h3>敏捷开发（Agile development）</h3>
+<p>是一个软件开发方法学，强调3点：<br />
+(1)adaptive&gt;predictive (2)iterative&gt;waterfall (3)codes&gt;documents<br />
+强调软件快速迭代，随着需求变化而修改或重构程序，而不是一开始就为将来可能出现的所有需求来设计。  </p>
+<h3>极限编程（extreme programming）</h3>
+<p>是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/selenium.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/some-thought.html">一些反思</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
+<ul>
+<li>目标不具体    </li>
+</ul>
+<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让人坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让人又鼓起斗志。当然，这只是举个例子，我锻炼身体的目标有好几个，找妹子只是比重比较小的一个。    </p>
+<ul>
+<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
+</ul>
+<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
+<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/some-thought.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-30T00:00:00" pubdate>2013-12-30</time></p>
+</header>
+
+  <div class="entry-content"><p>以下汇总的内容均来自本人的博客，或github站点。</p>
+<h3>源码</h3>
+<ul>
+<li><a href="https://github.com/particle128/vipshop-buy">particle128的github</a></li>
+</ul>
+<h3>所用到的技术</h3>
+<ul>
+<li><a href="http://particle128.com/posts/2013/12/selenium.html">Selenium WebDriver总结</a></li>
+</ul>
+<h3>项目相关总结</h3>
+<ul>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-intro.html">使用方法</a></li>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-tech.html">技术问题</a></li>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-port.html">移植到windows</a></li>
+</ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">Bargain Snatcher:使用说明</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码请移步<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>Two Modes</h2>
+<ul>
+<li>自选模式<br />
+配置config.ini，运行软件，键盘控制购买哪些看中的物品。<br />
+打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  </li>
+<li>全自动模式<br />
+配置config.ini，运行软件，自动购买符合过滤条件的物品。<br />
+打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  </li>
+</ul>
+<h2>Configuration</h2>
+<p><code>config.ini</code>配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  </p>
+<h3>url</h3>
+<p>包括登陆界面和主页的url，一般不需要动。  </p>
+<h3>screen</h3>
+<p>配置屏幕和选购窗口的大小安排，一般默认即可。  </p>
+<h3>auto_pick</h3>
+<ul>
+<li>
+<p>【AutoPickMode】：可选值是True或False。<br />
+选择True，将使软件进入<strong>全自动模式</strong>，auto_pick部分配置的其他选项才有意义。<br />
+选择False，则直接忽略auto_pick部分的其余配置，进入<strong>自选模式 ...</strong></p></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-intro.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">

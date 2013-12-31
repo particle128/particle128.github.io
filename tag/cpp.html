@@ -198,6 +198,164 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
   </footer>
   		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-29T00:00:00" pubdate>2013-11-29</time></p>
+</header>
+
+  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
+<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
+<ul>
+<li>问题背景：<br />
+假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
+需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
+因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
+<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
+<li>解决方法：  </li>
+</ul>
+<p>1.double-RTTI（书中没提到）<br />
+直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
+<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
+优点 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-28T00:00:00" pubdate>2013-11-28</time></p>
+</header>
+
+  <div class="entry-content"><p>在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。<br />
+<strong>注意</strong>：类的static成员函数和普通函数的指针是一样的。  </p>
+<ul>
+<li>普通函数指针：可以通过直接调用  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (*)(int)&quot;  </span>
+</pre></div>
+
+
+<ul>
+<li>非静态成员函数指针：只能通过类对象调用  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">Mat</span><span class="o">::</span><span class="n">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (Mat::*)(int)&quot;  </span>
+</pre></div>
+
+
+<p><strong>指向成员函数的指针和普通指针，是两种不同类型指针，C++实现机制是不一样的（例如成员函数指针不一定包含具体函数的内存地址），如果强制进行两者之间的转换，结果是未定义的</strong>  </p>
+<p>使用方法如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="k">class</span> <span class="nc">A</span>  
+<span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//定义指向成员函数的指针类型  </span>
+        <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="n">A ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-05T00:00:00" pubdate>2013-11-05</time></p>
+</header>
+
+  <div class="entry-content"><p>今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  </p>
+<h2>名字查找</h2>
+<p>这个<a href="http://blog.csdn.net/xtyyumi301/article/details/662639">链接</a>对我帮助很大，此外还参考了一些SO上的解答，和<a href="http://en.wikipedia.org/wiki/Argument-dependent_name_lookup">wiki</a><br />
+C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：  </p>
+<ul>
+<li>常规查找（normal lookup）  </li>
+<li>实参决定的查找（argument-dependent lookup）  </li>
+</ul>
+<p>所有函数调用，都会进行常规查找；只有函数的实参包括 类类型对象 或 指向类类型对象的指针/引用 的时候，才会进行实参确定的查找。<br />
+分别解释如下：  </p>
+<ul>
+<li>normal lookup<br />
+从函数被调用的局部作用域开始，逐渐向上层寻找被调用的名字，一旦找到就停止向上寻找。此外，using语句可以将其他作用域的名字引用到当前作用域。  </li>
+<li>argument-dependent ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/name-lookup.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-02T00:00:00" pubdate>2013-11-02</time></p>
+</header>
+
+  <div class="entry-content"><p>例子如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
+
+<span class="k">class</span> <span class="nc">Base</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+<span class="p">};</span>  
+<span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span><span class="k">public</span> <span class="n">Base</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//Base中函数的重写  </span>
+        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="c1">//Base中函数的重载  </span>
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func</span><span class="p">;</span>  
+        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func1 ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p>两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  </p>
+<ul>
+<li>例子：  </li>
+</ul>
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
+<span class="k">struct</span> <span class="n">X</span>  
+<span class="p">{</span>  
+        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+<span class="k">struct</span> <span class="n">Y</span>  
+<span class="p">{</span>  
+        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
+        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
+<ul>
+<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="k">operator ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
+  </footer>
+  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/tag/cpp2.html">&larr; Older</a>
   

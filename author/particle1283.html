@@ -61,134 +61,280 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
+        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
       </h1>
-          <p class="meta"><time datetime="2013-11-06T00:00:00" pubdate>2013-11-06</time></p>
+          <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
 </header>
 
-  <div class="entry-content"><h2>Item 30: Understand the ins and outs of inlining.</h2>
-<p>1.inline（函数体代替函数调用）的好处：<br />
-（1）没有函数调用的开销，速度快。<br />
-（2）使编译器能对起进行outlined的函数所不具备的优化，因为上下文更明显了。<br />
-坏处：<br />
-（1）可能导致代码膨胀，如果inline函数内语句比较多的话。<br />
-（2）如果inline函数是程序库的一部分，对它的改动，需要使用者重新编译。（outline的话，直接链接即可，动态链接的话，使用者甚至不知道函数库的修改）<br />
-（3）大部分调试器不能调试inline函数。<br />
-2.inline是对编译器的申请，不是强制。<br />
-如下情况编译器”可能“拒绝inline（gcc -Winline会发出不能inline的警告，但是我尝试了递归和循环，没有发出警告）：<br />
-（1）函数太过复杂（包含递归或循环）。<br />
-（2）函数中调用virtual函数，因为多态是运行期行为，而inline是编译期行为 ...</p></div>
+  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
+<p>r：可以查看文件内容<br />
+w：可以修改文件内容<br />
+x：可以执行文件内容  </p>
+<p><strong>Note：</strong> <br />
+一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
+<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
+<p>r：可以查看目录结构（ls）<br />
+w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
+x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
+<p><strong>Note：</strong><br />
+一个目录开放浏览，需要r+x权限。<br />
+有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/EffectiveCpp(8).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
+        <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
+          <p class="meta"><time datetime="2013-10-19T00:00:00" pubdate>2013-10-19</time></p>
 </header>
 
-  <div class="entry-content"><h2>Item 32: Make sure public inheritance models "is-a"</h2>
-<p>1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。<br />
-2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：<br />
-企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高<br />
-3.修改”企鹅-&gt;鸟“设计：<br />
-（1）class Bird; class Penguin :public Bird; class FlyingBird: public Bird; //在Bird里不定义fly()，在FlyingBird里定义<br />
-（2）class Bird; class Penguin :public Bird; //在Bird里定义fly ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-02T00:00:00" pubdate>2013-12-02</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>Introduction</strong>  </p>
+  <div class="entry-content"><h2>环境</h2>
 <ul>
-<li>没有实现bool类型的编译器，替代方案：<br />
-(1)enum bool{false,true};<br />
-缺点：无法int赋值给bool变量<br />
-(2)typedef int bool;<br />
-const bool false=0;<br />
-const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </li>
-<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
+<li>ubuntu12.04LTS(自带python2.7)  </li>
 </ul>
-<p><strong>基础议题Basics</strong></p>
-<h2>Item1</h2>
+<h2>前期准备</h2>
 <ul>
-<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
+<li>注册<a href="https://github.com">github</a>，建立一个名为{yourusername}.github.io的repository（不知道咋翻译,数据仓库？）  </li>
+<li>安装pelican和markdown  </li>
 </ul>
-<div class="highlight"><pre><span class="c1">//使用指针  </span>
-<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
-    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
-<span class="c1">//使用引用  </span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install markdown <span class="c">#linux下的markdown软件  </span>
+<span class="nv">$ </span>sudo pip install markdown <span class="c">#python的markdown包  </span>
+<span class="nv">$ </span>sudo pip install pelican <span class="c">#python的pelican包  </span>
 </pre></div>
 
 
-<h2>Item2</h2>
+<p>如果没有安装markdown或python的markdown包，会出现如下错误：  </p>
+<div class="highlight"><pre><span class="n">WARNING</span><span class="o">:</span> <span class="n">Could</span> <span class="n">not</span> <span class="n">process</span> <span class="sr">/path/to/</span><span class="n">file</span><span class="o">.</span><span class="na">md</span>  
+<span class="s1">&#39;bool&#39;</span> <span class="n">object</span> <span class="k">is</span> <span class="n">not</span> <span class="n">callable</span>  
+</pre></div>
+
+
+<h2>搭建pelican环境</h2>
 <ul>
-<li>const_cast用于改变constnest和valatileness  </li>
-<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
+<li>具体pelican的操作，可以查看<a href="http://docs.getpelican.com/en/3.3.0/">文档</a><br />
+搭建命令如下 ...</li></ul></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/blog-build.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+        <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-03T00:00:00" pubdate>2013-12-03</time></p>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
 </header>
 
-  <div class="entry-content"><h2>Item6</h2>
-<ul>
-<li>自增自减操作符，两原则：<br />
-1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  <blockquote>
-<p>设计类的一条无上宝典就是：一旦有疑虑，试看int行为如何并遵循之。  </p>
-</blockquote>
-</li>
-</ul>
-<p>2.后自增和自减应该调用前自增和自减，而不是自己写函数，这样只需要维护前自增。  </p>
-<h2>Item7</h2>
-<ul>
-<li>不要重载&amp;&amp;，||和，操作符，因为无论定义成员或非成员函数，都无法模拟C++中这3个操作符的行为模式（短路，求值顺序）。  </li>
-<li>for语句头包括3个部分，第1部分是语句，所以可以定义多个变量。第3部分是表达式，所以只能用逗号隔开多个表达式，而不能使用定义变量。  </li>
-</ul>
-<h2>Item8</h2>
-<ul>
-<li>placement new类似于new，首先调用operator new，然后调用对象构造函数，然后返回内存指针。<br />
-不同点，是placement new调用的operator new的原型和实现如下：  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location</span><span class="p">)</span><span class="c1">//第一个参数不提供名字 ...</span></pre></div></div>
+  <div class="entry-content"><h3>概念</h3>
+<p>当程序异常退出（接受到内核或其他程序的某种信号，比如SIGTERM，SIGKILL等）的时候，一般会将出错时候的内存状况保存到core file中，以帮助开发者了解程序崩溃的原因。<br />
+即core memory（内存最开始使用线圈做的），其实就是内存。core dump就是内存倾倒的意思。  </p>
+<h3>ubuntu下使能core dump功能</h3>
+<p>ubuntu下默认core文件的大小限制是0（执行ulimit -c查看），即不允许core文件产生。<br />
+解除限制：  </p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">ulimit</span> -c unlimited <span class="c">#设置core file的限制  </span>
+<span class="nv">$ </span><span class="nb">ulimit</span> -a <span class="c">#查看所有限制（包括栈大小、cpu时间、虚拟内存、文件大小等）  </span>
+</pre></div>
+
+
+<h3>core文件的默认位置</h3>
+<p>查看core文件存储格式，以及ubuntu下输出结果：  </p>
+<div class="highlight"><pre><span class="nv">$ </span>cat /proc/sys/kernel/core_pattern   
+|/usr/share/apport/apport %p %s %c  
+</pre></div>
+
+
+<p>意思是 ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/core-dump.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+        <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-06T00:00:00" pubdate>2013-12-06</time></p>
+          <p class="meta"><time datetime="2013-10-14T00:00:00" pubdate>2013-10-14</time></p>
 </header>
 
-  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
-<h2>Item16 80-20 principal</h2>
-<ul>
-<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
-<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
-<li>Offer as much data as possible to the profiler, to find ...</li></ul></div>
+  <div class="entry-content"><ul>
+<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
+<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
+甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
+<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
+<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
+<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
+<span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time></p>
+</header>
+
+  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
+<h3>Domain Name System</h3>
+<p>host name &lt; - &gt; ip address<br />
+主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
+如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
+<h3>名字/域名服务器层次结构：</h3>
+<p>root name server 根域名服务器（无名）<br />
+TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/dns.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-04T00:00:00" pubdate>2013-11-04</time></p>
+</header>
+
+  <div class="entry-content"><p>Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.<br />
+Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/headache.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p>两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  </p>
+<ul>
+<li>例子：  </li>
+</ul>
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
+<span class="k">struct</span> <span class="n">X</span>  
+<span class="p">{</span>  
+        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+<span class="k">struct</span> <span class="n">Y</span>  
+<span class="p">{</span>  
+        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
+        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
+<ul>
+<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="k">operator ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
+</header>
+
+  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
+<h4>chown 修改文件所有者</h4>
+<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
+chown mashu aa.txt <span class="c"># 修改所有者</span>
+chown .mashu aa.txt <span class="c"># 修改组</span>
+</pre></div>
+
+
+<h4>chgrp 修改文件所属用户组</h4>
+<div class="highlight"><pre>chgrp mashu aa.txt 修改组
+</pre></div>
+
+
+<h4>chmod 修改权限</h4>
+<div class="highlight"><pre>chmod 777 aa.txt   
+chmod a+r aa.txt
+</pre></div>
+
+
+<h3>2. 3个重要文件</h3>
+<h4>/etc/passwd</h4>
+<p>记录 用户名 对应的UID ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/linux_user.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
+</header>
+
+  <div class="entry-content"><h2>Problem</h2>
+<p>做我的http server的时候，遇到了个错误，出错相关代码如下  </p>
+<div class="highlight"><pre><span class="k">namespace</span><span class="p">{</span>  
+    <span class="cm">/* ... */</span>  
+    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="kt">status_map_t</span><span class="p">;</span>  
+    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">init_status_code</span><span class="p">()</span>  
+    <span class="p">{</span>  
+        <span class="k">static</span> <span class="kt">status_map_t</span> <span class="n">status</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">404</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;404 Not Found</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;500 Internal Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="k">return</span> <span class="n">status</span><span class="p">;</span>  
+    <span class="p">}</span>  
+    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">status_code</span><span class="o">=</span><span class="n">init_status_code</span><span class="p">();</span>  
+<span class="p">}</span>  
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-05T00:00:00" pubdate>2013-11-05</time></p>
+</header>
+
+  <div class="entry-content"><p>今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  </p>
+<h2>名字查找</h2>
+<p>这个<a href="http://blog.csdn.net/xtyyumi301/article/details/662639">链接</a>对我帮助很大，此外还参考了一些SO上的解答，和<a href="http://en.wikipedia.org/wiki/Argument-dependent_name_lookup">wiki</a><br />
+C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：  </p>
+<ul>
+<li>常规查找（normal lookup）  </li>
+<li>实参决定的查找（argument-dependent lookup）  </li>
+</ul>
+<p>所有函数调用，都会进行常规查找；只有函数的实参包括 类类型对象 或 指向类类型对象的指针/引用 的时候，才会进行实参确定的查找。<br />
+分别解释如下：  </p>
+<ul>
+<li>normal lookup<br />
+从函数被调用的局部作用域开始，逐渐向上层寻找被调用的名字，一旦找到就停止向上寻找。此外，using语句可以将其他作用域的名字引用到当前作用域。  </li>
+<li>argument-dependent ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/name-lookup.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">

@@ -61,140 +61,81 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
+        <a href="http://particle128.com/posts/2013/12/vipshop-port.html">Bargain Snatcher:linux到windows的移植问题</a>
       </h1>
-          <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
 </header>
 
-  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
-<p>r：可以查看文件内容<br />
-w：可以修改文件内容<br />
-x：可以执行文件内容  </p>
-<p><strong>Note：</strong> <br />
-一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
-<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
-<p>r：可以查看目录结构（ls）<br />
-w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
-x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
-<p><strong>Note：</strong><br />
-一个目录开放浏览，需要r+x权限。<br />
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>步骤</h2>
+<p>0.登陆windows系统  </p>
+<p>1.安装python2.7<br />
+google上搜索exe安装包安装之。  </p>
+<p>2.安装pip<br />
+参考：http://www.pip-installer.org/en/latest/installing.html<br />
+下载setuptools源码tar.gz ——&gt; 解压后执行python path/of/the/setuptools/setup.py install<br />
+——&gt;下载get-pip.py ——&gt;执行python get-pip.py  </p>
+<p>3.用pip安装需要的扩展包：selenium<br />
+D:\Python27\Scripts\pip install -U selenium  </p>
+<p>4.安装py2exe<br />
+下载地址：http://sourceforge ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
+        <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">Bargain Snatcher:技术问题</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-19T00:00:00" pubdate>2013-10-19</time></p>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
 </header>
 
-  <div class="entry-content"><h2>环境</h2>
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>环境:</h2>
+<p>下载selenium chrome driver：<br />
+<a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
+安装selenium ：<code>pip install -U selenium</code>  </p>
+<h2>难点：</h2>
+<p>1.不同操作系统、不同网络状况、不同计算机内存情况，对一个页面的加载速度是不同的，用同一个时间来设置超时太不灵活，设置短了，某些机器可能加载不到东西就退出了；设置长了，可能浪费了一些等待的时间。<br />
+因此，采用标准超时时间每次超时+1的策略，然后把特定于某个机器的超时时间保存与配置文件内！<br />
+2.有些页面在给定的门限（比如2）次超时刷新后仍然加载不上的话，就直接跳过。  </p>
+<h2>遇到的问题和总结：</h2>
 <ul>
-<li>ubuntu12.04LTS(自带python2.7)  </li>
+<li>不输入回车直接读入键盘操作，因此需要设置终端输入no buffer模式  </li>
 </ul>
-<h2>前期准备</h2>
-<ul>
-<li>注册<a href="https://github.com">github</a>，建立一个名为{yourusername}.github.io的repository（不知道咋翻译,数据仓库？）  </li>
-<li>安装pelican和markdown  </li>
-</ul>
-<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install markdown <span class="c">#linux下的markdown软件  </span>
-<span class="nv">$ </span>sudo pip install markdown <span class="c">#python的markdown包  </span>
-<span class="nv">$ </span>sudo pip install pelican <span class="c">#python的pelican包  </span>
-</pre></div>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>  
+<span class="kn">import</span> <span class="nn">termios</span>  
 
-
-<p>如果没有安装markdown或python的markdown包，会出现如下错误：  </p>
-<div class="highlight"><pre><span class="n">WARNING</span><span class="o">:</span> <span class="n">Could</span> <span class="n">not</span> <span class="n">process</span> <span class="sr">/path/to/</span><span class="n">file</span><span class="o">.</span><span class="na">md</span>  
-<span class="s1">&#39;bool&#39;</span> <span class="n">object</span> <span class="k">is</span> <span class="n">not</span> <span class="n">callable</span>  
-</pre></div>
-
-
-<h2>搭建pelican环境</h2>
-<ul>
-<li>具体pelican的操作，可以查看<a href="http://docs.getpelican.com/en/3.3.0/">文档</a><br />
-搭建命令如下 ...</li></ul></div>
+<span class="k">try</span><span class="p">:</span>  
+     <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
+     <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
+     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/blog-build.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><h3>概念</h3>
-<p>当程序异常退出（接受到内核或其他程序的某种信号，比如SIGTERM，SIGKILL等）的时候，一般会将出错时候的内存状况保存到core file中，以帮助开发者了解程序崩溃的原因。<br />
-即core memory（内存最开始使用线圈做的），其实就是内存。core dump就是内存倾倒的意思。  </p>
-<h3>ubuntu下使能core dump功能</h3>
-<p>ubuntu下默认core文件的大小限制是0（执行ulimit -c查看），即不允许core文件产生。<br />
-解除限制：  </p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">ulimit</span> -c unlimited <span class="c">#设置core file的限制  </span>
-<span class="nv">$ </span><span class="nb">ulimit</span> -a <span class="c">#查看所有限制（包括栈大小、cpu时间、虚拟内存、文件大小等）  </span>
-</pre></div>
-
-
-<h3>core文件的默认位置</h3>
-<p>查看core文件存储格式，以及ubuntu下输出结果：  </p>
-<div class="highlight"><pre><span class="nv">$ </span>cat /proc/sys/kernel/core_pattern   
-|/usr/share/apport/apport %p %s %c  
-</pre></div>
-
-
-<p>意思是 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/core-dump.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
+        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
       </h1>
           <p class="meta"><time datetime="2013-10-14T00:00:00" pubdate>2013-10-14</time></p>
 </header>
 
-  <div class="entry-content"><ul>
-<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
-<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
-甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
-<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
-<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
-<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
-<span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
+  <div class="entry-content"><h2>Chapter 2</h2>
+<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
+gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
+[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
+宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
+gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
+[2]编译  把源文件生成汇编代码 (调用cc1)<br />
+gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time></p>
-</header>
-
-  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
-<h3>Domain Name System</h3>
-<p>host name &lt; - &gt; ip address<br />
-主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
-如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
-<h3>名字/域名服务器层次结构：</h3>
-<p>root name server 根域名服务器（无名）<br />
-TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/dns.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
-      <a class="prev" href="http://particle128.com/author/particle1286.html">&larr; Older</a>
   
             <a class="next" href="http://particle128.com/author/particle1284.html">Newer &rarr;</a>
         <br />

@@ -61,144 +61,262 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
+        <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-11-05T00:00:00" pubdate>2013-11-05</time></p>
 </header>
 
-  <div class="entry-content"><h2>Item 32 在未来时态下发展程序</h2>
+  <div class="entry-content"><p>今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  </p>
+<h2>名字查找</h2>
+<p>这个<a href="http://blog.csdn.net/xtyyumi301/article/details/662639">链接</a>对我帮助很大，此外还参考了一些SO上的解答，和<a href="http://en.wikipedia.org/wiki/Argument-dependent_name_lookup">wiki</a><br />
+C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：  </p>
 <ul>
-<li>面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  </li>
-<li>请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  </li>
-<li>没有virtual destructor的String类，不能用于当作基类(因为当作基类，就有delete指向派生对象的基类指针的可能性)。  </li>
+<li>常规查找（normal lookup）  </li>
+<li>实参决定的查找（argument-dependent lookup）  </li>
 </ul>
-<h2>Item 33 将非尾端(non-leaf)类设计为抽象类</h2>
+<p>所有函数调用，都会进行常规查找；只有函数的实参包括 类类型对象 或 指向类类型对象的指针/引用 的时候，才会进行实参确定的查找。<br />
+分别解释如下：  </p>
 <ul>
-<li>考虑这样一个继承体系<br />
-具体类Animal -&gt;派生Lizard和Chicken<br />
-可能出现部分赋值（partial assignment）的问题：  </li>
-</ul>
-<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>  
-<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>  
-<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//Animal部分赋值，Lizard部分没有赋值  </span>
-</pre></div>
+<li>normal lookup<br />
+从函数被调用的局部作用域开始，逐渐向上层寻找被调用的名字，一旦找到就停止向上寻找。此外，using语句可以将其他作用域的名字引用到当前作用域。  </li>
+<li>argument-dependent ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/name-lookup.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-04T00:00:00" pubdate>2013-11-04</time></p>
+</header>
 
+  <div class="entry-content"><h2>Item 22: Declare data members private</h2>
+<p>1.把变量声明成private，然后通过public函数访问。好处：<br />
+（1）语法一致性。public里都是函数，不用考虑是否需要加括号。<br />
+（2）更精确的访问控制。可以通过get和set设置变量的可都写属性。<br />
+（3）封装。对底层的机制提供很大的弹性，成员变量的修改，不影响客户的使用。（比如averageSoFar()函数，可以返回average变量，也可以直接计算平均值再返回。一个占空间，一个费时间，在不同环境可以选择不同的实现）<br />
+2.只有private有封装性，protected和public都没有封装性。<br />
+因为封装性与“当其内容改变时可能造成的代码破坏量”成反比，内容改变可以理解成把它从class中移除。<br />
+（1）public变量移除，所有使用它的客户代码都会破坏。<br />
+（2）protected变量移除，所有继承自该类的派生类都会破坏。  </p>
+<h2>Item 23: Prefer non-member non-friend functions to member ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-04T00:00:00" pubdate>2013-11-04</time></p>
+</header>
 
-<ul>
-<li>解决方法：<br />
-1.operator=变成虚函数从而利用多态实现派生类的赋值  </li>
-</ul>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Animal</span><span class="p">{</span>  
+  <div class="entry-content"><p>Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.<br />
+Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/headache.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-02T00:00:00" pubdate>2013-11-02</time></p>
+</header>
+
+  <div class="entry-content"><p>例子如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
+
+<span class="k">class</span> <span class="nc">Base</span><span class="p">{</span>  
     <span class="k">public</span><span class="o">:</span>  
-        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator ...</span></pre></div></div>
+        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+<span class="p">};</span>  
+<span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span><span class="k">public</span> <span class="n">Base</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//Base中函数的重写  </span>
+        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="c1">//Base中函数的重载  </span>
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func</span><span class="p">;</span>  
+        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func1 ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
+        <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-10-19T00:00:00" pubdate>2013-10-19</time></p>
 </header>
 
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
-<h2>Introduction</h2>
-<p>This project is used to check the airfare in <a href="http://www.qunar.com">www.qunar.com</a>, and send you a SMS message when the price is lower than what you set in config.py  </p>
-<h2>Requirements</h2>
-<p>Download the ChromeDriver in <a href="https://code.google.com/p/chromedriver/downloads/list">here</a>  </p>
-<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">selenium</span>  
+  <div class="entry-content"><h2>环境</h2>
+<ul>
+<li>ubuntu12.04LTS(自带python2.7)  </li>
+</ul>
+<h2>前期准备</h2>
+<ul>
+<li>注册<a href="https://github.com">github</a>，建立一个名为{yourusername}.github.io的repository（不知道咋翻译,数据仓库？）  </li>
+<li>安装pelican和markdown  </li>
+</ul>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install markdown <span class="c">#linux下的markdown软件  </span>
+<span class="nv">$ </span>sudo pip install markdown <span class="c">#python的markdown包  </span>
+<span class="nv">$ </span>sudo pip install pelican <span class="c">#python的pelican包  </span>
 </pre></div>
 
 
-<h2>Configuration</h2>
-<p>see config.py  </p>
-<h2>Usage</h2>
-<div class="highlight"><pre><span class="n">python</span> <span class="n">main ...</span></pre></div></div>
+<p>如果没有安装markdown或python的markdown包，会出现如下错误：  </p>
+<div class="highlight"><pre><span class="n">WARNING</span><span class="o">:</span> <span class="n">Could</span> <span class="n">not</span> <span class="n">process</span> <span class="sr">/path/to/</span><span class="n">file</span><span class="o">.</span><span class="na">md</span>  
+<span class="s1">&#39;bool&#39;</span> <span class="n">object</span> <span class="k">is</span> <span class="n">not</span> <span class="n">callable</span>  
+</pre></div>
+
+
+<h2>搭建pelican环境</h2>
+<ul>
+<li>具体pelican的操作，可以查看<a href="http://docs.getpelican.com/en/3.3.0/">文档</a><br />
+搭建命令如下 ...</li></ul></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/qunar.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/blog-build.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/some-thought.html">一些反思</a>
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-10-18T00:00:00" pubdate>2013-10-18</time></p>
 </header>
 
-  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
-<ul>
-<li>目标不具体    </li>
-</ul>
-<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让人坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让人又鼓起斗志。当然，这只是举个例子，我锻炼身体的目标有好几个，找妹子只是比重比较小的一个。    </p>
-<ul>
-<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
-</ul>
-<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
-<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力 ...</p></div>
+  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
+<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
+2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
+3.唯有这4个函数被调用时，才被产生出来。  <br />
+4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
+5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
+<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/some-thought.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">Bargain Snatcher:使用说明</a>
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
 </header>
 
-  <div class="entry-content"><p>源码请移步<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>Two Modes</h2>
-<ul>
-<li>自选模式<br />
-配置config.ini，运行软件，键盘控制购买哪些看中的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  </li>
-<li>全自动模式<br />
-配置config.ini，运行软件，自动购买符合过滤条件的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  </li>
-</ul>
-<h2>Configuration</h2>
-<p><code>config.ini</code>配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  </p>
-<h3>url</h3>
-<p>包括登陆界面和主页的url，一般不需要动。  </p>
-<h3>screen</h3>
-<p>配置屏幕和选购窗口的大小安排，一般默认即可。  </p>
-<h3>auto_pick</h3>
-<ul>
-<li>
-<p>【AutoPickMode】：可选值是True或False。<br />
-选择True，将使软件进入<strong>全自动模式</strong>，auto_pick部分配置的其他选项才有意义。<br />
-选择False，则直接忽略auto_pick部分的其余配置，进入<strong>自选模式 ...</strong></p></li></ul></div>
+  <div class="entry-content"><p><strong>【补充概念】</strong><br />
+<strong>类型安全</strong>：<br />
+<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
+<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
+printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
+(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
+(2) SomeClass a;AnotherClass b;<br />
+   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
+(3) #define max(a,b) ((a ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-intro.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-port.html">Bargain Snatcher:linux到windows的移植问题</a>
+        <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
 </header>
 
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>步骤</h2>
-<p>0.登陆windows系统  </p>
-<p>1.安装python2.7<br />
-google上搜索exe安装包安装之。  </p>
-<p>2.安装pip<br />
-参考：http://www.pip-installer.org/en/latest/installing.html<br />
-下载setuptools源码tar.gz ——&gt; 解压后执行python path/of/the/setuptools/setup.py install<br />
-——&gt;下载get-pip.py ——&gt;执行python get-pip.py  </p>
-<p>3.用pip安装需要的扩展包：selenium<br />
-D:\Python27\Scripts\pip install -U selenium  </p>
-<p>4.安装py2exe<br />
-下载地址：http://sourceforge ...</p></div>
+  <div class="entry-content"><h3>概念</h3>
+<p>当程序异常退出（接受到内核或其他程序的某种信号，比如SIGTERM，SIGKILL等）的时候，一般会将出错时候的内存状况保存到core file中，以帮助开发者了解程序崩溃的原因。<br />
+即core memory（内存最开始使用线圈做的），其实就是内存。core dump就是内存倾倒的意思。  </p>
+<h3>ubuntu下使能core dump功能</h3>
+<p>ubuntu下默认core文件的大小限制是0（执行ulimit -c查看），即不允许core文件产生。<br />
+解除限制：  </p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">ulimit</span> -c unlimited <span class="c">#设置core file的限制  </span>
+<span class="nv">$ </span><span class="nb">ulimit</span> -a <span class="c">#查看所有限制（包括栈大小、cpu时间、虚拟内存、文件大小等）  </span>
+</pre></div>
+
+
+<h3>core文件的默认位置</h3>
+<p>查看core文件存储格式，以及ubuntu下输出结果：  </p>
+<div class="highlight"><pre><span class="nv">$ </span>cat /proc/sys/kernel/core_pattern   
+|/usr/share/apport/apport %p %s %c  
+</pre></div>
+
+
+<p>意思是 ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/core-dump.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p>两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  </p>
+<ul>
+<li>例子：  </li>
+</ul>
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
+<span class="k">struct</span> <span class="n">X</span>  
+<span class="p">{</span>  
+        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+<span class="k">struct</span> <span class="n">Y</span>  
+<span class="p">{</span>  
+        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
+        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
+<ul>
+<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="k">operator ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>subprocess是python的一个内置模块，用来产生子进程，和子进程通过pipe通信。</strong>  </p>
+<h3>3个便捷函数</h3>
+<p>如果仅仅想要调用一个子进程完成一个任务，不需要父进程与其通信，并且等待子进程退出的话，选择便捷函数。  </p>
+<div class="highlight"><pre><span class="c"># 返回returncode，0成功，非0出错。  </span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
+<span class="c"># 返回0或引发CalledProcessError异常。  </span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
+<span class="c"># 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  </span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/py-subprocess.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
