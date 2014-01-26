@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Bargain Snatcher:使用说明</title>
+  <title>SSL总结</title>
   <meta name="author" content="particle128">
 
     
@@ -60,124 +60,47 @@
       <div>
   <article class="hentry" role="article">
     <header>
-          <h1 class="entry-title">Bargain Snatcher:使用说明</h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+          <h1 class="entry-title">SSL总结</h1>
+          <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
 </header>
 
-  <div class="entry-content"><p>源码请移步<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>Two Modes</h2>
-<ul>
-<li>自选模式<br />
-配置config.ini，运行软件，键盘控制购买哪些看中的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  </li>
-<li>全自动模式<br />
-配置config.ini，运行软件，自动购买符合过滤条件的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  </li>
-</ul>
-<h2>Configuration</h2>
-<p><code>config.ini</code>配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  </p>
-<h3>url</h3>
-<p>包括登陆界面和主页的url，一般不需要动。  </p>
-<h3>screen</h3>
-<p>配置屏幕和选购窗口的大小安排，一般默认即可。  </p>
-<h3>auto_pick</h3>
-<ul>
-<li>
-<p>【AutoPickMode】：可选值是True或False。<br />
-选择True，将使软件进入<strong>全自动模式</strong>，auto_pick部分配置的其他选项才有意义。<br />
-选择False，则直接忽略auto_pick部分的其余配置，进入<strong>自选模式</strong>。  </p>
-</li>
-<li>
-<p>【PriceSpan】：价格区间，半角逗号分割  </p>
-</li>
-<li>
-<p>【DisSpan】：折扣区间，半角逗号分割  </p>
-</li>
-<li>
-<p>【Excepts】【Keywords】<br />
-因为是全自动模式，进入某个品牌的页面之后，软件需要根据条件进行筛选，Keywords是必须包含的关键字，Excepts必须过滤的关键字。<br />
-例子：  </p>
-</li>
-</ul>
-<div class="highlight"><pre><span class="na">PriceSpan</span><span class="o">=</span><span class="s">100,300  </span>
-<span class="na">DisSpan</span><span class="o">=</span><span class="s">0,5  </span>
-<span class="na">Excepts</span><span class="o">=</span><span class="s">POLO,T恤,紫  </span>
-<span class="na">Keywords</span><span class="o">=</span><span class="s">男  </span>
-</pre></div>
-
-
-<p>解释：软件会筛选价格在￥100~300之间，折扣在0~5之间，商品标题中包含“男”并且不包含“POLO”、”T恤”和”紫”的商品。  </p>
-<h3>config</h3>
-<ul>
-<li>
-<p>【TestMode】：可选值是True或False。<br />
-非正式使用，只是为了熟悉本软件操作方式的时候，设置成False，会跳过刷新首页环节，直接进入所关注的品牌内。<br />
-正式使用，一定记得设置成True，这样软件才会每隔5s刷新首页等待商品更新。  </p>
-</li>
-<li>
-<p>【Account】：自己vipshop的账户和密码（冒号分割用户密码，多个账户密码换行即可）<br />
-之所以要用多个，是因为一个帐号购物袋中最多只能放10个商品，当海选商品的时候，可能10个并不够。况且这样也能加快购买的速度，建议最少两个帐号。  </p>
-</li>
-<li>
-<p>【Keys】：首页品牌的筛选关键字，空格隔开<br />
-例子：<code>Keys=男 鞋</code><br />
-解释：首页品牌描述中只有既包括‘男’又包括'鞋'这两个关键字的才可以匹配上。  </p>
-</li>
-<li>
-<p>【Brands】：中意的品牌，空格隔开<br />
-例子：<code>Brands=Nike adidas 七匹狼</code><br />
-解释：首页品牌描述中包括 'Nike' ， ’adidas‘ 或 '七匹狼' 其中之一就可以匹配上。  </p>
-</li>
-<li>
-<p>【Type】【Size】【Empty】【Sort】<br />
-这几个选项，对应下图中画圈部分。其中，Type和Size的值可以包含多个，空格隔开，但是Type和Size中的值要在对应位置一一对应。  </p>
-</li>
-</ul>
-<p><img alt="image" src="https://raw.github.com/particle128/vipshop-buy/master/images/1.png" /><br />
-例子：  </p>
-<div class="highlight"><pre><span class="err">[type]</span>  
-<span class="na">Type</span><span class="o">=</span><span class="s">上衣 鞋类 男包  </span>
-<span class="err">…</span>  
-<span class="err">[size]</span>  
-<span class="na">Size</span><span class="o">=</span><span class="s">XL 9 均码  </span>
-</pre></div>
-
-
-<p>解释：有时候，你喜欢的品牌有多种商品，你比较感兴趣，比如XL的上衣，9号的鞋，还有均码的男包。这时候，你可以配置成例子所示。<br />
-程序会先进入"上衣 XL"的商品页面。一旦属于这一类的商品都浏览完毕，就会进入"鞋类 9"的商品页面，最后才会进入"男包 均码"页面。  </p>
-<h2>Usage</h2>
-<h3>Steps</h3>
-<ol>
-<li>将dist/下的chromedriver放到PATH中指定的目录下，或者添加本目录进PATH(windows下没有此步骤)。  </li>
-<li>修改配置文件config.ini。  </li>
-<li>9点55左右(10点新品开卖)，执行python master.py（windows下双击运行dist/master.exe）。软件会弹出1个选购窗口和多个购买窗口。  </li>
-<li>如果是自选模式，等待进入品牌商品页，通过在命令行窗口下输入1、2、3、4、j、k键控制选择过程。如果是全自动模式，则免去此步骤。  </li>
-<li>软件退出，自己在购物袋中选择付款购买。  </li>
-</ol>
-<p>PS:此软件配合本站的vipshop-notice一起使用，效果更佳~  </p>
-<h3>Commands</h3>
-<p>自选模式需要在终端窗口内输入命令,如下<br />
-导航窗口：<br />
-j ——窗口向下滚动一行<br />
-k——窗口向上滚动一行<br />
-选择当前所在行的物品：<br />
-1——选择最左边的商品<br />
-2——选择第2个商品<br />
-3——选择第3个商品<br />
-4——选择最右边的商品<br />
-退出：<br />
-q——在选择商品的过程中，输入q，退出程序。购物袋中有物品的窗口最大化，没有物品的窗口直接退出。  </p>
-<h3>Snapshots</h3>
-<p><img alt="image" src="https://raw.github.com/particle128/vipshop-buy/master/images/2.png" /><br />
-<img alt="image" src="https://raw.github.com/particle128/vipshop-buy/master/images/3.png" />  </p></div>
+  <div class="entry-content"><p>TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  </p>
+<h2>特点</h2>
+<p>用RSA分发密钥；用双方商定的对称加密算法加密通信。  </p>
+<h2>使用SSL，服务器和客户端需要首先进行握手（handshake）</h2>
+<p>【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器<br />
+【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端<br />
+【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。<br />
+【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master secret生成master secret，再生成session key。<br />
+》》之后的通信用session key进行对称加密。<br />
+【5】客户端用对称密钥加密数据，告诉服务器握手过程结束<br />
+【6】服务器用对称密钥加密数据，告诉客户端握手过程结束  </p>
+<h2>补充</h2>
+<p>[0] 对称加密中，公钥和私钥都可以进行加密，另外一个进行解密。<br />
+公钥是可以发给别人的，私钥是永远留在自己本地的。<br />
+公钥加密，最常见，提供加密功能。因为私钥只有对端才有，所以其他人截获了也无法打开，保密功能实现。<br />
+私钥加密，主要用在证书上，提供数字签名功能。如果自己能用公钥解密一个文件，说明该文件一定被私钥加密的，所以一定来自对端，第三方不能伪造，签名功能实现。  </p>
+<p>[1] 证书certificate，在cryptography中全名是public key certificate，又叫digital certificate。<br />
+公钥和公钥所有者一些信息被绑定在证书中，同时证书被CA（certificate authority证书颁发机构）进行了数字签名（也就是用私钥进行加密了）。PKI（public key infrastructure）公钥基础设施方案中，CA是可信的，所以CA的数字签名保证公钥所有者的真实身份。<br />
+证书的意义是：作为公钥的载体，让公钥可以在不加密的信道传输，而不用担心被伪造。  </p>
+<p>[2] 客户端可以不提供证书，这样仅仅保证对端是可信的服务器，而服务器无法确定客户端的身份。<br />
+无论哪种情况，都可以保证客户端和服务器之间的通信是加密的。  </p>
+<p>[3] 过程剖析<br />
+1、2两步通信不加密，用来传递服务器证书；<br />
+3、4两步通信公钥加密，用来传递pre-master secret（对称密钥的雏形）和客户端证书；<br />
+5、6两步以及之后的通信对称加密。<br />
+【1~4】构成3次握手，【5~6】构成2次挥手  </p>
+<p>[4] 身份认证<br />
+客户端的身份是【4】时确定的，解开证书确定公钥是可信的，解开签名确定对端有私钥，身份确定。<br />
+服务器的身份是【6】时确定的，客户端解开证书确定公钥是可信的，服务器用session key加密说明其已经获得了pre-master，必有私钥，身份确定。<br />
+其实，如果服务器在【2】时也传递自己签名的数据过去的话，自己的身份可以提前确定。但是提前确定对后面的步骤没有影响，所以省略传递这个数据，更加节省握手过程中的流量。  </p></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time>    <span class="categories">
-        <a class="category" href="http://particle128.com/tag/python.html">python</a>
-        <a class="category" href="http://particle128.com/tag/selenium.html">selenium</a>
+  <time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/ssl.html">ssl</a>
       </span>
   </p>    </footer>
   </article>
@@ -248,9 +171,9 @@ q——在选择商品的过程中，输入q，退出程序。购物袋中有物
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-                var disqus_identifier = '/posts/2013/12/vipshop-intro.html';
-          var disqus_url = 'http://particle128.com/posts/2013/12/vipshop-intro.html';
-          var disqus_title = 'Bargain Snatcher:使用说明';
+                var disqus_identifier = '/posts/2014/01/ssl.html';
+          var disqus_url = 'http://particle128.com/posts/2014/01/ssl.html';
+          var disqus_title = 'SSL总结';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

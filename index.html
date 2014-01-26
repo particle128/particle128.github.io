@@ -61,6 +61,26 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
+      </h1>
+          <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
+</header>
+
+  <div class="entry-content"><p>TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  </p>
+<h2>特点</h2>
+<p>用RSA分发密钥；用双方商定的对称加密算法加密通信。  </p>
+<h2>使用SSL，服务器和客户端需要首先进行握手（handshake）</h2>
+<p>【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器<br />
+【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端<br />
+【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。<br />
+【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/01/ssl.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
       </h1>
           <p class="meta"><time datetime="2013-12-30T00:00:00" pubdate>2013-12-30</time></p>
@@ -111,40 +131,6 @@
 <p>是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备 ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/selenium.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
-</header>
-
-  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
-</pre></div>
-
-
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
-</pre></div>
-
-
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
-</pre></div>
-
-
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/linux_user.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
@@ -341,13 +327,13 @@ const bool true=1;<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/12/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
@@ -372,7 +358,7 @@ const bool true=1;<br />
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

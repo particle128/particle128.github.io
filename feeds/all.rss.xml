@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description></description><atom:link href="http://particle128.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 30 Dec 2013 00:00:00 +0800</lastBuildDate><item><title>Bargain Snatcher：全自动极速抢购脚本</title><link>http://particle128.com/posts/2013/12/vipshop.html</link><description>&lt;p&gt;以下汇总的内容均来自本人的博客，或github站点。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description></description><atom:link href="http://particle128.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 26 Jan 2014 00:00:00 +0800</lastBuildDate><item><title>SSL总结</title><link>http://particle128.com/posts/2014/01/ssl.html</link><description>&lt;p&gt;TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  &lt;/p&gt;
+&lt;h2&gt;特点&lt;/h2&gt;
+&lt;p&gt;用RSA分发密钥；用双方商定的对称加密算法加密通信。  &lt;/p&gt;
+&lt;h2&gt;使用SSL，服务器和客户端需要首先进行握手（handshake）&lt;/h2&gt;
+&lt;p&gt;【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器&lt;br /&gt;
+【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端&lt;br /&gt;
+【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。&lt;br /&gt;
+【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master secret生成master secret，再生成session key。&lt;br /&gt;
+》》之后的通信用session key进行对称加密。&lt;br /&gt;
+【5】客户端用对称密钥加密数据，告诉服务器握手过程结束&lt;br /&gt;
+【6】服务器用对称密钥加密数据，告诉客户端握手过程结束  &lt;/p&gt;
+&lt;h2&gt;补充&lt;/h2&gt;
+&lt;p&gt;[0] 对称加密中，公钥和私钥都可以进行加密，另外一个进行解密。&lt;br /&gt;
+公钥是可以发给别人的，私钥是永远留在自己本地的。&lt;br /&gt;
+公钥加密，最常见，提供加密功能。因为私钥只有对端才有，所以其他人截获了也无法打开，保密功能实现。&lt;br /&gt;
+私钥加密，主要用在证书上，提供数字签名功能。如果自己能用公钥解密一个文件，说明该文件一定被私钥加密的，所以一定来自对端，第三方不能伪造，签名功能实现。  &lt;/p&gt;
+&lt;p&gt;[1] 证书certificate，在cryptography中全名是public key certificate，又叫digital certificate。&lt;br /&gt;
+公钥和公钥所有者一些信息被绑定在证书中，同时证书被CA（certificate authority证书颁发机构）进行了数字签名（也就是用私钥进行加密了）。PKI（public key infrastructure）公钥基础设施方案中，CA是可信的，所以CA的数字签名保证公钥所有者的真实身份。&lt;br /&gt;
+证书的意义是：作为公钥的载体，让公钥可以在不加密的信道传输，而不用担心被伪造。  &lt;/p&gt;
+&lt;p&gt;[2] 客户端可以不提供证书，这样仅仅保证对端是可信的服务器，而服务器无法确定客户端的身份。&lt;br /&gt;
+无论哪种情况，都可以保证客户端和服务器之间的通信是加密的。  &lt;/p&gt;
+&lt;p&gt;[3] 过程剖析&lt;br /&gt;
+1、2两步通信不加密，用来传递服务器证书；&lt;br /&gt;
+3、4两步通信公钥加密，用来传递pre-master secret（对称密钥的雏形）和客户端证书；&lt;br /&gt;
+5、6两步以及之后的通信对称加密。&lt;br /&gt;
+【1~4】构成3次握手，【5~6】构成2次挥手  &lt;/p&gt;
+&lt;p&gt;[4] 身份认证&lt;br /&gt;
+客户端的身份是【4】时确定的，解开证书确定公钥是可信的，解开签名确定对端有私钥，身份确定。&lt;br /&gt;
+服务器的身份是【6】时确定的，客户端解开证书确定公钥是可信的，服务器用session key加密说明其已经获得了pre-master，必有私钥，身份确定。&lt;br /&gt;
+其实，如果服务器在【2】时也传递自己签名的数据过去的话，自己的身份可以提前确定。但是提前确定对后面的步骤没有影响，所以省略传递这个数据，更加节省握手过程中的流量。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 26 Jan 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-01-26:posts/2014/01/ssl.html</guid><category>ssl</category></item><item><title>Bargain Snatcher：全自动极速抢购脚本</title><link>http://particle128.com/posts/2013/12/vipshop.html</link><description>&lt;p&gt;以下汇总的内容均来自本人的博客，或github站点。&lt;/p&gt;
 &lt;h3&gt;源码&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://github.com/particle128/vipshop-buy"&gt;particle128的github&lt;/a&gt;&lt;/li&gt;
@@ -140,76 +169,7 @@ xpath参考 &lt;a href="http://www.w3school.com.cn/xpath"&gt;w3c文档&lt;/a&gt;
 &lt;span class="n"&gt;ff&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;implicitly_wait&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# seconds&lt;/span&gt;
 &lt;span class="n"&gt;ff&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://somedomain/url_that_delays_loading&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;myDynamicElement&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ff&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_element_by_id&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;myDynamicElement&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 28 Dec 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-12-28:posts/2013/12/selenium.html</guid><category>selenium</category></item><item><title>Linux下的用户和用户组小结</title><link>http://particle128.com/posts/2013/12/linux_user.html</link><description>&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
-&lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
-chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
-chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;chgrp 修改文件所属用户组&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chgrp mashu aa.txt 修改组
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;chmod 修改权限&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
-chmod a+r aa.txt
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;2. 3个重要文件&lt;/h3&gt;
-&lt;h4&gt;/etc/passwd&lt;/h4&gt;
-&lt;p&gt;记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  &lt;/p&gt;
-&lt;h4&gt;/etc/shadow&lt;/h4&gt;
-&lt;p&gt;记录 用户名 对应的密码（加密后）  &lt;/p&gt;
-&lt;h4&gt;/etc/group&lt;/h4&gt;
-&lt;p&gt;记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）&lt;/p&gt;
-&lt;h3&gt;3. 概念区分&lt;/h3&gt;
-&lt;h4&gt;初始用户组：&lt;/h4&gt;
-&lt;p&gt;useradd或usermod，-g参数后的组名。保存在/etc/passwd中。&lt;br /&gt;
-实际意义是，/etc/group里少写一个用户名。。。  &lt;/p&gt;
-&lt;h4&gt;有效用户组：&lt;/h4&gt;
-&lt;p&gt;groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。&lt;br /&gt;
-实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。&lt;/p&gt;
-&lt;h3&gt;4. 用户分类&lt;/h3&gt;
-&lt;p&gt;ubuntu12.04下，根据/etc/login.defs&lt;br /&gt;
-UID=0  系统管理员&lt;br /&gt;
-UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)&lt;br /&gt;
-UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  &lt;/p&gt;
-&lt;h3&gt;5. linux命令&lt;/h3&gt;
-&lt;h4&gt;1) useradd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;useradd -u &lt;span class="o"&gt;[&lt;/span&gt;UID&lt;span class="o"&gt;]&lt;/span&gt; -g &lt;span class="o"&gt;[&lt;/span&gt;initial group name&lt;span class="o"&gt;]&lt;/span&gt; -G &lt;span class="o"&gt;[&lt;/span&gt;other group name&lt;span class="o"&gt;]&lt;/span&gt; -d &lt;span class="o"&gt;[&lt;/span&gt;home dir&lt;span class="o"&gt;]&lt;/span&gt; -s &lt;span class="o"&gt;[&lt;/span&gt;shell&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。&lt;br /&gt;
--r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）&lt;/p&gt;
-&lt;h4&gt;2) usermod&lt;/h4&gt;
-&lt;p&gt;同useradd&lt;/p&gt;
-&lt;h4&gt;3) passwd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;passwd &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt; 
-passwd
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;无参数修改自己的密码&lt;/p&gt;
-&lt;h4&gt;4) userdel&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;userdel -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;加上-r，连同主文件夹也一同删除&lt;/p&gt;
-&lt;h4&gt;5) groupadd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;groupadd -g &lt;span class="o"&gt;[&lt;/span&gt;GID&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
-&lt;h4&gt;6) groupdel&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Fri, 27 Dec 2013 22:09:30 +0800</pubDate><guid>tag:particle128.com,2013-12-27:posts/2013/12/linux_user.html</guid><category>linux</category><category>user</category></item><item><title>DNS相关</title><link>http://particle128.com/posts/2013/12/dns.html</link><description>&lt;p&gt;信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  &lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 28 Dec 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-12-28:posts/2013/12/selenium.html</guid><category>selenium</category></item><item><title>DNS相关</title><link>http://particle128.com/posts/2013/12/dns.html</link><description>&lt;p&gt;信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  &lt;/p&gt;
 &lt;h3&gt;Domain Name System&lt;/h3&gt;
 &lt;p&gt;host name &amp;lt; - &amp;gt; ip address&lt;br /&gt;
 主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。&lt;br /&gt;
@@ -3342,7 +3302,76 @@ string.lowercase&lt;br /&gt;
 string.uppercase&lt;br /&gt;
 string.whitespace&lt;br /&gt;
 string.punctuation&lt;br /&gt;
-string.printable  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 22 Sep 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-09-22:posts/2013/09/python-str.html</guid><category>python</category><category>str</category></item><item><title>Linux权限小结</title><link>http://particle128.com/posts/2013/09/authority.html</link><description>&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
+string.printable  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 22 Sep 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-09-22:posts/2013/09/python-str.html</guid><category>python</category><category>str</category></item><item><title>Linux下的用户和用户组小结</title><link>http://particle128.com/posts/2013/09/linux_user.html</link><description>&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+&lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
+chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
+chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;chgrp 修改文件所属用户组&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chgrp mashu aa.txt 修改组
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;chmod 修改权限&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
+chmod a+r aa.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 3个重要文件&lt;/h3&gt;
+&lt;h4&gt;/etc/passwd&lt;/h4&gt;
+&lt;p&gt;记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  &lt;/p&gt;
+&lt;h4&gt;/etc/shadow&lt;/h4&gt;
+&lt;p&gt;记录 用户名 对应的密码（加密后）  &lt;/p&gt;
+&lt;h4&gt;/etc/group&lt;/h4&gt;
+&lt;p&gt;记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）&lt;/p&gt;
+&lt;h3&gt;3. 概念区分&lt;/h3&gt;
+&lt;h4&gt;初始用户组：&lt;/h4&gt;
+&lt;p&gt;useradd或usermod，-g参数后的组名。保存在/etc/passwd中。&lt;br /&gt;
+实际意义是，/etc/group里少写一个用户名。。。  &lt;/p&gt;
+&lt;h4&gt;有效用户组：&lt;/h4&gt;
+&lt;p&gt;groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。&lt;br /&gt;
+实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。&lt;/p&gt;
+&lt;h3&gt;4. 用户分类&lt;/h3&gt;
+&lt;p&gt;ubuntu12.04下，根据/etc/login.defs&lt;br /&gt;
+UID=0  系统管理员&lt;br /&gt;
+UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)&lt;br /&gt;
+UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  &lt;/p&gt;
+&lt;h3&gt;5. linux命令&lt;/h3&gt;
+&lt;h4&gt;1) useradd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;useradd -u &lt;span class="o"&gt;[&lt;/span&gt;UID&lt;span class="o"&gt;]&lt;/span&gt; -g &lt;span class="o"&gt;[&lt;/span&gt;initial group name&lt;span class="o"&gt;]&lt;/span&gt; -G &lt;span class="o"&gt;[&lt;/span&gt;other group name&lt;span class="o"&gt;]&lt;/span&gt; -d &lt;span class="o"&gt;[&lt;/span&gt;home dir&lt;span class="o"&gt;]&lt;/span&gt; -s &lt;span class="o"&gt;[&lt;/span&gt;shell&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。&lt;br /&gt;
+-r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）&lt;/p&gt;
+&lt;h4&gt;2) usermod&lt;/h4&gt;
+&lt;p&gt;同useradd&lt;/p&gt;
+&lt;h4&gt;3) passwd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;passwd &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt; 
+passwd
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;无参数修改自己的密码&lt;/p&gt;
+&lt;h4&gt;4) userdel&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;userdel -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;加上-r，连同主文件夹也一同删除&lt;/p&gt;
+&lt;h4&gt;5) groupadd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;groupadd -g &lt;span class="o"&gt;[&lt;/span&gt;GID&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
+&lt;h4&gt;6) groupdel&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 08 Sep 2013 12:37:12 +0800</pubDate><guid>tag:particle128.com,2013-09-08:posts/2013/09/linux_user.html</guid><category>linux</category><category>user</category></item><item><title>Linux权限小结</title><link>http://particle128.com/posts/2013/09/authority.html</link><description>&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
 &lt;p&gt;r：可以查看文件内容&lt;br /&gt;
 w：可以修改文件内容&lt;br /&gt;
 x：可以执行文件内容  &lt;/p&gt;

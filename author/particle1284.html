@@ -267,6 +267,26 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
   	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
+      </h1>
+          <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
+</header>
+
+  <div class="entry-content"><p>TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  </p>
+<h2>特点</h2>
+<p>用RSA分发密钥；用双方商定的对称加密算法加密通信。  </p>
+<h2>使用SSL，服务器和客户端需要首先进行握手（handshake）</h2>
+<p>【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器<br />
+【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端<br />
+【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。<br />
+【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/01/ssl.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
       </h1>
           <p class="meta"><time datetime="2013-12-30T00:00:00" pubdate>2013-12-30</time></p>
@@ -289,40 +309,6 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
 </ul></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">Bargain Snatcher:使用说明</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>源码请移步<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>Two Modes</h2>
-<ul>
-<li>自选模式<br />
-配置config.ini，运行软件，键盘控制购买哪些看中的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  </li>
-<li>全自动模式<br />
-配置config.ini，运行软件，自动购买符合过滤条件的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  </li>
-</ul>
-<h2>Configuration</h2>
-<p><code>config.ini</code>配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  </p>
-<h3>url</h3>
-<p>包括登陆界面和主页的url，一般不需要动。  </p>
-<h3>screen</h3>
-<p>配置屏幕和选购窗口的大小安排，一般默认即可。  </p>
-<h3>auto_pick</h3>
-<ul>
-<li>
-<p>【AutoPickMode】：可选值是True或False。<br />
-选择True，将使软件进入<strong>全自动模式</strong>，auto_pick部分配置的其他选项才有意义。<br />
-选择False，则直接忽略auto_pick部分的其余配置，进入<strong>自选模式 ...</strong></p></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-intro.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -367,7 +353,7 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>
