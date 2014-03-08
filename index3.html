@@ -61,6 +61,68 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-29T00:00:00" pubdate>2013-11-29</time></p>
+</header>
+
+  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
+<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
+<ul>
+<li>问题背景：<br />
+假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
+需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
+因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
+<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
+<li>解决方法：  </li>
+</ul>
+<p>1.double-RTTI（书中没提到）<br />
+直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
+<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
+优点 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-28T00:00:00" pubdate>2013-11-28</time></p>
+</header>
+
+  <div class="entry-content"><p>在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。<br />
+<strong>注意</strong>：类的static成员函数和普通函数的指针是一样的。  </p>
+<ul>
+<li>普通函数指针：可以通过直接调用  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (*)(int)&quot;  </span>
+</pre></div>
+
+
+<ul>
+<li>非静态成员函数指针：只能通过类对象调用  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">Mat</span><span class="o">::</span><span class="n">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (Mat::*)(int)&quot;  </span>
+</pre></div>
+
+
+<p><strong>指向成员函数的指针和普通指针，是两种不同类型指针，C++实现机制是不一样的（例如成员函数指针不一定包含具体函数的内存地址），如果强制进行两者之间的转换，结果是未定义的</strong>  </p>
+<p>使用方法如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="k">class</span> <span class="nc">A</span>  
+<span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//定义指向成员函数的指针类型  </span>
+        <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="n">A ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
       </h1>
           <p class="meta"><time datetime="2013-11-06T00:00:00" pubdate>2013-11-06</time></p>
@@ -249,58 +311,6 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>【补充概念】</strong><br />
-<strong>类型安全</strong>：<br />
-<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
-<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
-printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
-(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
-(2) SomeClass a;AnotherClass b;<br />
-   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
-(3) #define max(a,b) ((a ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><h3>概念</h3>
-<p>当程序异常退出（接受到内核或其他程序的某种信号，比如SIGTERM，SIGKILL等）的时候，一般会将出错时候的内存状况保存到core file中，以帮助开发者了解程序崩溃的原因。<br />
-即core memory（内存最开始使用线圈做的），其实就是内存。core dump就是内存倾倒的意思。  </p>
-<h3>ubuntu下使能core dump功能</h3>
-<p>ubuntu下默认core文件的大小限制是0（执行ulimit -c查看），即不允许core文件产生。<br />
-解除限制：  </p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">ulimit</span> -c unlimited <span class="c">#设置core file的限制  </span>
-<span class="nv">$ </span><span class="nb">ulimit</span> -a <span class="c">#查看所有限制（包括栈大小、cpu时间、虚拟内存、文件大小等）  </span>
-</pre></div>
-
-
-<h3>core文件的默认位置</h3>
-<p>查看core文件存储格式，以及ubuntu下输出结果：  </p>
-<div class="highlight"><pre><span class="nv">$ </span>cat /proc/sys/kernel/core_pattern   
-|/usr/share/apport/apport %p %s %c  
-</pre></div>
-
-
-<p>意思是 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/core-dump.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index4.html">&larr; Older</a>
   
@@ -312,6 +322,9 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2014/03/inserter.html">安插vector</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
       </li>
             <li class="post">
@@ -322,9 +335,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
       </li>
           </ul>
   </section>
@@ -343,7 +353,7 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

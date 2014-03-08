@@ -61,6 +61,30 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/03/inserter.html">安插vector</a>
+      </h1>
+          <p class="meta"><time datetime="2014-03-08T15:27:14.490692" pubdate>2014-03-08</time></p>
+</header>
+
+  <div class="entry-content"><p>今天做Online Judge的时候，遇到一个问题如下：  </p>
+<p>//把A和B两个有序数组合并到A里，A空间足够大<br />
+    vector<int> temp;<br />
+    temp.reserve(m+n);<br />
+    std::merge(A,A+m,B,B+n,temp.begin());<br />
+    std::copy(temp.begin(),temp.end(),A);  </p>
+<p>结果显示A并没有变.  </p>
+<p>稍微考虑了一下，修改第一版如下：  </p>
+<div class="highlight"><pre><span class="nx">vector</span><span class="o">&lt;</span><span class="nx">int</span><span class="o">&gt;</span> <span class="nx">temp</span><span class="p">;</span>  
+<span class="nx">temp.reserve</span><span class="p">(</span><span class="nx">m</span><span class="o">+</span><span class="nb">n</span><span class="p">);</span>  
+<span class="nx">std</span><span class="p">::</span><span class="nl">merge</span><span class="p">(</span><span class="nx">A</span><span class="p">,</span><span class="nx">A</span><span class="o">+</span><span class="nx">m</span><span class="p">,</span><span class="nx">B</span><span class="p">,</span><span class="nx">B</span><span class="o">+</span><span class="nb">n</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">temp</span><span class="err">[</span><span class="mi">0</span><span class="cp">]</span>);  
+std::copy ...</pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/03/inserter.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
       </h1>
           <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
@@ -321,26 +345,6 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-06T00:00:00" pubdate>2013-11-06</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 26: Postpone variable definitions as long as possible.</h2>
-<p>1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。<br />
-2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点<br />
-(1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分<br />
-因为：缩小变量的作用域，对于程序的可理解性和易维护性好。  </p>
-<h2>Item 27:Minimizing casting</h2>
-<p>1.C++风格类型转换中，<code>dynamic_cast&lt;T&gt;(expr)</code>是唯一一个无法用旧式语法（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。<br />
-2.能用C++风格转型 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/EffectiveCpp(7).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/category/cpp2.html">&larr; Older</a>
   
@@ -350,6 +354,9 @@ const bool true=1;<br />
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/03/inserter.html">安插vector</a>
+      </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
       </li>
@@ -361,9 +368,6 @@ const bool true=1;<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
       </li>
           </ul>
   </section>
@@ -382,7 +386,7 @@ const bool true=1;<br />
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

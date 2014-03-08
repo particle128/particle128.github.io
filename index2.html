@@ -61,6 +61,46 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item28 Smart pointer</h2>
+<ul>
+<li>智能指针相比于内置指针的优势：<br />
+1.构造和析构：分别防止wild指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
+2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
+3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
+<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
+<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
+<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
+<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-06T00:00:00" pubdate>2013-12-06</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
+<h2>Item16 80-20 principal</h2>
+<ul>
+<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
+<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
+<li>Offer as much data as possible to the profiler, to find ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
       </h1>
           <p class="meta"><time datetime="2013-12-03T00:00:00" pubdate>2013-12-03</time></p>
@@ -305,68 +345,6 @@ D:\Python27\Scripts\pip install -U selenium  </p>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-29T00:00:00" pubdate>2013-11-29</time></p>
-</header>
-
-  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
-<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
-<ul>
-<li>问题背景：<br />
-假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
-需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
-因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
-<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
-<li>解决方法：  </li>
-</ul>
-<p>1.double-RTTI（书中没提到）<br />
-直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
-<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
-优点 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">C++中指向成员函数的指针</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-28T00:00:00" pubdate>2013-11-28</time></p>
-</header>
-
-  <div class="entry-content"><p>在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。<br />
-<strong>注意</strong>：类的static成员函数和普通函数的指针是一样的。  </p>
-<ul>
-<li>普通函数指针：可以通过直接调用  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (*)(int)&quot;  </span>
-</pre></div>
-
-
-<ul>
-<li>非静态成员函数指针：只能通过类对象调用  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">int</span> <span class="n">Mat</span><span class="o">::</span><span class="n">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (Mat::*)(int)&quot;  </span>
-</pre></div>
-
-
-<p><strong>指向成员函数的指针和普通指针，是两种不同类型指针，C++实现机制是不一样的（例如成员函数指针不一定包含具体函数的内存地址），如果强制进行两者之间的转换，结果是未定义的</strong>  </p>
-<p>使用方法如下：  </p>
-<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
-<span class="k">class</span> <span class="nc">A</span>  
-<span class="p">{</span>  
-    <span class="k">public</span><span class="o">:</span>  
-        <span class="c1">//定义指向成员函数的指针类型  </span>
-        <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="n">A ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/pointer-to-member-func.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
   
@@ -378,6 +356,9 @@ D:\Python27\Scripts\pip install -U selenium  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2014/03/inserter.html">安插vector</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
       </li>
             <li class="post">
@@ -388,9 +369,6 @@ D:\Python27\Scripts\pip install -U selenium  </p>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
       </li>
           </ul>
   </section>
@@ -409,7 +387,7 @@ D:\Python27\Scripts\pip install -U selenium  </p>
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

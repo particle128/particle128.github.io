@@ -239,6 +239,30 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
   	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/03/inserter.html">安插vector</a>
+      </h1>
+          <p class="meta"><time datetime="2014-03-08T15:27:14.490692" pubdate>2014-03-08</time></p>
+</header>
+
+  <div class="entry-content"><p>今天做Online Judge的时候，遇到一个问题如下：  </p>
+<p>//把A和B两个有序数组合并到A里，A空间足够大<br />
+    vector<int> temp;<br />
+    temp.reserve(m+n);<br />
+    std::merge(A,A+m,B,B+n,temp.begin());<br />
+    std::copy(temp.begin(),temp.end(),A);  </p>
+<p>结果显示A并没有变.  </p>
+<p>稍微考虑了一下，修改第一版如下：  </p>
+<div class="highlight"><pre><span class="nx">vector</span><span class="o">&lt;</span><span class="nx">int</span><span class="o">&gt;</span> <span class="nx">temp</span><span class="p">;</span>  
+<span class="nx">temp.reserve</span><span class="p">(</span><span class="nx">m</span><span class="o">+</span><span class="nb">n</span><span class="p">);</span>  
+<span class="nx">std</span><span class="p">::</span><span class="nl">merge</span><span class="p">(</span><span class="nx">A</span><span class="p">,</span><span class="nx">A</span><span class="o">+</span><span class="nx">m</span><span class="p">,</span><span class="nx">B</span><span class="p">,</span><span class="nx">B</span><span class="o">+</span><span class="nb">n</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">temp</span><span class="err">[</span><span class="mi">0</span><span class="cp">]</span>);  
+std::copy ...</pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/03/inserter.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
       </h1>
           <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
@@ -280,9 +304,9 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
   	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/linux_user.html">Linux下的用户和用户组小结</a>
+        <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
       </h1>
-          <p class="meta"><time datetime="2013-09-08T12:37:12.005149" pubdate>2013-09-08</time></p>
+          <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
 </header>
 
   <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
@@ -308,36 +332,7 @@ chmod a+r aa.txt
 <h4>/etc/passwd</h4>
 <p>记录 用户名 对应的UID ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/linux_user.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
-</header>
-
-  <div class="entry-content"><h2>Problem</h2>
-<p>做我的http server的时候，遇到了个错误，出错相关代码如下  </p>
-<div class="highlight"><pre><span class="k">namespace</span><span class="p">{</span>  
-    <span class="cm">/* ... */</span>  
-    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="kt">status_map_t</span><span class="p">;</span>  
-    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">init_status_code</span><span class="p">()</span>  
-    <span class="p">{</span>  
-        <span class="k">static</span> <span class="kt">status_map_t</span> <span class="n">status</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">404</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;404 Not Found</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;500 Internal Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="k">return</span> <span class="n">status</span><span class="p">;</span>  
-    <span class="p">}</span>  
-    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">status_code</span><span class="o">=</span><span class="n">init_status_code</span><span class="p">();</span>  
-<span class="p">}</span>  
-
-<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/linux_user.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -382,7 +377,7 @@ chmod a+r aa.txt
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

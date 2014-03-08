@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - map</title>
+  <title>安插vector</title>
   <meta name="author" content="particle128">
 
     
@@ -57,46 +57,79 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">安插vector</h1>
+          <p class="meta"><time datetime="2014-03-08T15:27:14.490692" pubdate>2014-03-08</time></p>
 </header>
 
-  <div class="entry-content"><h2>Problem</h2>
-<p>做我的http server的时候，遇到了个错误，出错相关代码如下  </p>
-<div class="highlight"><pre><span class="k">namespace</span><span class="p">{</span>  
-    <span class="cm">/* ... */</span>  
-    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="kt">status_map_t</span><span class="p">;</span>  
-    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">init_status_code</span><span class="p">()</span>  
-    <span class="p">{</span>  
-        <span class="k">static</span> <span class="kt">status_map_t</span> <span class="n">status</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">404</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;404 Not Found</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;500 Internal Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="k">return</span> <span class="n">status</span><span class="p">;</span>  
-    <span class="p">}</span>  
-    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">status_code</span><span class="o">=</span><span class="n">init_status_code</span><span class="p">();</span>  
-<span class="p">}</span>  
+  <div class="entry-content"><p>今天做Online Judge的时候，遇到一个问题如下：  </p>
+<p>//把A和B两个有序数组合并到A里，A空间足够大<br />
+    vector<int> temp;<br />
+    temp.reserve(m+n);<br />
+    std::merge(A,A+m,B,B+n,temp.begin());<br />
+    std::copy(temp.begin(),temp.end(),A);  </p>
+<p>结果显示A并没有变.  </p>
+<p>稍微考虑了一下，修改第一版如下：  </p>
+<div class="highlight"><pre><span class="nx">vector</span><span class="o">&lt;</span><span class="nx">int</span><span class="o">&gt;</span> <span class="nx">temp</span><span class="p">;</span>  
+<span class="nx">temp.reserve</span><span class="p">(</span><span class="nx">m</span><span class="o">+</span><span class="nb">n</span><span class="p">);</span>  
+<span class="nx">std</span><span class="p">::</span><span class="nl">merge</span><span class="p">(</span><span class="nx">A</span><span class="p">,</span><span class="nx">A</span><span class="o">+</span><span class="nx">m</span><span class="p">,</span><span class="nx">B</span><span class="p">,</span><span class="nx">B</span><span class="o">+</span><span class="nb">n</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">temp</span><span class="err">[</span><span class="mi">0</span><span class="cp">]</span>);  
+std::copy(<span class="ni">&amp;temp</span><span class="cp">[</span><span class="mi">0</span><span class="cp">]</span><span class="ni">,&amp;temp</span><span class="cp">[</span><span class="nx">m</span><span class="o">+</span><span class="nb">n</span><span class="cp">]</span><span class="ni">,A);</span>
+</pre></div>
 
-<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-    <br />
-</div>  </div>
+
+<p>结果运行正确。  </p>
+<h3>解释：</h3>
+<p>原来的问题是，std::merge方法，最后一个参数是一个OutputIterator，每次合并来的东西都是通过<code>*iter++</code>这种方式写入的，而<code>operator*</code>（同理，<code>operator-&gt;</code>和<code>operator[]</code>）是覆盖语义，而不是插入语义，并不修改vector中的finish指针，所以std::merge执行完后，temp.begin()和temp.end()都是指向temp的第一个元素，即size()会返回0。  </p>
+<p>不过，我的这次修改，相当于把temp当成普通数组来使用了，并不符合STL的使用规范。temp如果供后续使用，也会是个大隐患，毕竟temp的实际数据已经达到m+n个了，但是temp.size()还是返回0。  </p>
+<p>修改的第二版：  </p>
+<div class="highlight"><pre><span class="nx">vector</span><span class="o">&lt;</span><span class="nx">int</span><span class="o">&gt;</span> <span class="nx">temp</span><span class="p">;</span>  
+<span class="nx">temp.reserve</span><span class="p">(</span><span class="nx">m</span><span class="o">+</span><span class="nb">n</span><span class="p">);</span>  
+<span class="nx">std</span><span class="p">::</span><span class="nl">merge</span><span class="p">(</span><span class="nx">A</span><span class="p">,</span><span class="nx">A</span><span class="o">+</span><span class="nx">m</span><span class="p">,</span><span class="nx">B</span><span class="p">,</span><span class="nx">B</span><span class="o">+</span><span class="nb">n</span><span class="p">,</span><span class="nx">back_inserter</span><span class="p">(</span><span class="nx">temp</span><span class="p">));</span>  
+<span class="nx">std</span><span class="p">::</span><span class="nl">copy</span><span class="p">(</span><span class="nx">temp.begin</span><span class="p">(),</span><span class="nx">temp.end</span><span class="p">(),</span><span class="nx">A</span><span class="p">);</span>
+</pre></div>
+
+
+<h3>解释：</h3>
+<p><code>back_inserter</code>包裹函数会返回一个<code>back_insert_iterator</code>迭代器，std::merge每次调用<code>*iter=xxx</code>会转化成<code>temp.push_back(xxx)</code>，即自动将赋值语义转化成安插语义。这样，temp的结构不会被破坏，temp.size()返回m+n。  </p>
+<p>本以为自己动手实现过vector，也看过vector的源码，知识点应该都掌握了，看来还是太年轻了。。。<br />
+这就是为什么很多技术大神，在若干年后还在看一些经典的书籍（比如EffectiveC++，APUE等），知识点看一遍两遍，根本消化不完。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2014-03-08T15:27:14.490692" pubdate>2014-03-08</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
+        <a class="category" href="http://particle128.com/tag/vector.html">vector</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
+          <a href="http://particle128.com/posts/2014/03/inserter.html">安插vector</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/01/2013sum.html">2013年总结</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
       </li>
           </ul>
   </section>
@@ -140,6 +173,9 @@
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2014/03/inserter.html';
+          var disqus_url = 'http://particle128.com/posts/2014/03/inserter.html';
+          var disqus_title = '安插vector';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
