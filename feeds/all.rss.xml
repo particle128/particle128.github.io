@@ -20,7 +20,7 @@
 
 
 &lt;p&gt;结果运行正确。  &lt;/p&gt;
-&lt;h3&gt;解释：&lt;/h3&gt;
+&lt;h4&gt;解释：&lt;/h4&gt;
 &lt;p&gt;原来的问题是，std::merge方法，最后一个参数是一个OutputIterator，每次合并来的东西都是通过&lt;code&gt;*iter++&lt;/code&gt;这种方式写入的，而&lt;code&gt;operator*&lt;/code&gt;（同理，&lt;code&gt;operator-&amp;gt;&lt;/code&gt;和&lt;code&gt;operator[]&lt;/code&gt;）是覆盖语义，而不是插入语义，并不修改vector中的finish指针，所以std::merge执行完后，temp.begin()和temp.end()都是指向temp的第一个元素，即size()会返回0。  &lt;/p&gt;
 &lt;p&gt;不过，我的这次修改，相当于把temp当成普通数组来使用了，并不符合STL的使用规范。temp如果供后续使用，也会是个大隐患，毕竟temp的实际数据已经达到m+n个了，但是temp.size()还是返回0。  &lt;/p&gt;
 &lt;p&gt;修改的第二版：  &lt;/p&gt;
@@ -32,8 +32,9 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3&gt;解释：&lt;/h3&gt;
+&lt;h4&gt;解释：&lt;/h4&gt;
 &lt;p&gt;&lt;code&gt;back_inserter&lt;/code&gt;包裹函数会返回一个&lt;code&gt;back_insert_iterator&lt;/code&gt;迭代器，std::merge每次调用&lt;code&gt;*iter=xxx&lt;/code&gt;会转化成&lt;code&gt;temp.push_back(xxx)&lt;/code&gt;，即自动将赋值语义转化成安插语义。这样，temp的结构不会被破坏，temp.size()返回m+n。  &lt;/p&gt;
+&lt;hr /&gt;
 &lt;p&gt;本以为自己动手实现过vector，也看过vector的源码，知识点应该都掌握了，看来还是太年轻了。。。&lt;br /&gt;
 这就是为什么很多技术大神，在若干年后还在看一些经典的书籍（比如EffectiveC++，APUE等），知识点看一遍两遍，根本消化不完。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Thu, 08 May 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-05-08:posts/2014/05/inserter.html</guid><category>cpp</category><category>vector</category></item><item><title>《穷爸爸富爸爸》读毕</title><link>http://particle128.com/posts/2014/02/richdad.html</link><description>&lt;p&gt;今天看完了《穷爸爸富爸爸》，的确像网上有些人评论的那样，内容有些拖沓，好多内容出现了重复，其实要表达的观点可以用一篇长文说出来，但是偏偏要凑成一本书。但是它也的确带给我了很多的思考，特别是自己以前一些陋习的反思，记录下来。  &lt;/p&gt;
 &lt;ul&gt;

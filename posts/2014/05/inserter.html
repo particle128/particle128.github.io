@@ -85,7 +85,7 @@
 
 
 <p>结果运行正确。  </p>
-<h3>解释：</h3>
+<h4>解释：</h4>
 <p>原来的问题是，std::merge方法，最后一个参数是一个OutputIterator，每次合并来的东西都是通过<code>*iter++</code>这种方式写入的，而<code>operator*</code>（同理，<code>operator-&gt;</code>和<code>operator[]</code>）是覆盖语义，而不是插入语义，并不修改vector中的finish指针，所以std::merge执行完后，temp.begin()和temp.end()都是指向temp的第一个元素，即size()会返回0。  </p>
 <p>不过，我的这次修改，相当于把temp当成普通数组来使用了，并不符合STL的使用规范。temp如果供后续使用，也会是个大隐患，毕竟temp的实际数据已经达到m+n个了，但是temp.size()还是返回0。  </p>
 <p>修改的第二版：  </p>
@@ -97,8 +97,9 @@
 </pre></div>
 
 
-<h3>解释：</h3>
+<h4>解释：</h4>
 <p><code>back_inserter</code>包裹函数会返回一个<code>back_insert_iterator</code>迭代器，std::merge每次调用<code>*iter=xxx</code>会转化成<code>temp.push_back(xxx)</code>，即自动将赋值语义转化成安插语义。这样，temp的结构不会被破坏，temp.size()返回m+n。  </p>
+<hr />
 <p>本以为自己动手实现过vector，也看过vector的源码，知识点应该都掌握了，看来还是太年轻了。。。<br />
 这就是为什么很多技术大神，在若干年后还在看一些经典的书籍（比如EffectiveC++，APUE等），知识点看一遍两遍，根本消化不完。  </p></div>
     <footer>
