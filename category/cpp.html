@@ -93,7 +93,7 @@
           <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
 </header>
 
-  <div class="entry-content"><h2>Perspective on performance</h2>
+  <div class="entry-content"><h2>Column6 Perspective on performance</h2>
 <h3>Design Levels</h3>
 <ul>
 <li>
@@ -103,9 +103,28 @@ Good error recovery may make a compiler slightly slower, but it usually decrease
 </li>
 <li>
 <p>system structure<br />
-Decomposition of a large system into modules is probably the single most important factor ...</p></li></ul></div>
+Decomposition of a large system into modules is probably the single most important ...</p></li></ul></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2014/02/pp6.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
+      </h1>
+          <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
+</header>
+
+  <div class="entry-content"><h2>The back of the envelope</h2>
+<h3>rules of thumb</h3>
+<ul>
+<li>
+<p>rule of 72<br />
+Used for estimating the growth of any exponential process.<br />
+<em>Assume that you invest a sum of money for y years at an interest rate of r percent per year. The financial version of the rule says that if r ...</em></p></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/02/pp7.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
@@ -309,32 +328,6 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-29T00:00:00" pubdate>2013-11-29</time></p>
-</header>
-
-  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
-<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
-<ul>
-<li>问题背景：<br />
-假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
-需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
-因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
-<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
-<li>解决方法：  </li>
-</ul>
-<p>1.double-RTTI（书中没提到）<br />
-直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
-<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
-优点 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/category/cpp2.html">&larr; Older</a>
   
@@ -351,13 +344,13 @@ const bool true=1;<br />
           <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
       </li>
             <li class="post">
+          <a href="http://particle128.com/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
       </li>
           </ul>
   </section>

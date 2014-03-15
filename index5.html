@@ -61,6 +61,32 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 44: Factor parameter-independent code out of templates</h2>
+<p>1.类模版成员函数函数，只有被使用时才被具现化。类似类的合成版本的构造/复制构造/赋值操作符/析构函数。<br />
+2.模版的时候减少了源代码量，但是可能导致目标代码增加，因为每具现化一个版本，就多一份目标码。<br />
+策略：把与模版参数（类型参数或非类型参数）无关的代码，剥离出模版类。<br />
+（1）非类型参数<br />
+例如：  </p>
+<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span><span class="kt">size_t</span> <span class="n">n</span><span class="o">&gt;</span>  
+<span class="k">class</span> <span class="nc">SquareMatrix</span><span class="p">{</span> <span class="c1">//方形矩阵  </span>
+  <span class="nl">public:</span>  
+          <span class="kt">void</span> <span class="n">invert</span><span class="p">();</span>     
+<span class="p">};</span>  
+<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">10</span><span class="o">&gt;</span> <span class="n">sm1</span><span class="p">;</span>  
+<span class="n">SquareMatrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">5</span><span class="o">&gt;</span> <span class="n">sm2</span><span class="p">;</span>  
+<span class="n">sm1</span><span class="p">.</span><span class="n">invert</span><span class="p">();</span><span class="c1">//具现化一次invert ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
       </h1>
           <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
@@ -258,13 +284,13 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
           <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
       </li>
             <li class="post">
+          <a href="http://particle128.com/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2014/01/2013sum.html">2013年总结</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
       </li>
           </ul>
   </section>
