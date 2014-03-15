@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - health</title>
+  <title>Reading Programming Pearls(6)</title>
   <meta name="author" content="particle128">
 
     
@@ -57,31 +57,83 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-04T00:00:00" pubdate>2013-11-04</time></p>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">Reading Programming Pearls(6)</h1>
+          <p class="meta"><time datetime="2013-02-10T00:00:00" pubdate>2013-02-10</time></p>
 </header>
 
-  <div class="entry-content"><p>Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.<br />
-Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/headache.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-    <br />
-</div>  </div>
+  <div class="entry-content"><h2>Perspective on performance</h2>
+<h3>Design Levels</h3>
+<ul>
+<li>
+<p>problem definition
+Good specifications are quite important.
+Good error recovery may make a compiler slightly slower, but it usually decreases its overall time by reducing the number of compilations.</p>
+</li>
+<li>
+<p>system structure
+Decomposition of a large system into modules is probably the single most important factor in determining its performance.
+After sketching the overall system, you should do a 'back-of-the-envelop' estimate to ensure the performance, because efficiency is much easier to build into a new system than to retrofit into an existing one.</p>
+</li>
+<li>
+<p>algorithms
+The keys to a fast module.</p>
+</li>
+<li>
+<p>code tuning</p>
+</li>
+<li>
+<p>system software
+Is a new database system faster for the queries?
+Would a different operating system be better suited to the system?
+Are all possible compiler optimizations are enabled?</p>
+</li>
+<li>
+<p>hardware
+general-purpose computers -&gt; special-purpose computers
+adding a floating point accelerator</p>
+</li>
+</ul>
+<h3>Principles</h3>
+<p>Simple design can't be overemphasized:
+<em>The cheapest, fastest and most reliable components of a computer system are thoses that aren't there.</em></p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-02-10T00:00:00" pubdate>2013-02-10</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/algorithm.html">algorithm</a>
+        <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
+          <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/01/2013sum.html">2013年总结</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/12/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
       </li>
           </ul>
   </section>
@@ -125,6 +177,9 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/02/pp6.html';
+          var disqus_url = 'http://particle128.com/posts/2013/02/pp6.html';
+          var disqus_title = 'Reading Programming Pearls(6)';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

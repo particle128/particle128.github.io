@@ -2290,4 +2290,38 @@ delete执行过程：在该内存有一个或多个（delete [] arr）析构函�
 &lt;p&gt;解决办法：独立语句中将动态分配的对象存入智能指针。  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nl"&gt;tr1&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nl"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;pw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
 &lt;span class="nx"&gt;processWidget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;priority&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;   
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Reading Programming Pearls(6)</title><link href="http://particle128.com/posts/2013/02/pp6.html" rel="alternate"></link><updated>2013-02-10T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-02-10:posts/2013/02/pp6.html</id><summary type="html">&lt;h2&gt;Perspective on performance&lt;/h2&gt;
+&lt;h3&gt;Design Levels&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;problem definition
+Good specifications are quite important.
+Good error recovery may make a compiler slightly slower, but it usually decreases its overall time by reducing the number of compilations.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;system structure
+Decomposition of a large system into modules is probably the single most important factor in determining its performance.
+After sketching the overall system, you should do a 'back-of-the-envelop' estimate to ensure the performance, because efficiency is much easier to build into a new system than to retrofit into an existing one.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;algorithms
+The keys to a fast module.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;code tuning&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;system software
+Is a new database system faster for the queries?
+Would a different operating system be better suited to the system?
+Are all possible compiler optimizations are enabled?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;hardware
+general-purpose computers -&amp;gt; special-purpose computers
+adding a floating point accelerator&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Principles&lt;/h3&gt;
+&lt;p&gt;Simple design can't be overemphasized:
+&lt;em&gt;The cheapest, fastest and most reliable components of a computer system are thoses that aren't there.&lt;/em&gt;&lt;/p&gt;</summary><category term="algorithm"></category><category term="cpp"></category></entry></feed>
