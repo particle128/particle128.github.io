@@ -61,35 +61,6 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
-</header>
-
-  <div class="entry-content"><h2>Problem</h2>
-<p>做我的http server的时候，遇到了个错误，出错相关代码如下  </p>
-<div class="highlight"><pre><span class="k">namespace</span><span class="p">{</span>  
-    <span class="cm">/* ... */</span>  
-    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="kt">status_map_t</span><span class="p">;</span>  
-    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">init_status_code</span><span class="p">()</span>  
-    <span class="p">{</span>  
-        <span class="k">static</span> <span class="kt">status_map_t</span> <span class="n">status</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">404</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;404 Not Found</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;500 Internal Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="k">return</span> <span class="n">status</span><span class="p">;</span>  
-    <span class="p">}</span>  
-    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">status_code</span><span class="o">=</span><span class="n">init_status_code</span><span class="p">();</span>  
-<span class="p">}</span>  
-
-<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
       </h1>
           <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
@@ -296,12 +267,16 @@ const bool true=1;<br />
 <ul>
 <li>目标不具体    </li>
 </ul>
-<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让人坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让人又鼓起斗志。当然，这只是举个例子，我锻炼身体的目标有好几个，找妹子只是比重比较小的一个。    </p>
+<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让人坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让人又鼓起斗志。</p>
 <ul>
 <li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
 </ul>
 <p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
-<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力 ...</p></div>
+<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力，靠目标和纪律来约束自己。    </p>
+<ul>
+<li>方向选择上走了很多弯路。    </li>
+</ul>
+<p>虽然走弯路也有意义，但是会推迟成功到来的时间 ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/some-thought.html">Read On &crarr;</a>
   </footer>
@@ -340,6 +315,31 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-intro.html">Read On &crarr;</a>
   </footer>
   		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/vipshop-port.html">Bargain Snatcher:linux到windows的移植问题</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>步骤</h2>
+<p>0.登陆windows系统  </p>
+<p>1.安装python2.7<br />
+google上搜索exe安装包安装之。  </p>
+<p>2.安装pip<br />
+参考：http://www.pip-installer.org/en/latest/installing.html<br />
+下载setuptools源码tar.gz ——&gt; 解压后执行python path/of/the/setuptools/setup.py install<br />
+——&gt;下载get-pip.py ——&gt;执行python get-pip.py  </p>
+<p>3.用pip安装需要的扩展包：selenium<br />
+D:\Python27\Scripts\pip install -U selenium  </p>
+<p>4.安装py2exe<br />
+下载地址：http://sourceforge ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
+  </footer>
+  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
   
@@ -363,7 +363,7 @@ const bool true=1;<br />
           <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2014/01/2013sum.html">2013年总结</a>
+          <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
       </li>
           </ul>
   </section>
@@ -382,7 +382,7 @@ const bool true=1;<br />
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

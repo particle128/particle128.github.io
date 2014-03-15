@@ -116,13 +116,13 @@ Decomposition of a large system into modules is probably the single most importa
           <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
 </header>
 
-  <div class="entry-content"><h2>The back of the envelope</h2>
+  <div class="entry-content"><h2>Column 7 The back of the envelope</h2>
 <h3>rules of thumb</h3>
 <ul>
 <li>
 <p>rule of 72<br />
 Used for estimating the growth of any exponential process.<br />
-<em>Assume that you invest a sum of money for y years at an interest rate of r percent per year. The financial version of the rule says that if r ...</em></p></li></ul></div>
+<em>Assume that you invest a sum of money for y years at an interest rate of r percent per year. The financial version of the rule says that ...</em></p></li></ul></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2014/02/pp7.html">Read On &crarr;</a>
   </footer>
@@ -163,29 +163,6 @@ Used for estimating the growth of any exponential process.<br />
 <p>大部分人从来不赢是因为他们太害怕失去。如果你看到人类学习的方法，就会明白人类其实就是在犯错误中进行学习的 ...</p></blockquote></li></ul></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2014/02/richdad.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/01/2013sum.html">2013年总结</a>
-      </h1>
-          <p class="meta"><time datetime="2014-01-31T00:00:00" pubdate>2014-01-31</time></p>
-</header>
-
-  <div class="entry-content"><p>今天是大年初一，2013年就这么唰的一下过去了。经常看到别人的年终总结，但自己从来没有写过，一来因为自己文笔不好，二来也觉得没啥可写的，生活平平淡淡地进行着，没有什么太大的波澜。刚才停下来想了想，今年还真发生了几件像样的事情值得记载呢，而且也快要面临就业了，承上启下的一年啊，就索性写写吧。  </p>
-<h4>今年发生的3件大事</h4>
-<ul>
-<li>
-<p>和初恋复合2个多月(5月7号～7月底)<br />
-这是2013年最揪心的一件事情。因为当时强烈的愧疚感和同情心，在那一刻情绪战胜了理性，把原本已经平静生活了半年的我又拉回了漩涡。我一直不是一个很能克制情绪的人，但是像当时那种头晕目眩的愧疚感还是第一次感觉到。我总是对弱者有天生的同情心：电视上每每有强者和弱者的比赛时，我总在心底里给弱者加油打气，希望弱者能胜利。<br />
-自己的懦弱，使原本就很善良和脆弱的女孩再次承受了伤害。复合的2个多月，除了前半个月，剩下的日子我都生活在痛苦中。我不能给自己不够深爱的一个女孩太多的承诺，所以，在纠结了2个月之后，我又一次提出了结束这一切的要求。永远无法忘记在宾馆里，自己哭的一塌糊涂，她也几近崩溃的情形。<br />
-当时给我很大感触的两首歌是李琦的&lt;&lt;趁早&gt;&gt;和曾一鸣的&lt;&lt;我要快乐&gt;&gt;，分手后的一段时间每次听到这两首歌都会流眼泪。<br />
-总结：<br />
-(1) 有情绪的时候别作出决定，一定在平静和理性时做决定<br />
-(2) 什么事情都不能凑合 ...</p></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/01/2013sum.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  		<article>
@@ -317,6 +294,35 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
     <a rel="full-article" href="http://particle128.com/posts/2013/12/dns.html">Read On &crarr;</a>
   </footer>
   		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
+</header>
+
+  <div class="entry-content"><h2>Problem</h2>
+<p>做我的http server的时候，遇到了个错误，出错相关代码如下  </p>
+<div class="highlight"><pre><span class="k">namespace</span><span class="p">{</span>  
+    <span class="cm">/* ... */</span>  
+    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="kt">status_map_t</span><span class="p">;</span>  
+    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">init_status_code</span><span class="p">()</span>  
+    <span class="p">{</span>  
+        <span class="k">static</span> <span class="kt">status_map_t</span> <span class="n">status</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">404</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;404 Not Found</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;500 Internal Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="k">return</span> <span class="n">status</span><span class="p">;</span>  
+    <span class="p">}</span>  
+    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">status_code</span><span class="o">=</span><span class="n">init_status_code</span><span class="p">();</span>  
+<span class="p">}</span>  
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
+  </footer>
+  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index2.html">&larr; Older</a>
   
@@ -339,7 +345,7 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
           <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2014/01/2013sum.html">2013年总结</a>
+          <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
       </li>
           </ul>
   </section>
@@ -358,7 +364,7 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/sum.html">sum</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>
