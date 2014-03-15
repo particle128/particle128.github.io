@@ -33,7 +33,41 @@
 &lt;p&gt;&lt;code&gt;back_inserter&lt;/code&gt;包裹函数会返回一个&lt;code&gt;back_insert_iterator&lt;/code&gt;迭代器，std::merge每次调用&lt;code&gt;*iter=xxx&lt;/code&gt;会转化成&lt;code&gt;temp.push_back(xxx)&lt;/code&gt;，即自动将赋值语义转化成安插语义。这样，temp的结构不会被破坏，temp.size()返回m+n。  &lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;本以为自己动手实现过vector，也看过vector的源码，知识点应该都掌握了，看来还是太年轻了。。。&lt;br /&gt;
-这就是为什么很多技术大神，在若干年后还在看一些经典的书籍（比如EffectiveC++，APUE等），知识点看一遍两遍，根本消化不完。  &lt;/p&gt;</summary><category term="cpp"></category><category term="vector"></category></entry><entry><title>常量map容器只能调用find来获取元素</title><link href="http://particle128.com/posts/2013/12/map-operator.html" rel="alternate"></link><updated>2013-12-18T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-18:posts/2013/12/map-operator.html</id><summary type="html">&lt;h2&gt;Problem&lt;/h2&gt;
+这就是为什么很多技术大神，在若干年后还在看一些经典的书籍（比如EffectiveC++，APUE等），知识点看一遍两遍，根本消化不完。  &lt;/p&gt;</summary><category term="cpp"></category><category term="vector"></category></entry><entry><title>Rereading Programming Pearls(6)</title><link href="http://particle128.com/posts/2014/02/pp6.html" rel="alternate"></link><updated>2014-02-20T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-02-20:posts/2014/02/pp6.html</id><summary type="html">&lt;h2&gt;Perspective on performance&lt;/h2&gt;
+&lt;h3&gt;Design Levels&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;problem definition&lt;br /&gt;
+Good specifications are quite important.&lt;br /&gt;
+Good error recovery may make a compiler slightly slower, but it usually decreases its overall time by reducing the number of compilations.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;system structure&lt;br /&gt;
+Decomposition of a large system into modules is probably the single most important factor in determining its performance.&lt;br /&gt;
+After sketching the overall system, you should do a 'back-of-the-envelop' estimate to ensure the performance, because efficiency is much easier to build into a new system than to retrofit into an existing one.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;algorithms&lt;br /&gt;
+The keys to a fast module.  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;code tuning  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;system software&lt;br /&gt;
+Is a new database system faster for the queries?&lt;br /&gt;
+Would a different operating system be better suited to the system?&lt;br /&gt;
+Are all possible compiler optimizations are enabled?  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;hardware&lt;br /&gt;
+general-purpose computers -&amp;gt; special-purpose computers&lt;br /&gt;
+adding a floating point accelerator  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Principles&lt;/h3&gt;
+&lt;p&gt;Simple design can't be overemphasized:&lt;br /&gt;
+&lt;em&gt;The cheapest, fastest and most reliable components of a computer system are thoses that aren't there.&lt;/em&gt;  &lt;/p&gt;</summary><category term="algorithm"></category><category term="cpp"></category></entry><entry><title>常量map容器只能调用find来获取元素</title><link href="http://particle128.com/posts/2013/12/map-operator.html" rel="alternate"></link><updated>2013-12-18T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-18:posts/2013/12/map-operator.html</id><summary type="html">&lt;h2&gt;Problem&lt;/h2&gt;
 &lt;p&gt;做我的http server的时候，遇到了个错误，出错相关代码如下  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;namespace&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
     &lt;span class="cm"&gt;/* ... */&lt;/span&gt;  
@@ -2290,38 +2324,4 @@ delete执行过程：在该内存有一个或多个（delete [] arr）析构函�
 &lt;p&gt;解决办法：独立语句中将动态分配的对象存入智能指针。  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nl"&gt;tr1&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nl"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;pw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
 &lt;span class="nx"&gt;processWidget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;priority&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;   
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Reading Programming Pearls(6)</title><link href="http://particle128.com/posts/2013/02/pp6.html" rel="alternate"></link><updated>2013-02-10T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-02-10:posts/2013/02/pp6.html</id><summary type="html">&lt;h2&gt;Perspective on performance&lt;/h2&gt;
-&lt;h3&gt;Design Levels&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;problem definition
-Good specifications are quite important.
-Good error recovery may make a compiler slightly slower, but it usually decreases its overall time by reducing the number of compilations.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;system structure
-Decomposition of a large system into modules is probably the single most important factor in determining its performance.
-After sketching the overall system, you should do a 'back-of-the-envelop' estimate to ensure the performance, because efficiency is much easier to build into a new system than to retrofit into an existing one.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;algorithms
-The keys to a fast module.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;code tuning&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;system software
-Is a new database system faster for the queries?
-Would a different operating system be better suited to the system?
-Are all possible compiler optimizations are enabled?&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;hardware
-general-purpose computers -&amp;gt; special-purpose computers
-adding a floating point accelerator&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Principles&lt;/h3&gt;
-&lt;p&gt;Simple design can't be overemphasized:
-&lt;em&gt;The cheapest, fastest and most reliable components of a computer system are thoses that aren't there.&lt;/em&gt;&lt;/p&gt;</summary><category term="algorithm"></category><category term="cpp"></category></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry></feed>
