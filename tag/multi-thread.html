@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>About me</title>
+  <title>particle128's Blog - multi-thread</title>
   <meta name="author" content="particle128">
 
     
@@ -57,34 +57,35 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div>
-  <article role="article">
-    <header>
-      <h1 class="entry-title">About me</h1>
-    </header>
-    <p>我来自大连理工大学，专业是软件工程。目前研二在读。<br />
-语言：C/C++，Python，C#<br />
-技术方向：Linux后端系统编程  </p>
-  </article>
-</div>
+      <div class="blog-index">
+    	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
+      </h1>
+          <p class="meta"><time datetime="2014-04-02T00:00:00" pubdate>2014-04-02</time></p>
+</header>
+
+  <div class="entry-content"><h3>起因</h3>
+<p>虚拟磁盘的项目中，使用了互斥锁(mutex)来控制任务队列的访问。但是mutex开销过大，让线程池的效果大打折扣，于是发现了spinlock的存在。  </p>
+<h3>概念</h3>
+<p>来自<a href="http://en.wikipedia.org/wiki/Spinlock">wiki</a>的定义：  </p>
+<blockquote>
+<p>In software engineering, a spinlock is a lock which causes a thread trying to acquire it to simply wait in a loop ("spin") while repeatedly checking if the lock is available. Since the thread remains active but is ...</p></blockquote></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/04/spinlock.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  	<div class="pagination">
+  
+    <br />
+</div>  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
           <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
       </li>
           </ul>
   </section>
