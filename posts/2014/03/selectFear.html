@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Effective C++学习笔记(5)</title>
+  <title>选择恐惧症</title>
   <meta name="author" content="particle128">
 
     
@@ -60,88 +60,46 @@
       <div>
   <article class="hentry" role="article">
     <header>
-          <h1 class="entry-title">Effective C++学习笔记(5)</h1>
-          <p class="meta"><time datetime="2013-10-11T00:00:00" pubdate>2013-10-11</time></p>
+          <h1 class="entry-title">选择恐惧症</h1>
+          <p class="meta"><time datetime="2014-03-20T00:00:00" pubdate>2014-03-20</time></p>
 </header>
 
-  <div class="entry-content"><h2>Item18:  Make interfaces easy to use correctly and hard to use incorrectly</h2>
-<p>1.促进接口被正确使用：<br />
-（1）接口一致性：stl中所有容器都具有size() 函数，而不像Java和.Net。<br />
-（2）与内置类型行为兼容：想想和int类比。<br />
-2.阻止接口被误用（！！！不正确的行为，编译都不能通过）：<br />
-例子：  </p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Date</span>  
-<span class="p">{</span>  
-    <span class="n">Date</span><span class="p">(</span><span class="kt">int</span> <span class="n">month</span><span class="p">,</span><span class="kt">int</span> <span class="n">day</span><span class="p">,</span><span class="kt">int</span> <span class="n">year</span><span class="p">);</span>  
-<span class="p">}</span>  
-</pre></div>
-
-
-<p>（1）建立新类型，防止调用顺序错乱，比如(2013,1,10)。  </p>
-<div class="highlight"><pre><span class="c1">//定义Month,Day,Year类型（struct，只含一个val变量和一个explicit单个参数构造函数即可）  </span>
-<span class="n">Date</span> <span class="nf">d</span><span class="p">(</span><span class="n">Month</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">Day</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="n">Year</span><span class="p">(</span><span class="mi">2013</span><span class="p">));</span>  
-</pre></div>
-
-
-<p>（2）束缚对象值，防止无意义的值，比如(Month(13),Day(1),Year(2013))。  </p>
-<div class="highlight"><pre><span class="c1">//Date类中私有化构造函数。  </span>
-<span class="c1">//只提供一系列静态函数供调用。static Month Jan() {return Month(1);}  </span>
-<span class="c1">//不能定义static Month Jan(1);因为 非局部静态对象的初始化顺序未定义，万一d是全局的对象，构造时可能Jan对象尚未初始化。  </span>
-<span class="n">Date</span> <span class="nf">d</span><span class="p">(</span><span class="n">Month</span><span class="o">::</span><span class="n">Jan</span><span class="p">(),</span><span class="n">Day</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="n">Year</span><span class="p">(</span><span class="mi">2013</span><span class="p">));</span>  
-</pre></div>
-
-
-<p>（3）消除对象的资源管理责任，防止忘记释放资源。<br />
-//提供智能指针对象，而不是原始资源<br />
-总结：C++中为了保证接口不被误用，可能会增加很多C语言程序员看起来感觉冗余的代码，比如增加Month，Day，Year 3个类，比如定义Month::Jan()等静态函数。但是的确起到了C语言没法起到的作用：<br />
-（1）没法，只能认真看接口原型。<br />
-（2）可以通过函数内语句判断合法性，但是就将错误推迟到了运行时。<br />
-（3）没法，只能提醒自己释放。  </p>
-<h2>Item19: Treat class design as type design</h2>
-<p>1.应该带着和“语言设计者当初设计语言内置类型时”一样的谨慎来研究class的设计。<br />
-2.允许T1类型被隐式转换成T2类型：<br />
-（1）T1类内定义operator T2()函数。<br />
-（2）T2含有非explicit的构造函数，且函数参数只有一个T1类型的对象。<br />
-3.设计类时遵循的准则略，需要设计类时查阅该书。  </p>
-<h2>Item20: Prefer pass-by-reference-to-const to pass-by-value</h2>
-<p>1.传递对象的引用，好处：<br />
-（1）效率高。值传递会调用参数的复制构造函数（同时调用其基类和成员变量的复制构造函数），函数退出时还要调用它们的析构函数。<br />
-（2）易于优化。常量引用的实现是指针，编译器通常更愿意将其放入缓存器。即使class尽含有一个double变量，编译器也不视其为内置类型，拒绝将其放入缓存器。<br />
-2.传递“常量”引用，好处：<br />
-（1）调用者不必担心传入的实参被改变。<br />
-（2）const或non-const对象都可以传入，适用范围更广。<br />
-3.小型自定义类型也不要值传递，原因：<br />
-（1）复制构造函数不一定小型（比如可能要deep-copy）。<br />
-（2）不易于被编译器优化，放入缓存器。<br />
-（3）该自定义类型可能在之后的更新中，体积变大。<br />
-4.不适合引用传递的情况：<br />
-（1）内置类型：效率更高，见下图<br />
-<img alt="ec5" src="http://particle128.com/static/images/ec5.png" />
-（2）STL迭代器：类似指针，STL会保证其复制构造效率高，习惯值传递<br />
-（3）函数对象：实质是指针  </p>
-<h2>Item21: Don't try to return a reference when you must return an object.</h2>
-<p>函数返回对象的时候，也会执行一次构造和析构函数。为了减少这次的构造和析构，可能考虑返回引用。问题：<br />
-（1）指向局部变量：显而易见不行。<br />
-（2）指向动态分配的堆上的对象：内存泄露。  </p>
-<div class="highlight"><pre><span class="c1">//假设友元函数operator *返回Rational&amp;  </span>
-<span class="n">Rational</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>  
-<span class="n">Rational</span> <span class="n">c</span><span class="o">=</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">c</span><span class="p">;</span> <span class="c1">//两个new出来的对象都没有办法释放，因为接触不到new出的指针。  </span>
-</pre></div>
-
-
-<p>（3）指向静态变量：多线程问题，还有语义上瑕疵。  </p>
-<div class="highlight"><pre><span class="c1">//假设友元函数operator *返回Rational&amp;  </span>
-<span class="n">Rational</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>  
-<span class="k">if</span> <span class="p">((</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="o">==</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">d</span><span class="p">))</span>  <span class="c1">//总是返回true，因为返回的都是同一个static对象  </span>
-<span class="p">{...}</span>  
-</pre></div></div>
+  <div class="entry-content"><h3>症状</h3>
+<p>这个名词是我在《天生购物狂》这部电影里看到的。时隔这么多年，发现自己身上的“选择困难”问题愈演愈烈了。稍微回顾下我的症状：  </p>
+<ul>
+<li>配眼镜：假期要换一副黑框眼镜，逛了3个眼镜店，在第三个眼镜店挑了接近1h的眼镜。假期回来后发现自己挑了这么久的眼镜还是不太合适，于是决定换一副：去了学校眼镜店两次+试了各种眼镜，累计1h；在网上逛了n次，累计2h；问了3个人（亚南，小雷，涵姐），累计2h，最终才买下了这款眼镜。  </li>
+<li>选实习部门：不管是腾讯，百度，还是阿里，都有人可以内推。但是每次跟这些同学或师兄谈论关于内推的事情，都要纠结至少2h，而且每次都把可怜的内推er（姑且这么称呼他们）弄的有点不爽。。。毕竟人家内推你是出于情面，但是你一直纠结这个部门前景好还是那个部门工资高，人家肯定不耐烦了。  </li>
+</ul>
+<h3>产生原因</h3>
+<p>完美主义的非正常心理的作怪  </p>
+<p>凡是有选择恐惧症的人，都是极度追求完美的人，而且是极度苛刻的人——他们要求自己必须做一个单选，而且这唯一的选择必须是最大限度的理想化的选择。可以说，这些病人也属于强迫症人群。他们往往追求完美，并赋予选项太多的意义。  </p>
+<h3>诊断</h3>
+<p>看了上面的症状，是不是发现我问题挺严重的。。。我后来专门从网上测了一下，虽然只有寥寥几道题，估计不太准，但还是反映了我现在这个问题的严重性：  </p>
+<blockquote>
+<p>你已经站在选择恐惧症的边缘了。<br />
+选择对于你来说已经是一件很难的事了，你总是比较来比较去，想得出一个最佳的答案，可是事实上很多事情是没有所谓的最佳答案的。选择更多时候意味着得到某些东西并且失去某些东西，而你心里则不想失去任何东西。你要想的不是怎样保证不失去，而是怎样获得最大的收获。如果按照这条原则，相信你的选择将会变得清晰而明了。  </p>
+</blockquote>
+<p>其实它给我的思路并不完全适用，有时候是担心失去，有时候则是寻求最优解。  </p>
+<h3>出路</h3>
+<p>说出路，有点夸张，但是“选择恐惧症”的确让我有点拙计。况且，现在在学校，面临的选择还比较少，以后呢？工作、婚姻、家庭、生活，方方面面的选择太多了，每个选择都花个一两天太不值得了。况且，即使花了这么久，也不见得选择的就是好的（就像配眼镜那件事）。绝大多数时候，因为选择时的眼界和视野，根本没法选择出最优解。<br />
+其实，有的时候，多考虑一下不是坏事，但是要有个度，考虑个差不多，还选不出来的时候，就“听天由命”的随便选一个了。很多选择，选之前永远不会明白哪个是最好的，选之后才知道。<br />
+下面的一些话摘自网上（知乎啥的），当我又犯病的时候可以看看！  </p>
+<blockquote>
+<p>《暗时间》中有这样一段话：“有人会因为无法作出决定就推迟决定，然而实际上推迟决定恰恰是最差的决定，在推迟决定期间，时间悄悄流逝，你却没有任何一条路上的积累，白白浪费了时间。如果你有一些钱不知道花在A还是B上，你先不作决定，没问题，因为钱还是你的，但如果你有一些时间，不知道花在A上还是B上，不行，因为过了这段时间，这段时间就不是你的了。”<br />
+很多决定确实会影响你的一生，但这样机会人的一生中平均也就七八次，如果你时时都有这个念头，是不是有些多了呢？很多时候都只是瞎担心罢了，但最坏的打算恰恰是犹豫不决，因为往往你几个不同的决定是意味着将来不同的道路，但是其实每条路都是光明的。 比如说林书豪，就算他不决定进NBA，他可能完成哈佛经济学的学业，成为一名成功的经济学家；如果贝索斯不创立亚马逊，继续做他的对冲基金，也许很多年后他也会能成为第二个索罗斯。<br />
+在《从优秀到卓越中》有个飞轮开门的例子，就是无论你是顺时针转动飞轮还是逆时针转动都能将门打开，但一定要坚持，如果你时而顺时针，时而逆时针，那就无论如何都打不开。所以，贵在坚持，如果你认准了一个选择，就毫不犹豫地坚持下去。<br />
+每个人对选择多少都会有些恐惧，因为选择意味着放弃其中的若干选项，而失去的感觉（即使那是个垃圾）总是让人讨厌的。这在营销中叫作购后失调，就是你买了A商品后，会认为B商品更好；反之买了B商品亦然。负性偏差是每个人都难以避免的，也是人类长期进化出来的心理，人对失去的担心远远大过得到的快乐，因为一次没有发现天敌就会让你丧命，而错过食物顶多饿两个小时肚子。 （具体可见2002年诺贝尔经济学奖得主卡尼曼的“前景理论”前景理论_百度百科）<br />
+在面对道路选择的时候，只要你去掉几条明显不靠谱的路，那么剩下的路中，每条路都是精彩却又不完美的。每条路都有利也有弊，每条路上鲜花与荆棘并存，没有完美的路，没有哪条路比哪条路更好。“选择就是放弃”，你选择了一条路，也就是在放弃其他的路，阻碍我们做出选择的其实是贪婪和恐惧，舍不得被放弃的路中的鲜花又害怕自己选择路中的荆棘。这样“患得患失”的人活着是很痛苦的。<br />
+我曾经也是这样痛苦的活着的，后来我开始照着“随便选一个”的方法去选择，我去掉几个不靠谱的路，对于剩下的路我会像你一样分析不同路的优点和缺点，如果还是无法比较出哪条路更好的话，我就会“随便选一个”，现在我活的很快乐，事实证明我选择的路我也都走的很好。拿起一个硬币，高高抛起，正面选A、反面选B，让老天爷帮你“随便选”一条路吧！一旦选好了一条路，就去勇敢的把这条路走得鲜花满路。记住，路是走出来的，不是选出来的。  </p>
+</blockquote>
+<p>PS，这篇文章是在windows下用一个在线markdown编辑器写的，搜狗输入法真赞，写的飞起，ubuntu下写博客，太虐心了（说企鹅或者sun拼音输入法好用的都是骗子）！！！  </p></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-11T00:00:00" pubdate>2013-10-11</time>    <span class="categories">
-        <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
+  <time datetime="2014-03-20T00:00:00" pubdate>2014-03-20</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/select.html">select</a>
       </span>
   </p>    </footer>
   </article>
@@ -212,9 +170,9 @@
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-                var disqus_identifier = '/posts/2013/10/EffectiveCpp(5).html';
-          var disqus_url = 'http://particle128.com/posts/2013/10/EffectiveCpp(5).html';
-          var disqus_title = 'Effective C++学习笔记(5)';
+                var disqus_identifier = '/posts/2014/03/selectFear.html';
+          var disqus_url = 'http://particle128.com/posts/2014/03/selectFear.html';
+          var disqus_title = '选择恐惧症';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
