@@ -61,149 +61,24 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
+        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
       </h1>
-          <p class="meta"><time datetime="2013-11-04T00:00:00" pubdate>2013-11-04</time></p>
+          <p class="meta"><time datetime="2013-10-14T00:00:00" pubdate>2013-10-14</time></p>
 </header>
 
-  <div class="entry-content"><p>Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.<br />
-Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></div>
+  <div class="entry-content"><h2>Chapter 2</h2>
+<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
+gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
+[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
+宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
+gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
+[2]编译  把源文件生成汇编代码 (调用cc1)<br />
+gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/headache.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p>两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  </p>
-<ul>
-<li>例子：  </li>
-</ul>
-<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
-<span class="k">struct</span> <span class="n">X</span>  
-<span class="p">{</span>  
-        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
-<span class="p">};</span>  
-<span class="k">struct</span> <span class="n">Y</span>  
-<span class="p">{</span>  
-        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
-<span class="p">};</span>  
-
-<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
-<span class="p">{</span>  
-        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
-        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
-<span class="p">}</span>  
-</pre></div>
-
-
-<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
-<ul>
-<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
-</ul>
-<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
-<span class="k">operator ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
-</header>
-
-  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
-</pre></div>
-
-
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
-</pre></div>
-
-
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
-</pre></div>
-
-
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/linux_user.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
-</header>
-
-  <div class="entry-content"><h2>Problem</h2>
-<p>做我的http server的时候，遇到了个错误，出错相关代码如下  </p>
-<div class="highlight"><pre><span class="k">namespace</span><span class="p">{</span>  
-    <span class="cm">/* ... */</span>  
-    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="kt">status_map_t</span><span class="p">;</span>  
-    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">init_status_code</span><span class="p">()</span>  
-    <span class="p">{</span>  
-        <span class="k">static</span> <span class="kt">status_map_t</span> <span class="n">status</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">404</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;404 Not Found</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="n">status</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;500 Internal Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
-        <span class="k">return</span> <span class="n">status</span><span class="p">;</span>  
-    <span class="p">}</span>  
-    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">status_code</span><span class="o">=</span><span class="n">init_status_code</span><span class="p">();</span>  
-<span class="p">}</span>  
-
-<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-05T00:00:00" pubdate>2013-11-05</time></p>
-</header>
-
-  <div class="entry-content"><p>今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  </p>
-<h2>名字查找</h2>
-<p>这个<a href="http://blog.csdn.net/xtyyumi301/article/details/662639">链接</a>对我帮助很大，此外还参考了一些SO上的解答，和<a href="http://en.wikipedia.org/wiki/Argument-dependent_name_lookup">wiki</a><br />
-C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：  </p>
-<ul>
-<li>常规查找（normal lookup）  </li>
-<li>实参决定的查找（argument-dependent lookup）  </li>
-</ul>
-<p>所有函数调用，都会进行常规查找；只有函数的实参包括 类类型对象 或 指向类类型对象的指针/引用 的时候，才会进行实参确定的查找。<br />
-分别解释如下：  </p>
-<ul>
-<li>normal lookup<br />
-从函数被调用的局部作用域开始，逐渐向上层寻找被调用的名字，一旦找到就停止向上寻找。此外，using语句可以将其他作用域的名字引用到当前作用域。  </li>
-<li>argument-dependent ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/name-lookup.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
-      <a class="prev" href="http://particle128.com/author/particle1287.html">&larr; Older</a>
   
             <a class="next" href="http://particle128.com/author/particle1285.html">Newer &rarr;</a>
         <br />
@@ -244,7 +119,7 @@ C++的名字查找(name lookup)，作为重载确定(overload resolution)的第�
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/select.html">select</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>android小工具-失败短信重新发送</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">android小工具-失败短信重新发送</h1>
+          <p class="meta"><time datetime="2013-09-03T00:00:00" pubdate>2013-09-03</time></p>
+</header>
+
+  <div class="entry-content"><h3>由来</h3>
+<p>开学伊始，更换手机卡，群发260条短信，后察觉不对。只有一开始的100条左右的短信发送成功了，后面的短信都失败了。上网一查，是联通卡的一种限制，1h最多发送100条短信，超过就误认为你是在发送垃圾短信，自动锁住短信功能，发不出去任何短信了。<br />
+第二天经过10010报修，恢复短信功能。但是要一个一个的找哪些发送失败了，然后就只给那些人发送短信又不现实，因为有260个人失败了。。。给所有人都发一遍又觉得有点扰民。。。相关软件在安卓系统又找不到。。。干脆自己搞一个吧。  </p>
+<h3>实现</h3>
+<p>代码如下：  </p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kt">void</span> <span class="nf">ResendSms</span><span class="o">()</span>  
+<span class="o">{</span>  
+    <span class="c1">//发件箱  </span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">SMS_URI_SEND</span> <span class="o">=</span> <span class="s">&quot;content://sms/sent&quot;</span><span class="o">;</span>  
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">message</span><span class="o">=</span><span class="s">&quot;因故手机换号，原号废弃，敬请惠存新号xxxxxxxxxxx，带来的不便敬请谅解。 署名&quot;</span><span class="o">;</span>  
+
+    <span class="n">StringBuilder</span> <span class="n">smsBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>  
+
+    <span class="k">try</span><span class="o">{</span>  
+        <span class="n">ContentResolver</span> <span class="n">cr</span> <span class="o">=</span> <span class="n">getContentResolver</span><span class="o">();</span>  
+        <span class="n">String</span><span class="o">[]</span> <span class="n">projection</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]{</span><span class="s">&quot;_id&quot;</span><span class="o">,</span> <span class="s">&quot;address&quot;</span><span class="o">,</span> <span class="s">&quot;person&quot;</span><span class="o">,</span>  
+            <span class="s">&quot;body&quot;</span><span class="o">,</span> <span class="s">&quot;date&quot;</span><span class="o">,</span> <span class="s">&quot;status&quot;</span><span class="o">};</span>  
+        <span class="n">Uri</span> <span class="n">uri</span> <span class="o">=</span> <span class="n">Uri</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">SMS_URI_SEND</span><span class="o">);</span>  
+        <span class="n">Cursor</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">cr</span><span class="o">.</span><span class="na">query</span><span class="o">(</span><span class="n">uri</span><span class="o">,</span> <span class="n">projection</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="s">&quot;date desc&quot;</span><span class="o">);</span>  
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">moveToFirst</span><span class="o">())</span> <span class="o">{</span>  
+            <span class="n">String</span> <span class="n">name</span><span class="o">;</span>  
+            <span class="n">String</span> <span class="n">phoneNumber</span><span class="o">;</span>  
+            <span class="n">String</span> <span class="n">smsbody</span><span class="o">;</span>  
+            <span class="n">String</span> <span class="n">date</span><span class="o">;</span>  
+            <span class="n">String</span> <span class="n">type</span><span class="o">;</span>  
+
+            <span class="kt">int</span> <span class="n">nameColumn</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">getColumnIndex</span><span class="o">(</span><span class="s">&quot;person&quot;</span><span class="o">);</span>  
+            <span class="kt">int</span> <span class="n">phoneNumberColumn</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">getColumnIndex</span><span class="o">(</span><span class="s">&quot;address&quot;</span><span class="o">);</span>  
+            <span class="kt">int</span> <span class="n">smsbodyColumn</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">getColumnIndex</span><span class="o">(</span><span class="s">&quot;body&quot;</span><span class="o">);</span>  
+            <span class="kt">int</span> <span class="n">dateColumn</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">getColumnIndex</span><span class="o">(</span><span class="s">&quot;date&quot;</span><span class="o">);</span>  
+            <span class="kt">int</span> <span class="n">typeColumn</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">getColumnIndex</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">);</span>  
+            <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>  
+            <span class="n">String</span> <span class="n">allPhone</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="o">;</span>  
+            <span class="k">do</span><span class="o">{</span>  
+                <span class="n">name</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">nameColumn</span><span class="o">);</span>  
+                <span class="n">phoneNumber</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">phoneNumberColumn</span><span class="o">);</span>  
+                <span class="n">smsbody</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">smsbodyColumn</span><span class="o">);</span>  
+
+                <span class="n">SimpleDateFormat</span> <span class="n">dateFormat</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span>  
+                        <span class="s">&quot;yyyy-MM-dd hh:mm:ss&quot;</span><span class="o">);</span>  
+                <span class="n">Date</span> <span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">parseLong</span><span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">dateColumn</span><span class="o">)));</span>  
+                <span class="n">date</span> <span class="o">=</span> <span class="n">dateFormat</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">d</span><span class="o">);</span>  
+
+                <span class="kt">int</span> <span class="n">typeId</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">typeColumn</span><span class="o">);</span>  
+
+                <span class="c1">// status不等于0的信息是发送出错的信息  </span>
+                <span class="k">if</span><span class="o">(</span><span class="n">typeId</span> <span class="o">!=</span><span class="mi">0</span> <span class="o">))</span>  
+                    <span class="n">allPhone</span><span class="o">+=</span><span class="n">phoneNumber</span><span class="o">+</span><span class="s">&quot;,&quot;</span><span class="o">;</span>  
+
+            <span class="o">}</span><span class="k">while</span><span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">moveToNext</span><span class="o">());</span>  
+            <span class="n">allPhone</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">allPhone</span><span class="o">.</span><span class="na">length</span><span class="o">()-</span><span class="mi">2</span><span class="o">);</span>  
+            <span class="c1">// 仅发送没有发送成功的号码  </span>
+            <span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Intent</span><span class="o">(</span> <span class="n">Intent</span><span class="o">.</span><span class="na">ACTION_VIEW</span><span class="o">,</span> <span class="n">Uri</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span> <span class="s">&quot;sms:&quot;</span> <span class="o">+</span> <span class="n">allPhone</span> <span class="o">)</span> <span class="o">);</span>  
+            <span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span> <span class="s">&quot;sms_body&quot;</span><span class="o">,</span> <span class="n">message</span> <span class="o">);</span>  
+            <span class="n">startActivity</span><span class="o">(</span> <span class="n">intent</span> <span class="o">);</span>  
+
+        <span class="o">}</span>  
+
+    <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">SQLiteException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>  
+        <span class="n">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="s">&quot;SQLiteException in getSmsInPhone&quot;</span><span class="o">,</span> <span class="n">ex</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>  
+    <span class="o">}</span>  
+<span class="o">}</span>  
+</pre></div>
+
+
+<p>添加权限如下：  </p>
+<div class="highlight"><pre><span class="o">&lt;</span><span class="n">uses</span><span class="o">-</span><span class="n">permission</span> <span class="nl">android:</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;android.permission.SEND_SMS&quot;</span><span class="o">/&gt;</span>  
+<span class="o">&lt;</span><span class="n">uses</span><span class="o">-</span><span class="n">permission</span> <span class="nl">android:</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;android.permission.READ_SMS&quot;</span><span class="o">/&gt;</span>  
+<span class="o">&lt;</span><span class="n">uses</span><span class="o">-</span><span class="n">permission</span> <span class="nl">android:</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;android.permission.WRITE_SMS&quot;</span><span class="o">/&gt;</span>  
+<span class="o">&lt;</span><span class="n">uses</span><span class="o">-</span><span class="n">permission</span> <span class="nl">android:</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;android.permission.RECEIVE_SMS&quot;</span><span class="o">/&gt;</span>  
+</pre></div>
+
+
+<h3>参考链接</h3>
+<p>遍历短信：http://android.tgbus.com/Android/tutorial/201104/349808.shtml<br />
+状态码：http://www.proces-data.dk/6A/002J1EFSED/CDRVO-01/Description_ENG.htm<br />
+sms的属性：http://www.java2s.com/Open-Source/Android/SMS/smsselector/com/rudolfheszele/smsselector/model/SmsSelectorSmsMessage.java.htm<br />
+发送短信实现：http://stackoverflow.com/questions/4967448/send-sms-in-android  </p>
+<h3>后记</h3>
+<p>感谢欧阳师弟的鼎力支持，我没有安卓开发环境，也对安卓开发一窍不通，调试工作全靠他的帮助。<br />
+从打算自己解决，到最后解决完用了3h左右吧，记录下java零基础前提下用java解决问题的经历。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2013-09-03T00:00:00" pubdate>2013-09-03</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/android.html">android</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/03/selectFear.html">选择恐惧症</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/select.html">select</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2013/09/androidSMS.html';
+          var disqus_url = 'http://particle128.com/posts/2013/09/androidSMS.html';
+          var disqus_title = 'android小工具-失败短信重新发送';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

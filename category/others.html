@@ -143,6 +143,34 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/09/blog-build.html">Read On &crarr;</a>
   </footer>
   		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/androidSMS.html">android小工具-失败短信重新发送</a>
+      </h1>
+          <p class="meta"><time datetime="2013-09-03T00:00:00" pubdate>2013-09-03</time></p>
+</header>
+
+  <div class="entry-content"><h3>由来</h3>
+<p>开学伊始，更换手机卡，群发260条短信，后察觉不对。只有一开始的100条左右的短信发送成功了，后面的短信都失败了。上网一查，是联通卡的一种限制，1h最多发送100条短信，超过就误认为你是在发送垃圾短信，自动锁住短信功能，发不出去任何短信了。<br />
+第二天经过10010报修，恢复短信功能。但是要一个一个的找哪些发送失败了，然后就只给那些人发送短信又不现实，因为有260个人失败了。。。给所有人都发一遍又觉得有点扰民。。。相关软件在安卓系统又找不到。。。干脆自己搞一个吧。  </p>
+<h3>实现</h3>
+<p>代码如下：  </p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kt">void</span> <span class="nf">ResendSms</span><span class="o">()</span>  
+<span class="o">{</span>  
+    <span class="c1">//发件箱  </span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">SMS_URI_SEND</span> <span class="o">=</span> <span class="s">&quot;content://sms/sent&quot;</span><span class="o">;</span>  
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">message</span><span class="o">=</span><span class="s">&quot;因故手机换号，原号废弃，敬请惠存新号xxxxxxxxxxx，带来的不便敬请谅解。 署名&quot;</span><span class="o">;</span>  
+
+    <span class="n">StringBuilder</span> <span class="n">smsBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>  
+
+    <span class="k">try</span><span class="o">{</span>  
+        <span class="n">ContentResolver</span> <span class="n">cr</span> <span class="o">=</span> <span class="n">getContentResolver</span><span class="o">();</span>  
+        <span class="n">String ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/androidSMS.html">Read On &crarr;</a>
+  </footer>
+  		</article>
   	  	<div class="pagination">
   
     <br />
@@ -159,6 +187,9 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/09/blog-build.html">Linux下使用Github Pages搭建博客</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2013/09/androidSMS.html">android小工具-失败短信重新发送</a>
       </li>
           </ul>
   </section>
@@ -177,7 +208,7 @@
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/select.html">select</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/select.html">select</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>
