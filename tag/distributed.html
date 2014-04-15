@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - ssl</title>
+  <title>particle128's Blog - distributed</title>
   <meta name="author" content="particle128">
 
     
@@ -61,21 +61,38 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
+        <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（1）</a>
       </h1>
-          <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
+          <p class="meta"><time datetime="2014-04-15T00:00:00" pubdate>2014-04-15</time></p>
 </header>
 
-  <div class="entry-content"><p>TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  </p>
-<h2>特点</h2>
-<p>用RSA分发密钥；用双方商定的对称加密算法加密通信。  </p>
-<h2>使用SSL，服务器和客户端需要首先进行握手（handshake）</h2>
-<p>【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器<br />
-【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端<br />
-【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。<br />
-【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master ...</p></div>
+  <div class="entry-content"><h3>Chapter1 概述</h3>
+<h4>分布式存储特征</h4>
+<ul>
+<li>可扩展：随着集群规模增大，整体性能表现为线性增长  </li>
+<li>低成本：构建在普通PC上，实现自动容错、自动负载均衡  </li>
+<li>高性能  </li>
+<li>易用：提供易用的外部接口，也具备完善的监控和运维工具  </li>
+</ul>
+<p>鸡汤：  </p>
+<blockquote>
+<p>一般来讲，工程师如果能够深入理解分布式存储系统，理解其他互联网后台架构不再会有任何困难。  </p>
+</blockquote>
+<h4>分布式存储分类</h4>
+<ul>
+<li>非结构化数据：文档、图片、视频等  </li>
+<li>结构化数据：数据库中的表  </li>
+<li>半结构化数据：HTML文档，模式结构和内容混在一起  </li>
+</ul>
+<h4>分布式存储系统分类</h4>
+<p>1、分布式文件系统<br />
+存储非结构化数据，只提供基于主键的CRUD功能，可以用作分布式数据库或分布式表格系统的底层存储  </p>
+<ul>
+<li>存储BLOB，Facebook Haystack以及Taobao File System  </li>
+<li>存储大文件，Google File System，分布式表格系统Google Bigtable的基础  </li>
+<li>存储定长块，Amazon的Elastic Block Store，分布式数据库Amazon ...</li></ul></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/01/ssl.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -87,7 +104,7 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
+          <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（1）</a>
       </li>
           </ul>
   </section>

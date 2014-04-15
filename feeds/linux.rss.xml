@@ -34,7 +34,76 @@
 &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;pthread_spin_trylock&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;pthread_spinlock_t&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;lock&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
 &lt;span class="c1"&gt;//解锁  &lt;/span&gt;
 &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;pthread_spin_unlock&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;pthread_spinlock_t&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;lock&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="spinlock"></category><category term="multi-thread"></category></entry><entry><title>DNS相关</title><link href="http://particle128.com/posts/2013/12/dns.html" rel="alternate"></link><updated>2013-12-27T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-27:posts/2013/12/dns.html</id><summary type="html">&lt;p&gt;信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  &lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="spinlock"></category><category term="multi-thread"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.com/posts/2013/12/linux_user.html" rel="alternate"></link><updated>2013-12-27T22:09:30+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-27:posts/2013/12/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+&lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
+chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
+chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;chgrp 修改文件所属用户组&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chgrp mashu aa.txt 修改组
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;chmod 修改权限&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
+chmod a+r aa.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 3个重要文件&lt;/h3&gt;
+&lt;h4&gt;/etc/passwd&lt;/h4&gt;
+&lt;p&gt;记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  &lt;/p&gt;
+&lt;h4&gt;/etc/shadow&lt;/h4&gt;
+&lt;p&gt;记录 用户名 对应的密码（加密后）  &lt;/p&gt;
+&lt;h4&gt;/etc/group&lt;/h4&gt;
+&lt;p&gt;记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）&lt;/p&gt;
+&lt;h3&gt;3. 概念区分&lt;/h3&gt;
+&lt;h4&gt;初始用户组：&lt;/h4&gt;
+&lt;p&gt;useradd或usermod，-g参数后的组名。保存在/etc/passwd中。&lt;br /&gt;
+实际意义是，/etc/group里少写一个用户名。。。  &lt;/p&gt;
+&lt;h4&gt;有效用户组：&lt;/h4&gt;
+&lt;p&gt;groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。&lt;br /&gt;
+实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。&lt;/p&gt;
+&lt;h3&gt;4. 用户分类&lt;/h3&gt;
+&lt;p&gt;ubuntu12.04下，根据/etc/login.defs&lt;br /&gt;
+UID=0  系统管理员&lt;br /&gt;
+UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)&lt;br /&gt;
+UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  &lt;/p&gt;
+&lt;h3&gt;5. linux命令&lt;/h3&gt;
+&lt;h4&gt;1) useradd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;useradd -u &lt;span class="o"&gt;[&lt;/span&gt;UID&lt;span class="o"&gt;]&lt;/span&gt; -g &lt;span class="o"&gt;[&lt;/span&gt;initial group name&lt;span class="o"&gt;]&lt;/span&gt; -G &lt;span class="o"&gt;[&lt;/span&gt;other group name&lt;span class="o"&gt;]&lt;/span&gt; -d &lt;span class="o"&gt;[&lt;/span&gt;home dir&lt;span class="o"&gt;]&lt;/span&gt; -s &lt;span class="o"&gt;[&lt;/span&gt;shell&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。&lt;br /&gt;
+-r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）&lt;/p&gt;
+&lt;h4&gt;2) usermod&lt;/h4&gt;
+&lt;p&gt;同useradd&lt;/p&gt;
+&lt;h4&gt;3) passwd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;passwd &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt; 
+passwd
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;无参数修改自己的密码&lt;/p&gt;
+&lt;h4&gt;4) userdel&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;userdel -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;加上-r，连同主文件夹也一同删除&lt;/p&gt;
+&lt;h4&gt;5) groupadd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;groupadd -g &lt;span class="o"&gt;[&lt;/span&gt;GID&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
+&lt;h4&gt;6) groupdel&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry><entry><title>DNS相关</title><link href="http://particle128.com/posts/2013/12/dns.html" rel="alternate"></link><updated>2013-12-27T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-27:posts/2013/12/dns.html</id><summary type="html">&lt;p&gt;信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  &lt;/p&gt;
 &lt;h3&gt;Domain Name System&lt;/h3&gt;
 &lt;p&gt;host name &amp;lt; - &amp;gt; ip address&lt;br /&gt;
 主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。&lt;br /&gt;
@@ -171,76 +240,7 @@ server可选参数。默认从/etc/resolv.conf读取名字服务器（nameserver
 
 
 &lt;h3&gt;程序中捕捉崩溃事件&lt;/h3&gt;
-&lt;p&gt;sigaction()函数指定信号的处理函数（比如SIGSEGV），然后在处理函数中打log，发送错误报告之类的。  &lt;/p&gt;</summary><category term="core dump"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.com/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T12:37:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
-&lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
-chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
-chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;chgrp 修改文件所属用户组&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chgrp mashu aa.txt 修改组
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;chmod 修改权限&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
-chmod a+r aa.txt
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;2. 3个重要文件&lt;/h3&gt;
-&lt;h4&gt;/etc/passwd&lt;/h4&gt;
-&lt;p&gt;记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  &lt;/p&gt;
-&lt;h4&gt;/etc/shadow&lt;/h4&gt;
-&lt;p&gt;记录 用户名 对应的密码（加密后）  &lt;/p&gt;
-&lt;h4&gt;/etc/group&lt;/h4&gt;
-&lt;p&gt;记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）&lt;/p&gt;
-&lt;h3&gt;3. 概念区分&lt;/h3&gt;
-&lt;h4&gt;初始用户组：&lt;/h4&gt;
-&lt;p&gt;useradd或usermod，-g参数后的组名。保存在/etc/passwd中。&lt;br /&gt;
-实际意义是，/etc/group里少写一个用户名。。。  &lt;/p&gt;
-&lt;h4&gt;有效用户组：&lt;/h4&gt;
-&lt;p&gt;groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。&lt;br /&gt;
-实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。&lt;/p&gt;
-&lt;h3&gt;4. 用户分类&lt;/h3&gt;
-&lt;p&gt;ubuntu12.04下，根据/etc/login.defs&lt;br /&gt;
-UID=0  系统管理员&lt;br /&gt;
-UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)&lt;br /&gt;
-UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  &lt;/p&gt;
-&lt;h3&gt;5. linux命令&lt;/h3&gt;
-&lt;h4&gt;1) useradd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;useradd -u &lt;span class="o"&gt;[&lt;/span&gt;UID&lt;span class="o"&gt;]&lt;/span&gt; -g &lt;span class="o"&gt;[&lt;/span&gt;initial group name&lt;span class="o"&gt;]&lt;/span&gt; -G &lt;span class="o"&gt;[&lt;/span&gt;other group name&lt;span class="o"&gt;]&lt;/span&gt; -d &lt;span class="o"&gt;[&lt;/span&gt;home dir&lt;span class="o"&gt;]&lt;/span&gt; -s &lt;span class="o"&gt;[&lt;/span&gt;shell&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。&lt;br /&gt;
--r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）&lt;/p&gt;
-&lt;h4&gt;2) usermod&lt;/h4&gt;
-&lt;p&gt;同useradd&lt;/p&gt;
-&lt;h4&gt;3) passwd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;passwd &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt; 
-passwd
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;无参数修改自己的密码&lt;/p&gt;
-&lt;h4&gt;4) userdel&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;userdel -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;加上-r，连同主文件夹也一同删除&lt;/p&gt;
-&lt;h4&gt;5) groupadd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;groupadd -g &lt;span class="o"&gt;[&lt;/span&gt;GID&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
-&lt;h4&gt;6) groupdel&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry><entry><title>Linux权限小结</title><link href="http://particle128.com/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
+&lt;p&gt;sigaction()函数指定信号的处理函数（比如SIGSEGV），然后在处理函数中打log，发送错误报告之类的。  &lt;/p&gt;</summary><category term="core dump"></category></entry><entry><title>Linux权限小结</title><link href="http://particle128.com/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
 &lt;p&gt;r：可以查看文件内容&lt;br /&gt;
 w：可以修改文件内容&lt;br /&gt;
 x：可以执行文件内容  &lt;/p&gt;

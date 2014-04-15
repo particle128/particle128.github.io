@@ -61,6 +61,40 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
+</header>
+
+  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
+<h4>chown 修改文件所有者</h4>
+<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
+chown mashu aa.txt <span class="c"># 修改所有者</span>
+chown .mashu aa.txt <span class="c"># 修改组</span>
+</pre></div>
+
+
+<h4>chgrp 修改文件所属用户组</h4>
+<div class="highlight"><pre>chgrp mashu aa.txt 修改组
+</pre></div>
+
+
+<h4>chmod 修改权限</h4>
+<div class="highlight"><pre>chmod 777 aa.txt   
+chmod a+r aa.txt
+</pre></div>
+
+
+<h3>2. 3个重要文件</h3>
+<h4>/etc/passwd</h4>
+<p>记录 用户名 对应的UID ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/linux_user.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
       </h1>
           <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
@@ -286,31 +320,6 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <a rel="full-article" href="http://particle128.com/posts/2013/09/python-str.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
-<h2>Introduction</h2>
-<p>This project is used to check the airfare in <a href="http://www.qunar.com">www.qunar.com</a>, and send you a SMS message when the price is lower than what you set in config.py  </p>
-<h2>Requirements</h2>
-<p>Download the ChromeDriver in <a href="https://code.google.com/p/chromedriver/downloads/list">here</a>  </p>
-<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">selenium</span>  
-</pre></div>
-
-
-<h2>Configuration</h2>
-<p>see config.py  </p>
-<h2>Usage</h2>
-<div class="highlight"><pre><span class="n">python</span> <span class="n">main ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/qunar.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/author/particle1285.html">&larr; Older</a>
   
@@ -353,7 +362,7 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/storage.html">storage</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/distributed.html">distributed</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>
