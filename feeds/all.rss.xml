@@ -1884,184 +1884,7 @@ PS:&lt;br /&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:普通函数，和指向普通函数的指针，可以隐式互相转换；但是非静态成员函数和其指针之间不能进行任何转换，所以*和&amp;amp;符号不能省略。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Thu, 28 Nov 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-11-28:posts/2013/11/pointer-to-member-func.html</guid><category>cpp</category></item><item><title>Effective C++学习笔记(7)</title><link>http://particle128.com/posts/2013/11/EffectiveCpp(7).html</link><description>&lt;h2&gt;Item 26: Postpone variable definitions as long as possible.&lt;/h2&gt;
-&lt;p&gt;1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。&lt;br /&gt;
-2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点&lt;br /&gt;
-(1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分&lt;br /&gt;
-因为：缩小变量的作用域，对于程序的可理解性和易维护性好。  &lt;/p&gt;
-&lt;h2&gt;Item 27:Minimizing casting&lt;/h2&gt;
-&lt;p&gt;1.C++风格类型转换中，&lt;code&gt;dynamic_cast&amp;lt;T&amp;gt;(expr)&lt;/code&gt;是唯一一个无法用旧式语法（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。&lt;br /&gt;
-2.能用C++风格转型，就不用旧式语法。因为它们容易在代码中被辨识出来，因为简化了"找出类型系统在哪个地点被破坏"的过程。&lt;br /&gt;
-3.显示构造：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;explicit&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="c1"&gt;//func的调用方式，包括3种强制类型转换的方式：  &lt;/span&gt;
-&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;//Cstyle函数式类型转换，也理解为构造一个临时的Widget对象&lt;/span&gt;
-&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//Cstyle标准类型转换  &lt;/span&gt;
-&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;//C++style类型转换  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;4.单一对象可能有一个以上的地址。Base&lt;em&gt;指向它和Derived&lt;/em&gt;指向它时的地址可能不同，这依赖于编译器将C++的对象如何布局。&lt;br /&gt;
-而且，一旦多重继承，多个基类的指针指向同一个对象，地址一定是不一样的。&lt;br /&gt;
-5.以上例子表明，类型转换并不仅仅是让编译器把某种类型视为另一种类型，其他什么也没做。&lt;br /&gt;
-6.派生类虚函数中调用基类的版本，错误做法：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Window&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;onResize&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//调用onResize的不是this的base部分，而是强制类型转换所建立的临时对象  &lt;/span&gt;
-&lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Window&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;onResize&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//因为是虚函数，且是基类的引用，会调用自己，无穷递归。  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;正确做法：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;WIndow&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;onResize&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;7.应该尽量避免dynamic_cast，因为很多实现版本效率很低（比如调用多个strcmp，逐层比较class name）。&lt;br /&gt;
-办法是，让父类定义空virtual函数，运用多态自动调用派生类的相应函数。&lt;br /&gt;
-8.来自Cpp Primer：&lt;br /&gt;
-dynamic_cast（成功返回相应指针或引用，失败返回NULL或抛出异常）：处理含有virtual函数的基类引用或指针，返回动态类型。&lt;br /&gt;
-typeid（返回type_info对象，支持相等比较运算和name()方法）：处理含有virtual函数的基类，返回动态类型。  &lt;/p&gt;
-&lt;h2&gt;Item 28:Avoid returning handles to object internals&lt;/h2&gt;
-&lt;p&gt;1.以下句子编译可以通过，但是是错误的，因为这样的话外部就可以修改内部数据了，与const矛盾了。这是因为const成员函数实现的是bitwise const，而不是logical const  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Point&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;upperLeft&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;pData&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ulhc&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
-&lt;span class="c1"&gt;//修改成：  &lt;/span&gt;
-&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;upperLeft&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;pData&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ulhc&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;2.引用、指针和迭代器都是所谓的handle，返回一个指向内部数据的handle，降低封装性，而且可能导致悬垂handle（即handle所指向的对象被销毁了，因为handle生存期可能比对象长）。&lt;br /&gt;
-因此，尽量避免返回指向内部对象的handle，除非像string和vector的operator[]方法，不得不做的时候。  &lt;/p&gt;
-&lt;h2&gt;Item 29: Strive for exception-safe code.&lt;/h2&gt;
-&lt;p&gt;错误例子：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="n"&gt;lock&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;mutex&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-    &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;bgImage&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;imageChanges&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="n"&gt;bgImage&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imgSrc&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-    &lt;span class="n"&gt;unlock&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;mutex&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;1.“异常安全”两个条件：&lt;br /&gt;
-（1）不泄露任何资源&lt;br /&gt;
-（2）不允许数据败坏&lt;br /&gt;
-例子中，如果new出错（时刻注意，new分配内存的时候可能因为内存不足而抛出异常），mutex资源泄露，bgImage指针悬空。&lt;br /&gt;
-“异常安全的函数”满足两个条件后，还分3个等级：&lt;br /&gt;
-（1）基本承诺，即保证：任何事物在有效状态下，只是调用者不确切知道处于哪种状态。&lt;br /&gt;
-（2）强烈保证，即保证：函数成功就完全成功；失败，就回到调用前的状态。&lt;br /&gt;
-（3）不抛异常保证，即保证：只成功不失败，不抛出异常。&lt;br /&gt;
-2.不抛出异常：只能靠程序保证。如下声明：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;doSomething&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;只是告诉调用者，不打算抛出异常。但是“完全可能”抛出异常，那时候会有一个函数被调用（std::set_unexpected函数的参数绑定的异常处理函数，该函数会在抛出非声明的类型的异常时执行）。&lt;br /&gt;
-3.强烈保证：&lt;br /&gt;
-变换语句顺序有时候可以做到；copy-and-swap一般可以做到。&lt;br /&gt;
-（1）变换语句顺序：delete 和 ++放到new后面。当然用对象管理资源更安全和简洁  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="n"&gt;Lock&lt;/span&gt; &lt;span class="n"&gt;ml&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;mutex&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-     &lt;span class="n"&gt;bgImage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imgSrc&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;//reset的过程中，原image会delete  &lt;/span&gt;
-     &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;imageChanges&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="c1"&gt;//函数退出后，Lock析构会释放mutex  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;（2）copy-and-swap：把打算修改的对象复制一份，然后修改副本，再把副本和原对象交换。&lt;br /&gt;
-4.尽量让函数等级更高，但是不抛出异常很难保证，因为很多库函数都可能抛出异常；强烈保证可能耗费很大的代价，比如copy and swap方法，复制构造和赋值操作的代价。&lt;br /&gt;
-权衡的过程：tradeoff。&lt;br /&gt;
-但是，要在文档上说明清楚可能抛出的异常等，以及为什么没有实现安全级别更高的代码。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Wed, 06 Nov 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(7).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(8)</title><link>http://particle128.com/posts/2013/11/EffectiveCpp(8).html</link><description>&lt;h2&gt;Item 30: Understand the ins and outs of inlining.&lt;/h2&gt;
-&lt;p&gt;1.inline（函数体代替函数调用）的好处：&lt;br /&gt;
-（1）没有函数调用的开销，速度快。&lt;br /&gt;
-（2）使编译器能对起进行outlined的函数所不具备的优化，因为上下文更明显了。&lt;br /&gt;
-坏处：&lt;br /&gt;
-（1）可能导致代码膨胀，如果inline函数内语句比较多的话。&lt;br /&gt;
-（2）如果inline函数是程序库的一部分，对它的改动，需要使用者重新编译。（outline的话，直接链接即可，动态链接的话，使用者甚至不知道函数库的修改）&lt;br /&gt;
-（3）大部分调试器不能调试inline函数。&lt;br /&gt;
-2.inline是对编译器的申请，不是强制。&lt;br /&gt;
-如下情况编译器”可能“拒绝inline（gcc -Winline会发出不能inline的警告，但是我尝试了递归和循环，没有发出警告）：&lt;br /&gt;
-（1）函数太过复杂（包含递归或循环）。&lt;br /&gt;
-（2）函数中调用virtual函数，因为多态是运行期行为，而inline是编译期行为。&lt;br /&gt;
-如下情况提供outline版本：&lt;br /&gt;
-（1）通过函数指针调用inline函数。因为如果inline函数没有outline版本的话，就没有函数地址了。&lt;br /&gt;
-3.除了显示inline，类成员函数和友元函数定义与class内，也是inline函数&lt;br /&gt;
-4.inline函数的函数体，通常应定义于头文件内，保证编译时可以用函数体替换函数调用。因为大多数C++编译器实现中，inling行为是编译行为。&lt;br /&gt;
-5.构造和析构不适合inline。因为里面有编译器加入的代码（比如构造数据成员，出错就析构之前构造的成员），往往代码量不小，导致代码膨胀。  &lt;/p&gt;
-&lt;h2&gt;Item 31: Minimize compilation dependencies between files.&lt;/h2&gt;
-&lt;p&gt;1.降低文件间的编译依赖性（低耦合）的好处：&lt;br /&gt;
-实现有所改变的时候，如果接口（类的public成员）没有改变，那么客户代码不用重新编译。&lt;br /&gt;
-2.C++中类的定义，并没有“将接口从实现中分离”做的很好。因为类定义中，私有成员也会出现在头文件中。&lt;br /&gt;
-类定义的头文件中仅仅包括前置声明（class Date;），然后在源文件中定义（Date Person::theBirthDate;）是行不通的。因为编译时，需要知道一个类型占据多大的内存，而编译器不会去查看源文件中的具体实现，仅仅查看头文件的类定义，所以必须在类定义中出现。&lt;br /&gt;
-3.编译依赖性比较大的例子：&lt;br /&gt;
-（0）具象类（concrete class）  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include &amp;lt;string&amp;gt;  &lt;/span&gt;
-&lt;span class="cp"&gt;#include &amp;quot;Date.h&amp;quot; &lt;/span&gt;&lt;span class="c1"&gt;//引入类型定义式  &lt;/span&gt;
-&lt;span class="cp"&gt;#include &amp;quot;Address.h&amp;quot;  &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-&lt;span class="nl"&gt;public:&lt;/span&gt;  
-    &lt;span class="p"&gt;...&lt;/span&gt;  
-&lt;span class="nl"&gt;private:&lt;/span&gt;  
-    &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;theName&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="n"&gt;Date&lt;/span&gt; &lt;span class="n"&gt;theBirthDate&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="n"&gt;Address&lt;/span&gt; &lt;span class="n"&gt;theAddr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;问题：Date或Address的修改，Person需要重新编译，继而Person的客户也要重新编译。Person实现的修改（比如增加或减少了成员变量），Person客户要重新编译，即使接口没有改变。&lt;br /&gt;
-两种解决办法：&lt;br /&gt;
-（1）句柄类（handle class）  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//头文件：大部分都是前置声明  &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;PersonImpl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;//实现细节隔离到了PersonImpl中，所以PersonImpl的实现改变后，不影响Person的客户  &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Date&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//类型声明式  &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Address&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
-&lt;span class="nl"&gt;public:&lt;/span&gt;  
-    &lt;span class="p"&gt;...&lt;/span&gt;  
-&lt;span class="nl"&gt;private:&lt;/span&gt;  
-    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tr1&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;PersonImpl&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;PImpl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//使用对象的指针  &lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="c1"&gt;//源文件：需要引入一些头文件中的类型定义  &lt;/span&gt;
-&lt;span class="cp"&gt;#include &amp;quot;Person.h&amp;quot;  &lt;/span&gt;
-&lt;span class="cp"&gt;#include &amp;quot;PersonImpl&amp;quot;   &lt;/span&gt;
-&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Address&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;PImpl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;PersonImpl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;)){}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;注意：  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;只靠"类型声明式"(class Date)就可以定义该类型的引用或指针；必须提供"类型定义式"(#include "Date.h")才可以定义该类型的对象。  &lt;/li&gt;
-&lt;li&gt;声明一个函数，如果函数的参数或返回值是某自定义类型的（比如Date），只包含其类型声明式即可（class Date）。  &lt;/li&gt;
-&lt;li&gt;程序库作者应该提供两种头文件：类型声明式(datefwd.h)和类型定义式(Date.h)。客户在声明包含该类型的函数时，只需包含datefwd.h即可。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;（2）接口类（interface class）  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//头文件：  &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;//抽象类   &lt;/span&gt;
-&lt;span class="nl"&gt;public:&lt;/span&gt;  
-    &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="c1"&gt;//全部是纯虚函数  &lt;/span&gt;
-    &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;getName&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tr1&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Address&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//工厂函数，返回智能指针  &lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="c1"&gt;//源文件：  &lt;/span&gt;
-&lt;span class="cp"&gt;#include &amp;quot;RealPerson.h&amp;quot;  &lt;/span&gt;
-&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tr1&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Address&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tr1&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;RealPerson&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;比较（个人观点）：&lt;br /&gt;
-（1）易用性&lt;br /&gt;
-handle class更易用： Person p1(...); string name=p1.getName()&lt;br /&gt;
-interface class不好用：std::tr1::shared_ptr&lt;Person&gt; pp(Person::create(...)); string name=pp-&amp;gt;getName();&lt;br /&gt;
-（2）扩展性&lt;br /&gt;
-handle class没法扩展。&lt;br /&gt;
-interface class方便扩展，基类可以有多个相同接口的派生类。比如create中增加一个参数，可以选择create哪个派生类。&lt;br /&gt;
-4.句柄和接口类，会速度降低、内存消耗增大，但是的确可以带来松耦合的好处。&lt;br /&gt;
-原则：开发过程中，用句柄和接口类；当它们导致的性能损失比较严重时，改成具象类。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Wed, 06 Nov 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-11-06:posts/2013/11/EffectiveCpp(8).html</guid><category>EffectiveCpp</category></item><item><title>C++中名字查找</title><link>http://particle128.com/posts/2013/11/name-lookup.html</link><description>&lt;p&gt;今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:普通函数，和指向普通函数的指针，可以隐式互相转换；但是非静态成员函数和其指针之间不能进行任何转换，所以*和&amp;amp;符号不能省略。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Thu, 28 Nov 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-11-28:posts/2013/11/pointer-to-member-func.html</guid><category>cpp</category></item><item><title>C++中名字查找</title><link>http://particle128.com/posts/2013/11/name-lookup.html</link><description>&lt;p&gt;今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  &lt;/p&gt;
 &lt;h2&gt;名字查找&lt;/h2&gt;
 &lt;p&gt;这个&lt;a href="http://blog.csdn.net/xtyyumi301/article/details/662639"&gt;链接&lt;/a&gt;对我帮助很大，此外还参考了一些SO上的解答，和&lt;a href="http://en.wikipedia.org/wiki/Argument-dependent_name_lookup"&gt;wiki&lt;/a&gt;&lt;br /&gt;
 C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：  &lt;/p&gt;
@@ -2142,96 +1965,7 @@ C++的名字查找(name lookup)，作为重载确定(overload resolution)的第�
 &lt;li&gt;using declaration&lt;br /&gt;
 语法格式为：using XXX::func;&lt;br /&gt;
 可以使用该方法将func函数加入候选函数集合，且这种方法会阻止normal lookup向外层作用域寻找func。  &lt;/li&gt;
-&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Tue, 05 Nov 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-11-05:posts/2013/11/name-lookup.html</guid><category>cpp</category><category>name-lookup</category></item><item><title>Effective C++学习笔记(6)</title><link>http://particle128.com/posts/2013/11/EffectiveCpp(6).html</link><description>&lt;h2&gt;Item 22: Declare data members private&lt;/h2&gt;
-&lt;p&gt;1.把变量声明成private，然后通过public函数访问。好处：&lt;br /&gt;
-（1）语法一致性。public里都是函数，不用考虑是否需要加括号。&lt;br /&gt;
-（2）更精确的访问控制。可以通过get和set设置变量的可都写属性。&lt;br /&gt;
-（3）封装。对底层的机制提供很大的弹性，成员变量的修改，不影响客户的使用。（比如averageSoFar()函数，可以返回average变量，也可以直接计算平均值再返回。一个占空间，一个费时间，在不同环境可以选择不同的实现）&lt;br /&gt;
-2.只有private有封装性，protected和public都没有封装性。&lt;br /&gt;
-因为封装性与“当其内容改变时可能造成的代码破坏量”成反比，内容改变可以理解成把它从class中移除。&lt;br /&gt;
-（1）public变量移除，所有使用它的客户代码都会破坏。&lt;br /&gt;
-（2）protected变量移除，所有继承自该类的派生类都会破坏。  &lt;/p&gt;
-&lt;h2&gt;Item 23: Prefer non-member non-friend functions to member functions.&lt;/h2&gt;
-&lt;p&gt;1.正如上一个条款所述，越多代码可以访问一个数据，数据的封装性就越差。因为越多代码访问它，它改变时造成的破坏越大，导致数据的实现弹性变小。&lt;br /&gt;
-2.成员函数，友元函数可以访问类内的private成员，enum和typedef等，而非成员函数都不能访问。所以，使用非成员函数，类内私有数据的封装性更好。&lt;br /&gt;
-所以，对于只"调用一个类的public成员的函数"，让其在该类的同名命名空间（可以同该类的定义不在一个文件内）下，作为非成员函数较好。&lt;br /&gt;
-3.标准库STL的组织方式：namespace std跨越多个文件，需要使用的机能只要添加相应的头文件（比如#include &lt;vector&gt;）即可。  &lt;/p&gt;
-&lt;h2&gt;Item 24: Declare non-member functions when type conversions should apply to all parameters&lt;/h2&gt;
-&lt;p&gt;隐式类型转换，只能作用在参数上，所以成员函数的调用者（*this）作为调用者不能转换。&lt;br /&gt;
-例子：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Rational&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="n"&gt;Rational&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;){}&lt;/span&gt;  
-    &lt;span class="p"&gt;...&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;lhs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="c1"&gt;//支持以下操作：  &lt;/span&gt;
-&lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;r2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;r2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//explicit构造函数不具备的  &lt;/span&gt;
-&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;r1&lt;/span&gt; &lt;span class="c1"&gt;//operator*作为成员函数不具备的  &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;Item 25: Consider support for a non-throwing swap.&lt;/h2&gt;
-&lt;p&gt;1.关于修改std：&lt;br /&gt;
-不能修改std命令空间内的任何东西，也不能添加新的函数、类或模版等新的东西到std内，std的内容由C++标准委员会决定。&lt;br /&gt;
-虽然添加东西进std仍可以编译和执行，但是行为没有明确定义。所以要杜绝。&lt;br /&gt;
-唯一可以在std内做的事情是:全特化std命名空间下已存在的模版。不能偏特化，因为偏特化相当于在std内增加模版。&lt;br /&gt;
-2.类模版可以偏特化(partially specialize)或全特化(totally specialize)；函数模版只能全特化。&lt;br /&gt;
-偏特化指的是只特化一部分模版参数，而不是全部。&lt;br /&gt;
-3.std内有一个swap模版函数，实现如下：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="n"&gt;temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-     &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-     &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;调用1次拷贝构造，两次赋值操作符。&lt;br /&gt;
-对于一种类型的对象而言，这个swap函数代价太大：对象内含指针，指针指向真正存放数据的对象(pimpl技术)。&lt;br /&gt;
-因为对这类对象而言，交换指针即可。但是其实现必须保证复制构造和赋值操作符都是深复制（当然也可以用智能指针代替，这里不考虑），所以直接在Widget上调用swap会非常低效。&lt;br /&gt;
-例如：&lt;br /&gt;
-WidgetImpl类：int a,b,c; double d1,d2;&lt;br /&gt;
-Widget类：WidgetImpl *pImpl;&lt;br /&gt;
-解决，两步：&lt;br /&gt;
-【1】Widget内提供成员函数  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-    &lt;span class="c1"&gt;//使用using std::swap,而不是直接在下面的句子调用std::swap(...)&lt;/span&gt;
-    &lt;span class="c1"&gt;//这样给编译器一个选择的余地，它会在WidgetImpl类所在命名空间(argument-dependent lookup)，&lt;/span&gt;
-    &lt;span class="c1"&gt;//和当前命名空间或上层(normal lookup)，上分别进行名字查找来确定候选函数。&lt;/span&gt;
-    &lt;span class="c1"&gt;//然后调用最合适的swap版本。最合适的版本是依据转换代价最小来确定的，而跟位于哪个作用域没有关系。  &lt;/span&gt;
-    &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
-    &lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pImpl&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pImpl&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//在这里是调用了stl中的swap（normal lookup的结果），因为WidgetImpl所在命名空间内没有&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;【2】 std内特化swap  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;gt;&lt;/span&gt;  
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
-&lt;span class="p"&gt;{&lt;/span&gt;  
-     &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;  
-&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:如果Widget是模版类，不能在std空间下定义swap，因为不支持偏特化函数，即使支持也不能添加到std里。这时候，在Widget定义所在的命名空间内定义一个模版swap函数&lt;code&gt;template&amp;lt;typename T&amp;gt;void swap(Widget&amp;lt;T&amp;gt;&amp;amp;a,Widget&amp;lt;T&amp;gt;&amp;amp;b){...}&lt;/code&gt;，可以保证在使用swap(w1,w2)的时候，至少候选函数中会包含这个版本，这得益于argument-dependent lookup。
-4.下面来自CppPrimer的内容(第4中文版：P232和P571)：&lt;br /&gt;
-重载函数中既有普通函数，又有函数模版，确定具体哪个函数被调用的过程：&lt;br /&gt;
-(1)确定候选函数（candidate functions），即调用点声明可见的同名普通函数，和可实例化模板函数。&lt;br /&gt;
-(2)确定可行函数（viable functions），排除普通函数中没法匹配的函数。&lt;br /&gt;
-(3)寻找实参和形参的最佳匹配，即转换代价最小的匹配。&lt;br /&gt;
-(4)如果上面寻找到的最佳匹配有二义，去掉模版函数再寻找最佳匹配。&lt;br /&gt;
-转换代价由低到高：&lt;br /&gt;
-(1)exact match精确匹配（类型一致，比如形参和实参都是int）&lt;br /&gt;
-(2)promotion整型提升（比如short转化成int）&lt;br /&gt;
-(3)standard conversion标准转换（除类型提升外的隐式转换，比如bool转化成int，short转换成long）&lt;br /&gt;
-(4)class-type conversion类类型转换（含有one-parameter-non-explicit构造函数的类，用构造函数参数类型转化成类类型）  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Mon, 04 Nov 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-11-04:posts/2013/11/EffectiveCpp(6).html</guid><category>EffectiveCpp</category></item><item><title>Headache</title><link>http://particle128.com/posts/2013/11/headache.html</link><description>&lt;p&gt;Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.&lt;br /&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Tue, 05 Nov 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-11-05:posts/2013/11/name-lookup.html</guid><category>cpp</category><category>name-lookup</category></item><item><title>Headache</title><link>http://particle128.com/posts/2013/11/headache.html</link><description>&lt;p&gt;Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.&lt;br /&gt;
 Headache is not a big deal, but it troubles me a lot. So, I'm going to make a list of &lt;em&gt;the cause&lt;/em&gt;, &lt;em&gt;how to avoid &lt;/em&gt;and &lt;em&gt;what to do if it has already happened&lt;/em&gt;.  &lt;/p&gt;
 &lt;h3&gt;The Cause:&lt;/h3&gt;
 &lt;ul&gt;
@@ -2313,7 +2047,19 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to make a li
     &lt;span class="c1"&gt;//解释：静态类型最佳匹配是non-virtual函数，所以直接调用&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 02 Nov 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-11-02:posts/2013/11/Overwrite-Overload.html</guid><category>cpp</category></item><item><title>Effective C++学习笔记(2)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(2).html</link><description>&lt;h2&gt;Item 05: Know what functions C++ silently writes and calls&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 02 Nov 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-11-02:posts/2013/11/Overwrite-Overload.html</guid><category>cpp</category></item><item><title>EffectiveC++笔记汇总</title><link>http://particle128.com/posts/2013/10/EffectiveCpp.html</link><description>&lt;p&gt;笔记汇总：  &lt;/p&gt;
+&lt;p&gt;&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html"&gt;EffectiveC++(1)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html"&gt;EffectiveC++(2)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html"&gt;EffectiveC++(3)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html"&gt;EffectiveC++(4)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html"&gt;EffectiveC++(5)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(6).html"&gt;EffectiveC++(6)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html"&gt;EffectiveC++(7)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html"&gt;EffectiveC++(8)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html"&gt;EffectiveC++(9)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html"&gt;EffectiveC++(10)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html"&gt;EffectiveC++(11)&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html"&gt;EffectiveC++(12)&lt;/a&gt;  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Thu, 31 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-31:posts/2013/10/EffectiveCpp.html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(2)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(2).html</link><description>&lt;h2&gt;Item 05: Know what functions C++ silently writes and calls&lt;/h2&gt;
 &lt;p&gt;1.默认生成的4种函数，都是public+inline类型的。  &lt;br /&gt;
 2.复制构造函数原型：&lt;code&gt;Empty(const Empty&amp;amp;);&lt;/code&gt; 赋值操作符原型：&lt;code&gt;Empty&amp;amp; operator=(const Empty&amp;amp;);&lt;/code&gt; 为了和内置类型的赋值操作意义相同，返回左值的引用  &lt;br /&gt;
 3.唯有这4个函数被调用时，才被产生出来。  &lt;br /&gt;
@@ -3096,7 +2842,95 @@ Generic Programming，除了上面两者之外，还有隐式接口（typename�
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;注意：&lt;strong&gt;不能在类内简单的using ::operator new，否则报错using-declaration for non-member at class scope。&lt;/strong&gt;只能using基类的被覆盖的名字，不能using全局的，但是可以用作用域限定符(::)调用全局的函数。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 13 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(12).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(9)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(9).html</link><description>&lt;h2&gt;Item 32: Make sure public inheritance models "is-a"&lt;/h2&gt;
+&lt;p&gt;注意：&lt;strong&gt;不能在类内简单的using ::operator new，否则报错using-declaration for non-member at class scope。&lt;/strong&gt;只能using基类的被覆盖的名字，不能using全局的，但是可以用作用域限定符(::)调用全局的函数。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 13 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(12).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(8)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(8).html</link><description>&lt;h2&gt;Item 30: Understand the ins and outs of inlining.&lt;/h2&gt;
+&lt;p&gt;1.inline（函数体代替函数调用）的好处：&lt;br /&gt;
+（1）没有函数调用的开销，速度快。&lt;br /&gt;
+（2）使编译器能对起进行outlined的函数所不具备的优化，因为上下文更明显了。&lt;br /&gt;
+坏处：&lt;br /&gt;
+（1）可能导致代码膨胀，如果inline函数内语句比较多的话。&lt;br /&gt;
+（2）如果inline函数是程序库的一部分，对它的改动，需要使用者重新编译。（outline的话，直接链接即可，动态链接的话，使用者甚至不知道函数库的修改）&lt;br /&gt;
+（3）大部分调试器不能调试inline函数。&lt;br /&gt;
+2.inline是对编译器的申请，不是强制。&lt;br /&gt;
+如下情况编译器”可能“拒绝inline（gcc -Winline会发出不能inline的警告，但是我尝试了递归和循环，没有发出警告）：&lt;br /&gt;
+（1）函数太过复杂（包含递归或循环）。&lt;br /&gt;
+（2）函数中调用virtual函数，因为多态是运行期行为，而inline是编译期行为。&lt;br /&gt;
+如下情况提供outline版本：&lt;br /&gt;
+（1）通过函数指针调用inline函数。因为如果inline函数没有outline版本的话，就没有函数地址了。&lt;br /&gt;
+3.除了显示inline，类成员函数和友元函数定义与class内，也是inline函数&lt;br /&gt;
+4.inline函数的函数体，通常应定义于头文件内，保证编译时可以用函数体替换函数调用。因为大多数C++编译器实现中，inling行为是编译行为。&lt;br /&gt;
+5.构造和析构不适合inline。因为里面有编译器加入的代码（比如构造数据成员，出错就析构之前构造的成员），往往代码量不小，导致代码膨胀。  &lt;/p&gt;
+&lt;h2&gt;Item 31: Minimize compilation dependencies between files.&lt;/h2&gt;
+&lt;p&gt;1.降低文件间的编译依赖性（低耦合）的好处：&lt;br /&gt;
+实现有所改变的时候，如果接口（类的public成员）没有改变，那么客户代码不用重新编译。&lt;br /&gt;
+2.C++中类的定义，并没有“将接口从实现中分离”做的很好。因为类定义中，私有成员也会出现在头文件中。&lt;br /&gt;
+类定义的头文件中仅仅包括前置声明（class Date;），然后在源文件中定义（Date Person::theBirthDate;）是行不通的。因为编译时，需要知道一个类型占据多大的内存，而编译器不会去查看源文件中的具体实现，仅仅查看头文件的类定义，所以必须在类定义中出现。&lt;br /&gt;
+3.编译依赖性比较大的例子：&lt;br /&gt;
+（0）具象类（concrete class）  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include &amp;lt;string&amp;gt;  &lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;quot;Date.h&amp;quot; &lt;/span&gt;&lt;span class="c1"&gt;//引入类型定义式  &lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;quot;Address.h&amp;quot;  &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+&lt;span class="nl"&gt;public:&lt;/span&gt;  
+    &lt;span class="p"&gt;...&lt;/span&gt;  
+&lt;span class="nl"&gt;private:&lt;/span&gt;  
+    &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;theName&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="n"&gt;Date&lt;/span&gt; &lt;span class="n"&gt;theBirthDate&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="n"&gt;Address&lt;/span&gt; &lt;span class="n"&gt;theAddr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;问题：Date或Address的修改，Person需要重新编译，继而Person的客户也要重新编译。Person实现的修改（比如增加或减少了成员变量），Person客户要重新编译，即使接口没有改变。&lt;br /&gt;
+两种解决办法：&lt;br /&gt;
+（1）句柄类（handle class）  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//头文件：大部分都是前置声明  &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;PersonImpl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;//实现细节隔离到了PersonImpl中，所以PersonImpl的实现改变后，不影响Person的客户  &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Date&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//类型声明式  &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Address&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+&lt;span class="nl"&gt;public:&lt;/span&gt;  
+    &lt;span class="p"&gt;...&lt;/span&gt;  
+&lt;span class="nl"&gt;private:&lt;/span&gt;  
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tr1&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;PersonImpl&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;PImpl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//使用对象的指针  &lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="c1"&gt;//源文件：需要引入一些头文件中的类型定义  &lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;quot;Person.h&amp;quot;  &lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;quot;PersonImpl&amp;quot;   &lt;/span&gt;
+&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Address&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;PImpl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;PersonImpl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;)){}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;注意：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;只靠"类型声明式"(class Date)就可以定义该类型的引用或指针；必须提供"类型定义式"(#include "Date.h")才可以定义该类型的对象。  &lt;/li&gt;
+&lt;li&gt;声明一个函数，如果函数的参数或返回值是某自定义类型的（比如Date），只包含其类型声明式即可（class Date）。  &lt;/li&gt;
+&lt;li&gt;程序库作者应该提供两种头文件：类型声明式(datefwd.h)和类型定义式(Date.h)。客户在声明包含该类型的函数时，只需包含datefwd.h即可。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;（2）接口类（interface class）  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//头文件：  &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;//抽象类   &lt;/span&gt;
+&lt;span class="nl"&gt;public:&lt;/span&gt;  
+    &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="c1"&gt;//全部是纯虚函数  &lt;/span&gt;
+    &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;getName&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tr1&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Address&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//工厂函数，返回智能指针  &lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="c1"&gt;//源文件：  &lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;quot;RealPerson.h&amp;quot;  &lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tr1&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Address&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tr1&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;RealPerson&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;比较（个人观点）：&lt;br /&gt;
+（1）易用性&lt;br /&gt;
+handle class更易用： Person p1(...); string name=p1.getName()&lt;br /&gt;
+interface class不好用：std::tr1::shared_ptr&lt;Person&gt; pp(Person::create(...)); string name=pp-&amp;gt;getName();&lt;br /&gt;
+（2）扩展性&lt;br /&gt;
+handle class没法扩展。&lt;br /&gt;
+interface class方便扩展，基类可以有多个相同接口的派生类。比如create中增加一个参数，可以选择create哪个派生类。&lt;br /&gt;
+4.句柄和接口类，会速度降低、内存消耗增大，但是的确可以带来松耦合的好处。&lt;br /&gt;
+原则：开发过程中，用句柄和接口类；当它们导致的性能损失比较严重时，改成具象类。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 13 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(8).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(9)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(9).html</link><description>&lt;h2&gt;Item 32: Make sure public inheritance models "is-a"&lt;/h2&gt;
 &lt;p&gt;1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。&lt;br /&gt;
 2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：&lt;br /&gt;
 企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高&lt;br /&gt;
@@ -3178,7 +3012,96 @@ typedef std::tr1::function&lt;int (const GameCharacter&amp;)&gt; HealthCalcFunc;
 （1）has-a（包含）关系：应用域，比如人包含名字、地址&lt;br /&gt;
 （2）is-implemented-in-terms-of（根据某物实现出）关系：实现域，比如set是根据linked list实现出的。&lt;br /&gt;
 3.区分is-a和is-implemented-in-terms-of：&lt;br /&gt;
-is-a的话，对基类为真的每一件事，对派生类也为真。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 13 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(9).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(5)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(5).html</link><description>&lt;h2&gt;Item18:  Make interfaces easy to use correctly and hard to use incorrectly&lt;/h2&gt;
+is-a的话，对基类为真的每一件事，对派生类也为真。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sun, 13 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-13:posts/2013/10/EffectiveCpp(9).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(7)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(7).html</link><description>&lt;h2&gt;Item 26: Postpone variable definitions as long as possible.&lt;/h2&gt;
+&lt;p&gt;1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。&lt;br /&gt;
+2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点&lt;br /&gt;
+(1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分&lt;br /&gt;
+因为：缩小变量的作用域，对于程序的可理解性和易维护性好。  &lt;/p&gt;
+&lt;h2&gt;Item 27:Minimizing casting&lt;/h2&gt;
+&lt;p&gt;1.C++风格类型转换中，&lt;code&gt;dynamic_cast&amp;lt;T&amp;gt;(expr)&lt;/code&gt;是唯一一个无法用旧式语法（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。&lt;br /&gt;
+2.能用C++风格转型，就不用旧式语法。因为它们容易在代码中被辨识出来，因为简化了"找出类型系统在哪个地点被破坏"的过程。&lt;br /&gt;
+3.显示构造：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;explicit&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="c1"&gt;//func的调用方式，包括3种强制类型转换的方式：  &lt;/span&gt;
+&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;//Cstyle函数式类型转换，也理解为构造一个临时的Widget对象&lt;/span&gt;
+&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//Cstyle标准类型转换  &lt;/span&gt;
+&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;//C++style类型转换  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;4.单一对象可能有一个以上的地址。Base&lt;em&gt;指向它和Derived&lt;/em&gt;指向它时的地址可能不同，这依赖于编译器将C++的对象如何布局。&lt;br /&gt;
+而且，一旦多重继承，多个基类的指针指向同一个对象，地址一定是不一样的。&lt;br /&gt;
+5.以上例子表明，类型转换并不仅仅是让编译器把某种类型视为另一种类型，其他什么也没做。&lt;br /&gt;
+6.派生类虚函数中调用基类的版本，错误做法：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Window&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;onResize&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//调用onResize的不是this的base部分，而是强制类型转换所建立的临时对象  &lt;/span&gt;
+&lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Window&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;onResize&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//因为是虚函数，且是基类的引用，会调用自己，无穷递归。  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;正确做法：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;WIndow&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;onResize&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;7.应该尽量避免dynamic_cast，因为很多实现版本效率很低（比如调用多个strcmp，逐层比较class name）。&lt;br /&gt;
+办法是，让父类定义空virtual函数，运用多态自动调用派生类的相应函数。&lt;br /&gt;
+8.来自Cpp Primer：&lt;br /&gt;
+dynamic_cast（成功返回相应指针或引用，失败返回NULL或抛出异常）：处理含有virtual函数的基类引用或指针，返回动态类型。&lt;br /&gt;
+typeid（返回type_info对象，支持相等比较运算和name()方法）：处理含有virtual函数的基类，返回动态类型。  &lt;/p&gt;
+&lt;h2&gt;Item 28:Avoid returning handles to object internals&lt;/h2&gt;
+&lt;p&gt;1.以下句子编译可以通过，但是是错误的，因为这样的话外部就可以修改内部数据了，与const矛盾了。这是因为const成员函数实现的是bitwise const，而不是logical const  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Point&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;upperLeft&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;pData&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ulhc&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
+&lt;span class="c1"&gt;//修改成：  &lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;upperLeft&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;pData&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ulhc&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.引用、指针和迭代器都是所谓的handle，返回一个指向内部数据的handle，降低封装性，而且可能导致悬垂handle（即handle所指向的对象被销毁了，因为handle生存期可能比对象长）。&lt;br /&gt;
+因此，尽量避免返回指向内部对象的handle，除非像string和vector的operator[]方法，不得不做的时候。  &lt;/p&gt;
+&lt;h2&gt;Item 29: Strive for exception-safe code.&lt;/h2&gt;
+&lt;p&gt;错误例子：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="n"&gt;lock&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;mutex&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+    &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;bgImage&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;imageChanges&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+    &lt;span class="n"&gt;bgImage&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imgSrc&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+    &lt;span class="n"&gt;unlock&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;mutex&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;1.“异常安全”两个条件：&lt;br /&gt;
+（1）不泄露任何资源&lt;br /&gt;
+（2）不允许数据败坏&lt;br /&gt;
+例子中，如果new出错（时刻注意，new分配内存的时候可能因为内存不足而抛出异常），mutex资源泄露，bgImage指针悬空。&lt;br /&gt;
+“异常安全的函数”满足两个条件后，还分3个等级：&lt;br /&gt;
+（1）基本承诺，即保证：任何事物在有效状态下，只是调用者不确切知道处于哪种状态。&lt;br /&gt;
+（2）强烈保证，即保证：函数成功就完全成功；失败，就回到调用前的状态。&lt;br /&gt;
+（3）不抛异常保证，即保证：只成功不失败，不抛出异常。&lt;br /&gt;
+2.不抛出异常：只能靠程序保证。如下声明：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;doSomething&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;只是告诉调用者，不打算抛出异常。但是“完全可能”抛出异常，那时候会有一个函数被调用（std::set_unexpected函数的参数绑定的异常处理函数，该函数会在抛出非声明的类型的异常时执行）。&lt;br /&gt;
+3.强烈保证：&lt;br /&gt;
+变换语句顺序有时候可以做到；copy-and-swap一般可以做到。&lt;br /&gt;
+（1）变换语句顺序：delete 和 ++放到new后面。当然用对象管理资源更安全和简洁  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="n"&gt;Lock&lt;/span&gt; &lt;span class="n"&gt;ml&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;mutex&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+     &lt;span class="n"&gt;bgImage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imgSrc&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;//reset的过程中，原image会delete  &lt;/span&gt;
+     &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;imageChanges&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="c1"&gt;//函数退出后，Lock析构会释放mutex  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;（2）copy-and-swap：把打算修改的对象复制一份，然后修改副本，再把副本和原对象交换。&lt;br /&gt;
+4.尽量让函数等级更高，但是不抛出异常很难保证，因为很多库函数都可能抛出异常；强烈保证可能耗费很大的代价，比如copy and swap方法，复制构造和赋值操作的代价。&lt;br /&gt;
+权衡的过程：tradeoff。&lt;br /&gt;
+但是，要在文档上说明清楚可能抛出的异常等，以及为什么没有实现安全级别更高的代码。  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 12 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-12:posts/2013/10/EffectiveCpp(7).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(5)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(5).html</link><description>&lt;h2&gt;Item18:  Make interfaces easy to use correctly and hard to use incorrectly&lt;/h2&gt;
 &lt;p&gt;1.促进接口被正确使用：&lt;br /&gt;
 （1）接口一致性：stl中所有容器都具有size() 函数，而不像Java和.Net。&lt;br /&gt;
 （2）与内置类型行为兼容：想想和int类比。&lt;br /&gt;
@@ -3248,7 +3171,96 @@ is-a的话，对基类为真的每一件事，对派生类也为真。  &lt;/p&g
 &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
 &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;  &lt;span class="c1"&gt;//总是返回true，因为返回的都是同一个static对象  &lt;/span&gt;
 &lt;span class="p"&gt;{...}&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Fri, 11 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-11:posts/2013/10/EffectiveCpp(5).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(3)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(3).html</link><description>&lt;h2&gt;Item 09: Never call virtual functions in constructions and destructions&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Fri, 11 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-11:posts/2013/10/EffectiveCpp(5).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(6)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(6).html</link><description>&lt;h2&gt;Item 22: Declare data members private&lt;/h2&gt;
+&lt;p&gt;1.把变量声明成private，然后通过public函数访问。好处：&lt;br /&gt;
+（1）语法一致性。public里都是函数，不用考虑是否需要加括号。&lt;br /&gt;
+（2）更精确的访问控制。可以通过get和set设置变量的可都写属性。&lt;br /&gt;
+（3）封装。对底层的机制提供很大的弹性，成员变量的修改，不影响客户的使用。（比如averageSoFar()函数，可以返回average变量，也可以直接计算平均值再返回。一个占空间，一个费时间，在不同环境可以选择不同的实现）&lt;br /&gt;
+2.只有private有封装性，protected和public都没有封装性。&lt;br /&gt;
+因为封装性与“当其内容改变时可能造成的代码破坏量”成反比，内容改变可以理解成把它从class中移除。&lt;br /&gt;
+（1）public变量移除，所有使用它的客户代码都会破坏。&lt;br /&gt;
+（2）protected变量移除，所有继承自该类的派生类都会破坏。  &lt;/p&gt;
+&lt;h2&gt;Item 23: Prefer non-member non-friend functions to member functions.&lt;/h2&gt;
+&lt;p&gt;1.正如上一个条款所述，越多代码可以访问一个数据，数据的封装性就越差。因为越多代码访问它，它改变时造成的破坏越大，导致数据的实现弹性变小。&lt;br /&gt;
+2.成员函数，友元函数可以访问类内的private成员，enum和typedef等，而非成员函数都不能访问。所以，使用非成员函数，类内私有数据的封装性更好。&lt;br /&gt;
+所以，对于只"调用一个类的public成员的函数"，让其在该类的同名命名空间（可以同该类的定义不在一个文件内）下，作为非成员函数较好。&lt;br /&gt;
+3.标准库STL的组织方式：namespace std跨越多个文件，需要使用的机能只要添加相应的头文件（比如#include &lt;vector&gt;）即可。  &lt;/p&gt;
+&lt;h2&gt;Item 24: Declare non-member functions when type conversions should apply to all parameters&lt;/h2&gt;
+&lt;p&gt;隐式类型转换，只能作用在参数上，所以成员函数的调用者（*this）作为调用者不能转换。&lt;br /&gt;
+例子：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Rational&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="n"&gt;Rational&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;){}&lt;/span&gt;  
+    &lt;span class="p"&gt;...&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;lhs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="c1"&gt;//支持以下操作：  &lt;/span&gt;
+&lt;span class="n"&gt;Rational&lt;/span&gt; &lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;r2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;r2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//explicit构造函数不具备的  &lt;/span&gt;
+&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;r1&lt;/span&gt; &lt;span class="c1"&gt;//operator*作为成员函数不具备的  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Item 25: Consider support for a non-throwing swap.&lt;/h2&gt;
+&lt;p&gt;1.关于修改std：&lt;br /&gt;
+不能修改std命令空间内的任何东西，也不能添加新的函数、类或模版等新的东西到std内，std的内容由C++标准委员会决定。&lt;br /&gt;
+虽然添加东西进std仍可以编译和执行，但是行为没有明确定义。所以要杜绝。&lt;br /&gt;
+唯一可以在std内做的事情是:全特化std命名空间下已存在的模版。不能偏特化，因为偏特化相当于在std内增加模版。&lt;br /&gt;
+2.类模版可以偏特化(partially specialize)或全特化(totally specialize)；函数模版只能全特化。&lt;br /&gt;
+偏特化指的是只特化一部分模版参数，而不是全部。&lt;br /&gt;
+3.std内有一个swap模版函数，实现如下：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;  
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="n"&gt;temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+     &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+     &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;调用1次拷贝构造，两次赋值操作符。&lt;br /&gt;
+对于一种类型的对象而言，这个swap函数代价太大：对象内含指针，指针指向真正存放数据的对象(pimpl技术)。&lt;br /&gt;
+因为对这类对象而言，交换指针即可。但是其实现必须保证复制构造和赋值操作符都是深复制（当然也可以用智能指针代替，这里不考虑），所以直接在Widget上调用swap会非常低效。&lt;br /&gt;
+例如：&lt;br /&gt;
+WidgetImpl类：int a,b,c; double d1,d2;&lt;br /&gt;
+Widget类：WidgetImpl *pImpl;&lt;br /&gt;
+解决，两步：&lt;br /&gt;
+【1】Widget内提供成员函数  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+    &lt;span class="c1"&gt;//使用using std::swap,而不是直接在下面的句子调用std::swap(...)&lt;/span&gt;
+    &lt;span class="c1"&gt;//这样给编译器一个选择的余地，它会在WidgetImpl类所在命名空间(argument-dependent lookup)，&lt;/span&gt;
+    &lt;span class="c1"&gt;//和当前命名空间或上层(normal lookup)，上分别进行名字查找来确定候选函数。&lt;/span&gt;
+    &lt;span class="c1"&gt;//然后调用最合适的swap版本。最合适的版本是依据转换代价最小来确定的，而跟位于哪个作用域没有关系。  &lt;/span&gt;
+    &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+    &lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pImpl&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pImpl&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//在这里是调用了stl中的swap（normal lookup的结果），因为WidgetImpl所在命名空间内没有&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;【2】 std内特化swap  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;template&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;gt;&lt;/span&gt;  
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="p"&gt;{&lt;/span&gt;  
+     &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;  
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:如果Widget是模版类，不能在std空间下定义swap，因为不支持偏特化函数，即使支持也不能添加到std里。这时候，在Widget定义所在的命名空间内定义一个模版swap函数&lt;code&gt;template&amp;lt;typename T&amp;gt;void swap(Widget&amp;lt;T&amp;gt;&amp;amp;a,Widget&amp;lt;T&amp;gt;&amp;amp;b){...}&lt;/code&gt;，可以保证在使用swap(w1,w2)的时候，至少候选函数中会包含这个版本，这得益于argument-dependent lookup。
+4.下面来自CppPrimer的内容(第4中文版：P232和P571)：&lt;br /&gt;
+重载函数中既有普通函数，又有函数模版，确定具体哪个函数被调用的过程：&lt;br /&gt;
+(1)确定候选函数（candidate functions），即调用点声明可见的同名普通函数，和可实例化模板函数。&lt;br /&gt;
+(2)确定可行函数（viable functions），排除普通函数中没法匹配的函数。&lt;br /&gt;
+(3)寻找实参和形参的最佳匹配，即转换代价最小的匹配。&lt;br /&gt;
+(4)如果上面寻找到的最佳匹配有二义，去掉模版函数再寻找最佳匹配。&lt;br /&gt;
+转换代价由低到高：&lt;br /&gt;
+(1)exact match精确匹配（类型一致，比如形参和实参都是int）&lt;br /&gt;
+(2)promotion整型提升（比如short转化成int）&lt;br /&gt;
+(3)standard conversion标准转换（除类型提升外的隐式转换，比如bool转化成int，short转换成long）&lt;br /&gt;
+(4)class-type conversion类类型转换（含有one-parameter-non-explicit构造函数的类，用构造函数参数类型转化成类类型）  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Thu, 10 Oct 2013 00:00:00 +0800</pubDate><guid>tag:particle128.com,2013-10-10:posts/2013/10/EffectiveCpp(6).html</guid><category>EffectiveCpp</category></item><item><title>Effective C++学习笔记(3)</title><link>http://particle128.com/posts/2013/10/EffectiveCpp(3).html</link><description>&lt;h2&gt;Item 09: Never call virtual functions in constructions and destructions&lt;/h2&gt;
 &lt;p&gt;1.derived class对象构造时，base class构造函数先被调用，在其中调用/间接调用的虚函数是是父类的版本。原因有二：&lt;br /&gt;
 （1）父类构造时，子类成员变量尚未初始化，处于未定义状态，C++不允许调用子类virtual函数（几乎必然会访问成员变量）&lt;br /&gt;
 （2）父类构造函数执行时，动态类型是父类。&lt;br /&gt;

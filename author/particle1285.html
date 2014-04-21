@@ -61,6 +61,27 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/python-str.html">Python学习笔记-字符串</a>
+      </h1>
+          <p class="meta"><time datetime="2013-09-22T00:00:00" pubdate>2013-09-22</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
+<h3>（一） 具备的操作</h3>
+<p>str作为序列元素，包含其他序列共同的操作：<br />
+1. “hello” [not] in "hello world"<br />
+2. "hello" + " world"<br />
+3. 5<em>"hello" 或 “hello”</em>5<br />
+4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
+5. len("hello")  min("hello")  max("hello")<br />
+6. "hello".index('o')   "hello".count('l ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-str.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
       </h1>
           <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
@@ -299,40 +320,6 @@ D:\Python27\Scripts\pip install -U selenium  </p>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">Bargain Snatcher:技术问题</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>环境:</h2>
-<p>下载selenium chrome driver：<br />
-<a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
-安装selenium ：<code>pip install -U selenium</code>  </p>
-<h2>遇到的问题和总结：</h2>
-<ul>
-<li>不输入回车直接读入键盘操作，因此需要设置终端输入no buffer模式  </li>
-</ul>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>  
-<span class="kn">import</span> <span class="nn">termios</span>  
-
-<span class="k">try</span><span class="p">:</span>  
-     <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
-     <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
-     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>  
-     <span class="n">new</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>  
-     <span class="n">new</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">termios</span><span class="o">.</span><span class="n">ICANON</span>  
-     <span class="n">termios</span><span class="o">.</span><span class="n">tcsetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">termios</span><span class="o">.</span><span class="n">TCSADRAIN</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>  
-     <span class="c"># code here  </span>
-
-<span class="k">except ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/author/particle1286.html">&larr; Older</a>
   
@@ -344,6 +331,9 @@ D:\Python27\Scripts\pip install -U selenium  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp.html">EffectiveC++笔记汇总</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </li>
             <li class="post">
@@ -354,9 +344,6 @@ D:\Python27\Scripts\pip install -U selenium  </p>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
           </ul>
   </section>

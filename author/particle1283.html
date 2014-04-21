@@ -61,6 +61,35 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+      </h1>
+          <p class="meta"><time datetime="2013-11-02T00:00:00" pubdate>2013-11-02</time></p>
+</header>
+
+  <div class="entry-content"><p>例子如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
+
+<span class="k">class</span> <span class="nc">Base</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+<span class="p">};</span>  
+<span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span><span class="k">public</span> <span class="n">Base</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="c1">//Base中函数的重写  </span>
+        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="c1">//Base中函数的重载  </span>
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
+        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func</span><span class="p">;</span>  
+        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func1 ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/androidSMS.html">android小工具-失败短信重新发送</a>
       </h1>
           <p class="meta"><time datetime="2013-09-03T00:00:00" pubdate>2013-09-03</time></p>
@@ -299,47 +328,6 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
     <a rel="full-article" href="http://particle128.com/posts/2014/03/inserter.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p>两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  </p>
-<ul>
-<li>例子：  </li>
-</ul>
-<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
-<span class="k">struct</span> <span class="n">X</span>  
-<span class="p">{</span>  
-        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
-<span class="p">};</span>  
-<span class="k">struct</span> <span class="n">Y</span>  
-<span class="p">{</span>  
-        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
-<span class="p">};</span>  
-
-<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
-<span class="p">{</span>  
-        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
-        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
-<span class="p">}</span>  
-</pre></div>
-
-
-<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
-<ul>
-<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
-</ul>
-<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
-<span class="k">operator ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/author/particle1284.html">&larr; Older</a>
   
@@ -351,6 +339,9 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2013/10/EffectiveCpp.html">EffectiveC++笔记汇总</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </li>
             <li class="post">
@@ -361,9 +352,6 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
       </li>
           </ul>
   </section>

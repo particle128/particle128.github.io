@@ -61,7 +61,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">Effective C++学习笔记(6)</h1>
-          <p class="meta"><time datetime="2013-10-13T19:53:49.255545" pubdate>2013-10-13</time></p>
+          <p class="meta"><time datetime="2013-10-10T00:00:00" pubdate>2013-10-10</time></p>
 </header>
 
   <div class="entry-content"><h2>Item 22: Declare data members private</h2>
@@ -98,7 +98,7 @@
 <p>1.关于修改std：<br />
 不能修改std命令空间内的任何东西，也不能添加新的函数、类或模版等新的东西到std内，std的内容由C++标准委员会决定。<br />
 虽然添加东西进std仍可以编译和执行，但是行为没有明确定义。所以要杜绝。<br />
-可以在std内特化std命名空间下已存在的模版。<br />
+唯一可以在std内做的事情是:全特化std命名空间下已存在的模版。不能偏特化，因为偏特化相当于在std内增加模版。<br />
 2.类模版可以偏特化(partially specialize)或全特化(totally specialize)；函数模版只能全特化。<br />
 偏特化指的是只特化一部分模版参数，而不是全部。<br />
 3.std内有一个swap模版函数，实现如下：  </p>
@@ -112,31 +112,38 @@
 
 
 <p>调用1次拷贝构造，两次赋值操作符。<br />
-对于一种类型的对象而言，这个swap函数代价太大：对象内含指针，指针指向真正存放数据的对象。<br />
+对于一种类型的对象而言，这个swap函数代价太大：对象内含指针，指针指向真正存放数据的对象(pimpl技术)。<br />
 因为对这类对象而言，交换指针即可。但是其实现必须保证复制构造和赋值操作符都是深复制（当然也可以用智能指针代替，这里不考虑），所以直接在Widget上调用swap会非常低效。<br />
 例如：<br />
 WidgetImpl类：int a,b,c; double d1,d2;<br />
 Widget类：WidgetImpl *pImpl;<br />
 解决，两步：<br />
 【1】Widget内提供成员函数  </p>
-<div class="highlight"><pre><span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">Widget</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>  
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">Widget</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">Widget</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>  
 <span class="p">{</span>  
-    <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">;</span> <span class="c1">//之所以using std::swap而不是，直接在下面的句子调用std::swap(...)是因为，这样给编译器一个选择的余地，它会在Widget所在命名空间，全局作用域和std命名空间寻找可行的swap。然后调用最合适的swap版本。最合适的版本是依据转换代价最小来确定的，而跟位于哪个作用域没有关系。  </span>
-    <span class="n">swap</span><span class="p">(</span><span class="n">pImpl</span><span class="p">,</span><span class="n">other</span><span class="p">.</span><span class="n">pImpl</span><span class="p">);</span> <span class="c1">//在这里是调用了stl中的swap，因为另外两个作用域内没有swap。  </span>
+    <span class="c1">//使用using std::swap,而不是直接在下面的句子调用std::swap(...)</span>
+    <span class="c1">//这样给编译器一个选择的余地，它会在WidgetImpl类所在命名空间(argument-dependent lookup)，</span>
+    <span class="c1">//和当前命名空间或上层(normal lookup)，上分别进行名字查找来确定候选函数。</span>
+    <span class="c1">//然后调用最合适的swap版本。最合适的版本是依据转换代价最小来确定的，而跟位于哪个作用域没有关系。  </span>
+    <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">;</span> 
+    <span class="n">swap</span><span class="p">(</span><span class="n">pImpl</span><span class="p">,</span><span class="n">other</span><span class="p">.</span><span class="n">pImpl</span><span class="p">);</span> <span class="c1">//在这里是调用了stl中的swap（normal lookup的结果），因为WidgetImpl所在命名空间内没有</span>
 <span class="p">}</span>  
 </pre></div>
 
 
 <p>【2】 std内特化swap  </p>
-<div class="highlight"><pre><span class="k">template</span><span class="o">&lt;&gt;</span>  
+<div class="highlight"><pre><span class="k">namespace</span> <span class="n">std</span><span class="p">{</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span>  
 <span class="kt">void</span> <span class="n">swap</span><span class="o">&lt;</span><span class="n">Widget</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Widget</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="n">Widget</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span>  
 <span class="p">{</span>  
      <span class="n">a</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>  
 <span class="p">}</span>  
+<span class="p">};</span>
 </pre></div>
 
 
-<p>4.下面来自CppPrimer的内容(第4中文版：P232和P571)：<br />
+<p><strong>注意</strong>:如果Widget是模版类，不能在std空间下定义swap，因为不支持偏特化函数，即使支持也不能添加到std里。这时候，在Widget定义所在的命名空间内定义一个模版swap函数<code>template&lt;typename T&gt;void swap(Widget&lt;T&gt;&amp;a,Widget&lt;T&gt;&amp;b){...}</code>，可以保证在使用swap(w1,w2)的时候，至少候选函数中会包含这个版本，这得益于argument-dependent lookup。
+4.下面来自CppPrimer的内容(第4中文版：P232和P571)：<br />
 重载函数中既有普通函数，又有函数模版，确定具体哪个函数被调用的过程：<br />
 (1)确定候选函数（candidate functions），即调用点声明可见的同名普通函数，和可实例化模板函数。<br />
 (2)确定可行函数（viable functions），排除普通函数中没法匹配的函数。<br />
@@ -144,15 +151,15 @@ Widget类：WidgetImpl *pImpl;<br />
 (4)如果上面寻找到的最佳匹配有二义，去掉模版函数再寻找最佳匹配。<br />
 转换代价由低到高：<br />
 (1)exact match精确匹配（类型一致，比如形参和实参都是int）<br />
-(2)promotion类型提升（形参类型可表示范围涵盖实参类型可表示范围，比如int转化成double）<br />
-(3)standard conversion标准转换（除类型提升外的隐式转换，比如bool转化成int）<br />
+(2)promotion整型提升（比如short转化成int）<br />
+(3)standard conversion标准转换（除类型提升外的隐式转换，比如bool转化成int，short转换成long）<br />
 (4)class-type conversion类类型转换（含有one-parameter-non-explicit构造函数的类，用构造函数参数类型转化成类类型）  </p></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-13T19:53:49.255545" pubdate>2013-10-13</time>    <span class="categories">
+  <time datetime="2013-10-10T00:00:00" pubdate>2013-10-10</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
       </span>
   </p>    </footer>
@@ -168,19 +175,19 @@ Widget类：WidgetImpl *pImpl;<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+          <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（1）</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+          <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+          <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+          <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/10/blog-build.html">Linux下使用Github Pages搭建博客</a>
+          <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
       </li>
           </ul>
   </section>
@@ -199,7 +206,7 @@ Widget类：WidgetImpl *pImpl;<br />
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/storage.html">storage</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/distributed.html">distributed</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

@@ -61,7 +61,7 @@
   <article class="hentry" role="article">
     <header>
           <h1 class="entry-title">Effective C++学习笔记(7)</h1>
-          <p class="meta"><time datetime="2013-10-13T20:00:59.983564" pubdate>2013-10-13</time></p>
+          <p class="meta"><time datetime="2013-10-12T00:00:00" pubdate>2013-10-12</time></p>
 </header>
 
   <div class="entry-content"><h2>Item 26: Postpone variable definitions as long as possible.</h2>
@@ -70,7 +70,7 @@
 (1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分<br />
 因为：缩小变量的作用域，对于程序的可理解性和易维护性好。  </p>
 <h2>Item 27:Minimizing casting</h2>
-<p>1.C++风格类型转换中，<code>dynamic_cast&lt;T&gt;(expr)</code>是唯一一个无法用旧式语达（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。<br />
+<p>1.C++风格类型转换中，<code>dynamic_cast&lt;T&gt;(expr)</code>是唯一一个无法用旧式语法（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。<br />
 2.能用C++风格转型，就不用旧式语法。因为它们容易在代码中被辨识出来，因为简化了"找出类型系统在哪个地点被破坏"的过程。<br />
 3.显示构造：  </p>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">Widget</span><span class="p">{</span>  
@@ -138,7 +138,7 @@ typeid（返回type_info对象，支持相等比较运算和name()方法）：�
 </pre></div>
 
 
-<p>只是告诉调用者，不打算抛出异常。但是“完全可能”抛出异常，那时候会有一个函数被调用（std::set_unexcepted函数的参数绑定的异常处理函数，该函数会在抛出非声明的类型的异常时执行）。<br />
+<p>只是告诉调用者，不打算抛出异常。但是“完全可能”抛出异常，那时候会有一个函数被调用（std::set_unexpected函数的参数绑定的异常处理函数，该函数会在抛出非声明的类型的异常时执行）。<br />
 3.强烈保证：<br />
 变换语句顺序有时候可以做到；copy-and-swap一般可以做到。<br />
 （1）变换语句顺序：delete 和 ++放到new后面。当然用对象管理资源更安全和简洁  </p>
@@ -159,7 +159,7 @@ typeid（返回type_info对象，支持相等比较运算和name()方法）：�
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-  <time datetime="2013-10-13T20:00:59.983564" pubdate>2013-10-13</time>    <span class="categories">
+  <time datetime="2013-10-12T00:00:00" pubdate>2013-10-12</time>    <span class="categories">
         <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
       </span>
   </p>    </footer>
@@ -175,19 +175,19 @@ typeid（返回type_info对象，支持相等比较运算和name()方法）：�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
+          <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（1）</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
+          <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
+          <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
+          <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+          <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
       </li>
           </ul>
   </section>
@@ -206,7 +206,7 @@ typeid（返回type_info对象，支持相等比较运算和name()方法）：�
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/storage.html">storage</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/distributed.html">distributed</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>
