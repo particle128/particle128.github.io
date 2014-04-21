@@ -172,75 +172,75 @@
 <ul>
 <li>动态设置超时时间  </li>
 </ul>
-<p>linux下selenium webdriver不提供异步加载页面的功能，所以只能使用同步加载策略。因为页面上图片较多（商品图片、广告、活动宣传等），如果等待页面完整的下载下来，会浪费很多宝贵的时间。因此采用带有超时的同步加载。但是，利用每台电脑的网卡速度、内存情况，每次购物的网络拥挤状况不同，导致加载同一个页面的时间相差较大。
-采用“指数增长，线性调整”策略：
-一开始读取配置文件中的一个初始值，设置超时时间全局变量。加载页面的策略就是：在一个循环中，get一个页面，超时后会出错返回，然后检查我关注的标签（比如衣服的尺码信息、加入购物车按钮等）是否加载完毕，如果加载完毕，退出循环，继续下面的步骤；否则，超时的时间*=2，再次进入循环，刷新这个页面。。。这是“指数增长”阶段。当连续两次没有超时就获取到页面元素之后，就进入“线性调整”阶段。该阶段中，每次不发生超时，超时时间-=1，直到再次遇到超时，进入“最终阶段”。最终阶段，每次超时，超时时间+=1，不再进行-=1的操作了。
-抢购完毕软件退出时，会把动态修改的超时时间写入配置文件，下次用该值进行初始化。</p>
+<p>linux下selenium webdriver不提供异步加载页面的功能，所以只能使用同步加载策略。因为页面上图片较多（商品图片、广告、活动宣传等），如果等待页面完整的下载下来，会浪费很多宝贵的时间。因此采用带有超时的同步加载。但是，利用每台电脑的网卡速度、内存情况，每次购物的网络拥挤状况不同，导致加载同一个页面的时间相差较大。<br />
+采用“指数增长，线性调整”策略：<br />
+一开始读取配置文件中的一个初始值，设置超时时间全局变量。加载页面的策略就是：在一个循环中，get一个页面，超时后会出错返回，然后检查我关注的标签（比如衣服的尺码信息、加入购物车按钮等）是否加载完毕，如果加载完毕，退出循环，继续下面的步骤；否则，超时的时间*=2，再次进入循环，刷新这个页面。。。这是“指数增长”阶段。当连续两次没有超时就获取到页面元素之后，就进入“线性调整”阶段。该阶段中，每次不发生超时，超时时间-=1，直到再次遇到超时，进入“最终阶段”。最终阶段，每次超时，超时时间+=1，不再进行-=1的操作了。<br />
+抢购完毕软件退出时，会把动态修改的超时时间写入配置文件，下次用该值进行初始化。  </p>
 <p>代码如下：  </p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">buy</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-    <span class="s">&quot;购买对应尺码的商品&quot;</span>
-    <span class="n">p_print</span><span class="p">(</span><span class="s">&#39;buy&#39;</span><span class="p">)</span>
-    <span class="n">SizeReg</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">size</span> <span class="o">!=</span> <span class="s">u&#39;默认&#39;</span><span class="p">:</span>
-        <span class="n">SizeReg</span> <span class="o">=</span> <span class="s">u&#39;^&#39;</span> <span class="o">+</span> <span class="n">size</span> <span class="o">+</span> <span class="s">u&#39;([^.L]|$)&#39;</span>
-    <span class="k">else</span><span class="p">:</span>  <span class="c"># 如果是默认尺码，那就所有商品都选</span>
-        <span class="n">SizeReg</span> <span class="o">=</span> <span class="s">u&#39;.*&#39;</span>
-    <span class="n">timeout_flag</span> <span class="o">=</span> <span class="bp">False</span>
-    <span class="n">ref</span> <span class="o">=</span> <span class="bp">False</span>
-    <span class="k">global</span> <span class="n">BuyTimeout</span><span class="p">,</span> <span class="n">SuccessCnt</span><span class="p">,</span> <span class="n">State</span>
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ref</span><span class="p">:</span>
-                <span class="n">driver</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
-            <span class="c"># 定位出价格显示区</span>
-            <span class="n">pri_block</span><span class="o">=</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s">&quot;size_list&quot;</span><span class="p">)</span>
-            <span class="n">btn</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">&#39;J_cartAdd_submit&#39;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">pri_block</span><span class="o">.</span><span class="n">find_elements_by_tag_name</span><span class="p">(</span><span class="s">&#39;li&#39;</span><span class="p">):</span>
-                <span class="c"># 没有售完，且大小符合要求</span>
-                <span class="n">class_attr</span> <span class="o">=</span> <span class="n">li</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">class_attr</span> <span class="ow">and</span> <span class="s">&#39;sli_disabled&#39;</span> <span class="ow">in</span> <span class="n">class_attr</span><span class="p">:</span>  <span class="c"># 售完的</span>
-                    <span class="k">continue</span>
-                <span class="n">span</span> <span class="o">=</span> <span class="n">li</span><span class="o">.</span><span class="n">find_element_by_tag_name</span><span class="p">(</span><span class="s">&#39;span&#39;</span><span class="p">)</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">SizeReg</span><span class="p">,</span> <span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;&quot; &#39;</span><span class="p">)):</span>
-                    <span class="n">action</span> <span class="o">=</span> <span class="n">ActionChains</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
-                    <span class="c"># ！！！ click会超时，至少2s的page_load_timeout</span>
-                    <span class="n">action</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">li</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">btn</span><span class="p">)</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
-                    <span class="n">p_print</span><span class="p">(</span><span class="s">&#39;got size&#39;</span><span class="p">,</span> <span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-                    <span class="k">global</span> <span class="n">HasGood</span>  <span class="c"># !!!全局变量</span>
-                    <span class="n">HasGood</span> <span class="o">=</span> <span class="bp">True</span>
-                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">TimeoutException</span><span class="p">:</span>
-            <span class="n">p_print</span><span class="p">(</span><span class="s">&#39;timeout&#39;</span><span class="p">)</span>
-            <span class="n">ref</span><span class="o">=</span><span class="bp">False</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">p_print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="n">timeout_flag</span> <span class="o">=</span> <span class="bp">True</span>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">buy</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>  
+    <span class="s">&quot;购买对应尺码的商品&quot;</span>  
+    <span class="n">p_print</span><span class="p">(</span><span class="s">&#39;buy&#39;</span><span class="p">)</span>  
+    <span class="n">SizeReg</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>  
+    <span class="k">if</span> <span class="n">size</span> <span class="o">!=</span> <span class="s">u&#39;默认&#39;</span><span class="p">:</span>  
+        <span class="n">SizeReg</span> <span class="o">=</span> <span class="s">u&#39;^&#39;</span> <span class="o">+</span> <span class="n">size</span> <span class="o">+</span> <span class="s">u&#39;([^.L]|$)&#39;</span>  
+    <span class="k">else</span><span class="p">:</span>  <span class="c"># 如果是默认尺码，那就所有商品都选  </span>
+        <span class="n">SizeReg</span> <span class="o">=</span> <span class="s">u&#39;.*&#39;</span>  
+    <span class="n">timeout_flag</span> <span class="o">=</span> <span class="bp">False</span>  
+    <span class="n">ref</span> <span class="o">=</span> <span class="bp">False</span>  
+    <span class="k">global</span> <span class="n">BuyTimeout</span><span class="p">,</span> <span class="n">SuccessCnt</span><span class="p">,</span> <span class="n">State</span>  
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>  
+        <span class="k">try</span><span class="p">:</span>  
+            <span class="k">if</span> <span class="n">ref</span><span class="p">:</span>  
+                <span class="n">driver</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>  
+            <span class="c"># 定位出价格显示区  </span>
+            <span class="n">pri_block</span><span class="o">=</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s">&quot;size_list&quot;</span><span class="p">)</span>  
+            <span class="n">btn</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">&#39;J_cartAdd_submit&#39;</span><span class="p">)</span>  
+            <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">pri_block</span><span class="o">.</span><span class="n">find_elements_by_tag_name</span><span class="p">(</span><span class="s">&#39;li&#39;</span><span class="p">):</span>  
+                <span class="c"># 没有售完，且大小符合要求  </span>
+                <span class="n">class_attr</span> <span class="o">=</span> <span class="n">li</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;class&#39;</span><span class="p">)</span>  
+                <span class="k">if</span> <span class="n">class_attr</span> <span class="ow">and</span> <span class="s">&#39;sli_disabled&#39;</span> <span class="ow">in</span> <span class="n">class_attr</span><span class="p">:</span>  <span class="c"># 售完的  </span>
+                    <span class="k">continue</span>  
+                <span class="n">span</span> <span class="o">=</span> <span class="n">li</span><span class="o">.</span><span class="n">find_element_by_tag_name</span><span class="p">(</span><span class="s">&#39;span&#39;</span><span class="p">)</span>  
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>  
+                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">SizeReg</span><span class="p">,</span> <span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;&quot; &#39;</span><span class="p">)):</span>  
+                    <span class="n">action</span> <span class="o">=</span> <span class="n">ActionChains</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>  
+                    <span class="c"># ！！！ click会超时，至少2s的page_load_timeout  </span>
+                    <span class="n">action</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">li</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">btn</span><span class="p">)</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>  
+                    <span class="n">p_print</span><span class="p">(</span><span class="s">&#39;got size&#39;</span><span class="p">,</span> <span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>  
+                    <span class="k">global</span> <span class="n">HasGood</span>  <span class="c"># !!!全局变量  </span>
+                    <span class="n">HasGood</span> <span class="o">=</span> <span class="bp">True</span>  
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
+        <span class="k">except</span> <span class="n">TimeoutException</span><span class="p">:</span>  
+            <span class="n">p_print</span><span class="p">(</span><span class="s">&#39;timeout&#39;</span><span class="p">)</span>  
+            <span class="n">ref</span><span class="o">=</span><span class="bp">False</span>  
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  
+            <span class="n">p_print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>  
+            <span class="n">timeout_flag</span> <span class="o">=</span> <span class="bp">True</span>  
 
-            <span class="k">if</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;ExponState&#39;</span><span class="p">:</span>
-                <span class="n">BuyTimeout</span><span class="o">*=</span><span class="mi">2</span>    <span class="c"># 指数增长</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">BuyTimeout</span><span class="o">+=</span><span class="mi">1</span>    <span class="c"># 线性调整</span>
-                <span class="k">if</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;LinearState&#39;</span><span class="p">:</span>
-                    <span class="n">State</span> <span class="o">=</span> <span class="s">&#39;FinalState&#39;</span>
+            <span class="k">if</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;ExponState&#39;</span><span class="p">:</span>  
+                <span class="n">BuyTimeout</span><span class="o">*=</span><span class="mi">2</span>    <span class="c"># 指数增长  </span>
+            <span class="k">else</span><span class="p">:</span>  
+                <span class="n">BuyTimeout</span><span class="o">+=</span><span class="mi">1</span>    <span class="c"># 线性调整  </span>
+                <span class="k">if</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;LinearState&#39;</span><span class="p">:</span>  
+                    <span class="n">State</span> <span class="o">=</span> <span class="s">&#39;FinalState&#39;</span>  
 
-            <span class="n">driver</span><span class="o">.</span><span class="n">set_page_load_timeout</span><span class="p">(</span><span class="n">BuyTimeout</span><span class="p">)</span> 
-            <span class="n">p_print</span><span class="p">(</span><span class="s">&#39;new timeout&#39;</span><span class="p">)</span>
-            <span class="n">ref</span><span class="o">=</span><span class="bp">True</span><span class="c">#重新加载该页</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">break</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">set_page_load_timeout</span><span class="p">(</span><span class="n">BuyTimeout</span><span class="p">)</span>  
+            <span class="n">p_print</span><span class="p">(</span><span class="s">&#39;new timeout&#39;</span><span class="p">)</span>  
+            <span class="n">ref</span><span class="o">=</span><span class="bp">True</span><span class="c">#重新加载该页  </span>
+        <span class="k">else</span><span class="p">:</span>  
+            <span class="k">break</span>  
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">timeout_flag</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;ExponState&#39;</span><span class="p">:</span>
-            <span class="n">SuccessCnt</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">SuccessCnt</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">State</span> <span class="o">=</span> <span class="s">&#39;LinearState&#39;</span> <span class="c"># 指数增长阶段，连续两次不超时，进入线性调整阶段</span>
-        <span class="k">elif</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;LinearState&#39;</span><span class="p">:</span>
-            <span class="n">BuyTimeout</span><span class="o">-=</span><span class="mi">1</span>      <span class="c"># 线性调整</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span> <span class="c"># FinalState不进行-1的操作</span>
-    <span class="k">elif</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;ExponState&#39;</span><span class="p">:</span>
-        <span class="n">SuccessCnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">timeout_flag</span><span class="p">:</span>  
+        <span class="k">if</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;ExponState&#39;</span><span class="p">:</span>  
+            <span class="n">SuccessCnt</span> <span class="o">+=</span> <span class="mi">1</span>  
+            <span class="k">if</span> <span class="n">SuccessCnt</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  
+                <span class="n">State</span> <span class="o">=</span> <span class="s">&#39;LinearState&#39;</span> <span class="c"># 指数增长阶段，连续两次不超时，进入线性调整阶段  </span>
+        <span class="k">elif</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;LinearState&#39;</span><span class="p">:</span>  
+            <span class="n">BuyTimeout</span><span class="o">-=</span><span class="mi">1</span>      <span class="c"># 线性调整  </span>
+        <span class="k">else</span><span class="p">:</span>  
+            <span class="k">pass</span> <span class="c"># FinalState不进行-1的操作  </span>
+    <span class="k">elif</span> <span class="n">State</span> <span class="o">==</span> <span class="s">&#39;ExponState&#39;</span><span class="p">:</span>  
+        <span class="n">SuccessCnt</span> <span class="o">=</span> <span class="mi">0</span>  
 
 <span class="n">cnt</span><span class="o">=</span><span class="mi">0</span>  
 <span class="n">ref</span><span class="o">=</span><span class="bp">False</span>  
