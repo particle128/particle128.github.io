@@ -61,34 +61,6 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-28T00:00:00" pubdate>2013-12-28</time></p>
-</header>
-
-  <div class="entry-content"><p>用Selenium Webdriver有段时间了，一直learning on demand，浏览了大部分API，并没有对这个工具进行详细和彻底的学习。<br />
-今天正好闲下来，梳理一下相关知识。  </p>
-<h2>Some Links</h2>
-<p><a href="http://code.google.com/p/selenium/">工程主页</a><br />
-<a href="http://www.seleniumhq.org/docs">文档主页</a><br />
-<a href="http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html">Python文档</a><br />
-<a href="http://selenium-python.readthedocs.org/en/latest/index.html">Python非官方文档</a><br />
-本人的两个使用Selenium的小项目
-<a href="https://github.com/particle128/vipshop-buy">vip.com shop assistant</a> <a href="https://github.com/particle128/qunar-flight-reminder">qunar flight-fare reminder</a></p>
-<h2>Some Concepts</h2>
-<h3>敏捷开发（Agile development）</h3>
-<p>是一个软件开发方法学，强调3点：<br />
-(1)adaptive&gt;predictive (2)iterative&gt;waterfall (3)codes&gt;documents<br />
-强调软件快速迭代，随着需求变化而修改或重构程序，而不是一开始就为将来可能出现的所有需求来设计。  </p>
-<h3>极限编程（extreme programming）</h3>
-<p>是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/selenium.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
       </h1>
           <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
@@ -341,6 +313,31 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
   </footer>
   		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
+<h2>Introduction</h2>
+<p>This project is used to check the airfare in <a href="http://www.qunar.com">www.qunar.com</a>, and send you a SMS message when the price is lower than what you set in config.py  </p>
+<h2>Requirements</h2>
+<p>Download the ChromeDriver in <a href="https://code.google.com/p/chromedriver/downloads/list">here</a>  </p>
+<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">selenium</span>  
+</pre></div>
+
+
+<h2>Configuration</h2>
+<p>see config.py  </p>
+<h2>Usage</h2>
+<div class="highlight"><pre><span class="n">python</span> <span class="n">main ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/qunar.html">Read On &crarr;</a>
+  </footer>
+  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
   
@@ -355,9 +352,6 @@ const bool true=1;<br />
           <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（1）</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（1）</a>
-      </li>
-            <li class="post">
           <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
       </li>
             <li class="post">
@@ -365,6 +359,9 @@ const bool true=1;<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
       </li>
           </ul>
   </section>
