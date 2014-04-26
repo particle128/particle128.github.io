@@ -62,6 +62,41 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（2）</a>
+      </h1>
+          <p class="meta"><time datetime="2014-04-26T00:00:00" pubdate>2014-04-26</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter2 单机存储系统</h3>
+<h4>硬件基础</h4>
+<h5>CPU架构</h5>
+<ul>
+<li>SMP（对称多处理）:经典的CPU架构，一个计算机上汇集了一组CPU（一个CPU往往包括不止一个核），对称工作、无主次或从属关系，共享相同的物理内存和总线。<br />
+  某些CPU还通过超线程技术（Hyper-Threading Technology），在一个核心上同时执行两个线程。  </li>
+<li>NUMA（非一致存储访问）:克服SMP中多CPU对总线资源的竞争，一个NUMA包括多个NUMA节点，一个NUMA节点就是一个SMP结构（n个CPU，1个内存）  </li>
+</ul>
+<h5>IO总线</h5>
+<p>Intel的主板，一般为南、北桥架构  </p>
+<ul>
+<li>北桥芯片：CPU，内存，高端SSD (高速IO)  </li>
+<li>南桥芯片：网卡，硬盘，中低端SSD  </li>
+</ul>
+<h5>网路拓扑</h5>
+<p>数据中心网络拓扑结构，主要分为  </p>
+<ul>
+<li>三层结构：核心层、汇聚层、接入层。一个接入层交换机下的服务器部署在一个机架内  </li>
+<li>三级CLOS网络：Google设计的扁平化拓扑结构（从wiki上看图，感觉挺复杂的）  </li>
+</ul>
+<p>传输时延  </p>
+<ul>
+<li>同一个数据中心内部 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（1）</a>
       </h1>
           <p class="meta"><time datetime="2014-04-15T00:00:00" pubdate>2014-04-15</time></p>
@@ -87,11 +122,11 @@
 </ul>
 <h4>分布式存储系统分类</h4>
 <p>1、分布式文件系统<br />
-存储非结构化数据，只提供基于主键的CRUD功能，可以用作分布式数据库或分布式表格系统的底层存储  </p>
+存储非结构化数据，可以用作分布式数据库或分布式表格系统的底层存储  </p>
 <ul>
 <li>存储BLOB，Facebook Haystack以及Taobao File System  </li>
 <li>存储大文件，Google File System，分布式表格系统Google Bigtable的基础  </li>
-<li>存储定长块，Amazon的Elastic Block Store，分布式数据库Amazon ...</li></ul></div>
+<li>存储定长块，Amazon的Elastic Block Store，分布式数据库Amazon RDS的基础 ...</li></ul></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore.html">Read On &crarr;</a>
   </footer>
@@ -218,6 +253,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（2）</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（1）</a>
       </li>
             <li class="post">
@@ -228,9 +266,6 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2013/09/blog-build.html">Linux下使用Github Pages搭建博客</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/09/androidSMS.html">android小工具-失败短信重新发送</a>
       </li>
           </ul>
   </section>

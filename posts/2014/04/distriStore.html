@@ -85,21 +85,21 @@
 </ul>
 <h4>分布式存储系统分类</h4>
 <p>1、分布式文件系统<br />
-存储非结构化数据，只提供基于主键的CRUD功能，可以用作分布式数据库或分布式表格系统的底层存储  </p>
+存储非结构化数据，可以用作分布式数据库或分布式表格系统的底层存储  </p>
 <ul>
 <li>存储BLOB，Facebook Haystack以及Taobao File System  </li>
 <li>存储大文件，Google File System，分布式表格系统Google Bigtable的基础  </li>
 <li>存储定长块，Amazon的Elastic Block Store，分布式数据库Amazon RDS的基础  </li>
 </ul>
 <p>2、分布式键值系统<br />
-存储关系简单的半结构化数据，一般用作分布式缓存  </p>
+存储关系简单的半结构化数据，只提供基于主键的CRUD功能，一般用作分布式缓存  </p>
 <ul>
 <li>Amazon Dynamo  </li>
 <li>Taobao Tair  </li>
 <li>redis  </li>
 <li>memcached  </li>
 </ul>
-<p>一致性哈希(consistent hashing)是分布式缓存常用的技术，满足4个适应条件：  </p>
+<p>一致性哈希(consistent hashing)是分布式缓存常用的技术</p>
 <p>3、分布式表格系统<br />
 存储关系较为复杂的半结构化数据，除了CRUD功能，还支持主键的范围查找  </p>
 <ul>
@@ -135,6 +135,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（2）</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2014/04/distriStore.html">大规模分布式存储系统-笔记（1）</a>
       </li>
             <li class="post">
@@ -145,9 +148,6 @@
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
       </li>
           </ul>
   </section>
