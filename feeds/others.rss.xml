@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/others.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-04-26T00:00:00+08:00</updated><entry><title>大规模分布式存储系统-笔记（2）</title><link href="http://particle128.com/posts/2014/04/distriStore.html" rel="alternate"></link><updated>2014-04-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-04-26:posts/2014/04/distriStore.html</id><summary type="html">&lt;h3&gt;Chapter2 单机存储系统&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/others.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-04-26T00:00:00+08:00</updated><entry><title>大规模分布式存储系统-笔记（2）</title><link href="http://particle128.com/posts/2014/04/distriStore2.html" rel="alternate"></link><updated>2014-04-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-04-26:posts/2014/04/distriStore2.html</id><summary type="html">&lt;h3&gt;Chapter2 单机存储系统&lt;/h3&gt;
 &lt;h4&gt;硬件基础&lt;/h4&gt;
 &lt;h5&gt;CPU架构&lt;/h5&gt;
 &lt;ul&gt;
@@ -37,7 +37,7 @@ SSD（固态硬盘）因为随机读取延迟小（磁盘的随机读取，需�
 &lt;ul&gt;
 &lt;li&gt;磁盘：大块顺序访问的存储系统，保存冷数据  &lt;/li&gt;
 &lt;li&gt;SSD：随机访问较多或者对延时比较敏感的关键系统，保存热数据  &lt;/li&gt;
-&lt;/ul&gt;</summary><category term="distributed"></category><category term="storage"></category></entry><entry><title>大规模分布式存储系统-笔记（1）</title><link href="http://particle128.com/posts/2014/04/distriStore.html" rel="alternate"></link><updated>2014-04-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-04-15:posts/2014/04/distriStore.html</id><summary type="html">&lt;h3&gt;Chapter1 概述&lt;/h3&gt;
+&lt;/ul&gt;</summary><category term="distributed"></category><category term="storage"></category></entry><entry><title>大规模分布式存储系统-笔记（1）</title><link href="http://particle128.com/posts/2014/04/distriStore1.html" rel="alternate"></link><updated>2014-04-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-04-15:posts/2014/04/distriStore1.html</id><summary type="html">&lt;h3&gt;Chapter1 概述&lt;/h3&gt;
 &lt;h4&gt;分布式存储特征&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;可扩展：随着集群规模增大，整体性能表现为线性增长  &lt;/li&gt;
