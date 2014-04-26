@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description></description><atom:link href="http://particle128.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 15 Apr 2014 00:00:00 +0800</lastBuildDate><item><title>大规模分布式存储系统-笔记（1）</title><link>http://particle128.com/posts/2014/04/distriStore.html</link><description>&lt;h3&gt;Chapter1 概述&lt;/h3&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>失败并不可怕，可怕是妥协</description><atom:link href="http://particle128.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 15 Apr 2014 00:00:00 +0800</lastBuildDate><item><title>大规模分布式存储系统-笔记（1）</title><link>http://particle128.com/posts/2014/04/distriStore.html</link><description>&lt;h3&gt;Chapter1 概述&lt;/h3&gt;
 &lt;h4&gt;分布式存储特征&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;可扩展：随着集群规模增大，整体性能表现为线性增长  &lt;/li&gt;
