@@ -65,21 +65,21 @@
           <p class="meta"><time datetime="2014-04-26T00:00:00" pubdate>2014-04-26</time></p>
 </header>
 
-  <div class="entry-content"><h3>Chapter2 单机存储系统</h3>
-<h4>硬件基础</h4>
-<h5>CPU架构</h5>
+  <div class="entry-content"><h2>Chapter2 单机存储系统</h2>
+<h3>硬件基础</h3>
+<h4>CPU架构</h4>
 <ul>
 <li>SMP（对称多处理）:经典的CPU架构，一个计算机上汇集了一组CPU（一个CPU往往包括不止一个核），对称工作、无主次或从属关系，共享相同的物理内存和总线。<br />
   某些CPU还通过超线程技术（Hyper-Threading Technology），在一个核心上同时执行两个线程。  </li>
 <li>NUMA（非一致存储访问）:克服SMP中多CPU对总线资源的竞争，一个NUMA包括多个NUMA节点，一个NUMA节点就是一个SMP结构（n个CPU，1个内存）  </li>
 </ul>
-<h5>IO总线</h5>
+<h4>IO总线</h4>
 <p>Intel的主板，一般为南、北桥架构  </p>
 <ul>
 <li>北桥芯片：CPU，内存，高端SSD (高速IO)  </li>
 <li>南桥芯片：网卡，硬盘，中低端SSD  </li>
 </ul>
-<h5>网路拓扑</h5>
+<h4>网路拓扑</h4>
 <p>数据中心网络拓扑结构，主要分为  </p>
 <ul>
 <li>三层结构：核心层、汇聚层、接入层。一个接入层交换机下的服务器部署在一个机架内  </li>
@@ -90,12 +90,14 @@
 <li>同一个数据中心内部，网络来回的时延为0.5ms  </li>
 <li>杭州和北京两个数据数据中心之间，网络来回的时延大约40ms  </li>
 </ul>
-<h5>性能参数</h5>
-<p>比较重要的参数<br />
-<em> 内存访问：               100ns<br />
-</em> 千兆网络发送1MB数据：    10ms  (1Gbit/s=0.1GB/s=100MB/s，1MB/(100MB/1000ms)=10ms)<br />
-<em> SATA磁盘寻道：           10ms<br />
-</em> SATA磁盘顺序读取1MB数据：20ms （SATA带宽100MB/s，寻道+访问=10ms+1MB/(100MB/1000ms)=20ms）  </p>
+<h4>性能参数</h4>
+<p>比较重要的参数  </p>
+<ul>
+<li>内存访问：               100ns  </li>
+<li>千兆网络发送1MB数据：    10ms  (1Gbit/s=0.1GB/s=100MB/s，1MB/(100MB/1000ms)=10ms)  </li>
+<li>SATA磁盘寻道：           10ms  </li>
+<li>SATA磁盘顺序读取1MB数据：20ms （SATA带宽100MB/s，寻道+访问=10ms+1MB/(100MB/1000ms)=20ms）  </li>
+</ul>
 <p>此外：<br />
 SSD（固态硬盘）因为随机读取延迟小（磁盘的随机读取，需要耗费大量的寻道时间），并且提供很高的IOPS（每秒读写次数），在缓存和一些性能要求较高的关键业务上的应用越来越广。  </p>
 <p>存储系统的性能包括两个维度 : 吞吐量 , 访问延时<br />

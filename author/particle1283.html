@@ -239,8 +239,8 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
           <p class="meta"><time datetime="2014-04-15T00:00:00" pubdate>2014-04-15</time></p>
 </header>
 
-  <div class="entry-content"><h3>Chapter1 概述</h3>
-<h4>分布式存储特征</h4>
+  <div class="entry-content"><h2>Chapter1 概述</h2>
+<h3>分布式存储特征</h3>
 <ul>
 <li>可扩展：随着集群规模增大，整体性能表现为线性增长  </li>
 <li>低成本：构建在普通PC上，实现自动容错、自动负载均衡  </li>
@@ -251,13 +251,13 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
 <blockquote>
 <p>一般来讲，工程师如果能够深入理解分布式存储系统，理解其他互联网后台架构不再会有任何困难。  </p>
 </blockquote>
-<h4>分布式存储分类</h4>
+<h3>分布式存储分类</h3>
 <ul>
 <li>非结构化数据：文档、图片、视频等  </li>
 <li>结构化数据：数据库中的表  </li>
 <li>半结构化数据：HTML文档，模式结构和内容混在一起  </li>
 </ul>
-<h4>分布式存储系统分类</h4>
+<h3>分布式存储系统分类</h3>
 <p>1、分布式文件系统<br />
 存储非结构化数据，可以用作分布式数据库或分布式表格系统的底层存储  </p>
 <ul>
@@ -276,21 +276,21 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
           <p class="meta"><time datetime="2014-04-26T00:00:00" pubdate>2014-04-26</time></p>
 </header>
 
-  <div class="entry-content"><h3>Chapter2 单机存储系统</h3>
-<h4>硬件基础</h4>
-<h5>CPU架构</h5>
+  <div class="entry-content"><h2>Chapter2 单机存储系统</h2>
+<h3>硬件基础</h3>
+<h4>CPU架构</h4>
 <ul>
 <li>SMP（对称多处理）:经典的CPU架构，一个计算机上汇集了一组CPU（一个CPU往往包括不止一个核），对称工作、无主次或从属关系，共享相同的物理内存和总线。<br />
   某些CPU还通过超线程技术（Hyper-Threading Technology），在一个核心上同时执行两个线程。  </li>
 <li>NUMA（非一致存储访问）:克服SMP中多CPU对总线资源的竞争，一个NUMA包括多个NUMA节点，一个NUMA节点就是一个SMP结构（n个CPU，1个内存）  </li>
 </ul>
-<h5>IO总线</h5>
+<h4>IO总线</h4>
 <p>Intel的主板，一般为南、北桥架构  </p>
 <ul>
 <li>北桥芯片：CPU，内存，高端SSD (高速IO)  </li>
 <li>南桥芯片：网卡，硬盘，中低端SSD  </li>
 </ul>
-<h5>网路拓扑</h5>
+<h4>网路拓扑</h4>
 <p>数据中心网络拓扑结构，主要分为  </p>
 <ul>
 <li>三层结构：核心层、汇聚层、接入层。一个接入层交换机下的服务器部署在一个机架内  </li>
