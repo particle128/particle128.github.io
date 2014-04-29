@@ -66,7 +66,7 @@
 </header>
 
   <div class="entry-content"><h2>Chapter2 单机存储系统</h2>
-<h3>硬件基础</h3>
+<h3>2.1硬件基础</h3>
 <h4>CPU架构</h4>
 <ul>
 <li>SMP（对称多处理）:经典的CPU架构，一个计算机上汇集了一组CPU（一个CPU往往包括不止一个核），对称工作、无主次或从属关系，共享相同的物理内存和总线。<br />
@@ -105,7 +105,32 @@ SSD（固态硬盘）因为随机读取延迟小（磁盘的随机读取，需�
 <ul>
 <li>磁盘：大块顺序访问的存储系统，保存冷数据  </li>
 <li>SSD：随机访问较多或者对延时比较敏感的关键系统，保存热数据  </li>
-</ul></div>
+</ul>
+<h3>2.2 单机存储引擎</h3>
+<p>存储引擎就是哈希表、B树、LSM树等数据结构在磁盘、SSD等持久化介质的实现。根据采用数据结构不同，分成：哈希存储引擎，B树存储引擎，LSM树存储引擎  </p>
+<h4>哈希存储引擎</h4>
+<p>Bitcask是<a href="http://docs.basho.com/riak/1.2.0/tutorials">Riak</a>（排名第三的键值数据库key-value store，elang实现）的默认后台存储引擎。  </p>
+<p>特点：<br />
+<em> 只支持追加操作，磁盘中的数据文件包括active data file和older data file。当active data file达到一定大小，就会变成older data file，并且建立新的active文件用来追加数据。<br />
+</em> 磁盘中数据的格式：<code>crc,timestamp,key_sz,value_sz,key(变长),value(变长)</code><br />
+<em> 内存中的数据结构：<code>key</code> -&gt; <code>file_id,value_sz,value_pos,timestamp</code><br />
+</em> 定期合并：删除和更新后，原来的记录会变成垃圾数据，这时候需要合并older data file。基于时间戳，把同一个键下的旧记录或设置为无效的记录删除，只保留最新的记录。<br />
+* 快速恢复：内存中的哈希表，每次都在磁盘上保存一份，叫索引文件（hint file）。  </p>
+<p>操作：<br />
+<em> 增：先在磁盘中追加一条记录，再更新内存的哈希表<br />
+</em> 删：更新磁盘中对应记录的value为无效，更新内存<br />
+<em> 改：增加一条新的记录，更新内存<br />
+</em> 查：通过内存哈希表找到文件号、value位置、value长度，直接read指定的文件在指定的偏移多少字节即可。  </p>
+<p>缺点：<br />
+* 所有键都保存在内存中，需要保证键的范围不够大。  </p>
+<h4>B树存储引擎</h4>
+<p>MySQL InnoDB是<a href="http://dev.mysql.com/">MySQL</a>(排名第二的数据库，第一是oracle)的一个存储引擎  </p>
+<p>缓冲区的管理方式：LIRS<br />
+是LRU替换算法的一种改进，被用在MySQL InnoDB和Oracle Touch Count中。将缓冲池分为两级，数据首先进入第一级，如果数据在较短时间内被访问两次或以上，则成为热点数据进入第二级，每一级内部还是采用LRU替换算法。  </p>
+<h4>LSM树存储引擎</h4>
+<p>LevelDB是Riak的可选后台存储引擎。  </p>
+<p>缺点：<br />
+* 读取操作比较费时，需要内存和各个层次文件按照从新到老依次查找。  </p></div>
     <footer>
       <p class="meta">
   <span class="byline author vcard">
