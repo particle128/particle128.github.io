@@ -107,9 +107,10 @@ SSD（固态硬盘）因为随机读取延迟小（磁盘的随机读取，需�
 <li>SSD：随机访问较多或者对延时比较敏感的关键系统，保存热数据  </li>
 </ul>
 <h3>2.2 单机存储引擎</h3>
-<p>存储引擎就是哈希表、B树、LSM树等数据结构在磁盘、SSD等持久化介质的实现。根据采用数据结构不同，分成：哈希存储引擎，B树存储引擎，LSM树存储引擎  </p>
+<p>存储引擎相当于存储系统的发动机.<br />
+存储引擎就是哈希表、B树、LSM树等数据结构在磁盘、SSD等持久化介质的实现。根据采用数据结构不同，分成：哈希存储引擎，B树存储引擎，LSM树存储引擎  </p>
 <h4>哈希存储引擎</h4>
-<p>Bitcask是<a href="http://docs.basho.com/riak/1.2.0/tutorials">Riak</a>（排名第三的键值数据库key-value store，elang实现）的默认后台存储引擎。  </p>
+<p>Bitcask是<a href="http://docs.basho.com/riak/1.2.0/tutorials">Riak</a>（排名第三的键值数据库key-value store，elang实现，前两名是redis和memcached）的默认后台存储引擎。  </p>
 <p>特点：  </p>
 <ul>
 <li>只支持追加操作，磁盘中的数据文件包括active data file和older data file。当active data file达到一定大小，就会变成older data file，并且建立新的active文件用来追加数据。  </li>
@@ -134,10 +135,35 @@ SSD（固态硬盘）因为随机读取延迟小（磁盘的随机读取，需�
 <p>缓冲区的管理方式：LIRS<br />
 是LRU替换算法的一种改进，被用在MySQL InnoDB和Oracle Touch Count中。将缓冲池分为两级，数据首先进入第一级，如果数据在较短时间内被访问两次或以上，则成为热点数据进入第二级，每一级内部还是采用LRU替换算法。  </p>
 <h4>LSM树存储引擎</h4>
-<p>LevelDB是Riak的可选后台存储引擎。  </p>
-<p>缺点：  </p>
+<p>LSM树，即log structured merge tree， LevelDB采用。PS:erlang版本的eLevelDB是Riak的可选后台存储引擎。  </p>
+<p>特点：<br />
+<em> 对数据的修改增量保存在内存的MemTable中，因此修改操作比较快。<br />
+</em> 当MemTable大小达到上限，LevelDB将其冻结为“不可变MemTable”，即只可读的MemTable；同时重新生成一个MemTable，用于接收到达的写入请求。<br />
+<em> 写入操作：先写到磁盘中的操作日志，再更新内存中的MemTable。<br />
+</em> 合并操作(minor compaction)：后台线程将不可变MemTable中的数据排序后写入磁盘，形成SSTable文件。SSTable文件中的记录按照主键排序，每个文件有最小和最大的主键值，这些数据元信息保存于“清单文件”中。SSTable文件根据写入时间，分成多个层次，新写入的放入0层，旧的在1层，更旧的在2层，依次类推。<br />
+<em> 合并操作(major compaction)：当某个层级下的SSTable文件数目超过上限，合并该层中的某些文件到高层级中。<br />
+</em> 读取操作（LevelDB只支持随机读取单条记录）：按如下顺序读取，（1）内存中MemTable，（2）内存中的不可变MemTable，（3）从新到老读取磁盘中的SSTable文件。<br />
+* 当内存没有命中时，读取操作比较费时，需要在内存和各个层次文件中查找。  </p>
+<h3>数据模型</h3>
+<p>数据模型相当于存储系统的外壳.<br />
+包括:  </p>
 <ul>
-<li>读取操作比较费时，需要内存和各个层次文件按照从新到老依次查找。  </li>
+<li>文件模型，比如unix树状的文件系统，GFS，TFS等  </li>
+<li>关系模型，比如关系型数据库oracle,mysql  </li>
+<li>键值模型，比如redis  </li>
+<li>表格模型，比如Google Bigtable，HBase  </li>
+</ul>
+<p>NoSQL(键值模型或表格模型)与SQL(关系模型)对比  </p>
+<p>在海量数据的场景中，SQL存在缺点：  </p>
+<ul>
+<li>事务：事务的多个操作可能在不同主机上，为了保证原子性，需要“两阶段提交协议”（2 phase commit protocol,2PS）。该协议性能很低，而且不能容忍服务器故障。  </li>
+<li>多表连接：关系数据库讲究范式，为了达到更高级别的范式，需要拆分表格，这可能导致多个表在不同主机上，连接性能比较低。  </li>
+<li>性能：B树存储引擎，在某些特定的情形下不如LSM树和hash表。  </li>
+</ul>
+<p>当然，也有其优势：  </p>
+<ul>
+<li>标准：SQL语言标准化工作很好  </li>
+<li>运维：关系数据库有成熟的运维工具和大量运维人员  </li>
 </ul></div>
     <footer>
       <p class="meta">
