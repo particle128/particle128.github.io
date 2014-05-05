@@ -62,6 +62,43 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32 在未来时态下发展程序</h2>
+<ul>
+<li>面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  </li>
+<li>请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  </li>
+<li>没有virtual destructor的String类，不能用于当作基类(因为当作基类，就有delete指向派生对象的基类指针的可能性)。  </li>
+</ul>
+<h2>Item 33 将非尾端(non-leaf)类设计为抽象类</h2>
+<ul>
+<li>考虑这样一个继承体系<br />
+具体类Animal -&gt;派生Lizard和Chicken<br />
+可能出现部分赋值（partial assignment）的问题：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>  
+<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>  
+<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//Animal部分赋值，Lizard部分没有赋值  </span>
+</pre></div>
+
+
+<ul>
+<li>解决方法：<br />
+1.operator=变成虚函数从而利用多态实现派生类的赋值  </li>
+</ul>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Animal</span><span class="p">{</span>  
+    <span class="k">public</span><span class="o">:</span>  
+        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
       </h1>
           <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
@@ -305,35 +342,6 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
     <a rel="full-article" href="http://particle128.com/posts/2013/11/headache.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">继承层次中的重载、重写的函数调用和this指针的关系</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-02T00:00:00" pubdate>2013-11-02</time></p>
-</header>
-
-  <div class="entry-content"><p>例子如下：  </p>
-<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
-
-<span class="k">class</span> <span class="nc">Base</span><span class="p">{</span>  
-    <span class="k">public</span><span class="o">:</span>  
-        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
-        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Base&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
-<span class="p">};</span>  
-<span class="k">class</span> <span class="nc">Derived</span><span class="o">:</span><span class="k">public</span> <span class="n">Base</span><span class="p">{</span>  
-    <span class="k">public</span><span class="o">:</span>  
-        <span class="c1">//Base中函数的重写  </span>
-        <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
-        <span class="c1">//Base中函数的重载  </span>
-        <span class="kt">void</span> <span class="n">func1</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Derived&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;}</span>  
-        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func</span><span class="p">;</span>  
-        <span class="k">using</span> <span class="n">Base</span><span class="o">::</span><span class="n">func1 ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/Overwrite-Overload.html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index4.html">&larr; Older</a>
   
@@ -345,6 +353,9 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
       </li>
             <li class="post">
@@ -355,9 +366,6 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2014/03/selectFear.html">选择恐惧症</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
       </li>
           </ul>
   </section>
@@ -376,7 +384,7 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/storage.html">storage</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/select.html">select</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/distributed.html">distributed</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/storage.html">storage</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/select.html">select</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/distributed.html">distributed</a>,      <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
     
     <section>

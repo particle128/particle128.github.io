@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Bargain Snatcher：全自动极速抢购脚本</title>
+  <title>particle128's Blog - reentrant</title>
   <meta name="author" content="particle128">
 
     
@@ -58,63 +58,45 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div>
-  <article class="hentry" role="article">
-    <header>
-          <h1 class="entry-title">Bargain Snatcher：全自动极速抢购脚本</h1>
-          <p class="meta"><time datetime="2014-03-10T00:00:00" pubdate>2014-03-10</time></p>
+      <div class="blog-index">
+    	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
+      </h1>
+          <p class="meta"><time datetime="2014-05-05T00:00:00" pubdate>2014-05-05</time></p>
 </header>
 
-  <div class="entry-content"><p>以下汇总的内容均来自本人的博客，或github站点。</p>
-<h3>源码</h3>
+  <div class="entry-content"><p>以下内容汇总自APUE不同章节，还包括自己的一些测试</p>
+<h3>可重入</h3>
+<p>可重入（reentrant）函数，字面意思就是可以重复进入执行，而不会发生数据错乱等异常情况。包括两重意思：  </p>
 <ul>
-<li><a href="https://github.com/particle128/vipshop-buy">particle128的github</a></li>
+<li>信号处理程序可重入 —— 满足这个条件的函数，称之为异步-信号安全的(async-signal-safe)  </li>
+<li>线程可重入 —— 满足这个条件的函数，称之为线程安全的(thread-safe)  </li>
 </ul>
-<h3>所用到的技术</h3>
+<p>这两个概念并不对等:<br />
+标准IO库函数比如printf，是线程安全的，因为内部使用了递归锁，即用<code>flockfile(FILE*fp)</code>和<code>funlockfile(FILE*fp)</code>包裹;<br />
+但是，它并不是异步信号安全的，因为毕竟<code>FILE</code>结构是全局的，信号处理程序中可能会修改它。  </p>
+<h3>信号处理程序可重入</h3>
+<p>不可重入的几种情况：  </p>
 <ul>
-<li><a href="http://particle128.com/posts/2013/12/selenium.html">Selenium WebDriver总结</a></li>
-</ul>
-<h3>项目相关总结</h3>
-<ul>
-<li><a href="http://particle128.com/posts/2013/12/vipshop-intro.html">使用方法</a></li>
-<li><a href="http://particle128.com/posts/2013/12/vipshop-tech.html">技术问题</a></li>
-<li><a href="http://particle128.com/posts/2013/12/vipshop-port.html">移植到windows</a></li>
-</ul></div>
-    <footer>
-      <p class="meta">
-  <span class="byline author vcard">
-    Posted by <span class="fn">particle128</span>
-  </span>
-  <time datetime="2014-03-10T00:00:00" pubdate>2014-03-10</time>    <span class="categories">
-        <a class="category" href="http://particle128.com/tag/python.html">python</a>
-        <a class="category" href="http://particle128.com/tag/selenium.html">selenium</a>
-      </span>
-  </p>    </footer>
-  </article>
-
-    <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
-  </section>
-  </div>
+<li>使用静态数据结构，比如getpwnam，getpwuid：如果信号发生时正在执行getpwnam，信号处理程序中执行getpwnam可能覆盖原来getpwnam获取的旧值  </li>
+<li>调用malloc或free：如果信号发生时正在malloc（修改堆上存储空间的链接表），信号处理程序又调用malloc，会破坏内核的数据结构  </li>
+<li>使用标准IO函数，因为好多标准IO的实现都使用全局数据结构 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/reentrant.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  	<div class="pagination">
+  
+    <br />
+</div>  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
           <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/03/selectFear.html">选择恐惧症</a>
       </li>
           </ul>
   </section>
@@ -158,9 +140,6 @@
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-                var disqus_identifier = '/posts/2014/03/vipshop.html';
-          var disqus_url = 'http://particle128.com/posts/2014/03/vipshop.html';
-          var disqus_title = 'Bargain Snatcher：全自动极速抢购脚本';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

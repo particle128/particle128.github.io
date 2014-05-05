@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog</title>
+  <title>类unix系统下函数的可重入性</title>
   <meta name="author" content="particle128">
 
     
@@ -58,12 +58,10 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
-      </h1>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">类unix系统下函数的可重入性</h1>
           <p class="meta"><time datetime="2014-05-05T00:00:00" pubdate>2014-05-05</time></p>
 </header>
 
@@ -82,143 +80,93 @@
 <ul>
 <li>使用静态数据结构，比如getpwnam，getpwuid：如果信号发生时正在执行getpwnam，信号处理程序中执行getpwnam可能覆盖原来getpwnam获取的旧值  </li>
 <li>调用malloc或free：如果信号发生时正在malloc（修改堆上存储空间的链接表），信号处理程序又调用malloc，会破坏内核的数据结构  </li>
-<li>使用标准IO函数，因为好多标准IO的实现都使用全局数据结构 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/05/reentrant.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
-      </h1>
-          <p class="meta"><time datetime="2014-04-02T00:00:00" pubdate>2014-04-02</time></p>
-</header>
+<li>使用标准IO函数，因为好多标准IO的实现都使用全局数据结构，比如printf  </li>
+<li>函数中调用longjmp或siglongjmp：信号发生时程序正在修改一个数据结构，处理程序返回到另外一处，导致数据被部分更新。  </li>
+</ul>
+<p>测试书中的例子发现并不会产生SIGSEGV信号，但是程序会阻塞在信号处理程序中调用getpwnam处，怀疑是我的linux版本中getpwnam实现中使用锁来保护静态数据结构struct passwd，而且不是递归锁。  </p>
+<p>测试代码如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;sys/unistd.h&gt;  </span>
+<span class="cp">#include &lt;sys/time.h&gt;  </span>
+<span class="cp">#include &lt;iostream&gt;  </span>
+<span class="cp">#include &lt;signal.h&gt;  </span>
+<span class="cp">#include &lt;string.h&gt;  </span>
+<span class="cp">#include &lt;pwd.h&gt;  </span>
 
-  <div class="entry-content"><h3>起因</h3>
-<p>虚拟磁盘的项目中，使用了互斥锁(mutex)来控制任务队列的访问。但是mutex开销过大，让线程池的效果大打折扣，于是发现了spinlock的存在。  </p>
-<h3>概念</h3>
-<p>来自<a href="http://en.wikipedia.org/wiki/Spinlock">wiki</a>的定义：  </p>
-<blockquote>
-<p>In software engineering, a spinlock is a lock which causes a thread trying to acquire it to simply wait in a loop ("spin") while repeatedly checking if the lock is available. Since the thread remains active but is ...</p></blockquote></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/04/spinlock.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
-</header>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
 
-  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
+<span class="kt">void</span> <span class="nf">sig_alrm</span><span class="p">(</span><span class="kt">int</span> <span class="n">signo</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;in the sig_alrm&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>  
+
+    <span class="k">struct</span> <span class="n">passwd</span> <span class="o">*</span><span class="n">pwd</span> <span class="o">=</span> <span class="n">getpwnam</span><span class="p">(</span><span class="s">&quot;root&quot;</span><span class="p">);</span>  
+    <span class="k">if</span><span class="p">(</span><span class="n">pwd</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span>  
+        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;root error&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>  
+
+    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;after the sig_alrm&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>  
+    <span class="n">alarm</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//!!!  </span>
+<span class="p">}</span>  
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+    <span class="kt">sighandler_t</span> <span class="n">old_handler</span><span class="p">;</span>  
+    <span class="n">old_handler</span><span class="o">=</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGALRM</span><span class="p">,</span><span class="n">sig_alrm</span><span class="p">);</span>  
+    <span class="n">alarm</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//alarm只支持秒级的定时器  </span>
+    <span class="cm">/*  </span>
+<span class="cm">    struct itimerval old_val,new_val;  </span>
+<span class="cm">    new_val.it_interval.tv_sec=0;  </span>
+<span class="cm">    new_val.it_interval.tv_usec=1000; //1ms  </span>
+<span class="cm">    setitimer(ITIMER_REAL,&amp;new_val,&amp;old_val);//setitimer支持精度更高的定时器，最高可以达到us级，如果系统支持这么高的精度的话  </span>
+<span class="cm">    cout&lt;&lt;&quot;old itimerval,interval:&quot;&lt;&lt;old_val.it_interval.tv_sec*1000+old_val.it_interval.tv_usec/1000&lt;&lt;&quot;,value:&quot;&lt;&lt;old_val.it_value.tv_sec*1000+old_val.it_value.tv_usec/1000&lt;&lt;endl;  </span>
+<span class="cm">    */</span>  
+    <span class="k">for</span><span class="p">(;;)</span>  
+    <span class="p">{</span>  
+        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;before pwnam&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>  
+        <span class="k">struct</span> <span class="n">passwd</span> <span class="o">*</span><span class="n">pwd</span> <span class="o">=</span> <span class="n">getpwnam</span><span class="p">(</span><span class="s">&quot;mashu&quot;</span><span class="p">);</span>  
+        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;after pwnam&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>  
+        <span class="k">if</span><span class="p">(</span><span class="n">pwd</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span>  
+            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;mashu error&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>  
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">pwd</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">,</span><span class="s">&quot;mashu&quot;</span><span class="p">))</span>  
+            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;not mashu&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>  
+    <span class="p">}</span>  
+
+    <span class="n">signal</span><span class="p">(</span><span class="n">SIGALRM</span><span class="p">,</span><span class="n">old_handler</span><span class="p">);</span>  
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+<span class="p">}</span>  
 </pre></div>
 
 
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
-</pre></div>
+<h3>线程可重入</h3>
+<p>很多线程不可重入的系统调用或库函数，都有对应的线程可重入版本，比如  </p>
+<ul>
+<li>asctime_r,ctime_r,gmtime_r,localtime_r  </li>
+<li>getpwnam_r,getpwuid_r,getgrgid_r,getgrnam_r  </li>
+<li>readdir_r,rand_r,strerror_r,strtok_t  </li>
+</ul>
+<p>书中实现的getenv_r，做到了线程安全：  </p>
+<ul>
+<li>修改接口，让调用自己提供缓冲区，而不是用单独的静态/全局缓冲区  </li>
+<li>在访问全局变量environ时递归互斥锁，防止其他线程对该全局变量的修改(pthread_once,pthread_mutex_lock,pthread_mutex_unlock...)  </li>
+</ul>
+<p>PS，第一点，还可以选择用线程私有/特定数据实现（pthread_key_create,pthread_setspecific,pthread_getspecific）<br />
+第二点，之所以递归，是防止信号处理程序调用同一函数时，死锁。  </p>
+<p>即使做到这几点，getenv_r仍然不是异步信号安全的，因为pthread函数库不保证异步信号安全，包含pthread函数库的函数（getenv_r）也就不能保证异步信号安全。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2014-05-05T00:00:00" pubdate>2014-05-05</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/reentrant.html">reentrant</a>
+        <a class="category" href="http://particle128.com/tag/linux.html">linux</a>
+      </span>
+  </p>    </footer>
+  </article>
 
-
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
-</pre></div>
-
-
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/linux_user.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time></p>
-</header>
-
-  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
-<h3>Domain Name System</h3>
-<p>host name &lt; - &gt; ip address<br />
-主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
-如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
-<h3>名字/域名服务器层次结构：</h3>
-<p>root name server 根域名服务器（无名）<br />
-TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/dns.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><h3>概念</h3>
-<p>当程序异常退出（接受到内核或其他程序的某种信号，比如SIGTERM，SIGKILL等）的时候，一般会将出错时候的内存状况保存到core file中，以帮助开发者了解程序崩溃的原因。<br />
-即core memory（内存最开始使用线圈做的），其实就是内存。core dump就是内存倾倒的意思。  </p>
-<h3>ubuntu下使能core dump功能</h3>
-<p>ubuntu下默认core文件的大小限制是0（执行ulimit -c查看），即不允许core文件产生。<br />
-解除限制：  </p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">ulimit</span> -c unlimited <span class="c">#设置core file的限制  </span>
-<span class="nv">$ </span><span class="nb">ulimit</span> -a <span class="c">#查看所有限制（包括栈大小、cpu时间、虚拟内存、文件大小等）  </span>
-</pre></div>
-
-
-<h3>core文件的默认位置</h3>
-<p>查看core文件存储格式，以及ubuntu下输出结果：  </p>
-<div class="highlight"><pre><span class="nv">$ </span>cat /proc/sys/kernel/core_pattern   
-|/usr/share/apport/apport %p %s %c  
-</pre></div>
-
-
-<p>意思是 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/core-dump.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
-<p>r：可以查看文件内容<br />
-w：可以修改文件内容<br />
-x：可以执行文件内容  </p>
-<p><strong>Note：</strong> <br />
-一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
-<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
-<p>r：可以查看目录结构（ls）<br />
-w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
-x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
-<p><strong>Note：</strong><br />
-一个目录开放浏览，需要r+x权限。<br />
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-    <br />
-</div>  </div>
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
@@ -227,16 +175,16 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
           <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
       </li>
             <li class="post">
+          <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/core-dump.html">core dump相关</a>
+          <a href="http://particle128.com/posts/2014/03/selectFear.html">选择恐惧症</a>
       </li>
           </ul>
   </section>
@@ -280,6 +228,9 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2014/05/reentrant.html';
+          var disqus_url = 'http://particle128.com/posts/2014/05/reentrant.html';
+          var disqus_title = '类unix系统下函数的可重入性';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
