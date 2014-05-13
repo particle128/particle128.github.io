@@ -137,7 +137,7 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
           <p class="meta"><time datetime="2014-05-05T00:00:00" pubdate>2014-05-05</time></p>
 </header>
 
-  <div class="entry-content"><p>以下内容汇总自APUE不同章节，还包括自己的一些测试</p>
+  <div class="entry-content"><p>以下内容汇总自APUE不同章节，还包括自己的一些测试  </p>
 <h3>可重入</h3>
 <p>可重入（reentrant）函数，字面意思就是可以重复进入执行，而不会发生数据错乱等异常情况。包括两重意思：  </p>
 <ul>
@@ -146,7 +146,7 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
 </ul>
 <p>这两个概念并不对等:<br />
 标准IO库函数比如printf，是线程安全的，因为内部使用了递归锁，即用<code>flockfile(FILE*fp)</code>和<code>funlockfile(FILE*fp)</code>包裹;<br />
-但是，它并不是异步信号安全的，因为毕竟<code>FILE</code>结构是全局的，信号处理程序中可能会修改它(flockfile和funlockfile之间).</p>
+但是，它并不是异步信号安全的，因为毕竟<code>FILE</code>结构是全局的，信号处理程序中可能会修改它(flockfile和funlockfile之间).  </p>
 <h3>信号处理程序可重入</h3>
 <p>不可重入的几种情况：  </p>
 <ul>

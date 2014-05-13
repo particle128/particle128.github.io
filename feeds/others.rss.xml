@@ -67,17 +67,24 @@ SSD（固态硬盘）因为随机读取延迟小（磁盘的随机读取，需�
 &lt;h4&gt;B树存储引擎&lt;/h4&gt;
 &lt;p&gt;MySQL InnoDB是&lt;a href="http://dev.mysql.com/"&gt;MySQL&lt;/a&gt;(排名第二的数据库，第一是oracle)的一个存储引擎  &lt;/p&gt;
 &lt;p&gt;缓冲区的管理方式：LIRS&lt;br /&gt;
-是LRU替换算法的一种改进，被用在MySQL InnoDB和Oracle Touch Count中。将缓冲池分为两级，数据首先进入第一级，如果数据在较短时间内被访问两次或以上，则成为热点数据进入第二级，每一级内部还是采用LRU替换算法。  &lt;/p&gt;
+是LRU替换算法的一种改进，被用在MySQL InnoDB和Oracle Touch Count中。将缓冲池分为两级，数据首先进入第一级，如果数据在较短时间内被访问两次或以上，则成为热点数据进入第二级，每一级内部还是采用LRU替换算法。&lt;br /&gt;
+目的：防止之前的热点数据，被一次数据库遍历操作全部剔除出缓冲区。  &lt;/p&gt;
 &lt;h4&gt;LSM树存储引擎&lt;/h4&gt;
 &lt;p&gt;LSM树，即log structured merge tree， LevelDB采用。PS:erlang版本的eLevelDB是Riak的可选后台存储引擎。  &lt;/p&gt;
-&lt;p&gt;特点：&lt;br /&gt;
-&lt;em&gt; 对数据的修改增量保存在内存的MemTable中，因此修改操作比较快。&lt;br /&gt;
-&lt;/em&gt; 当MemTable大小达到上限，LevelDB将其冻结为“不可变MemTable”，即只可读的MemTable；同时重新生成一个MemTable，用于接收到达的写入请求。&lt;br /&gt;
-&lt;em&gt; 写入操作：先写到磁盘中的操作日志，再更新内存中的MemTable。&lt;br /&gt;
-&lt;/em&gt; 合并操作(minor compaction)：后台线程将不可变MemTable中的数据排序后写入磁盘，形成SSTable文件。SSTable文件中的记录按照主键排序，每个文件有最小和最大的主键值，这些数据元信息保存于“清单文件”中。SSTable文件根据写入时间，分成多个层次，新写入的放入0层，旧的在1层，更旧的在2层，依次类推。&lt;br /&gt;
-&lt;em&gt; 合并操作(major compaction)：当某个层级下的SSTable文件数目超过上限，合并该层中的某些文件到高层级中。&lt;br /&gt;
-&lt;/em&gt; 读取操作（LevelDB只支持随机读取单条记录）：按如下顺序读取，（1）内存中MemTable，（2）内存中的不可变MemTable，（3）从新到老读取磁盘中的SSTable文件。&lt;br /&gt;
-* 当内存没有命中时，读取操作比较费时，需要在内存和各个层次文件中查找。  &lt;/p&gt;
+&lt;p&gt;特点：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对数据的修改增量保存在内存的MemTable中，因此修改操作比较快。  &lt;/li&gt;
+&lt;li&gt;当MemTable大小达到上限，LevelDB将其冻结为“不可变MemTable”，即只可读的MemTable；同时重新生成一个MemTable，用于接收到达的写入请求。  &lt;/li&gt;
+&lt;li&gt;写入操作：先写到磁盘中的操作日志，再更新内存中的MemTable。  &lt;/li&gt;
+&lt;li&gt;合并操作(minor compaction)：后台线程将不可变MemTable中的数据排序后写入磁盘，形成SSTable文件。SSTable文件中的记录按照主键排序，每个文件有最小和最大的主键值，这些数据元信息保存于“清单文件”中。SSTable文件根据写入时间，分成多个层次，新写入的放入0层，旧的在1层，更旧的在2层，依次类推。  &lt;/li&gt;
+&lt;li&gt;合并操作(major compaction)：当某个层级下的SSTable文件数目超过上限，合并该层中的某些文件到高层级中。  &lt;/li&gt;
+&lt;li&gt;读取操作（LevelDB只支持随机读取单条记录）：按如下顺序读取，（1）内存中MemTable，（2）内存中的不可变MemTable，（3）从新到老读取磁盘中的SSTable文件。  &lt;/li&gt;
+&lt;li&gt;当内存没有命中时，读取操作比较费时，需要在内存和各个层次文件中查找。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;小结（by myself）&lt;/h4&gt;
+&lt;p&gt;几乎存储引擎都会先更新磁盘中的log，再写入内存。
+Q:为什么不直接写入磁盘中的数据文件，再写入内存，都是一次磁盘io和一次内存访问？
+A:我感觉，因为log文件总是需要的（转储时，数据库失败恢复时），所以必须要写log，而只写log不写磁盘中的数据文件，不会有任何影响，所以减少一次磁盘访问，就只写log和内存。&lt;/p&gt;
 &lt;h3&gt;2.3数据模型&lt;/h3&gt;
 &lt;p&gt;数据模型相当于存储系统的外壳.&lt;br /&gt;
 包括:  &lt;/p&gt;
@@ -90,7 +97,7 @@ SSD（固态硬盘）因为随机读取延迟小（磁盘的随机读取，需�
 &lt;p&gt;NoSQL(键值模型或表格模型)与SQL(关系模型)对比  &lt;/p&gt;
 &lt;p&gt;在海量数据的场景中，SQL存在缺点：  &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;事务：事务的多个操作可能在不同主机上，为了保证原子性，需要“两阶段提交协议”（2 phase commit protocol,2PS）。该协议性能很低，而且不能容忍服务器故障。  &lt;/li&gt;
+&lt;li&gt;事务：事务的多个操作可能在不同主机上，为了保证原子性，需要“两阶段提交协议”（two-phase commit protocol,2PC）。该协议性能很低，而且不能容忍服务器故障。  &lt;/li&gt;
 &lt;li&gt;多表连接：关系数据库讲究范式，为了达到更高级别的范式，需要拆分表格，这可能导致多个表在不同主机上，连接性能比较低。  &lt;/li&gt;
 &lt;li&gt;性能：B树存储引擎，在某些特定的情形下不如LSM树和hash表。  &lt;/li&gt;
 &lt;/ul&gt;

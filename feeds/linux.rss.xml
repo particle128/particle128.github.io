@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/linux.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-05-05T00:00:00+08:00</updated><entry><title>类unix系统下函数的可重入性</title><link href="http://particle128.com/posts/2014/05/reentrant.html" rel="alternate"></link><updated>2014-05-05T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-05:posts/2014/05/reentrant.html</id><summary type="html">&lt;p&gt;以下内容汇总自APUE不同章节，还包括自己的一些测试&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/linux.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-05-05T00:00:00+08:00</updated><entry><title>类unix系统下函数的可重入性</title><link href="http://particle128.com/posts/2014/05/reentrant.html" rel="alternate"></link><updated>2014-05-05T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-05:posts/2014/05/reentrant.html</id><summary type="html">&lt;p&gt;以下内容汇总自APUE不同章节，还包括自己的一些测试  &lt;/p&gt;
 &lt;h3&gt;可重入&lt;/h3&gt;
 &lt;p&gt;可重入（reentrant）函数，字面意思就是可以重复进入执行，而不会发生数据错乱等异常情况。包括两重意思：  &lt;/p&gt;
 &lt;ul&gt;
@@ -8,7 +8,7 @@
 &lt;/ul&gt;
 &lt;p&gt;这两个概念并不对等:&lt;br /&gt;
 标准IO库函数比如printf，是线程安全的，因为内部使用了递归锁，即用&lt;code&gt;flockfile(FILE*fp)&lt;/code&gt;和&lt;code&gt;funlockfile(FILE*fp)&lt;/code&gt;包裹;&lt;br /&gt;
-但是，它并不是异步信号安全的，因为毕竟&lt;code&gt;FILE&lt;/code&gt;结构是全局的，信号处理程序中可能会修改它(flockfile和funlockfile之间).&lt;/p&gt;
+但是，它并不是异步信号安全的，因为毕竟&lt;code&gt;FILE&lt;/code&gt;结构是全局的，信号处理程序中可能会修改它(flockfile和funlockfile之间).  &lt;/p&gt;
 &lt;h3&gt;信号处理程序可重入&lt;/h3&gt;
 &lt;p&gt;不可重入的几种情况：  &lt;/p&gt;
 &lt;ul&gt;
