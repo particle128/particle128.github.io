@@ -164,7 +164,7 @@
 <p>new和delete的底层会使用malloc和free，在堆上进行内存分配和释放。用malloc分配一个数组，使用，之后传递给free一个数组指针的时候，它如何知道释放多少空间呢？<br />
 答案是，从指针位置前面的一个字中寻找要释放的内存的大小，块大小保存在实际数据位置-4的内存中。<br />
 堆中分配的内存块的截图如下：<br />
-<a href="/heap_map.png">!image</a>  </p>
+<img alt="image" src="http://particle128.com/static/images/heap_map.png" />  </p>
 <p>在gdb中测试一下，结果和解释：  </p>
 <div class="highlight"><pre><span class="mi">10</span> <span class="mi">10</span>                  <span class="c1">//输入，表示会动态分配10个int  </span>
 <span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">print</span> <span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
