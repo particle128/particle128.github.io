@@ -234,6 +234,32 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
   	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
+      </h1>
+          <p class="meta"><time datetime="2014-05-19T00:00:00" pubdate>2014-05-19</time></p>
+</header>
+
+  <div class="entry-content"><h3>起因</h3>
+<p>上午在实现算法“找出最小的k个元素/找出第k大的元素”时，遇到了core dump。代码如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="cp">#include &lt;iterator&gt;  </span>
+<span class="cp">#include &lt;algorithm&gt;  </span>
+<span class="cp">#include &lt;cstdlib&gt;  </span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
+
+<span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span><span class="kt">int</span> <span class="n">begin</span><span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">begin</span><span class="p">;</span>  
+    <span class="c1">//copy(arr+begin,arr+end+1,ostream_iterator&lt;int&gt;(cout,&quot;,&quot;));  </span>
+    <span class="c1">//cout&lt;&lt;endl&lt;&lt;&quot;begin:&quot;&lt;&lt;begin&lt;&lt;&quot;,end:&quot;&lt;&lt;end&lt;&lt;&quot;,mid ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/delete-core-dump.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
       </h1>
           <p class="meta"><time datetime="2014-04-15T00:00:00" pubdate>2014-04-15</time></p>
@@ -319,20 +345,6 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
 TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/12/dns.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-04T00:00:00" pubdate>2013-11-04</time></p>
-</header>
-
-  <div class="entry-content"><p>Today I encountered bad headache again. Although I had made up mind to overcome this disaster without the help of any medicine, I failed. After taking two cold capsules, hurt is fading away.<br />
-Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/headache.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">

@@ -62,6 +62,27 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-04T00:00:00" pubdate>2013-10-04</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 13: Use objects to manage resources</h2>
+<p>1.资源是指，使用完之后需要归还系统的东西。比如动态分配的内存，文件描述符，互斥锁，数据库连接，sockets。<br />
+2.尽管可以手动释放资源（比如delete），但是程序的修改（delete之前返回了），或客户的忘记，可能导致资源释放不了。<br />
+解决办法：用对象管理资源，利用对象在作用域范围之外会自动调用析构函数的机制，释放资源。<br />
+对于heap-based资源（资源new出来的，通过指针访问），有如下两种智能指针可用：<br />
+（1）std::auto_ptr<Investment> pInv(createInvestment()); <br />
+缺点：指向同一对象的auto_ptr，进行赋值或拷贝构造，会导致原ptr变成null。这样的目的，释放多次同一个资源。<br />
+（2）std::tr1::shared_ptr<Investment> pInv(createInvestment());<br />
+注意：不存在上面的问题，因为是RCSP ...</investment></investment></p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/python-str.html">Python学习笔记-字符串</a>
       </h1>
           <p class="meta"><time datetime="2013-09-22T00:00:00" pubdate>2013-09-22</time></p>
@@ -204,6 +225,9 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
       </li>
             <li class="post">
@@ -214,9 +238,6 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/03/selectFear.html">选择恐惧症</a>
       </li>
           </ul>
   </section>

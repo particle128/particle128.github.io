@@ -62,6 +62,35 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/python-configparser.html">Python学习笔记-ConfigParser模块</a>
+      </h1>
+          <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><h3>前言</h3>
+<p>配置文件可以有很多种格式，windows下常用ini格式，网络上常用xml和json格式，分别可以调用的python模块如下：<br />
+ini——ConfigParser模块<br />
+xml——xml.etree.ElementTree模块<br />
+json——json模块  </p>
+<h3>参考文档</h3>
+<p><a href="http://docs.python.org/2/library/configparser.html">link</a><br />
+点评：<br />
+前面的文字讲的很晕，没有上下文的情况下就各种说，还不如直接来几个例子。不过我还是硬着头皮看完了。  </p>
+<h3>ini文档的格式</h3>
+<p>1.注释的开始标记是semicolon 和 number sign。semicolon开头的注释可以嵌入在ini文件的行内（和其他文本用一个空白符隔开），number sign开头的注释只能用在单独的一行中。<br />
+2.[section]中可以使用option=value或option: value<br />
+3.可以在value中包含格式化字符串，来自同section，或DEFAULT section，或初始化的时候传入的内容。<br />
+示例：  </p>
+<div class="highlight"><pre><span class="err">[My</span> <span class="err">Section]</span>  
+<span class="err">foodir:</span> <span class="err">%(dir)s/whatever</span>  
+<span class="na">dir</span><span class="o">=</span><span class="s">frob ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/python-configparser.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
       </h1>
           <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
@@ -287,26 +316,6 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
 <p>In software engineering, a spinlock is a lock which causes a thread trying to acquire it to simply wait in a loop ("spin") while repeatedly checking if the lock is available. Since the thread remains active but is ...</p></blockquote></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2014/04/spinlock.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
-      </h1>
-          <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
-</header>
-
-  <div class="entry-content"><p>TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  </p>
-<h2>特点</h2>
-<p>用RSA分发密钥；用双方商定的对称加密算法加密通信。  </p>
-<h2>使用SSL，服务器和客户端需要首先进行握手（handshake）</h2>
-<p>【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器<br />
-【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端<br />
-【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。<br />
-【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/01/ssl.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">

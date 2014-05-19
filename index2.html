@@ -62,6 +62,44 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
+      </h1>
+          <p class="meta"><time datetime="2014-02-17T00:00:00" pubdate>2014-02-17</time></p>
+</header>
+
+  <div class="entry-content"><p>今天看完了《穷爸爸富爸爸》，的确像网上有些人评论的那样，内容有些拖沓，好多内容出现了重复，其实要表达的观点可以用一篇长文说出来，但是偏偏要凑成一本书。但是它也的确带给我了很多的思考，特别是自己以前一些陋习的反思，记录下来。  </p>
+<ul>
+<li>
+<p>投资于资产而不是负债<br />
+资产是能带来收入的东西，比如房地产（出租、或等升值后转手）、股票等；负债是不能带来收入的东西，比如汽车、用品等。<br />
+启示：把消费性支出维持在低水平，把工作的结余用于投资。大头投资不动产，小头尝试投资风险高一些的项目,如股票。  </p>
+</li>
+<li>
+<p>有意识培养财商<br />
+四项技能组成：会计、投资、市场营销、法律。<br />
+启示：在学习专业技能以维持工作收入的同时，考虑通过书籍和辅导班学一些理财的知识，帮助自己合理理财。  </p>
+</li>
+<li>
+<p>聪明人往往雇佣比自己更聪明的人<br />
+启示：交朋友也是这样。  </p>
+</li>
+<li>
+<p>成功需要的管理素质<br />
+(1) 对现金流的管理，也就是管理自己支出在哪里；
+(2) 对时间的管理；
+(3) 对人员的管理  </p>
+</li>
+<li>
+<p>对失败的态度  </p>
+<blockquote>
+<p>大部分人从来不赢是因为他们太害怕失去。如果你看到人类学习的方法，就会明白人类其实就是在犯错误中进行学习的 ...</p></blockquote></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/02/richdad.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
       </h1>
           <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
@@ -285,46 +323,6 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-02T00:00:00" pubdate>2013-12-02</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>Introduction</strong>  </p>
-<ul>
-<li>没有实现bool类型的编译器，替代方案：<br />
-(1)enum bool{false,true};<br />
-缺点：无法int赋值给bool变量<br />
-(2)typedef int bool;<br />
-const bool false=0;<br />
-const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </li>
-<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
-</ul>
-<p><strong>基础议题Basics</strong></p>
-<h2>Item1</h2>
-<ul>
-<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">//使用指针  </span>
-<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
-    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
-<span class="c1">//使用引用  </span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
-</pre></div>
-
-
-<h2>Item2</h2>
-<ul>
-<li>const_cast用于改变constnest和valatileness  </li>
-<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
   	  	<div class="pagination">
       <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
   
@@ -336,6 +334,9 @@ const bool true=1;<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
+          <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
+      </li>
+            <li class="post">
           <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
       </li>
             <li class="post">
@@ -346,9 +347,6 @@ const bool true=1;<br />
       </li>
             <li class="post">
           <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
-      </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2014/03/selectFear.html">选择恐惧症</a>
       </li>
           </ul>
   </section>

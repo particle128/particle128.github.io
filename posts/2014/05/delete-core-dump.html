@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>一场core dump引发的思考</title>
+  <meta name="author" content="particle128">
+
+    
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+      <h2>失败并不可怕，可怕的是妥协</h2>
+  </hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+  </ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
+  <div id="main">
+    <div id="content">
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">一场core dump引发的思考</h1>
+          <p class="meta"><time datetime="2014-05-19T00:00:00" pubdate>2014-05-19</time></p>
+</header>
+
+  <div class="entry-content"><h3>起因</h3>
+<p>上午在实现算法“找出最小的k个元素/找出第k大的元素”时，遇到了core dump。代码如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="cp">#include &lt;iterator&gt;  </span>
+<span class="cp">#include &lt;algorithm&gt;  </span>
+<span class="cp">#include &lt;cstdlib&gt;  </span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
+
+<span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span><span class="kt">int</span> <span class="n">begin</span><span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">begin</span><span class="p">;</span>  
+    <span class="c1">//copy(arr+begin,arr+end+1,ostream_iterator&lt;int&gt;(cout,&quot;,&quot;));  </span>
+    <span class="c1">//cout&lt;&lt;endl&lt;&lt;&quot;begin:&quot;&lt;&lt;begin&lt;&lt;&quot;,end:&quot;&lt;&lt;end&lt;&lt;&quot;,mid:&quot;&lt;&lt;mid&lt;&lt;endl;  </span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">],</span><span class="n">arr</span><span class="p">[</span><span class="n">begin</span><span class="p">]);</span>  
+    <span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">begin</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// the last element of the small part!!!  </span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">begin</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">end</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="n">arr</span><span class="p">[</span><span class="n">begin</span><span class="p">])</span>  
+            <span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="o">++</span><span class="n">j</span><span class="p">],</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>  
+    <span class="p">}</span>  
+    <span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">begin</span><span class="p">],</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>  
+    <span class="k">return</span> <span class="n">j</span><span class="p">;</span>  
+<span class="p">}</span>  
+
+<span class="kt">bool</span> <span class="nf">mink</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span><span class="kt">int</span> <span class="n">k</span><span class="p">,</span><span class="kt">int</span> <span class="n">output</span><span class="p">[])</span>  
+<span class="p">{</span>  
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">arr</span><span class="o">||!</span><span class="n">output</span><span class="o">||</span><span class="n">n</span><span class="o">&lt;=</span><span class="mi">0</span><span class="o">||</span><span class="n">k</span><span class="o">&lt;=</span><span class="mi">0</span><span class="o">||</span><span class="n">k</span><span class="o">&gt;</span><span class="n">n</span><span class="p">)</span>  
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>  
+    <span class="kt">int</span> <span class="n">begin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>  
+    <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">partition</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">begin</span><span class="p">,</span><span class="n">end</span><span class="p">);</span>  
+        <span class="k">if</span><span class="p">(</span><span class="n">mid</span><span class="o">==</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="o">||</span><span class="n">mid</span><span class="o">==</span><span class="n">k</span><span class="p">)</span>  
+        <span class="p">{</span>  
+            <span class="n">copy</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">arr</span><span class="o">+</span><span class="n">k</span><span class="p">,</span><span class="n">output</span><span class="p">);</span>  
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>  
+        <span class="p">}</span>  
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">mid</span><span class="o">&lt;</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+            <span class="n">begin</span><span class="o">=</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>  
+        <span class="k">else</span>  
+            <span class="n">end</span><span class="o">=</span><span class="n">mid</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>  
+    <span class="p">}</span>  
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>  
+<span class="p">}</span>  
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">;</span>  
+    <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>  
+    <span class="k">while</span><span class="p">(</span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">n</span><span class="o">&gt;&gt;</span><span class="n">k</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="kt">int</span> <span class="o">*</span><span class="n">arr</span><span class="o">=</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>  
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span>  
+            <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">i</span><span class="p">;</span>  
+        <span class="n">random_shuffle</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">arr</span><span class="o">+</span><span class="n">n</span><span class="p">);</span>  
+        <span class="n">copy</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">arr</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="n">ostream_iterator</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cout</span><span class="p">,</span><span class="s">&quot; &quot;</span><span class="p">));</span>  
+        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>  
+
+        <span class="kt">int</span> <span class="o">*</span><span class="n">output</span><span class="o">=</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>  
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">mink</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">output</span><span class="p">))</span>  
+            <span class="k">continue</span><span class="p">;</span> <span class="c1">// fail  </span>
+        <span class="n">copy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span><span class="n">output</span><span class="o">+</span><span class="n">k</span><span class="p">,</span><span class="n">ostream_iterator</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cout</span><span class="p">,</span><span class="s">&quot; &quot;</span><span class="p">));</span>  
+        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>  
+        <span class="k">delete</span> <span class="p">[]</span><span class="n">arr</span><span class="p">;</span>  
+        <span class="k">delete</span> <span class="p">[]</span><span class="n">output</span><span class="p">;</span>  
+    <span class="p">}</span>  
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>并不总会出现core dump，往往测试几组会出现一次。错误信息：  </p>
+<div class="highlight"><pre><span class="o">***</span> <span class="n">glibc</span> <span class="n">detected</span> <span class="o">***</span> <span class="p">.</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span><span class="o">:</span> <span class="n">free</span><span class="p">()</span><span class="o">:</span> <span class="n">invalid</span> <span class="n">pointer</span><span class="o">:</span> <span class="mh">0x09499008</span> <span class="o">***</span>  
+<span class="o">=======</span> <span class="n">Backtrace</span><span class="o">:</span> <span class="o">=========</span>  
+<span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">i386</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libc</span><span class="p">.</span><span class="n">so</span><span class="mf">.6</span><span class="p">(</span><span class="o">+</span><span class="mh">0x75ee2</span><span class="p">)[</span><span class="mh">0xb751bee2</span><span class="p">]</span>  
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">i386</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libstdc</span><span class="o">++</span><span class="p">.</span><span class="n">so</span><span class="mf">.6</span><span class="p">(</span><span class="n">_ZdlPv</span><span class="o">+</span><span class="mh">0x1f</span><span class="p">)[</span><span class="mh">0xb76f951f</span><span class="p">]</span>  
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">i386</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libstdc</span><span class="o">++</span><span class="p">.</span><span class="n">so</span><span class="mf">.6</span><span class="p">(</span><span class="n">_ZdaPv</span><span class="o">+</span><span class="mh">0x1b</span><span class="p">)[</span><span class="mh">0xb76f957b</span><span class="p">]</span>  
+<span class="p">.</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span><span class="p">[</span><span class="mh">0x8048bfb</span><span class="p">]</span>  
+<span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">i386</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libc</span><span class="p">.</span><span class="n">so</span><span class="mf">.6</span><span class="p">(</span><span class="n">__libc_start_main</span><span class="o">+</span><span class="mh">0xf3</span><span class="p">)[</span><span class="mh">0xb74bf4d3</span><span class="p">]</span>  
+<span class="p">.</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span><span class="p">[</span><span class="mh">0x8048791</span><span class="p">]</span>  
+<span class="o">=======</span> <span class="n">Memory</span> <span class="n">map</span><span class="o">:</span> <span class="o">========</span>  
+<span class="mi">08048000</span><span class="o">-</span><span class="mi">0804</span><span class="n">a000</span> <span class="n">r</span><span class="o">-</span><span class="n">xp</span> <span class="mo">00000000</span> <span class="mi">08</span><span class="o">:</span><span class="mi">09</span> <span class="mi">137</span>        <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">mashu</span><span class="o">/</span><span class="n">Dropbox</span><span class="o">/</span><span class="n">Practice</span><span class="o">/</span><span class="n">cpp</span><span class="o">/</span><span class="n">offer</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span>  
+<span class="mi">0804</span><span class="n">a000</span><span class="o">-</span><span class="mi">0804</span><span class="n">b000</span> <span class="n">r</span><span class="o">--</span><span class="n">p</span> <span class="mo">00001000</span> <span class="mi">08</span><span class="o">:</span><span class="mi">09</span> <span class="mi">137</span>        <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">mashu</span><span class="o">/</span><span class="n">Dropbox</span><span class="o">/</span><span class="n">Practice</span><span class="o">/</span><span class="n">cpp</span><span class="o">/</span><span class="n">offer</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span>  
+<span class="mi">0804</span><span class="n">b000</span><span class="o">-</span><span class="mi">0804</span><span class="n">c000</span> <span class="n">rw</span><span class="o">-</span><span class="n">p</span> <span class="mo">00002000</span> <span class="mi">08</span><span class="o">:</span><span class="mi">09</span> <span class="mi">137</span>        <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">mashu</span><span class="o">/</span><span class="n">Dropbox</span><span class="o">/</span><span class="n">Practice</span><span class="o">/</span><span class="n">cpp</span><span class="o">/</span><span class="n">offer</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span>  
+<span class="mi">09499000</span><span class="o">-</span><span class="mi">094</span><span class="n">ba000</span> <span class="n">rw</span><span class="o">-</span><span class="n">p</span> <span class="mo">00000000</span> <span class="mo">00</span><span class="o">:</span><span class="mo">00</span> <span class="mi">0</span>          <span class="p">[</span><span class="n">heap</span><span class="p">]</span>  
+<span class="n">b7459000</span><span class="o">-</span><span class="n">b745b000</span> <span class="n">rw</span><span class="o">-</span><span class="n">p</span> <span class="mo">00000000</span> <span class="mo">00</span><span class="o">:</span><span class="mo">00</span> <span class="mi">0</span>  
+</pre></div>
+
+
+<p>错误显示为free了一个无效的指针，但是这段代码中new 和 delete的关系如此简单，怎么也想不通啊。况且，从内存映射信息中可以看出，free的指针的确也位于堆上，更让人费解。  </p>
+<h3>转折</h3>
+<p>下午有事没有来实验室，晚上再次拾起这个问题的时候，发现partition代码让我给弄没了（-.-|||），只能重写。<br />
+重写的过程中，突然意识到应该是<code>int j=begin;</code>，因为j保存的是小于arr[mid]的区段的最后一个元素，区段开始位置是begin+1，上午写成了<code>int j=begin-1;</code>。改了这一句，在main函数里加了一个循环测试，一点问题都没有。  </p>
+<p>看来，问题出在这一句上。思虑片刻，又翻了一下CSAPP，恍然大悟。  </p>
+<h3>解释</h3>
+<p>new和delete的底层会使用malloc和free，在堆上进行内存分配和释放。用malloc分配一个数组，使用，之后传递给free一个数组指针的时候，它如何知道释放多少空间呢？<br />
+答案是，从指针位置前面的一个字中寻找要释放的内存的大小，块大小保存在实际数据位置-4的内存中。<br />
+堆中分配的内存块的截图如下：<br />
+<a href="/heap_map.png">!image</a>  </p>
+<p>在gdb中测试一下，结果和解释：  </p>
+<div class="highlight"><pre><span class="mi">10</span> <span class="mi">10</span>                  <span class="c1">//输入，表示会动态分配10个int  </span>
+<span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">print</span> <span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
+<span class="err">$</span><span class="mi">5</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span> <span class="mh">0x804c038</span>  
+<span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">x</span> <span class="o">/</span><span class="n">d</span> <span class="mh">0x804c034</span>  
+<span class="mh">0x804c034</span><span class="o">:</span>  <span class="mi">49</span>          <span class="c1">//解释：至少需要的字节数为10*4+4=44（10个4B的int，加一个4B的块大小），为了凑够8B对齐（双字对齐），添加4B的填充(padding)，正好48B。49是因为块大小的最后一位被置1，表示是已分配  </span>
+<span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">conti</span>  
+<span class="n">Continuing</span><span class="p">.</span>  
+<span class="mi">1</span> <span class="mi">1</span>  
+
+<span class="n">Breakpoint</span> <span class="mi">1</span><span class="p">,</span> <span class="n">main</span> <span class="p">()</span> <span class="n">at</span> <span class="mi">30</span><span class="o">-</span><span class="n">minK</span><span class="p">.</span><span class="n">cpp</span><span class="o">:</span><span class="mi">52</span>  
+<span class="mi">52</span>  <span class="n">se</span><span class="p">;</span>  
+<span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">print</span> <span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
+<span class="err">$</span><span class="mi">6</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span> <span class="mh">0x804c078</span>  
+<span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">x</span> <span class="o">/</span><span class="n">d</span> <span class="mh">0x804c074</span>  
+<span class="mh">0x804c074</span><span class="o">:</span>  <span class="mi">17</span>          <span class="c1">//解释：至少1*4+4=8B，按理来说8B满足对齐要求了，不需要填充了。（猜测）但为了防止外部碎片，分配策略约定至少分配16B，所以8B的填充。  </span>
+<span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">conti</span>  
+<span class="n">Continuing</span><span class="p">.</span>  
+<span class="mi">5</span> <span class="mi">5</span>  
+
+<span class="n">Breakpoint</span> <span class="mi">1</span><span class="p">,</span> <span class="n">main</span> <span class="p">()</span> <span class="n">at</span> <span class="mi">30</span><span class="o">-</span><span class="n">minK</span><span class="p">.</span><span class="n">cpp</span><span class="o">:</span><span class="mi">52</span>  
+<span class="mi">52</span>  <span class="n">se</span><span class="p">;</span>  
+<span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">print</span> <span class="o">&amp;</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
+<span class="err">$</span><span class="mi">7</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span> <span class="mh">0x804c0a0</span>  
+<span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">x</span> <span class="o">/</span><span class="n">d</span> <span class="mh">0x804c09c</span>  
+<span class="mh">0x804c09c</span><span class="o">:</span>  <span class="mi">25</span>          <span class="c1">//同理  </span>
+</pre></div>
+
+
+<p>明白了这一点后，我把程序改回了原来的状态(即<code>j=begin-1;</code>)，并且把上面的代码中注释部分去掉注释，让它打印局部状态，执行结果和解释如下：  </p>
+<div class="highlight"><pre><span class="mi">5</span> <span class="mi">3</span>          <span class="c1">//输入5和3(5个元素的数组，取最大的3个元素)，后面的为输出信息  </span>
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">1</span>  
+<span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span>  
+<span class="nl">begin:</span><span class="mi">0</span><span class="p">,</span><span class="n">end</span><span class="o">:</span><span class="mi">4</span><span class="p">,</span><span class="n">mid</span><span class="o">:</span><span class="mi">3</span>  
+<span class="mi">25</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span>   <span class="c1">// arr[mid]=0，是最小的一个元素，所以这一趟执行完之后，j=begin-1=-1，swap交换了arr[-1]和arr[0]，arr[-1]存的正好是堆块的大小信息，所以0不见了，25出现了。  </span>
+<span class="nl">begin:</span><span class="mi">0</span><span class="p">,</span><span class="n">end</span><span class="o">:</span><span class="mi">4</span><span class="p">,</span><span class="n">mid</span><span class="o">:</span><span class="mi">3</span>  
+<span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span>  
+<span class="nl">begin:</span><span class="mi">1</span><span class="p">,</span><span class="n">end</span><span class="o">:</span><span class="mi">4</span><span class="p">,</span><span class="n">mid</span><span class="o">:</span><span class="mi">3</span>  
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>  
+<span class="o">***</span> <span class="n">glibc</span> <span class="n">detected</span> <span class="o">***</span> <span class="p">.</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span><span class="o">:</span> <span class="n">free</span><span class="p">()</span><span class="o">:</span> <span class="n">invalid</span> <span class="n">pointer</span><span class="o">:</span> <span class="mh">0x09499008</span> <span class="o">***</span> <span class="c1">// free指针，发现释放的指针的前一个字的最后一位是0，表明是未分配的内存，所以调用abort()函数中止了进程的执行。  </span>
+</pre></div></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2014-05-19T00:00:00" pubdate>2014-05-19</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/linux.html">linux</a>
+      </span>
+  </p>    </footer>
+  </article>
+
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
+      <aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
+      </li>
+          </ul>
+  </section>
+    <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
+  </section>
+   
+
+  <section>
+  <h1>Tags</h1>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/storage.html">storage</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/select.html">select</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/distributed.html">distributed</a>,      <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+
+    
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
+    </section>
+      <section>
+        <h1>Blogroll</h2>
+        <ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2014/05/delete-core-dump.html';
+          var disqus_url = 'http://particle128.com/posts/2014/05/delete-core-dump.html';
+          var disqus_title = '一场core dump引发的思考';
+      	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>
