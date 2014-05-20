@@ -150,17 +150,17 @@ Headache is not a big deal, but it troubles me a lot. So, I'm going to ...</p></
 </header>
 
   <div class="entry-content"><h3>线程的实质</h3>
-<p>gdb调试线程，在线程创建和退出的时候，会看到这样的字样</p>
-<div class="highlight"><pre><span class="k">[New Thread 0xb799ab40 (LWP 20528)]</span>
-<span class="err">...</span>
-<span class="k">[Thread 0xb799ab40 (LWP 20528) exited]</span>
+<p>gdb调试线程，在线程创建和退出的时候，会看到这样的字样  </p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">New</span> <span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)]</span>  
+<span class="p">...</span>  
+<span class="p">[</span><span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)</span> <span class="n">exited</span><span class="p">]</span>  
 </pre></div>
 
 
-<p>Thread后面的数字是线程id，但是后面出现的LWP是什么呢？</p>
-<p>LWP(light weighted process)，即轻量级进程。它是进程，但是和普通进程的区别在于，子进程和父进程共享绝大多数地址空间和资源:</p>
+<p>Thread后面的数字是线程id，但是后面出现的LWP是什么呢？  </p>
+<p>LWP(light weighted process)，即轻量级进程。它是进程，但是和普通进程的区别在于，子进程和父进程共享绝大多数地址空间和资源:  </p>
 <ul>
-<li>地址空间中，除了栈，其他段（text、data、bss、heap等）都是共享的。</li>
+<li>地址空间中，除了栈，其他段（text、data、bss、heap等）都是共享的。  </li>
 <li>资源中，除了tid、线程特定的信号屏蔽字、errno等少数几个，其余的（pid、ppid、pgid、sid、controlling terminal、uid、gid、open file descriptors、record locks ...</li></ul></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2014/05/linux-thread.html">Read On &crarr;</a>
