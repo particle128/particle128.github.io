@@ -1,5 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-05-19T00:00:00+08:00</updated><entry><title>一场core dump引发的思考</title><link href="http://particle128.com/posts/2014/05/delete-core-dump.html" rel="alternate"></link><updated>2014-05-19T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-19:posts/2014/05/delete-core-dump.html</id><summary type="html">&lt;h3&gt;起因&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-05-20T00:00:00+08:00</updated><entry><title>linux中的线程的实质和实现</title><link href="http://particle128.com/posts/2014/05/linux-thread.html" rel="alternate"></link><updated>2014-05-20T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-20:posts/2014/05/linux-thread.html</id><summary type="html">&lt;h3&gt;线程的实质&lt;/h3&gt;
+&lt;p&gt;gdb调试线程，在线程创建和退出的时候，会看到这样的字样&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[New Thread 0xb799ab40 (LWP 20528)]&lt;/span&gt;
+&lt;span class="err"&gt;...&lt;/span&gt;
+&lt;span class="k"&gt;[Thread 0xb799ab40 (LWP 20528) exited]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Thread后面的数字是线程id，但是后面出现的LWP是什么呢？&lt;/p&gt;
+&lt;p&gt;LWP(light weighted process)，即轻量级进程。它是进程，但是和普通进程的区别在于，子进程和父进程共享绝大多数地址空间和资源:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;地址空间中，除了栈，其他段（text、data、bss、heap等）都是共享的。&lt;/li&gt;
+&lt;li&gt;资源中，除了tid、线程特定的信号屏蔽字、errno等少数几个，其余的（pid、ppid、pgid、sid、controlling terminal、uid、gid、open file descriptors、record locks、当前目录和根目录、rlimit限制、文件默认创建模式、itimer定时器等）都是共享的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;普通进程和LWP在实现上的不同点是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;普通进程，fork会调用clone，第三个参数flags不会包含CLONE_THREAD&lt;/li&gt;
+&lt;li&gt;LWP，pthread_create会调用clone，第三个参数flags会包含CLONE_THREAD(可能还有其他几个标志)，标示子进程和父进程同属一个线程组(相同TGID)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;线程和LWP是同一个东西，只是在用户态，我们管进程中每一个执行序列为“线程”，但是内核中它被称为LWP。因为内核上没有线程的概念，CPU的调度是以进程为单位的。&lt;/p&gt;
+&lt;h3&gt;线程的实现&lt;/h3&gt;
+&lt;p&gt;线程的实现，经历了如下发展阶段：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LinuxThreads : Linux2.6之前&lt;/li&gt;
+&lt;li&gt;NPTL (Native Posix Thread Library) : RedHat负责，Linux2.6之后&lt;/li&gt;
+&lt;li&gt;NGPT (Next Generation Posix Thread): IBM负责，同NPTL同时开始研究的，但是最后被抛弃了(IBM啊...哎...)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;LinuxThreads&lt;/h4&gt;
+&lt;p&gt;在LinuxThreads中，专门为每一个进程构造了一个管理线程，负责处理线程相关的管理工作。当进程第一次调用pthread_create()创建一个线程的时候就会创建并启动管理线程。然后管理线程再来创建用户请求的线程。也就是说，用户在调用pthread_create后，先是创建了管理线程，再由管理线程创建了用户的线程。&lt;/p&gt;
+&lt;p&gt;为了遵循POSIX对线程的一个规定：&lt;code&gt;当"进程"收到一个致命信号(比如由于段错误收到SIGSEGV信号), 进程内的线程全部退出&lt;/code&gt;，LinuxThreads的实现方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;程序第一次调用pthread_create时, linuxthreads发现管理线程不存在, 于是创建这个管理线程. 这个管理线程是进程中的第一个线程(主线程)的儿子.&lt;/li&gt;
+&lt;li&gt;然后在pthread_create中, 会通过pipe向管理线程发送一个命令, 告诉它创建线程. 即是说, 除主线程外, 所有的线程都是由管理线程来创建的, 管理线程是它们的父亲.&lt;/li&gt;
+&lt;li&gt;于是, 当任何一个子线程退出时, 管理线程将收到SIGUSER1信号(这是在通过clone创建子线程时指定的). 管理线程在对应的sig_handler中会判断子线程是否正常退出, 如果不是, 则杀死所有线程, 然后自杀.&lt;/li&gt;
+&lt;li&gt;主线程是管理线程的父亲, 其退出时并不会给管理线程发信号. 于是, 在管理线程的主循环中通过getppid检查父进程的ID号, 如果ID号是1, 说明父亲已经退出, 并把自己托管给了init进程(1号进程). 这时候, 管理线程也会杀掉所有子线程, 然后自杀.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;容易发现，管理线程可能成为多线程系统的瓶颈，线程创建和销毁的开销很大（需要IPC）。
+更为重要的是，LinuxThreads无法满足Posix对线程的绝大多数规定，比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查看进程列表的时候, 相关的一组task_struct应当被展现为列表中的一个节点;&lt;/li&gt;
+&lt;li&gt;发送给这个"进程"的信号(对应kill系统调用), 将被对应的这一组task_struct所共享, 并且被其中的任意一个"线程"处理;&lt;/li&gt;
+&lt;li&gt;发送给某个"线程"的信号(对应pthread_kill), 将只被对应的一个task_struct接收, 并且由它自己来处理;&lt;/li&gt;
+&lt;li&gt;当"进程"被停止或继续时(对应SIGSTOP/SIGCONT信号), 对应的这一组task_struct状态将改变;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;NPTL&lt;/h4&gt;
+&lt;p&gt;在linux 2.6中, 内核有了线程组的概念, task_struct结构中增加了一个tgid(thread group id)字段.
+如果这个task是一个"主线程", 则它的tgid等于pid, 否则tgid等于进程的pid(即主线程的pid).&lt;/p&gt;
+&lt;p&gt;通过如下方式，解决了LinuxThreads不能兼容POSIX的问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;有了tgid, 内核或相关的shell程序就知道某个tast_struct是代表一个进程还是代表一个线程, 也就知道在什么时候该展现它们, 什么时候不该展现(比如在ps的时候, 线程就不要展现了).&lt;/li&gt;
+&lt;li&gt;为了应付"发送给进程的信号"和"发送给线程的信号", task_struct里面维护了两套signal_pending, 一套是线程组共享的, 一套是线程独有的。通过kill发送的信号被放在线程组共享的signal_pending中, 可以由任意一个线程来处理; 通过pthread_kill发送的信号(pthread_kill是pthread库的接口, 对应的系统调用中tkill)被放在线程独有的signal_pending中, 只能由本线程来处理.&lt;/li&gt;
+&lt;li&gt;当线程停止/继续, 或者是收到一个致命信号时, 内核会将处理动作施加到整个线程组中.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;NGPT&lt;/h4&gt;
+&lt;p&gt;上面提到的两种线程库使用的都是内核级线程(每个线程都对应内核中的一个调度实体), 这种模型称为1:1模型(1个线程对应1个内核级线程);
+而NGPT则打算实现M:N模型(M个线程对应N个内核级线程), 也就是说若干个线程可能是在同一个执行实体上实现的.&lt;/p&gt;
+&lt;p&gt;因为模型太复杂，貌似没有实现出来所有预定功能，所以被放弃了。&lt;/p&gt;
+&lt;h3&gt;参考&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://www.thegeekstuff.com/2013/11/linux-process-and-threads/"&gt;What are Linux Processes, Threads, Light Weight Processes, and Process State&lt;/a&gt;
+&lt;a href="http://www.cnitblog.com/tarius.wu/articles/2277.html"&gt;关于进程、线程和轻量级进程的一些笔记&lt;/a&gt;
+&lt;a href="http://www3.ece.neu.edu/~dschaa/docs/processes.html"&gt;PROCESSES AND THREADS&lt;/a&gt;
+&lt;a href="http://blog.csdn.net/tianyue168/article/details/7403693"&gt;Linux进程、线程模型，LWP，pthread_self()&lt;/a&gt;
+&lt;a href="http://en.wikipedia.org/wiki/Native_POSIX_Thread_Library"&gt;wiki:Native POSIX Thread Library&lt;/a&gt;&lt;/p&gt;</summary><category term="linux"></category><category term="thread"></category><category term="lwp"></category></entry><entry><title>一场core dump引发的思考</title><link href="http://particle128.com/posts/2014/05/delete-core-dump.html" rel="alternate"></link><updated>2014-05-19T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-19:posts/2014/05/delete-core-dump.html</id><summary type="html">&lt;h3&gt;起因&lt;/h3&gt;
 &lt;p&gt;上午在实现算法“找出最小的k个元素/找出第k大的元素”时，遇到了core dump。代码如下：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include &amp;lt;iostream&amp;gt;  &lt;/span&gt;
 &lt;span class="cp"&gt;#include &amp;lt;iterator&amp;gt;  &lt;/span&gt;

@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - logging</title>
+  <title>particle128's Blog - lwp</title>
   <meta name="author" content="particle128">
 
     
@@ -62,25 +62,26 @@
     	  		<article>
     		<header>
           <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
+        <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
       </h1>
-          <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
+          <p class="meta"><time datetime="2014-05-20T00:00:00" pubdate>2014-05-20</time></p>
 </header>
 
-  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
-<h3>1、各种消息机制的使用场合</h3>
-<p>终端输出来显示一些信息：print()<br />
-报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
-logging.debug()用来诊断错误<br />
-发布一个警告：logging.warning()或warnings.warn()<br />
-报告一个错误：raise an exception<br />
-不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  </p>
-<p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
-<p>level由低到高依次是：<br />
-DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
-<h3>2 ...</h3></div>
+  <div class="entry-content"><h3>线程的实质</h3>
+<p>gdb调试线程，在线程创建和退出的时候，会看到这样的字样</p>
+<div class="highlight"><pre><span class="k">[New Thread 0xb799ab40 (LWP 20528)]</span>
+<span class="err">...</span>
+<span class="k">[Thread 0xb799ab40 (LWP 20528) exited]</span>
+</pre></div>
+
+
+<p>Thread后面的数字是线程id，但是后面出现的LWP是什么呢？</p>
+<p>LWP(light weighted process)，即轻量级进程。它是进程，但是和普通进程的区别在于，子进程和父进程共享绝大多数地址空间和资源:</p>
+<ul>
+<li>地址空间中，除了栈，其他段（text、data、bss、heap等）都是共享的。</li>
+<li>资源中，除了tid、线程特定的信号屏蔽字、errno等少数几个，其余的（pid、ppid、pgid、sid、controlling terminal、uid、gid、open file descriptors、record locks ...</li></ul></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/linux-thread.html">Read On &crarr;</a>
   </footer>
   		</article>
   	  	<div class="pagination">
@@ -92,7 +93,7 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
             <li class="post">
-          <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
+          <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
       </li>
           </ul>
   </section>
