@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - linux</title>
+  <title>项目中一个诡异的问题</title>
   <meta name="author" content="particle128">
 
     
@@ -58,12 +58,10 @@
   </ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/05/vdisk-one-question.html">项目中一个诡异的问题</a>
-      </h1>
+      <div>
+  <article class="hentry" role="article">
+    <header>
+          <h1 class="entry-title">项目中一个诡异的问题</h1>
           <p class="meta"><time datetime="2014-05-26T00:00:00" pubdate>2014-05-26</time></p>
 </header>
 
@@ -74,153 +72,83 @@
 <span class="n">mkdosfs</span> <span class="o">-</span><span class="n">F</span> <span class="mi">32</span> <span class="n">bigger</span><span class="p">.</span><span class="n">img</span>  
 <span class="n">mount</span> <span class="o">-</span><span class="n">o</span> <span class="n">iocharset</span><span class="o">=</span><span class="n">gb2312</span> <span class="n">test</span><span class="p">.</span><span class="n">img</span> <span class="o">/</span><span class="n">cdrom</span>  
 <span class="n">mount</span> <span class="o">-</span><span class="n">o</span> <span class="n">iocharset</span><span class="o">=</span><span class="n">gb2312</span> <span class="n">bigger</span><span class="p">.</span><span class="n">img</span> <span class="o">/</span><span class="n">mnt</span>  
-<span class="n">cp</span> <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">cdrom</span><span class="o">/*</span> <span class="o">/</span><span class="n">mnt ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/05/vdisk-one-question.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
-      </h1>
-          <p class="meta"><time datetime="2014-05-20T00:00:00" pubdate>2014-05-20</time></p>
-</header>
-
-  <div class="entry-content"><h3>线程的实质</h3>
-<p>gdb调试线程，在线程创建和退出的时候，会看到这样的字样  </p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">New</span> <span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)]</span>  
-<span class="p">...</span>  
-<span class="p">[</span><span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)</span> <span class="n">exited</span><span class="p">]</span>  
+<span class="n">cp</span> <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">cdrom</span><span class="o">/*</span> <span class="o">/</span><span class="n">mnt</span>  
+<span class="n">umount</span>  <span class="o">/</span><span class="n">cdrom</span>  
+<span class="n">umount</span>  <span class="o">/</span><span class="n">mnt</span>  
+<span class="n">mv</span> <span class="n">bigger</span><span class="p">.</span><span class="n">img</span> <span class="n">test</span><span class="p">.</span><span class="n">img</span>  
 </pre></div>
 
 
-<p>Thread后面的数字是线程id，但是后面出现的LWP是什么呢？  </p>
-<p>LWP(light weighted process)，即轻量级进程。它是进程，但是和普通进程的区别在于，子进程和父进程共享绝大多数地址空间和资源:  </p>
+<p>为了测试这种方法的可行性，用了如下步骤：  </p>
 <ul>
-<li>地址空间中，除了栈，其他段（text、data、bss、heap等）都是共享的。  </li>
-<li>资源中，除了tid、线程特定的信号屏蔽字、errno等少数几个，其余的（pid、ppid、pgid、sid、controlling terminal、uid、gid、open file descriptors、record locks ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/05/linux-thread.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
-      </h1>
-          <p class="meta"><time datetime="2014-05-19T00:00:00" pubdate>2014-05-19</time></p>
-</header>
-
-  <div class="entry-content"><h3>起因</h3>
-<p>上午在实现算法“找出最小的k个元素/找出第k大的元素”时，遇到了core dump。代码如下：  </p>
-<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
-<span class="cp">#include &lt;iterator&gt;  </span>
-<span class="cp">#include &lt;algorithm&gt;  </span>
-<span class="cp">#include &lt;cstdlib&gt;  </span>
-
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
-
-<span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span><span class="kt">int</span> <span class="n">begin</span><span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">begin</span><span class="p">;</span>  
-    <span class="c1">//copy(arr+begin,arr+end+1,ostream_iterator&lt;int&gt;(cout,&quot;,&quot;));  </span>
-    <span class="c1">//cout&lt;&lt;endl&lt;&lt;&quot;begin:&quot;&lt;&lt;begin&lt;&lt;&quot;,end:&quot;&lt;&lt;end&lt;&lt;&quot;,mid ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/05/delete-core-dump.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
-      </h1>
-          <p class="meta"><time datetime="2014-05-05T00:00:00" pubdate>2014-05-05</time></p>
-</header>
-
-  <div class="entry-content"><p>以下内容汇总自APUE不同章节，还包括自己的一些测试  </p>
-<h3>可重入</h3>
-<p>可重入（reentrant）函数，字面意思就是可以重复进入执行，而不会发生数据错乱等异常情况。包括两重意思：  </p>
-<ul>
-<li>信号处理程序可重入 —— 满足这个条件的函数，称之为异步-信号安全的(async-signal-safe)  </li>
-<li>线程可重入 —— 满足这个条件的函数，称之为线程安全的(thread-safe)  </li>
+<li>客户端挂载test.img，并写入一系列文件  </li>
+<li>客户端卸载test.img  </li>
+<li>服务器执行上述命令  </li>
+<li>客户端再次挂载test.img，查看文件是否存在并且该磁盘大小是否变成200M  </li>
 </ul>
-<p>这两个概念并不对等:<br />
-标准IO库函数比如printf，是线程安全的，因为内部使用了递归锁，即用<code>flockfile(FILE*fp)</code>和<code>funlockfile(FILE*fp)</code>包裹;<br />
-但是，它并不是异步信号安全的，因为毕竟<code>FILE</code>结构是全局的，信号处理程序中可能会修改它(flockfile和funlockfile之间).  </p>
-<h3>信号处理程序可重入</h3>
-<p>不可重入的几种情况：  </p>
+<p>结果，奇怪的事情发生了：  </p>
 <ul>
-<li>使用静态数据结构，比如getpwnam，getpwuid：如果信号发生时正在执行getpwnam，信号处理程序中执行getpwnam可能覆盖原来getpwnam获取的旧值  </li>
-<li>调用malloc或free：如果信号发生时正在malloc（修改堆上存储空间的链接表），信号处理程序又调用malloc，会破坏内核的数据结构  </li>
-<li>使用标准IO函数 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/05/reentrant.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-27T22:09:30.464350" pubdate>2013-12-27</time></p>
-</header>
-
-  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
-<h4>chown 修改文件所有者</h4>
-<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
-chown mashu aa.txt <span class="c"># 修改所有者</span>
-chown .mashu aa.txt <span class="c"># 修改组</span>
+<li>客户的windows下现实的磁盘大小仍然为100M  </li>
+</ul>
+<p>我用<code>head -c 512 test.img| xxd</code>查看了一下test.img的启动扇区，0x20开始的4个字节显示磁盘的扇区数目没有错，对应的就是200M大小的磁盘。  </p>
+<p>后来又发现了更诡异的事情：  </p>
+<ul>
+<li>客户端对test.img对应磁盘的修改，从服务器的打印信息来看是写入成功了，但是在服务器上mount一下test.img后发现跟原来一样。（写入磁盘我用的mmap+msync方式，所以不存在对文件的修改没有写入磁盘的问题）  </li>
+<li>ls -l 命令显示，客户端对test.img进行修改后，test.img的mtime并没有变化  </li>
+<li>客户端对test.img修改之后，卸载了再挂载，之前的修改保留在了磁盘上  </li>
+</ul>
+<p>客户端对test.img的修改去哪里了？为啥客户端可以看到修改，服务器看不到？  </p>
+<h3>排查</h3>
+<p>试了几种方法，都没有发现问题，后来用<code>lsof | sed -n '1p;/test.img/p'</code>查看打开文件的时候，发现问题了。<br />
+结果如下：  </p>
+<div class="highlight"><pre><span class="n">COMMAND</span>     <span class="n">PID</span>       <span class="n">USER</span>   <span class="n">FD</span>      <span class="n">TYPE</span>     <span class="n">DEVICE</span>  <span class="n">SIZE</span><span class="o">/</span><span class="n">OFF</span>       <span class="n">NODE</span> <span class="n">NAME</span>  
+<span class="n">server</span>    <span class="mi">11987</span>       <span class="n">root</span>  <span class="n">DEL</span>       <span class="n">REG</span>        <span class="mi">8</span><span class="p">,</span><span class="mi">3</span>              <span class="mi">1177379</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">VDisk_Home</span><span class="o">/</span><span class="n">test</span><span class="p">.</span><span class="n">img</span>  
+<span class="n">server</span>    <span class="mi">11987</span>       <span class="n">root</span>    <span class="mi">6u</span>      <span class="n">REG</span>        <span class="mi">8</span><span class="p">,</span><span class="mi">3</span> <span class="mi">209715200</span>    <span class="mi">1177379</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">VDisk_Home</span><span class="o">/</span><span class="n">test</span><span class="p">.</span><span class="n">img</span> <span class="p">(</span><span class="n">deleted</span><span class="p">)</span>  
 </pre></div>
 
 
-<h4>chgrp 修改文件所属用户组</h4>
-<div class="highlight"><pre>chgrp mashu aa.txt 修改组
+<p>正常情况，在执行PUT的过程中输出如下：  </p>
+<div class="highlight"><pre><span class="n">COMMAND</span>     <span class="n">PID</span>       <span class="n">USER</span>   <span class="n">FD</span>      <span class="n">TYPE</span>     <span class="n">DEVICE</span>  <span class="n">SIZE</span><span class="o">/</span><span class="n">OFF</span>       <span class="n">NODE</span> <span class="n">NAME</span>  
+<span class="n">server</span>    <span class="mi">11987</span>       <span class="n">root</span>  <span class="n">mem</span>       <span class="n">REG</span>        <span class="mi">8</span><span class="p">,</span><span class="mi">3</span> <span class="mi">209715200</span>    <span class="mi">1177379</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">VDisk_Home</span><span class="o">/</span><span class="n">test</span><span class="p">.</span><span class="n">img</span>  
+<span class="n">server</span>    <span class="mi">11987</span>       <span class="n">root</span>    <span class="mi">6u</span>      <span class="n">REG</span>        <span class="mi">8</span><span class="p">,</span><span class="mi">3</span> <span class="mi">209715200</span>    <span class="mi">1177379</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">VDisk_Home</span><span class="o">/</span><span class="n">test</span><span class="p">.</span><span class="n">img</span>  
 </pre></div>
 
 
-<h4>chmod 修改权限</h4>
-<div class="highlight"><pre>chmod 777 aa.txt   
-chmod a+r aa.txt
-</pre></div>
+<p>其中mem表示test.img被内存映射  </p>
+<h3>解释</h3>
+<p>首先引用一句APUE里的话：  </p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>关闭一个文件时，内核会首先检查打开该文件的进程数。如果进程数达到0，然后检查其链接数，如果这个数才是0，那么就删除该文件。  </p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>注：shell下可以分别用<code>lsof | grep filename</code>和<code>ls -l filename | cut -d ' ' -f 2</code>来检查这两点是否满足。  </p>
+<p><code>mv bigger.img test.img</code>，其实是删除原test.img再把bigger.img改名为test.img的过程。<br />
+test.img的删除，是unlink的过程，即“将test.img的inode结点中的链接数字段-1”。虽然此时test.img的链接数变为0，但是test.img还打开着，所以不会马上删除这个文件的inode结点、数据块。但是，会删除test.img所在目录里的一行文件记录(inode号-&gt;文件名)。由于，inode块和数据块没有删除，inode map和data map中对应的位置也占用着，所以后续在文件系统创建新文件，不会把他们覆盖。<br />
+项目中我使用了全局hashmap path2fd(保存文件路径到文件描述符)，所以客户端卸载再加载test.img的过程，还在使用原来的文件描述符来访问文件。read和write系统调用，都是使用文件描述符来引用的。因此mv删除原test.img后，重新挂载test.img后，仍然都在修改原test.img——一个在目录中找不到的文件，也被称为幽灵文件(phantom file)。  </p>
+<p>这个原理，顺便可以解释一个问题——“什么情况下，df -h /dir和du -hs /dir的结果不一样：<br />
+答：运行中进程打开的文件，被用户删除！（link=0，但访问进程数&gt;0）<br />
+解释：df直接从文件系统的超级块读取磁盘使用情况信息，所以往往返回结果很快。但是du递归深入目录，readdir来获取每一个目录下的文件，然后将各个文件的inode中保存的文件大小相加。目录项被删除，du变小；文件没有被真正删除，超级块没变，df没变。df的结果&gt;du的结果。  </p>
+<h3>解决</h3>
+<p>每次resize一个FAT32磁盘，就重新打开一遍这个文件，更新一下全局hashmap。  </p></div>
+    <footer>
+      <p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+  <time datetime="2014-05-26T00:00:00" pubdate>2014-05-26</time>    <span class="categories">
+        <a class="category" href="http://particle128.com/tag/linux.html">linux</a>
+      </span>
+  </p>    </footer>
+  </article>
 
-
-<h3>2. 3个重要文件</h3>
-<h4>/etc/passwd</h4>
-<p>记录 用户名 对应的UID ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/linux_user.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
-      </h1>
-          <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
-<p>r：可以查看文件内容<br />
-w：可以修改文件内容<br />
-x：可以执行文件内容  </p>
-<p><strong>Note：</strong> <br />
-一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
-<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
-<p>r：可以查看目录结构（ls）<br />
-w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
-x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
-<p><strong>Note：</strong><br />
-一个目录开放浏览，需要r+x权限。<br />
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-    <br />
-</div>  </div>
+    <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+  </div>
       <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
@@ -238,7 +166,7 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
           <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
       </li>
             <li class="post">
-          <a href="http://particle128.com/posts/2013/12/linux_user.html">Linux下的用户和用户组小结</a>
+          <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
       </li>
           </ul>
   </section>
@@ -282,6 +210,9 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
 </p></footer>
   	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
+                var disqus_identifier = '/posts/2014/05/vdisk-one-question.html';
+          var disqus_url = 'http://particle128.com/posts/2014/05/vdisk-one-question.html';
+          var disqus_title = '项目中一个诡异的问题';
       	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

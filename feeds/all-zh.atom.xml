@@ -1,5 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-05-20T00:00:00+08:00</updated><entry><title>linux中的线程的实质和实现</title><link href="http://particle128.com/posts/2014/05/linux-thread.html" rel="alternate"></link><updated>2014-05-20T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-20:posts/2014/05/linux-thread.html</id><summary type="html">&lt;h3&gt;线程的实质&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-05-26T00:00:00+08:00</updated><entry><title>项目中一个诡异的问题</title><link href="http://particle128.com/posts/2014/05/vdisk-one-question.html" rel="alternate"></link><updated>2014-05-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-26:posts/2014/05/vdisk-one-question.html</id><summary type="html">&lt;p&gt;记录下今天在做虚拟磁盘过程中，遇到的一个问题。  &lt;/p&gt;
+&lt;h3&gt;问题&lt;/h3&gt;
+&lt;p&gt;因为没有找到合适的fat32格式文件系统的扩容工具（fatresize没有效果，parted3.1可以检测到分区但是没有resize功能，parted2.x有resize功能但是检测不到分区），只能暂时采用如下方法来进行“磁盘扩容”。（假设原磁盘test.img，大小为100M，要扩容到200M）  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;dd&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zero&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;bigger&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="n"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;  
+&lt;span class="n"&gt;mkdosfs&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;F&lt;/span&gt; &lt;span class="mi"&gt;32&lt;/span&gt; &lt;span class="n"&gt;bigger&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;  
+&lt;span class="n"&gt;mount&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="n"&gt;iocharset&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;gb2312&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cdrom&lt;/span&gt;  
+&lt;span class="n"&gt;mount&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="n"&gt;iocharset&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;gb2312&lt;/span&gt; &lt;span class="n"&gt;bigger&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mnt&lt;/span&gt;  
+&lt;span class="n"&gt;cp&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cdrom&lt;/span&gt;&lt;span class="o"&gt;/*&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mnt&lt;/span&gt;  
+&lt;span class="n"&gt;umount&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cdrom&lt;/span&gt;  
+&lt;span class="n"&gt;umount&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mnt&lt;/span&gt;  
+&lt;span class="n"&gt;mv&lt;/span&gt; &lt;span class="n"&gt;bigger&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;为了测试这种方法的可行性，用了如下步骤：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;客户端挂载test.img，并写入一系列文件  &lt;/li&gt;
+&lt;li&gt;客户端卸载test.img  &lt;/li&gt;
+&lt;li&gt;服务器执行上述命令  &lt;/li&gt;
+&lt;li&gt;客户端再次挂载test.img，查看文件是否存在并且该磁盘大小是否变成200M  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;结果，奇怪的事情发生了：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;客户的windows下现实的磁盘大小仍然为100M  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我用&lt;code&gt;head -c 512 test.img| xxd&lt;/code&gt;查看了一下test.img的启动扇区，0x20开始的4个字节显示磁盘的扇区数目没有错，对应的就是200M大小的磁盘。  &lt;/p&gt;
+&lt;p&gt;后来又发现了更诡异的事情：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;客户端对test.img对应磁盘的修改，从服务器的打印信息来看是写入成功了，但是在服务器上mount一下test.img后发现跟原来一样。（写入磁盘我用的mmap+msync方式，所以不存在对文件的修改没有写入磁盘的问题）  &lt;/li&gt;
+&lt;li&gt;ls -l 命令显示，客户端对test.img进行修改后，test.img的mtime并没有变化  &lt;/li&gt;
+&lt;li&gt;客户端对test.img修改之后，卸载了再挂载，之前的修改保留在了磁盘上  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;客户端对test.img的修改去哪里了？为啥客户端可以看到修改，服务器看不到？  &lt;/p&gt;
+&lt;h3&gt;排查&lt;/h3&gt;
+&lt;p&gt;试了几种方法，都没有发现问题，后来用&lt;code&gt;lsof | sed -n '1p;/test.img/p'&lt;/code&gt;查看打开文件的时候，发现问题了。&lt;br /&gt;
+结果如下：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;COMMAND&lt;/span&gt;     &lt;span class="n"&gt;PID&lt;/span&gt;       &lt;span class="n"&gt;USER&lt;/span&gt;   &lt;span class="n"&gt;FD&lt;/span&gt;      &lt;span class="n"&gt;TYPE&lt;/span&gt;     &lt;span class="n"&gt;DEVICE&lt;/span&gt;  &lt;span class="n"&gt;SIZE&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;OFF&lt;/span&gt;       &lt;span class="n"&gt;NODE&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt;  
+&lt;span class="n"&gt;server&lt;/span&gt;    &lt;span class="mi"&gt;11987&lt;/span&gt;       &lt;span class="n"&gt;root&lt;/span&gt;  &lt;span class="n"&gt;DEL&lt;/span&gt;       &lt;span class="n"&gt;REG&lt;/span&gt;        &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;              &lt;span class="mi"&gt;1177379&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;VDisk_Home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;  
+&lt;span class="n"&gt;server&lt;/span&gt;    &lt;span class="mi"&gt;11987&lt;/span&gt;       &lt;span class="n"&gt;root&lt;/span&gt;    &lt;span class="mi"&gt;6u&lt;/span&gt;      &lt;span class="n"&gt;REG&lt;/span&gt;        &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="mi"&gt;209715200&lt;/span&gt;    &lt;span class="mi"&gt;1177379&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;VDisk_Home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;deleted&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;正常情况，在执行PUT的过程中输出如下：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;COMMAND&lt;/span&gt;     &lt;span class="n"&gt;PID&lt;/span&gt;       &lt;span class="n"&gt;USER&lt;/span&gt;   &lt;span class="n"&gt;FD&lt;/span&gt;      &lt;span class="n"&gt;TYPE&lt;/span&gt;     &lt;span class="n"&gt;DEVICE&lt;/span&gt;  &lt;span class="n"&gt;SIZE&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;OFF&lt;/span&gt;       &lt;span class="n"&gt;NODE&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt;  
+&lt;span class="n"&gt;server&lt;/span&gt;    &lt;span class="mi"&gt;11987&lt;/span&gt;       &lt;span class="n"&gt;root&lt;/span&gt;  &lt;span class="n"&gt;mem&lt;/span&gt;       &lt;span class="n"&gt;REG&lt;/span&gt;        &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="mi"&gt;209715200&lt;/span&gt;    &lt;span class="mi"&gt;1177379&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;VDisk_Home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;  
+&lt;span class="n"&gt;server&lt;/span&gt;    &lt;span class="mi"&gt;11987&lt;/span&gt;       &lt;span class="n"&gt;root&lt;/span&gt;    &lt;span class="mi"&gt;6u&lt;/span&gt;      &lt;span class="n"&gt;REG&lt;/span&gt;        &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="mi"&gt;209715200&lt;/span&gt;    &lt;span class="mi"&gt;1177379&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;VDisk_Home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;其中mem表示test.img被内存映射  &lt;/p&gt;
+&lt;h3&gt;解释&lt;/h3&gt;
+&lt;p&gt;首先引用一句APUE里的话：  &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;关闭一个文件时，内核会首先检查打开该文件的进程数。如果进程数达到0，然后检查其链接数，如果这个数才是0，那么就删除该文件。  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;注：shell下可以分别用&lt;code&gt;lsof | grep filename&lt;/code&gt;和&lt;code&gt;ls -l filename | cut -d ' ' -f 2&lt;/code&gt;来检查这两点是否满足。  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mv bigger.img test.img&lt;/code&gt;，其实是删除原test.img再把bigger.img改名为test.img的过程。&lt;br /&gt;
+test.img的删除，是unlink的过程，即“将test.img的inode结点中的链接数字段-1”。虽然此时test.img的链接数变为0，但是test.img还打开着，所以不会马上删除这个文件的inode结点、数据块。但是，会删除test.img所在目录里的一行文件记录(inode号-&amp;gt;文件名)。由于，inode块和数据块没有删除，inode map和data map中对应的位置也占用着，所以后续在文件系统创建新文件，不会把他们覆盖。&lt;br /&gt;
+项目中我使用了全局hashmap path2fd(保存文件路径到文件描述符)，所以客户端卸载再加载test.img的过程，还在使用原来的文件描述符来访问文件。read和write系统调用，都是使用文件描述符来引用的。因此mv删除原test.img后，重新挂载test.img后，仍然都在修改原test.img——一个在目录中找不到的文件，也被称为幽灵文件(phantom file)。  &lt;/p&gt;
+&lt;p&gt;这个原理，顺便可以解释一个问题——“什么情况下，df -h /dir和du -hs /dir的结果不一样：&lt;br /&gt;
+答：运行中进程打开的文件，被用户删除！（link=0，但访问进程数&amp;gt;0）&lt;br /&gt;
+解释：df直接从文件系统的超级块读取磁盘使用情况信息，所以往往返回结果很快。但是du递归深入目录，readdir来获取每一个目录下的文件，然后将各个文件的inode中保存的文件大小相加。目录项被删除，du变小；文件没有被真正删除，超级块没变，df没变。df的结果&amp;gt;du的结果。  &lt;/p&gt;
+&lt;h3&gt;解决&lt;/h3&gt;
+&lt;p&gt;每次resize一个FAT32磁盘，就重新打开一遍这个文件，更新一下全局hashmap。  &lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>linux中的线程的实质和实现</title><link href="http://particle128.com/posts/2014/05/linux-thread.html" rel="alternate"></link><updated>2014-05-20T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-20:posts/2014/05/linux-thread.html</id><summary type="html">&lt;h3&gt;线程的实质&lt;/h3&gt;
 &lt;p&gt;gdb调试线程，在线程创建和退出的时候，会看到这样的字样  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;New&lt;/span&gt; &lt;span class="n"&gt;Thread&lt;/span&gt; &lt;span class="mh"&gt;0xb799ab40&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LWP&lt;/span&gt; &lt;span class="mi"&gt;20528&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;  
 &lt;span class="p"&gt;...&lt;/span&gt;  
