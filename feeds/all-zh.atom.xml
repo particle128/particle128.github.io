@@ -1,74 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-23T09:45:12+08:00</updated><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.com/posts/2014/06/linux_user.html" rel="alternate"></link><updated>2014-06-23T09:45:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
-&lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
-chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
-chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;chgrp 修改文件所属用户组&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chgrp mashu aa.txt 修改组
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;chmod 修改权限&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
-chmod a+r aa.txt
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;2. 3个重要文件&lt;/h3&gt;
-&lt;h4&gt;/etc/passwd&lt;/h4&gt;
-&lt;p&gt;记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  &lt;/p&gt;
-&lt;h4&gt;/etc/shadow&lt;/h4&gt;
-&lt;p&gt;记录 用户名 对应的密码（加密后）  &lt;/p&gt;
-&lt;h4&gt;/etc/group&lt;/h4&gt;
-&lt;p&gt;记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）&lt;/p&gt;
-&lt;h3&gt;3. 概念区分&lt;/h3&gt;
-&lt;h4&gt;初始用户组：&lt;/h4&gt;
-&lt;p&gt;useradd或usermod，-g参数后的组名。保存在/etc/passwd中。&lt;br /&gt;
-实际意义是，/etc/group里少写一个用户名。。。  &lt;/p&gt;
-&lt;h4&gt;有效用户组：&lt;/h4&gt;
-&lt;p&gt;groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。&lt;br /&gt;
-实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。&lt;/p&gt;
-&lt;h3&gt;4. 用户分类&lt;/h3&gt;
-&lt;p&gt;ubuntu12.04下，根据/etc/login.defs&lt;br /&gt;
-UID=0  系统管理员&lt;br /&gt;
-UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)&lt;br /&gt;
-UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  &lt;/p&gt;
-&lt;h3&gt;5. linux命令&lt;/h3&gt;
-&lt;h4&gt;1) useradd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;useradd -u &lt;span class="o"&gt;[&lt;/span&gt;UID&lt;span class="o"&gt;]&lt;/span&gt; -g &lt;span class="o"&gt;[&lt;/span&gt;initial group name&lt;span class="o"&gt;]&lt;/span&gt; -G &lt;span class="o"&gt;[&lt;/span&gt;other group name&lt;span class="o"&gt;]&lt;/span&gt; -d &lt;span class="o"&gt;[&lt;/span&gt;home dir&lt;span class="o"&gt;]&lt;/span&gt; -s &lt;span class="o"&gt;[&lt;/span&gt;shell&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。&lt;br /&gt;
--r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）&lt;/p&gt;
-&lt;h4&gt;2) usermod&lt;/h4&gt;
-&lt;p&gt;同useradd&lt;/p&gt;
-&lt;h4&gt;3) passwd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;passwd &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt; 
-passwd
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;无参数修改自己的密码&lt;/p&gt;
-&lt;h4&gt;4) userdel&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;userdel -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;加上-r，连同主文件夹也一同删除&lt;/p&gt;
-&lt;h4&gt;5) groupadd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;groupadd -g &lt;span class="o"&gt;[&lt;/span&gt;GID&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
-&lt;h4&gt;6) groupdel&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry><entry><title>数据库的分库和分表</title><link href="http://particle128.com/posts/2014/06/mysql.html" rel="alternate"></link><updated>2014-06-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/mysql.html</id><summary type="html">&lt;h2&gt;分表&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-23T00:00:00+08:00</updated><entry><title>数据库的分库和分表</title><link href="http://particle128.com/posts/2014/06/mysql.html" rel="alternate"></link><updated>2014-06-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/mysql.html</id><summary type="html">&lt;h2&gt;分表&lt;/h2&gt;
 &lt;h3&gt;水平分表&lt;/h3&gt;
 &lt;h4&gt;1、背景&lt;/h4&gt;
 &lt;p&gt;当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。
@@ -4367,4 +4298,73 @@ sms的属性：http://www.java2s.com/Open-Source/Android/SMS/smsselector/com/rud
 发送短信实现：http://stackoverflow.com/questions/4967448/send-sms-in-android  &lt;/p&gt;
 &lt;h3&gt;后记&lt;/h3&gt;
 &lt;p&gt;感谢欧阳师弟的鼎力支持，我没有安卓开发环境，也对安卓开发一窍不通，调试工作全靠他的帮助。&lt;br /&gt;
-从打算自己解决，到最后解决完用了3h左右吧，记录下java零基础前提下用java解决问题的经历。  &lt;/p&gt;</summary><category term="android"></category></entry></feed>
+从打算自己解决，到最后解决完用了3h左右吧，记录下java零基础前提下用java解决问题的经历。  &lt;/p&gt;</summary><category term="android"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.com/posts/2012/09/linux_user.html" rel="alternate"></link><updated>2012-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2012-09-08:posts/2012/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+&lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
+chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
+chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;chgrp 修改文件所属用户组&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chgrp mashu aa.txt 修改组
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;chmod 修改权限&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
+chmod a+r aa.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 3个重要文件&lt;/h3&gt;
+&lt;h4&gt;/etc/passwd&lt;/h4&gt;
+&lt;p&gt;记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  &lt;/p&gt;
+&lt;h4&gt;/etc/shadow&lt;/h4&gt;
+&lt;p&gt;记录 用户名 对应的密码（加密后）  &lt;/p&gt;
+&lt;h4&gt;/etc/group&lt;/h4&gt;
+&lt;p&gt;记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）&lt;/p&gt;
+&lt;h3&gt;3. 概念区分&lt;/h3&gt;
+&lt;h4&gt;初始用户组：&lt;/h4&gt;
+&lt;p&gt;useradd或usermod，-g参数后的组名。保存在/etc/passwd中。&lt;br /&gt;
+实际意义是，/etc/group里少写一个用户名。。。  &lt;/p&gt;
+&lt;h4&gt;有效用户组：&lt;/h4&gt;
+&lt;p&gt;groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。&lt;br /&gt;
+实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。&lt;/p&gt;
+&lt;h3&gt;4. 用户分类&lt;/h3&gt;
+&lt;p&gt;ubuntu12.04下，根据/etc/login.defs&lt;br /&gt;
+UID=0  系统管理员&lt;br /&gt;
+UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)&lt;br /&gt;
+UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  &lt;/p&gt;
+&lt;h3&gt;5. linux命令&lt;/h3&gt;
+&lt;h4&gt;1) useradd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;useradd -u &lt;span class="o"&gt;[&lt;/span&gt;UID&lt;span class="o"&gt;]&lt;/span&gt; -g &lt;span class="o"&gt;[&lt;/span&gt;initial group name&lt;span class="o"&gt;]&lt;/span&gt; -G &lt;span class="o"&gt;[&lt;/span&gt;other group name&lt;span class="o"&gt;]&lt;/span&gt; -d &lt;span class="o"&gt;[&lt;/span&gt;home dir&lt;span class="o"&gt;]&lt;/span&gt; -s &lt;span class="o"&gt;[&lt;/span&gt;shell&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。&lt;br /&gt;
+-r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）&lt;/p&gt;
+&lt;h4&gt;2) usermod&lt;/h4&gt;
+&lt;p&gt;同useradd&lt;/p&gt;
+&lt;h4&gt;3) passwd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;passwd &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt; 
+passwd
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;无参数修改自己的密码&lt;/p&gt;
+&lt;h4&gt;4) userdel&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;userdel -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;加上-r，连同主文件夹也一同删除&lt;/p&gt;
+&lt;h4&gt;5) groupadd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;groupadd -g &lt;span class="o"&gt;[&lt;/span&gt;GID&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
+&lt;h4&gt;6) groupdel&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry></feed>

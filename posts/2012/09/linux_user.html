@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>C++中名字查找</title>
+  <title>Linux下的用户和用户组小结</title>
   <meta name="author" content="particle128">
 
 
@@ -61,100 +61,88 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">C++中名字查找</h1>
-      <p class="meta"><time datetime="2013-11-05T00:00:00" pubdate>2013-11-05</time></p>
+      <h1 class="entry-title">Linux下的用户和用户组小结</h1>
+      <p class="meta"><time datetime="2012-09-08T00:00:00" pubdate>2012-09-08</time></p>
 </header>
 
-  <div class="entry-content"><p>今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  </p>
-<h2>名字查找</h2>
-<p>这个<a href="http://blog.csdn.net/xtyyumi301/article/details/662639">链接</a>对我帮助很大，此外还参考了一些SO上的解答，和<a href="http://en.wikipedia.org/wiki/Argument-dependent_name_lookup">wiki</a><br />
-C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：  </p>
-<ul>
-<li>常规查找（normal lookup）  </li>
-<li>实参决定的查找（argument-dependent lookup）  </li>
-</ul>
-<p>所有函数调用，都会进行常规查找；只有函数的实参包括 类类型对象 或 指向类类型对象的指针/引用 的时候，才会进行实参确定的查找。<br />
-分别解释如下：  </p>
-<ul>
-<li>normal lookup<br />
-从函数被调用的局部作用域开始，逐渐向上层寻找被调用的名字，一旦找到就停止向上寻找。此外，using语句可以将其他作用域的名字引用到当前作用域。  </li>
-<li>argument-dependent lookup(ADL)<br />
-从第一个类类型参数开始，依次遍历所有类类型参数。<br />
-对于每一个参数，进入其类型定义所在的作用域（类内友元函数也包括在内），并依次进入其基类、间接基类……定义所在的作用域，查找同名函数。<br />
-<strong>注意</strong>:在继承体系中上升的过程中，不会因为找到同名函数就停止上升。这不同于normal lookup  </li>
-</ul>
-<p>下面的代码，<code>&lt;&lt;</code>就是调用<code>operator&lt;&lt;</code>，ADL根据第一个参数std::cout（std::ostream类型）去std命名空间寻找<code>operator&lt;&lt;</code>函数，最后匹配到<code>std::ostream&amp; std::operator&lt;&lt;(std::ostream&amp;, const char*)</code>  </p>
-<div class="highlight"><pre><span class="cp">#include&lt;iostream&gt;  </span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
-<span class="p">{</span>  
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello World, where did operator&lt;&lt;() come from?&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  
-<span class="p">}</span>  
+  <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
+<h4>chown 修改文件所有者</h4>
+<div class="highlight"><pre>chown mashu:mashu aa.txt <span class="c"># 或chown mashu.mashu aa.txt 同时修改所有者和组</span>
+chown mashu aa.txt <span class="c"># 修改所有者</span>
+chown .mashu aa.txt <span class="c"># 修改组</span>
 </pre></div>
 
 
-<p>示例代码帮助理解，注意其中的注释：  </p>
-<div class="highlight"><pre><span class="kt">void</span> <span class="nf">func</span><span class="p">(){}</span><span class="c1">//1  </span>
-<span class="c1">//第一个实参所在命名空间  </span>
-<span class="k">namespace</span> <span class="n">Name1</span><span class="p">{</span>  
-    <span class="k">class</span> <span class="nc">T</span><span class="p">{</span>  
-        <span class="c1">//友元函数定义在T内，但是在T外层的作用域中可见，即Name1中  </span>
-        <span class="c1">//using Name1::func的话，不会引入T内友元  </span>
-        <span class="k">friend</span> <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span><span class="p">){}</span><span class="c1">//2  </span>
-    <span class="p">};</span>  
-    <span class="c1">//不能和T内的friend函数有相同的参数列表，否则重定义错误  </span>
-    <span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="n">T</span><span class="p">){}</span><span class="c1">//3  </span>
-<span class="p">}</span>  
-<span class="c1">//实参的间接父类所在命名空间  </span>
-<span class="k">namespace</span> <span class="n">Name00</span><span class="p">{</span>  
-    <span class="k">class</span> <span class="nc">T00</span><span class="p">{</span>  
-        <span class="k">friend</span> <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span><span class="p">){}</span><span class="c1">//4  </span>
-    <span class="p">};</span>  
-    <span class="kt">void</span> <span class="nf">func</span><span class="p">(){}</span><span class="c1">//5  </span>
-<span class="p">}</span>  
-<span class="c1">//实参父类所在命名空间  </span>
-<span class="k">namespace</span> <span class="n">Name0</span><span class="p">{</span>  
-    <span class="k">class</span> <span class="nc">T0</span><span class="o">:</span><span class="k">public</span> <span class="n">Name00</span><span class="o">::</span><span class="n">T00</span><span class="p">{</span>  
-        <span class="k">friend</span> <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span><span class="p">){}</span><span class="c1">//6  </span>
-    <span class="p">};</span>  
-    <span class="kt">void</span> <span class="nf">func</span><span class="p">(){}</span><span class="c1">//7  </span>
-<span class="p">}</span>  
-<span class="c1">//第二个实参所在命名空间  </span>
-<span class="k">namespace</span> <span class="n">Name2</span><span class="p">{</span>  
-    <span class="k">class</span> <span class="nc">T</span><span class="o">:</span><span class="k">public</span> <span class="n">Name0</span><span class="o">::</span><span class="n">T0</span><span class="p">{</span>  
-        <span class="k">friend</span> <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span><span class="p">){}</span><span class="c1">//8  </span>
-    <span class="p">};</span>  
-    <span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="n">T</span><span class="p">){}</span><span class="c1">//9  </span>
-<span class="p">}</span>  
-<span class="kt">void</span> <span class="n">test</span><span class="p">()</span>  
-<span class="p">{</span>  
-    <span class="n">Name1</span><span class="o">::</span><span class="n">T</span> <span class="n">t1</span><span class="p">;</span>  
-    <span class="n">Name2</span><span class="o">::</span><span class="n">T</span> <span class="n">t2</span><span class="p">;</span>  
-    <span class="c1">//9个函数全是候选函数  </span>
-    <span class="c1">//第1个函数是normal lookup找到的  </span>
-    <span class="c1">//后8个函数全是argument-dependent lookup找到的  </span>
-    <span class="n">func</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">);</span>  
-<span class="p">}</span>  
+<h4>chgrp 修改文件所属用户组</h4>
+<div class="highlight"><pre>chgrp mashu aa.txt 修改组
 </pre></div>
 
 
-<h2>using语句</h2>
-<p>using语句包括两种：  </p>
-<ul>
-<li>using directive<br />
-语法格式为：using namespace XXX;<br />
-没看懂C++标准里写的这一块，但是测试发现，使用这种方法不能将XXX中的func加入重载函数的候选函数，如果当前作用域找不到func，normal lookup会继续向上层寻找。  </li>
-<li>using declaration<br />
-语法格式为：using XXX::func;<br />
-可以使用该方法将func函数加入候选函数集合，且这种方法会阻止normal lookup向外层作用域寻找func。  </li>
-</ul></div>
+<h4>chmod 修改权限</h4>
+<div class="highlight"><pre>chmod 777 aa.txt   
+chmod a+r aa.txt
+</pre></div>
+
+
+<h3>2. 3个重要文件</h3>
+<h4>/etc/passwd</h4>
+<p>记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  </p>
+<h4>/etc/shadow</h4>
+<p>记录 用户名 对应的密码（加密后）  </p>
+<h4>/etc/group</h4>
+<p>记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）</p>
+<h3>3. 概念区分</h3>
+<h4>初始用户组：</h4>
+<p>useradd或usermod，-g参数后的组名。保存在/etc/passwd中。<br />
+实际意义是，/etc/group里少写一个用户名。。。  </p>
+<h4>有效用户组：</h4>
+<p>groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。<br />
+实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。</p>
+<h3>4. 用户分类</h3>
+<p>ubuntu12.04下，根据/etc/login.defs<br />
+UID=0  系统管理员<br />
+UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)<br />
+UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  </p>
+<h3>5. linux命令</h3>
+<h4>1) useradd</h4>
+<div class="highlight"><pre>useradd -u <span class="o">[</span>UID<span class="o">]</span> -g <span class="o">[</span>initial group name<span class="o">]</span> -G <span class="o">[</span>other group name<span class="o">]</span> -d <span class="o">[</span>home dir<span class="o">]</span> -s <span class="o">[</span>shell<span class="o">]</span> -r <span class="o">[</span>用户名<span class="o">]</span>
+</pre></div>
+
+
+<p>没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。<br />
+-r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）</p>
+<h4>2) usermod</h4>
+<p>同useradd</p>
+<h4>3) passwd</h4>
+<div class="highlight"><pre>passwd <span class="o">[</span>用户名<span class="o">]</span> 
+passwd
+</pre></div>
+
+
+<p>无参数修改自己的密码</p>
+<h4>4) userdel</h4>
+<div class="highlight"><pre>userdel -r <span class="o">[</span>用户名<span class="o">]</span>
+</pre></div>
+
+
+<p>加上-r，连同主文件夹也一同删除</p>
+<h4>5) groupadd</h4>
+<div class="highlight"><pre>groupadd -g <span class="o">[</span>GID<span class="o">]</span> -r <span class="o">[</span>组名<span class="o">]</span>
+</pre></div>
+
+
+<p>-g 指定GID，-r 创建系统组</p>
+<h4>6) groupdel</h4>
+<div class="highlight"><pre>groupdel <span class="o">[</span>组名<span class="o">]</span>
+</pre></div></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2013-11-05T00:00:00" pubdate>2013-11-05</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
-    <a class="category" href="http://particle128.com/tag/name-lookup.html">name-lookup</a>
+<time datetime="2012-09-08T00:00:00" pubdate>2012-09-08</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/linux.html">linux</a>
+    <a class="category" href="http://particle128.com/tag/user.html">user</a>
   </span>
 </p>    </footer>
   </article>
@@ -225,9 +213,9 @@ C++的名字查找(name lookup)，作为重载确定(overload resolution)的第�
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2013/11/name-lookup.html';
-          var disqus_url = 'http://particle128.com/posts/2013/11/name-lookup.html';
-          var disqus_title = 'C++中名字查找';
+          var disqus_identifier = '/posts/2012/09/linux_user.html';
+          var disqus_url = 'http://particle128.com/posts/2012/09/linux_user.html';
+          var disqus_title = 'Linux下的用户和用户组小结';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
