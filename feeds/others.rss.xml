@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/others.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-23T00:00:00+08:00</updated><entry><title>数据库的分库和分表</title><link href="http://particle128.com/posts/2014/06/mysql.html" rel="alternate"></link><updated>2014-06-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/mysql.html</id><summary type="html">&lt;h2&gt;分表&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/others.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-23T00:00:00+08:00</updated><entry><title>数据库的分库和分表</title><link href="http://particle128.com/posts/2014/06/database-shard.html" rel="alternate"></link><updated>2014-06-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/database-shard.html</id><summary type="html">&lt;h2&gt;分表&lt;/h2&gt;
 &lt;h3&gt;水平分表&lt;/h3&gt;
 &lt;h4&gt;1、背景&lt;/h4&gt;
-&lt;p&gt;当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。
-以InnoDB的B+树索引为例，记录多的时候，B+树高度更大。&lt;/p&gt;
+&lt;p&gt;当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。&lt;br /&gt;
+以InnoDB的B+树索引为例，记录多的时候，B+树高度更大。  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;查询：层数多，每次查询需要访问的结点就多，速度就慢。&lt;/li&gt;
 &lt;li&gt;更新：当某个叶子结点达到容量极限的时候，再次插入应该落入该结点的元素，需要增加叶子结点，并且更新上层索引，极端情况下需要更新每一层索引，因此层数多也会导致速度慢。&lt;/li&gt;
@@ -17,17 +17,17 @@
 &lt;h4&gt;1、背景&lt;/h4&gt;
 &lt;p&gt;当一张表，有些字段经常被查询不常更新，另外一些字段经常被更新的时候，这张表的效率是不高的。&lt;/p&gt;
 &lt;h4&gt;2、概念&lt;/h4&gt;
-&lt;p&gt;根据数据的活跃度，把一张表进行分离，比如usr表分成usr_static_info,usr_dynamic_info，分别保存冷数据和活跃数据。
-首先存储引擎的使用不同，冷数据使用MyIsam 可以有更好的查询效率。活跃数据，可以使用Innodb ,可以有更好的更新速度。 
-其次，对冷数据进行更多的从库配置，因为更多的操作时查询，这样来加快查询速度。对热数据，可以相对有更多的主库的横向分表处理。 
-其实，对于一些特殊的活跃数据，也可以考虑使用memcache ,redis之类的缓存，等累计到一定量再去更新数据库，或者mongodb 一类的nosql 数据库。&lt;/p&gt;
+&lt;p&gt;根据数据的活跃度，把一张表进行分离，比如usr表分成usr_static_info,usr_dynamic_info，分别保存冷数据和活跃数据。&lt;br /&gt;
+首先存储引擎的使用不同，冷数据使用MyIsam 可以有更好的查询效率。活跃数据，可以使用Innodb ,可以有更好的更新速度。 &lt;br /&gt;
+其次，对冷数据进行更多的从库配置，因为更多的操作时查询，这样来加快查询速度。对热数据，可以相对有更多的主库的横向分表处理。&lt;br /&gt;
+其实，对于一些特殊的活跃数据，也可以考虑使用memcache ,redis之类的缓存，等累计到一定量再去更新数据库，或者mongodb 一类的nosql 数据库。  &lt;/p&gt;
 &lt;h4&gt;3、意义&lt;/h4&gt;
 &lt;p&gt;提高数据的查询和更新效率（对活跃数据和冷数据的分别存储和优化，提高活跃数据的更新效率，和冷数据的查询效率）&lt;/p&gt;
 &lt;h2&gt;分库&lt;/h2&gt;
 &lt;h3&gt;1、背景&lt;/h3&gt;
 &lt;p&gt;对于一个大型的互联网应用，每天几十亿的PV会对单机数据库造成了相当高的负载，对于系统的稳定性和扩展性造成了极大的问题。&lt;/p&gt;
 &lt;h3&gt;2、概念&lt;/h3&gt;
-&lt;p&gt;为了克服单机的性能瓶颈，增加一个数据库主机，把原数据库DB1中的一些表，挪到另一个数据库DB2中，从而让查询语句分开访问不同的主机。
+&lt;p&gt;为了克服单机的性能瓶颈，增加一个数据库主机，把原数据库DB1中的一些表，挪到另一个数据库DB2中，从而让查询语句分开访问不同的主机。&lt;br /&gt;
 重要的是对业务要细化，分库时候要想清楚各个模块业务之间的交互情况，避免将来写程序时出现过多的跨库操作（开销很大）。 &lt;/p&gt;
 &lt;h3&gt;3、意义&lt;/h3&gt;
 &lt;p&gt;减少了单机的访问压力。&lt;/p&gt;
@@ -43,20 +43,20 @@
 &lt;/ul&gt;
 &lt;h3&gt;4、原则&lt;/h3&gt;
 &lt;h4&gt;(1) 以user_id为区分&lt;/h4&gt;
-&lt;p&gt;1～1000的对应DB1，1001～2000的对应DB2，以此类推
-优点：可部分迁移
-缺点：数据分布不均&lt;/p&gt;
+&lt;p&gt;1～1000的对应DB1，1001～2000的对应DB2，以此类推&lt;br /&gt;
+优点：可部分迁移&lt;br /&gt;
+缺点：数据分布不均  &lt;/p&gt;
 &lt;h4&gt;(2) 对user_id进行hash取模分&lt;/h4&gt;
-&lt;p&gt;对user_id进行hash（或者如果user_id是数值型的话直接使用user_id 的值也可），然后用一个特定的数字，比如应用中需要将一个数据库切分成4个数据库的话，我们就用4这个数字对user_id的hash值进行取模运算，也 就是user_id%4,这样的话每次运算就有四种可能：结果为1的时候对应DB1；结果为2的时候对应DB2；结果为3的时候对应DB3；结果为0的时 候对应DB4，这样一来就非常均匀的将数据分配到4个DB中。
-优点：数据分布均匀
-缺点：数据迁移的时候麻烦，不能按照机器性能分摊数据&lt;/p&gt;
+&lt;p&gt;对user_id进行hash（或者如果user_id是数值型的话直接使用user_id 的值也可），然后用一个特定的数字，比如应用中需要将一个数据库切分成4个数据库的话，我们就用4这个数字对user_id的hash值进行取模运算，也 就是user_id%4,这样的话每次运算就有四种可能：结果为1的时候对应DB1；结果为2的时候对应DB2；结果为3的时候对应DB3；结果为0的时 候对应DB4，这样一来就非常均匀的将数据分配到4个DB中。&lt;br /&gt;
+优点：数据分布均匀&lt;br /&gt;
+缺点：数据迁移的时候麻烦，不能按照机器性能分摊数据  &lt;/p&gt;
 &lt;h4&gt;(3) 在认证库中保存数据库配置&lt;/h4&gt;
-&lt;p&gt;就是建立一个DB，这个DB单独保存user_id到DB的映射关系，每次访问数据库的时候都要先查询一次这个数据库，以得到具体的DB信息，然后才能进行我们需要的查询操作。
-优点：灵活性强，一对一关系
-缺点：每次查询之前都要多一次查询，性能大打折扣&lt;/p&gt;
+&lt;p&gt;就是建立一个DB，这个DB单独保存user_id到DB的映射关系，每次访问数据库的时候都要先查询一次这个数据库，以得到具体的DB信息，然后才能进行我们需要的查询操作。&lt;br /&gt;
+优点：灵活性强，一对一关系&lt;br /&gt;
+缺点：每次查询之前都要多一次查询，性能大打折扣  &lt;/p&gt;
 &lt;h2&gt;参考链接&lt;/h2&gt;
-&lt;p&gt;&lt;a href="http://zhengdl126.iteye.com/blog/419850"&gt;1&lt;/a&gt;
-&lt;a href="http://my.oschina.net/cmcm/blog/175104"&gt;2&lt;/a&gt;&lt;/p&gt;</summary><category term="database-shard"></category></entry><entry><title>大规模分布式存储系统-笔记（2）</title><link href="http://particle128.com/posts/2014/04/distriStore2.html" rel="alternate"></link><updated>2014-04-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-04-26:posts/2014/04/distriStore2.html</id><summary type="html">&lt;h2&gt;Chapter2 单机存储系统&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://zhengdl126.iteye.com/blog/419850"&gt;1&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://my.oschina.net/cmcm/blog/175104"&gt;2&lt;/a&gt;&lt;/p&gt;</summary><category term="database"></category></entry><entry><title>大规模分布式存储系统-笔记（2）</title><link href="http://particle128.com/posts/2014/04/distriStore2.html" rel="alternate"></link><updated>2014-04-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-04-26:posts/2014/04/distriStore2.html</id><summary type="html">&lt;h2&gt;Chapter2 单机存储系统&lt;/h2&gt;
 &lt;h3&gt;2.1硬件基础&lt;/h3&gt;
 &lt;h4&gt;CPU架构&lt;/h4&gt;
 &lt;ul&gt;
