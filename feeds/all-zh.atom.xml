@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-23T00:00:00+08:00</updated><entry><title>数据库的分库和分表</title><link href="http://particle128.com/posts/2014/06/database-shard.html" rel="alternate"></link><updated>2014-06-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/database-shard.html</id><summary type="html">&lt;h2&gt;分表&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-23T00:00:00+08:00</updated><entry><title>数据库的分库和分表</title><link href="http://particle128.com/posts/2014/06/database-shard.html" rel="alternate"></link><updated>2014-06-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/database-shard.html</id><summary type="html">&lt;h2&gt;一、分表&lt;/h2&gt;
 &lt;h3&gt;水平分表&lt;/h3&gt;
 &lt;h4&gt;1、背景&lt;/h4&gt;
 &lt;p&gt;当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。&lt;br /&gt;
@@ -23,7 +23,7 @@
 其实，对于一些特殊的活跃数据，也可以考虑使用memcache ,redis之类的缓存，等累计到一定量再去更新数据库，或者mongodb 一类的nosql 数据库。  &lt;/p&gt;
 &lt;h4&gt;3、意义&lt;/h4&gt;
 &lt;p&gt;提高数据的查询和更新效率（对活跃数据和冷数据的分别存储和优化，提高活跃数据的更新效率，和冷数据的查询效率）&lt;/p&gt;
-&lt;h2&gt;分库&lt;/h2&gt;
+&lt;h2&gt;二、分库&lt;/h2&gt;
 &lt;h3&gt;1、背景&lt;/h3&gt;
 &lt;p&gt;对于一个大型的互联网应用，每天几十亿的PV会对单机数据库造成了相当高的负载，对于系统的稳定性和扩展性造成了极大的问题。&lt;/p&gt;
 &lt;h3&gt;2、概念&lt;/h3&gt;
@@ -31,7 +31,7 @@
 重要的是对业务要细化，分库时候要想清楚各个模块业务之间的交互情况，避免将来写程序时出现过多的跨库操作（开销很大）。 &lt;/p&gt;
 &lt;h3&gt;3、意义&lt;/h3&gt;
 &lt;p&gt;减少了单机的访问压力。&lt;/p&gt;
-&lt;h2&gt;分库分表&lt;/h2&gt;
+&lt;h2&gt;三、分库+分表&lt;/h2&gt;
 &lt;h3&gt;1、背景&lt;/h3&gt;
 &lt;p&gt;单表记录巨多，访问量巨大，单纯的分表克服不了访问压力，单纯的分库又不适用于单表的情况，就需要采用：分库+分表。&lt;/p&gt;
 &lt;h3&gt;2、概念&lt;/h3&gt;
@@ -54,9 +54,9 @@
 &lt;p&gt;就是建立一个DB，这个DB单独保存user_id到DB的映射关系，每次访问数据库的时候都要先查询一次这个数据库，以得到具体的DB信息，然后才能进行我们需要的查询操作。&lt;br /&gt;
 优点：灵活性强，一对一关系&lt;br /&gt;
 缺点：每次查询之前都要多一次查询，性能大打折扣  &lt;/p&gt;
-&lt;h2&gt;参考链接&lt;/h2&gt;
-&lt;p&gt;&lt;a href="http://zhengdl126.iteye.com/blog/419850"&gt;1&lt;/a&gt;&lt;br /&gt;
-&lt;a href="http://my.oschina.net/cmcm/blog/175104"&gt;2&lt;/a&gt;&lt;/p&gt;</summary><category term="database"></category></entry><entry><title>项目中一个诡异的问题</title><link href="http://particle128.com/posts/2014/05/vdisk-one-question.html" rel="alternate"></link><updated>2014-05-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-26:posts/2014/05/vdisk-one-question.html</id><summary type="html">&lt;p&gt;记录下今天在做虚拟磁盘过程中，遇到的一个问题。  &lt;/p&gt;
+&lt;h3&gt;参考链接&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://zhengdl126.iteye.com/blog/419850"&gt;数据库水平切分的实现原理解析－－－分库，分表，主从，集群，负载均衡器&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://my.oschina.net/cmcm/blog/175104"&gt;mysql分库分表的一些技巧&lt;/a&gt;&lt;/p&gt;</summary><category term="database"></category></entry><entry><title>项目中一个诡异的问题</title><link href="http://particle128.com/posts/2014/05/vdisk-one-question.html" rel="alternate"></link><updated>2014-05-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-26:posts/2014/05/vdisk-one-question.html</id><summary type="html">&lt;p&gt;记录下今天在做虚拟磁盘过程中，遇到的一个问题。  &lt;/p&gt;
 &lt;h3&gt;问题&lt;/h3&gt;
 &lt;p&gt;因为没有找到合适的fat32格式文件系统的扩容工具（fatresize没有效果，parted3.1可以检测到分区但是没有resize功能，parted2.x有resize功能但是检测不到分区），只能暂时采用如下方法来进行“磁盘扩容”。（假设原磁盘test.img，大小为100M，要扩容到200M）  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;dd&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zero&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;bigger&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="n"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;  
