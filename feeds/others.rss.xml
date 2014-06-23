@@ -505,7 +505,7 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把
 &lt;li&gt;在&lt;a href="http://www.goyouhuima.com/"&gt;GoDaddy优惠码网站&lt;/a&gt;选择一个链接，进入，购买一年的域名，比如particle128.com，55元左右,可以用支付宝购买。  &lt;/li&gt;
 &lt;li&gt;在&lt;a href="https://www.dnspod.cn/"&gt;DNSPOD&lt;/a&gt;上注册，然后建立一条A记录，一条CNAME记录，将购买的域名particle128.com绑定到Github Pages的ip地址（注意不是独立ip），将www.particle128.com重定向到particle128.com&lt;br /&gt;
 截图：&lt;br /&gt;
-&lt;img alt="dnspod_screenshot" src="http://particle128.com/static/images/DNSPod.png" /&gt;  &lt;/li&gt;
+&lt;img alt="dnspod_screenshot" src="http://particle128.com/images/DNSPod.png" /&gt;  &lt;/li&gt;
 &lt;li&gt;重新登陆GoDaddy，添加DNSPod的name server&lt;br /&gt;
 f1g1ns1.dnspod.net&lt;br /&gt;
 f1g1ns2.dnspod.net  &lt;/li&gt;

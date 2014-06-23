@@ -2119,7 +2119,7 @@ typeid（返回type_info对象，支持相等比较运算和name()方法）：�
 （3）该自定义类型可能在之后的更新中，体积变大。&lt;br /&gt;
 4.不适合引用传递的情况：&lt;br /&gt;
 （1）内置类型：效率更高，见下图&lt;br /&gt;
-&lt;img alt="ec5" src="http://particle128.com/static/images/ec5.png" /&gt;
+&lt;img alt="ec5" src="http://particle128.com/images/ec5.png" /&gt;
 （2）STL迭代器：类似指针，STL会保证其复制构造效率高，习惯值传递&lt;br /&gt;
 （3）函数对象：实质是指针  &lt;/p&gt;
 &lt;h2&gt;Item21: Don't try to return a reference when you must return an object.&lt;/h2&gt;

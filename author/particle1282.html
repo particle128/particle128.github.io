@@ -7,8 +7,8 @@
   <title>particle128's Blog - Articles by particle128</title>
   <meta name="author" content="particle128">
 
-    
-  
+
+
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
@@ -30,11 +30,11 @@
 <body>
   <header role="banner"><hgroup>
   <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
-      <h2>失败并不可怕，可怕的是妥协</h2>
-  </hgroup></header>
+    <h2>失败并不可怕，可怕的是妥协</h2>
+</hgroup></header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
   <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
-  </ul>
+</ul>
 
 <!-- TODO: add search here
 <form action="" method="get">
@@ -46,178 +46,229 @@
 -->
 
 <ul class="main-navigation">
-      <li><a href="http://particle128.com/archives.html">archives</a></li>
-      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
-      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
-      <li><a href="http://particle128.com/category/python.html">python</a></li>
-      <li><a href="http://particle128.com/category/others.html">others</a></li>
-      <li><a href="http://particle128.com/category/life.html">life</a></li>
-              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
-          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
-        <!-- TODO: add categories here? -->
-  </ul></nav>
+    <li><a href="http://particle128.com/archives.html">archives</a></li>
+    <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+    <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+    <li><a href="http://particle128.com/category/python.html">python</a></li>
+    <li><a href="http://particle128.com/category/others.html">others</a></li>
+    <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
+<div class="blog-index">
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
       </h1>
-          <p class="meta"><time datetime="2013-10-12T00:00:00" pubdate>2013-10-12</time></p>
+      <p class="meta"><time datetime="2014-03-08T00:00:00" pubdate>2014-03-08</time></p>
 </header>
 
-  <div class="entry-content"><h2>Item 26: Postpone variable definitions as long as possible.</h2>
-<p>1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。<br />
-2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点<br />
-(1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分<br />
-因为：缩小变量的作用域，对于程序的可理解性和易维护性好。  </p>
-<h2>Item 27:Minimizing casting</h2>
-<p>1.C++风格类型转换中，<code>dynamic_cast&lt;T&gt;(expr)</code>是唯一一个无法用旧式语法（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。<br />
-2.能用C++风格转型 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 30: Understand the ins and outs of inlining.</h2>
-<p>1.inline（函数体代替函数调用）的好处：<br />
-（1）没有函数调用的开销，速度快。<br />
-（2）使编译器能对起进行outlined的函数所不具备的优化，因为上下文更明显了。<br />
-坏处：<br />
-（1）可能导致代码膨胀，如果inline函数内语句比较多的话。<br />
-（2）如果inline函数是程序库的一部分，对它的改动，需要使用者重新编译。（outline的话，直接链接即可，动态链接的话，使用者甚至不知道函数库的修改）<br />
-（3）大部分调试器不能调试inline函数。<br />
-2.inline是对编译器的申请，不是强制。<br />
-如下情况编译器”可能“拒绝inline（gcc -Winline会发出不能inline的警告，但是我尝试了递归和循环，没有发出警告）：<br />
-（1）函数太过复杂（包含递归或循环）。<br />
-（2）函数中调用virtual函数，因为多态是运行期行为，而inline是编译期行为 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 32: Make sure public inheritance models "is-a"</h2>
-<p>1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。<br />
-2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：<br />
-企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高<br />
-3.修改”企鹅-&gt;鸟“设计：<br />
-（1）class Bird; class Penguin :public Bird; class FlyingBird: public Bird; //在Bird里不定义fly()，在FlyingBird里定义<br />
-（2）class Bird; class Penguin :public Bird; //在Bird里定义fly ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-02T00:00:00" pubdate>2013-12-02</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>Introduction</strong>  </p>
-<ul>
-<li>没有实现bool类型的编译器，替代方案：<br />
-(1)enum bool{false,true};<br />
-缺点：无法int赋值给bool变量<br />
-(2)typedef int bool;<br />
-const bool false=0;<br />
-const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </li>
-<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
-</ul>
-<p><strong>基础议题Basics</strong></p>
-<h2>Item1</h2>
-<ul>
-<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">//使用指针  </span>
-<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
-    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
-<span class="c1">//使用引用  </span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
+  <div class="entry-content"><p>今天做Online Judge的时候，遇到一个问题如下：  </p>
+<div class="highlight"><pre><span class="c1">//把A和B两个有序数组合并到A里，A空间足够大  </span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">;</span>  
+<span class="n">temp</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">);</span>  
+<span class="n">std</span><span class="o">::</span><span class="n">merge</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">A</span><span class="o">+</span><span class="n">m</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">B</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span>  
+<span class="n">std</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span><span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">temp</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="n">A</span><span class="p">);</span>  
 </pre></div>
 
 
-<h2>Item2</h2>
-<ul>
-<li>const_cast用于改变constnest和valatileness  </li>
-<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
+<p>结果显示A并没有变.  </p>
+<p>稍微考虑了一下，修改第一版如下：  </p>
+<div class="highlight"><pre><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">;</span>  
+<span class="n">temp</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">);</span>  
+<span class="n">std</span><span class="o">::</span><span class="n">merge</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">A</span><span class="o">+</span><span class="n">m</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">B</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="o">&amp;</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>  
+<span class="n">std ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2014/03/inserter.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-03T00:00:00" pubdate>2013-12-03</time></p>
+      <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
 </header>
 
-  <div class="entry-content"><h2>Item6</h2>
+  <div class="entry-content"><h2>Column6 Perspective on performance</h2>
+<h3>Design Levels</h3>
 <ul>
-<li>自增自减操作符，两原则：<br />
-1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  <blockquote>
-<p>设计类的一条无上宝典就是：一旦有疑虑，试看int行为如何并遵循之。  </p>
-</blockquote>
+<li>
+<p>problem definition<br />
+Good specifications are quite important.<br />
+Good error recovery may make a compiler slightly slower, but it usually decreases its overall time by reducing the number of compilations.  </p>
 </li>
-</ul>
-<p>2.后自增和自减应该调用前自增和自减，而不是自己写函数，这样只需要维护前自增。  </p>
-<h2>Item7</h2>
-<ul>
-<li>不要重载&amp;&amp;，||和，操作符，因为无论定义成员或非成员函数，都无法模拟C++中这3个操作符的行为模式（短路，求值顺序）。  </li>
-<li>for语句头包括3个部分，第1部分是语句，所以可以定义多个变量。第3部分是表达式，所以只能用逗号隔开多个表达式，而不能使用定义变量。  </li>
-</ul>
-<h2>Item8</h2>
-<ul>
-<li>placement new类似于new，首先调用operator new，然后调用对象构造函数，然后返回内存指针。<br />
-不同点，是placement new调用的operator new的原型和实现如下：  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location</span><span class="p">)</span><span class="c1">//第一个参数不提供名字 ...</span></pre></div></div>
+<li>
+<p>system structure<br />
+Decomposition of a large system into modules is probably the single most important ...</p></li></ul></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2014/02/pp6.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-06T00:00:00" pubdate>2013-12-06</time></p>
+      <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
 </header>
 
-  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
-<h2>Item16 80-20 principal</h2>
+  <div class="entry-content"><h2>Column 7 The back of the envelope</h2>
+<h3>rules of thumb</h3>
 <ul>
-<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
-<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
-<li>Offer as much data as possible to the profiler, to find ...</li></ul></div>
+<li>
+<p>rule of 72<br />
+Used for estimating the growth of any exponential process.<br />
+<em>Assume that you invest a sum of money for y years at an interest rate of r percent per year. The financial version of the rule says that ...</em></p></li></ul></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2014/02/pp7.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
+      </h1>
+      <p class="meta"><time datetime="2014-02-17T00:00:00" pubdate>2014-02-17</time></p>
+</header>
+
+  <div class="entry-content"><p>今天看完了《穷爸爸富爸爸》，的确像网上有些人评论的那样，内容有些拖沓，好多内容出现了重复，其实要表达的观点可以用一篇长文说出来，但是偏偏要凑成一本书。但是它也的确带给我了很多的思考，特别是自己以前一些陋习的反思，记录下来。  </p>
+<ul>
+<li>
+<p>投资于资产而不是负债<br />
+资产是能带来收入的东西，比如房地产（出租、或等升值后转手）、股票等；负债是不能带来收入的东西，比如汽车、用品等。<br />
+启示：把消费性支出维持在低水平，把工作的结余用于投资。大头投资不动产，小头尝试投资风险高一些的项目,如股票。  </p>
+</li>
+<li>
+<p>有意识培养财商<br />
+四项技能组成：会计、投资、市场营销、法律。<br />
+启示：在学习专业技能以维持工作收入的同时，考虑通过书籍和辅导班学一些理财的知识，帮助自己合理理财。  </p>
+</li>
+<li>
+<p>聪明人往往雇佣比自己更聪明的人<br />
+启示：交朋友也是这样。  </p>
+</li>
+<li>
+<p>成功需要的管理素质<br />
+(1) 对现金流的管理，也就是管理自己支出在哪里；
+(2) 对时间的管理；
+(3) 对人员的管理  </p>
+</li>
+<li>
+<p>对失败的态度  </p>
+<blockquote>
+<p>大部分人从来不赢是因为他们太害怕失去。如果你看到人类学习的方法，就会明白人类其实就是在犯错误中进行学习的 ...</p></blockquote></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/02/richdad.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
+      </h1>
+      <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
+</header>
+
+  <div class="entry-content"><p>TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  </p>
+<h2>特点</h2>
+<p>用RSA分发密钥；用双方商定的对称加密算法加密通信。  </p>
+<h2>使用SSL，服务器和客户端需要首先进行握手（handshake）</h2>
+<p>【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器<br />
+【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端<br />
+【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。<br />
+【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/01/ssl.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-28T00:00:00" pubdate>2013-12-28</time></p>
+</header>
+
+  <div class="entry-content"><p>用Selenium Webdriver有段时间了，一直learning on demand，浏览了大部分API，并没有对这个工具进行详细和彻底的学习。<br />
+今天正好闲下来，梳理一下相关知识。  </p>
+<h2>Some Links</h2>
+<p><a href="http://code.google.com/p/selenium/">工程主页</a><br />
+<a href="http://www.seleniumhq.org/docs">文档主页</a><br />
+<a href="http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html">Python文档</a><br />
+<a href="http://selenium-python.readthedocs.org/en/latest/index.html">Python非官方文档</a><br />
+本人的两个使用Selenium的小项目
+<a href="https://github.com/particle128/vipshop-buy">vip.com shop assistant</a> <a href="https://github.com/particle128/qunar-flight-reminder">qunar flight-fare reminder</a></p>
+<h2>Some Concepts</h2>
+<h3>敏捷开发（Agile development）</h3>
+<p>是一个软件开发方法学，强调3点：<br />
+(1)adaptive&gt;predictive (2)iterative&gt;waterfall (3)codes&gt;documents<br />
+强调软件快速迭代，随着需求变化而修改或重构程序，而不是一开始就为将来可能出现的所有需求来设计。  </p>
+<h3>极限编程（extreme programming）</h3>
+<p>是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/selenium.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/dns.html">DNS相关</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-27T00:00:00" pubdate>2013-12-27</time></p>
+</header>
+
+  <div class="entry-content"><p>信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  </p>
+<h3>Domain Name System</h3>
+<p>host name &lt; - &gt; ip address<br />
+主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。<br />
+如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  </p>
+<h3>名字/域名服务器层次结构：</h3>
+<p>root name server 根域名服务器（无名）<br />
+TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/dns.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
+</header>
+
+  <div class="entry-content"><h2>Problem</h2>
+<p>做我的http server的时候，遇到了个错误，出错相关代码如下  </p>
+<div class="highlight"><pre><span class="k">namespace</span><span class="p">{</span>  
+    <span class="cm">/* ... */</span>  
+    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="kt">status_map_t</span><span class="p">;</span>  
+    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">init_status_code</span><span class="p">()</span>  
+    <span class="p">{</span>  
+        <span class="k">static</span> <span class="kt">status_map_t</span> <span class="n">status</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">404</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;404 Not Found</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;500 Internal Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="k">return</span> <span class="n">status</span><span class="p">;</span>  
+    <span class="p">}</span>  
+    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">status_code</span><span class="o">=</span><span class="n">init_status_code</span><span class="p">();</span>  
+<span class="p">}</span>  
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
+      <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
 </header>
 
   <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
@@ -235,12 +286,12 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
+      <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
 </header>
 
   <div class="entry-content"><h2>Item28 Smart pointer</h2>
@@ -257,127 +308,64 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-11-29T00:00:00" pubdate>2013-11-29</time></p>
-</header>
+<div class="pagination">
+    <a class="prev" href="http://particle128.com/author/particle1283.html">&larr; Older</a>
 
-  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
-<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
-<ul>
-<li>问题背景：<br />
-假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
-需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
-因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
-<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
-<li>解决方法：  </li>
-</ul>
-<p>1.double-RTTI（书中没提到）<br />
-直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
-<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
-优点 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">MoreEffectiveC++(7)</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 32 在未来时态下发展程序</h2>
-<ul>
-<li>面向对象方法应用于系统构造的一个强大力量就是，它支持日后的变化  </li>
-<li>请为每一个类处理复制和赋值动作，即使这样的动作暂时没有人使用。如果这些函数不易完成，请将其声明为private  </li>
-<li>没有virtual destructor的String类，不能用于当作基类(因为当作基类，就有delete指向派生对象的基类指针的可能性)。  </li>
-</ul>
-<h2>Item 33 将非尾端(non-leaf)类设计为抽象类</h2>
-<ul>
-<li>考虑这样一个继承体系<br />
-具体类Animal -&gt;派生Lizard和Chicken<br />
-可能出现部分赋值（partial assignment）的问题：  </li>
-</ul>
-<div class="highlight"><pre><span class="n">Animal</span><span class="o">*</span> <span class="n">pa</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>  
-<span class="n">Animal</span><span class="o">*</span> <span class="n">pb</span><span class="o">=</span><span class="k">new</span> <span class="n">Lizard</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>  
-<span class="o">*</span><span class="n">pa</span><span class="o">=*</span><span class="n">pb</span><span class="p">;</span><span class="c1">//Animal部分赋值，Lizard部分没有赋值  </span>
-</pre></div>
-
-
-<ul>
-<li>解决方法：<br />
-1.operator=变成虚函数从而利用多态实现派生类的赋值  </li>
-</ul>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Animal</span><span class="p">{</span>  
-    <span class="k">public</span><span class="o">:</span>  
-        <span class="k">virtual</span> <span class="n">Animal</span><span class="o">&amp;</span> <span class="k">operator ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-      <a class="prev" href="http://particle128.com/author/particle1283.html">&larr; Older</a>
-  
-            <a class="next" href="http://particle128.com/author/particle128.html">Newer &rarr;</a>
-        <br />
-</div>  </div>
-      <aside class="sidebar">
+      <a class="next" href="http://particle128.com/author/particle128.html">Newer &rarr;</a>
+  <br />
+</div></div>
+<aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp.html">EffectiveC++笔记汇总</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/06/linux_user.html">Linux下的用户和用户组小结</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/05/vdisk-one-question.html">项目中一个诡异的问题</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
       </li>
-          </ul>
+    </ul>
   </section>
-    <section>
+  <section>
       
     <h1>Categories</h1>
     <ul id="recent_posts">
-              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
-              <li><a href="http://particle128.com/category/life.html">life</a></li>
-              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
-              <li><a href="http://particle128.com/category/others.html">others</a></li>
-              <li><a href="http://particle128.com/category/python.html">python</a></li>
-          </ul>
+        <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+        <li><a href="http://particle128.com/category/others.html">others</a></li>
+        <li><a href="http://particle128.com/category/python.html">python</a></li>
+    </ul>
   </section>
-   
+ 
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/storage.html">storage</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/select.html">select</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/lwp.html">lwp</a>,      <a href="http://particle128.com/tag/distributed.html">distributed</a>,      <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thread.html">thread</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/dns.html">dns</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/user.html">user</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>  </section>
 
-    
+
     <section>
         <h1>Social</h2>
         <ul>
             <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
-                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
-                </ul>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
     </section>
-      <section>
+    <section>
         <h1>Blogroll</h2>
         <ul>
-                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
-                    <li><a href="http://python.org" target="_blank">Python</a></li>
-                </ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
     </section>
 </aside>    </div>
   </div>
@@ -385,9 +373,9 @@ const bool true=1;<br />
   Copyright &copy; 2013 - particle128 -
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
-  	<script type="text/javascript">
+	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-      	  (function() {
+	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
 	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);

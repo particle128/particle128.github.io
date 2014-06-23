@@ -1,5 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/linux.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-05-26T00:00:00+08:00</updated><entry><title>项目中一个诡异的问题</title><link href="http://particle128.com/posts/2014/05/vdisk-one-question.html" rel="alternate"></link><updated>2014-05-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-26:posts/2014/05/vdisk-one-question.html</id><summary type="html">&lt;p&gt;记录下今天在做虚拟磁盘过程中，遇到的一个问题。  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/linux.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-23T09:45:12+08:00</updated><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.com/posts/2014/06/linux_user.html" rel="alternate"></link><updated>2014-06-23T09:45:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+&lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
+chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
+chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;chgrp 修改文件所属用户组&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chgrp mashu aa.txt 修改组
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;chmod 修改权限&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
+chmod a+r aa.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 3个重要文件&lt;/h3&gt;
+&lt;h4&gt;/etc/passwd&lt;/h4&gt;
+&lt;p&gt;记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  &lt;/p&gt;
+&lt;h4&gt;/etc/shadow&lt;/h4&gt;
+&lt;p&gt;记录 用户名 对应的密码（加密后）  &lt;/p&gt;
+&lt;h4&gt;/etc/group&lt;/h4&gt;
+&lt;p&gt;记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）&lt;/p&gt;
+&lt;h3&gt;3. 概念区分&lt;/h3&gt;
+&lt;h4&gt;初始用户组：&lt;/h4&gt;
+&lt;p&gt;useradd或usermod，-g参数后的组名。保存在/etc/passwd中。&lt;br /&gt;
+实际意义是，/etc/group里少写一个用户名。。。  &lt;/p&gt;
+&lt;h4&gt;有效用户组：&lt;/h4&gt;
+&lt;p&gt;groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。&lt;br /&gt;
+实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。&lt;/p&gt;
+&lt;h3&gt;4. 用户分类&lt;/h3&gt;
+&lt;p&gt;ubuntu12.04下，根据/etc/login.defs&lt;br /&gt;
+UID=0  系统管理员&lt;br /&gt;
+UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)&lt;br /&gt;
+UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  &lt;/p&gt;
+&lt;h3&gt;5. linux命令&lt;/h3&gt;
+&lt;h4&gt;1) useradd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;useradd -u &lt;span class="o"&gt;[&lt;/span&gt;UID&lt;span class="o"&gt;]&lt;/span&gt; -g &lt;span class="o"&gt;[&lt;/span&gt;initial group name&lt;span class="o"&gt;]&lt;/span&gt; -G &lt;span class="o"&gt;[&lt;/span&gt;other group name&lt;span class="o"&gt;]&lt;/span&gt; -d &lt;span class="o"&gt;[&lt;/span&gt;home dir&lt;span class="o"&gt;]&lt;/span&gt; -s &lt;span class="o"&gt;[&lt;/span&gt;shell&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。&lt;br /&gt;
+-r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）&lt;/p&gt;
+&lt;h4&gt;2) usermod&lt;/h4&gt;
+&lt;p&gt;同useradd&lt;/p&gt;
+&lt;h4&gt;3) passwd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;passwd &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt; 
+passwd
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;无参数修改自己的密码&lt;/p&gt;
+&lt;h4&gt;4) userdel&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;userdel -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;加上-r，连同主文件夹也一同删除&lt;/p&gt;
+&lt;h4&gt;5) groupadd&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;groupadd -g &lt;span class="o"&gt;[&lt;/span&gt;GID&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
+&lt;h4&gt;6) groupdel&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry><entry><title>项目中一个诡异的问题</title><link href="http://particle128.com/posts/2014/05/vdisk-one-question.html" rel="alternate"></link><updated>2014-05-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-26:posts/2014/05/vdisk-one-question.html</id><summary type="html">&lt;p&gt;记录下今天在做虚拟磁盘过程中，遇到的一个问题。  &lt;/p&gt;
 &lt;h3&gt;问题&lt;/h3&gt;
 &lt;p&gt;因为没有找到合适的fat32格式文件系统的扩容工具（fatresize没有效果，parted3.1可以检测到分区但是没有resize功能，parted2.x有resize功能但是检测不到分区），只能暂时采用如下方法来进行“磁盘扩容”。（假设原磁盘test.img，大小为100M，要扩容到200M）  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;dd&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zero&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;bigger&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="n"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;  
@@ -228,7 +297,7 @@ test.img的删除，是unlink的过程，即“将test.img的inode结点中的�
 &lt;p&gt;new和delete的底层会使用malloc和free，在堆上进行内存分配和释放。用malloc分配一个数组，使用，之后传递给free一个数组指针的时候，它如何知道释放多少空间呢？&lt;br /&gt;
 答案是，从指针位置前面的一个字中寻找要释放的内存的大小，块大小保存在实际数据位置-4的内存中。&lt;br /&gt;
 堆中分配的内存块的截图如下：&lt;br /&gt;
-&lt;img alt="image" src="http://particle128.com/static/images/heap_map.png" /&gt;  &lt;/p&gt;
+&lt;img alt="image" src="http://particle128.com/images/heap_map.png" /&gt;  &lt;/p&gt;
 &lt;p&gt;在gdb中测试一下，结果和解释：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;                  &lt;span class="c1"&gt;//输入，表示会动态分配10个int  &lt;/span&gt;
 &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;gdb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
@@ -525,76 +594,7 @@ server可选参数。默认从/etc/resolv.conf读取名字服务器（nameserver
 
 
 &lt;h3&gt;程序中捕捉崩溃事件&lt;/h3&gt;
-&lt;p&gt;sigaction()函数指定信号的处理函数（比如SIGSEGV），然后在处理函数中打log，发送错误报告之类的。  &lt;/p&gt;</summary><category term="core dump"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.com/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T12:37:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
-&lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
-chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
-chown .mashu aa.txt &lt;span class="c"&gt;# 修改组&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;chgrp 修改文件所属用户组&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chgrp mashu aa.txt 修改组
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;chmod 修改权限&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;chmod 777 aa.txt   
-chmod a+r aa.txt
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;2. 3个重要文件&lt;/h3&gt;
-&lt;h4&gt;/etc/passwd&lt;/h4&gt;
-&lt;p&gt;记录 用户名 对应的UID，初始用户组GID，说明，home dir，shell  &lt;/p&gt;
-&lt;h4&gt;/etc/shadow&lt;/h4&gt;
-&lt;p&gt;记录 用户名 对应的密码（加密后）  &lt;/p&gt;
-&lt;h4&gt;/etc/group&lt;/h4&gt;
-&lt;p&gt;记录 组名 对应的GID，组内用户（不包括初始用户组是该组的用户，因为/etc/passwd里有了）&lt;/p&gt;
-&lt;h3&gt;3. 概念区分&lt;/h3&gt;
-&lt;h4&gt;初始用户组：&lt;/h4&gt;
-&lt;p&gt;useradd或usermod，-g参数后的组名。保存在/etc/passwd中。&lt;br /&gt;
-实际意义是，/etc/group里少写一个用户名。。。  &lt;/p&gt;
-&lt;h4&gt;有效用户组：&lt;/h4&gt;
-&lt;p&gt;groups显示的第一用户组。可以通过newgrp重设。具体哪个文件保存不详。&lt;br /&gt;
-实际意义是，用户新建文件时文件的所属用户组，就是有效用户组。&lt;/p&gt;
-&lt;h3&gt;4. 用户分类&lt;/h3&gt;
-&lt;p&gt;ubuntu12.04下，根据/etc/login.defs&lt;br /&gt;
-UID=0  系统管理员&lt;br /&gt;
-UID in {100,999} 系统用户  (SYS_UID_MIN - SYS_UID_MAX)&lt;br /&gt;
-UID in {1000,60000} 可登录用户  (UID_MIN - UID_MAX)  &lt;/p&gt;
-&lt;h3&gt;5. linux命令&lt;/h3&gt;
-&lt;h4&gt;1) useradd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;useradd -u &lt;span class="o"&gt;[&lt;/span&gt;UID&lt;span class="o"&gt;]&lt;/span&gt; -g &lt;span class="o"&gt;[&lt;/span&gt;initial group name&lt;span class="o"&gt;]&lt;/span&gt; -G &lt;span class="o"&gt;[&lt;/span&gt;other group name&lt;span class="o"&gt;]&lt;/span&gt; -d &lt;span class="o"&gt;[&lt;/span&gt;home dir&lt;span class="o"&gt;]&lt;/span&gt; -s &lt;span class="o"&gt;[&lt;/span&gt;shell&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;没有参数，默认是可登录用户（有shell，有home dir），同名初始用户组。&lt;br /&gt;
--r 建立系统用户（不能登录，没有shell，默认没有home dir，除非修改/etc/login.defs文件）&lt;/p&gt;
-&lt;h4&gt;2) usermod&lt;/h4&gt;
-&lt;p&gt;同useradd&lt;/p&gt;
-&lt;h4&gt;3) passwd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;passwd &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt; 
-passwd
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;无参数修改自己的密码&lt;/p&gt;
-&lt;h4&gt;4) userdel&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;userdel -r &lt;span class="o"&gt;[&lt;/span&gt;用户名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;加上-r，连同主文件夹也一同删除&lt;/p&gt;
-&lt;h4&gt;5) groupadd&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;groupadd -g &lt;span class="o"&gt;[&lt;/span&gt;GID&lt;span class="o"&gt;]&lt;/span&gt; -r &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
-&lt;h4&gt;6) groupdel&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry><entry><title>Linux权限小结</title><link href="http://particle128.com/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
+&lt;p&gt;sigaction()函数指定信号的处理函数（比如SIGSEGV），然后在处理函数中打log，发送错误报告之类的。  &lt;/p&gt;</summary><category term="core dump"></category></entry><entry><title>Linux权限小结</title><link href="http://particle128.com/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
 &lt;p&gt;r：可以查看文件内容&lt;br /&gt;
 w：可以修改文件内容&lt;br /&gt;
 x：可以执行文件内容  &lt;/p&gt;
