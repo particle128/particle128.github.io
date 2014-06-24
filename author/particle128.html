@@ -68,18 +68,18 @@
 </header>
 
   <div class="entry-content"><h3>背景</h3>
-<p>形象化地表述就是： 
-今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。 
-在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。 </p>
+<p>形象化地表述就是：<br />
+今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。<br />
+在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。  </p>
 <h3>问题</h3>
-<p>原来的git提交结构是这样的(假设'old','content'...这些是commit的代号): </p>
-<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
+<p>原来的git提交结构是这样的(假设'old','content'...这些是commit的代号):  </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span>  
 </pre></div>
 
 
-<p>为了把content和change1,change2分开,我需要建立如下的结构 </p>
-<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
-<span class="nl">cmd:</span>          <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> 
+<p>为了把content和change1,change2分开,我需要建立如下的结构  </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span>  
+<span class="nl">cmd:</span>          <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span>  
 <span class="nl">develop ...</span></pre></div></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2014/06/git-cherry-pick.html">Read On &crarr;</a>

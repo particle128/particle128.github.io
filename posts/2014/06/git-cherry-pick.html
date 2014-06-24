@@ -66,65 +66,65 @@
 </header>
 
   <div class="entry-content"><h3>背景</h3>
-<p>形象化地表述就是： 
-今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。 
-在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。 </p>
+<p>形象化地表述就是：<br />
+今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。<br />
+在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。  </p>
 <h3>问题</h3>
-<p>原来的git提交结构是这样的(假设'old','content'...这些是commit的代号): </p>
-<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
+<p>原来的git提交结构是这样的(假设'old','content'...这些是commit的代号):  </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span>  
 </pre></div>
 
 
-<p>为了把content和change1,change2分开,我需要建立如下的结构 </p>
-<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
-<span class="nl">cmd:</span>          <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> 
-<span class="nl">develop:</span>      <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change2</span><span class="err">&#39;</span> 
+<p>为了把content和change1,change2分开,我需要建立如下的结构  </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span>  
+<span class="nl">cmd:</span>          <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span>  
+<span class="nl">develop:</span>      <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change2</span><span class="err">&#39;</span>  
 </pre></div>
 
 
-<p>其中,建立了两个分支'cmd'和'develop',分别对应内容和程序修改。 </p>
+<p>其中,建立了两个分支'cmd'和'develop',分别对应内容和程序修改。  </p>
 <h3>解决</h3>
 <h4>1、操作本地git repository</h4>
-<p>首先， </p>
-<div class="highlight"><pre><span class="n">git</span> <span class="n">log</span> 
+<p>首先，  </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">log</span>  
 </pre></div>
 
 
-<p>分别找到'old','content','change1','change2'这4次提交的散列码，假设分别为oldsum,consum,ch1sum,ch2sum 
-然后，创建cmd分支，把'content'这次的提交合并进去 </p>
-<div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="p">[</span><span class="n">oldsum</span><span class="p">]</span> 
-<span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">cmd</span> 
-<span class="n">git</span> <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span> <span class="p">[</span><span class="n">consum</span><span class="p">]</span> 
+<p>分别找到'old','content','change1','change2'这4次提交的散列码，假设分别为oldsum,consum,ch1sum,ch2sum<br />
+然后，创建cmd分支，把'content'这次的提交合并进去  </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="p">[</span><span class="n">oldsum</span><span class="p">]</span>  
+<span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">cmd</span>  
+<span class="n">git</span> <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span> <span class="p">[</span><span class="n">consum</span><span class="p">]</span>  
 </pre></div>
 
 
-<p>同样，创建develop分支，把'change1'和'change2'的提交合并进去 </p>
-<div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="p">[</span><span class="n">oldsum</span><span class="p">]</span> 
-<span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">develop</span> 
-<span class="n">git</span> <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span> <span class="p">[</span><span class="n">ch1sum</span><span class="p">]</span> 
-<span class="n">git</span> <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span> <span class="p">[</span><span class="n">ch2sum</span><span class="p">]</span> 
+<p>同样，创建develop分支，把'change1'和'change2'的提交合并进去  </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="p">[</span><span class="n">oldsum</span><span class="p">]</span>  
+<span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">develop</span>  
+<span class="n">git</span> <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span> <span class="p">[</span><span class="n">ch1sum</span><span class="p">]</span>  
+<span class="n">git</span> <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span> <span class="p">[</span><span class="n">ch2sum</span><span class="p">]</span>  
 </pre></div>
 
 
 <h4>2、更新我fork出来的远程git repository</h4>
-<p>把本地离线建立地分支，更新到远程库中 </p>
-<div class="highlight"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">cmd</span><span class="o">:</span><span class="n">cmd</span> 
-<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">develop</span><span class="o">:</span><span class="n">develop</span> 
+<p>把本地离线建立地分支，更新到远程库中  </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">cmd</span><span class="o">:</span><span class="n">cmd</span>  
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">develop</span><span class="o">:</span><span class="n">develop</span>  
 </pre></div>
 
 
-<p>这只后，就可以对cmd和develop申请pull request了 </p>
+<p>这只后，就可以对cmd和develop申请pull request了  </p>
 <h4>3、善后工作</h4>
-<p>等师兄merge了我的请求，清除这些无用分支 </p>
-<div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span> 
-<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">cmd</span>  <span class="err">#</span> <span class="err">强制删除</span><span class="n">cmd</span><span class="err">分支。因为没有合并，只能</span><span class="o">-</span><span class="n">D</span><span class="err">强制删除</span> 
-<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">develop</span> <span class="err">#</span> <span class="err">强制删除</span><span class="n">develop</span><span class="err">分支</span> 
+<p>等师兄merge了我的请求，清除这些无用分支  </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>  
+<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">cmd</span>  <span class="err">#</span> <span class="err">强制删除</span><span class="n">cmd</span><span class="err">分支。因为没有合并，只能</span><span class="o">-</span><span class="n">D</span><span class="err">强制删除</span>  
+<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">develop</span> <span class="err">#</span> <span class="err">强制删除</span><span class="n">develop</span><span class="err">分支</span>  
 </pre></div>
 
 
-<p>清除远程库的分支 </p>
-<div class="highlight"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">:</span><span class="n">cmd</span> 
-<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">:</span><span class="n">develop</span> 
+<p>清除远程库的分支  </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">:</span><span class="n">cmd</span>  
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">:</span><span class="n">develop</span>  
 </pre></div></div>
     <footer>
 <p class="meta">
