@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Python学习笔记-字符串</title>
+  <title>新技能get：git cherry-pick</title>
   <meta name="author" content="particle128">
 
 
@@ -61,65 +61,78 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">Python学习笔记-字符串</h1>
-      <p class="meta"><time datetime="2013-09-22T00:00:00" pubdate>2013-09-22</time></p>
+      <h1 class="entry-title">新技能get：git cherry-pick</h1>
+      <p class="meta"><time datetime="2014-06-24T00:00:00" pubdate>2014-06-24</time></p>
 </header>
 
-  <div class="entry-content"><p><strong>注意：str支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
-<h3>（一） 具备的操作</h3>
-<p>str作为序列元素，包含其他序列共同的操作：<br />
-1. “hello” [not] in "hello world"<br />
-2. "hello" + " world"<br />
-3. 5*"hello" 或 “hello”*5<br />
-4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
-5. len("hello")  min("hello")  max("hello")<br />
-6. "hello".index('o')   "hello".count('l')  </p>
-<h3>（二） 不具备的操作</h3>
-<p>str同tuple一样，属于不可变序列。可变序列包括list和bytearray。因此str不具备可变序列的操作：<br />
-1. s[i] = x    s[i:j] = t 【t是任何可迭代对象】 s[i:j:k] = t 【t需要和s[i:j:k]有相同数量的元素】<br />
-2. del s[i:j]    del s[i:j:k]   s.remove(x) =&gt; del s[x]<br />
-3. s.insert(i, x)  s.append(x)  s.extend(t) 【t是任何可迭代对象】<br />
-4. s.reverse()    s.sort([cmp[, key[, reverse]]])<br />
-5. s.pop([i]) =&gt; x = s[i]; del s[i]; return x  </p>
-<h3>（三） 字符串方法</h3>
-<p>str.capitalize()第一个字母大写 str.title() 每一个单词首字母大写<br />
-str.count(sub[, start[, end]])<br />
-str.endswith(suffix[, start[, end]])返回True或False 同理str.startswith<br />
-str.find(sub[, start[, end]]) 找不到返回-1 同理str.rfind<br />
-str.index(sub[, start[, end]])找不到raise ValueError 同理str.rindex<br />
-str.format(*args, **kwargs) 同格式化字符串<br />
-islower isupper isspace isdigit isalpha isalnum<br />
-str.ljust(width[, fillchar])左对齐，可以选择填充字节，默认空格。 同理str.rjust，str.zfill(width)相当于str.rjust(width,'0')<br />
-str.lower() str.upper() str.swapcase()交换大小写<br />
-str.partition(sep) 划分 'what the fuck'.partition('the') =&gt; ('what ','the',' fuck') 同理rpartition<br />
-str.join(iterable) 把可迭代对象（比如序列）拼接成字符串，用str隔开每一个可迭代对象中的元素<br />
-str.translate(string.maketrans(from,to) [,deletechars]) 要么进行字母的替换，要么进行字母的删除（第一个参数为None），要么同时进行<br />
-str.strip([chars]) 默认去掉whitespace 同理str.lstrip str.rstrip <br />
-str.split([sep]) 默认whitespace作为分隔符  </p>
-<h3>（四） string方法</h3>
-<p>string.maketrans(from,to) 返回translation table（from中的字符被to中同一位置的字符替换），from和to长度要相同<br />
-string.capwords(s[,sep]) 比titile更加准确的首字母大写函数。先split([sep])，再capitalize()，再join()  </p>
-<h3>（五） 格式化字符串</h3>
-<div class="highlight"><pre><span class="s">&quot;</span><span class="si">%(language)s</span><span class="s"> has </span><span class="si">%(number)03d</span><span class="s"> quote types.&quot;</span>  <span class="o">%</span>  <span class="p">{</span><span class="s">&quot;language&quot;</span><span class="p">:</span> <span class="s">&quot;Python&quot;</span><span class="p">,</span> <span class="s">&quot;number&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+  <div class="entry-content"><h3>背景</h3>
+<p>形象化地表述就是： 
+今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。 
+在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。 </p>
+<h3>问题</h3>
+<p>原来的git提交结构是这样的(假设'old','content'...这些是commit的代号): </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
 </pre></div>
 
 
-<h3>（六）字符串常量</h3>
-<p>string.digits<br />
-string.hexdigits<br />
-string.octdigits<br />
-string.lowercase<br />
-string.uppercase<br />
-string.whitespace<br />
-string.punctuation  </p></div>
+<p>为了把content和change1,change2分开,我需要建立如下的结构 </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
+<span class="nl">cmd:</span>          <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> 
+<span class="nl">develop:</span>      <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change2</span><span class="err">&#39;</span> 
+</pre></div>
+
+
+<p>其中,建立了两个分支'cmd'和'develop',分别对应内容和程序修改。 </p>
+<h3>解决</h3>
+<h4>1、操作本地git repository</h4>
+<p>首先， </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">log</span> 
+</pre></div>
+
+
+<p>分别找到'old','content','change1','change2'这4次提交的散列码，假设分别为oldsum,consum,ch1sum,ch2sum 
+然后，创建cmd分支，把'content'这次的提交合并进去 </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="p">[</span><span class="n">oldsum</span><span class="p">]</span> 
+<span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">cmd</span> 
+<span class="n">git</span> <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span> <span class="p">[</span><span class="n">consum</span><span class="p">]</span> 
+</pre></div>
+
+
+<p>同样，创建develop分支，把'change1'和'change2'的提交合并进去 </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="p">[</span><span class="n">oldsum</span><span class="p">]</span> 
+<span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">develop</span> 
+<span class="n">git</span> <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span> <span class="p">[</span><span class="n">ch1sum</span><span class="p">]</span> 
+<span class="n">git</span> <span class="n">cherry</span><span class="o">-</span><span class="n">pick</span> <span class="p">[</span><span class="n">ch2sum</span><span class="p">]</span> 
+</pre></div>
+
+
+<h4>2、更新我fork出来的远程git repository</h4>
+<p>把本地离线建立地分支，更新到远程库中 </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">cmd</span><span class="o">:</span><span class="n">cmd</span> 
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">develop</span><span class="o">:</span><span class="n">develop</span> 
+</pre></div>
+
+
+<p>这只后，就可以对cmd和develop申请pull request了 </p>
+<h4>3、善后工作</h4>
+<p>等师兄merge了我的请求，清除这些无用分支 </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span> 
+<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">cmd</span>  <span class="err">#</span> <span class="err">强制删除</span><span class="n">cmd</span><span class="err">分支。因为没有合并，只能</span><span class="o">-</span><span class="n">D</span><span class="err">强制删除</span> 
+<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">develop</span> <span class="err">#</span> <span class="err">强制删除</span><span class="n">develop</span><span class="err">分支</span> 
+</pre></div>
+
+
+<p>清除远程库的分支 </p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">:</span><span class="n">cmd</span> 
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="o">:</span><span class="n">develop</span> 
+</pre></div></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2013-09-22T00:00:00" pubdate>2013-09-22</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/python.html">python</a>
-    <a class="category" href="http://particle128.com/tag/str.html">str</a>
+<time datetime="2014-06-24T00:00:00" pubdate>2014-06-24</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/git.html">git</a>
   </span>
 </p>    </footer>
   </article>
@@ -190,9 +203,9 @@ string.punctuation  </p></div>
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2013/09/python-str.html';
-          var disqus_url = 'http://particle128.com/posts/2013/09/python-str.html';
-          var disqus_title = 'Python学习笔记-字符串';
+          var disqus_identifier = '/posts/2014/06/git-cherry-pick.html';
+          var disqus_url = 'http://particle128.com/posts/2014/06/git-cherry-pick.html';
+          var disqus_title = '新技能get：git cherry-pick';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

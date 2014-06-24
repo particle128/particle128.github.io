@@ -62,6 +62,33 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
+      </h1>
+      <p class="meta"><time datetime="2014-03-10T00:00:00" pubdate>2014-03-10</time></p>
+</header>
+
+  <div class="entry-content"><p>以下汇总的内容均来自本人的博客，或github站点。</p>
+<h3>源码</h3>
+<ul>
+<li><a href="https://github.com/particle128/vipshop-buy">particle128的github</a></li>
+</ul>
+<h3>所用到的技术</h3>
+<ul>
+<li><a href="http://particle128.com/posts/2013/12/selenium.html">Selenium WebDriver总结</a></li>
+</ul>
+<h3>项目相关总结</h3>
+<ul>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-intro.html">使用方法</a></li>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-tech.html">技术问题</a></li>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-port.html">移植到windows</a></li>
+</ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/03/vipshop.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
       </h1>
       <p class="meta"><time datetime="2014-03-08T00:00:00" pubdate>2014-03-08</time></p>
@@ -286,28 +313,6 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item28 Smart pointer</h2>
-<ul>
-<li>智能指针相比于内置指针的优势：<br />
-1.构造和析构：分别防止wild指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
-2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
-3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
-<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
-<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
-<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
-<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1283.html">&larr; Older</a>
 
@@ -319,6 +324,9 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/06/database-shard.html">数据库的分库和分表</a>
       </li>
       <li class="post">
@@ -329,9 +337,6 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
       </li>
     </ul>
   </section>
@@ -350,7 +355,7 @@ TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa ..
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/dns.html">dns</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/user.html">user</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>  </section>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/dns.html">dns</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/user.html">user</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>  </section>
 
 
     <section>

@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - finance</title>
+  <title>particle128's Blog - git</title>
   <meta name="author" content="particle128">
 
 
@@ -62,39 +62,27 @@
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
+        <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
       </h1>
-      <p class="meta"><time datetime="2014-02-17T00:00:00" pubdate>2014-02-17</time></p>
+      <p class="meta"><time datetime="2014-06-24T00:00:00" pubdate>2014-06-24</time></p>
 </header>
 
-  <div class="entry-content"><p>今天看完了《穷爸爸富爸爸》，的确像网上有些人评论的那样，内容有些拖沓，好多内容出现了重复，其实要表达的观点可以用一篇长文说出来，但是偏偏要凑成一本书。但是它也的确带给我了很多的思考，特别是自己以前一些陋习的反思，记录下来。  </p>
-<ul>
-<li>
-<p>投资于资产而不是负债<br />
-资产是能带来收入的东西，比如房地产（出租、或等升值后转手）、股票等；负债是不能带来收入的东西，比如汽车、用品等。<br />
-启示：把消费性支出维持在低水平，把工作的结余用于投资。大头投资不动产，小头尝试投资风险高一些的项目,如股票。  </p>
-</li>
-<li>
-<p>有意识培养财商<br />
-四项技能组成：会计、投资、市场营销、法律。<br />
-启示：在学习专业技能以维持工作收入的同时，考虑通过书籍和辅导班学一些理财的知识，帮助自己合理理财。  </p>
-</li>
-<li>
-<p>聪明人往往雇佣比自己更聪明的人<br />
-启示：交朋友也是这样。  </p>
-</li>
-<li>
-<p>成功需要的管理素质<br />
-(1) 对现金流的管理，也就是管理自己支出在哪里；
-(2) 对时间的管理；
-(3) 对人员的管理  </p>
-</li>
-<li>
-<p>对失败的态度  </p>
-<blockquote>
-<p>大部分人从来不赢是因为他们太害怕失去。如果你看到人类学习的方法，就会明白人类其实就是在犯错误中进行学习的 ...</p></blockquote></li></ul></div>
+  <div class="entry-content"><h3>背景</h3>
+<p>形象化地表述就是： 
+今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。 
+在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。 </p>
+<h3>问题</h3>
+<p>原来的git提交结构是这样的(假设'old','content'...这些是commit的代号): </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
+</pre></div>
+
+
+<p>为了把content和change1,change2分开,我需要建立如下的结构 </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
+<span class="nl">cmd:</span>          <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> 
+<span class="nl">develop ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/02/richdad.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2014/06/git-cherry-pick.html">Read On &crarr;</a>
   </footer>
   		</article>
 <div class="pagination">
@@ -106,7 +94,7 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://particle128.com/posts/2014/02/richdad.html">《穷爸爸富爸爸》读毕</a>
+          <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
       </li>
     </ul>
   </section>

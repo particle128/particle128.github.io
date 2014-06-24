@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-23T00:00:00+08:00</updated><entry><title>数据库的分库和分表</title><link href="http://particle128.com/posts/2014/06/database-shard.html" rel="alternate"></link><updated>2014-06-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/database-shard.html</id><summary type="html">&lt;h2&gt;一、分表&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-24T00:00:00+08:00</updated><entry><title>新技能get：git cherry-pick</title><link href="http://particle128.com/posts/2014/06/git-cherry-pick.html" rel="alternate"></link><updated>2014-06-24T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-24:posts/2014/06/git-cherry-pick.html</id><summary type="html">&lt;h3&gt;背景&lt;/h3&gt;
+&lt;p&gt;形象化地表述就是： 
+今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。 
+在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。 &lt;/p&gt;
+&lt;h3&gt;问题&lt;/h3&gt;
+&lt;p&gt;原来的git提交结构是这样的(假设'old','content'...这些是commit的代号): &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;master:&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;old&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;change1&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;change2&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;为了把content和change1,change2分开,我需要建立如下的结构 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;master:&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;old&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;change1&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;change2&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; 
+&lt;span class="nl"&gt;cmd:&lt;/span&gt;          &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; 
+&lt;span class="nl"&gt;develop:&lt;/span&gt;      &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;change1&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;change2&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;其中,建立了两个分支'cmd'和'develop',分别对应内容和程序修改。 &lt;/p&gt;
+&lt;h3&gt;解决&lt;/h3&gt;
+&lt;h4&gt;1、操作本地git repository&lt;/h4&gt;
+&lt;p&gt;首先， &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;log&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;分别找到'old','content','change1','change2'这4次提交的散列码，假设分别为oldsum,consum,ch1sum,ch2sum 
+然后，创建cmd分支，把'content'这次的提交合并进去 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;oldsum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="n"&gt;cmd&lt;/span&gt; 
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;cherry&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pick&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;consum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;同样，创建develop分支，把'change1'和'change2'的提交合并进去 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;oldsum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="n"&gt;develop&lt;/span&gt; 
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;cherry&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pick&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;ch1sum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;cherry&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pick&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;ch2sum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2、更新我fork出来的远程git repository&lt;/h4&gt;
+&lt;p&gt;把本地离线建立地分支，更新到远程库中 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="n"&gt;cmd&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt; 
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="n"&gt;develop&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;develop&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这只后，就可以对cmd和develop申请pull request了 &lt;/p&gt;
+&lt;h4&gt;3、善后工作&lt;/h4&gt;
+&lt;p&gt;等师兄merge了我的请求，清除这些无用分支 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt; 
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;cmd&lt;/span&gt;  &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;强制删除&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt;&lt;span class="err"&gt;分支。因为没有合并，只能&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt;&lt;span class="err"&gt;强制删除&lt;/span&gt; 
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;develop&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;强制删除&lt;/span&gt;&lt;span class="n"&gt;develop&lt;/span&gt;&lt;span class="err"&gt;分支&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;清除远程库的分支 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt; 
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;develop&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="git"></category></entry><entry><title>数据库的分库和分表</title><link href="http://particle128.com/posts/2014/06/database-shard.html" rel="alternate"></link><updated>2014-06-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/database-shard.html</id><summary type="html">&lt;h2&gt;一、分表&lt;/h2&gt;
 &lt;h3&gt;水平分表&lt;/h3&gt;
 &lt;h4&gt;1、背景&lt;/h4&gt;
 &lt;p&gt;当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。&lt;br /&gt;

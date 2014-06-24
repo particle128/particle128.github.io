@@ -62,6 +62,32 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
+      </h1>
+      <p class="meta"><time datetime="2014-06-24T00:00:00" pubdate>2014-06-24</time></p>
+</header>
+
+  <div class="entry-content"><h3>背景</h3>
+<p>形象化地表述就是： 
+今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。 
+在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。 </p>
+<h3>问题</h3>
+<p>原来的git提交结构是这样的(假设'old','content'...这些是commit的代号): </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
+</pre></div>
+
+
+<p>为了把content和change1,change2分开,我需要建立如下的结构 </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span> 
+<span class="nl">cmd:</span>          <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> 
+<span class="nl">develop ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/06/git-cherry-pick.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/06/database-shard.html">数据库的分库和分表</a>
       </h1>
       <p class="meta"><time datetime="2014-06-23T00:00:00" pubdate>2014-06-23</time></p>
@@ -298,33 +324,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2014/03/selectFear.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
-      </h1>
-      <p class="meta"><time datetime="2014-03-10T00:00:00" pubdate>2014-03-10</time></p>
-</header>
-
-  <div class="entry-content"><p>以下汇总的内容均来自本人的博客，或github站点。</p>
-<h3>源码</h3>
-<ul>
-<li><a href="https://github.com/particle128/vipshop-buy">particle128的github</a></li>
-</ul>
-<h3>所用到的技术</h3>
-<ul>
-<li><a href="http://particle128.com/posts/2013/12/selenium.html">Selenium WebDriver总结</a></li>
-</ul>
-<h3>项目相关总结</h3>
-<ul>
-<li><a href="http://particle128.com/posts/2013/12/vipshop-intro.html">使用方法</a></li>
-<li><a href="http://particle128.com/posts/2013/12/vipshop-tech.html">技术问题</a></li>
-<li><a href="http://particle128.com/posts/2013/12/vipshop-port.html">移植到windows</a></li>
-</ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/03/vipshop.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1282.html">&larr; Older</a>
 
@@ -334,6 +333,9 @@
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
+      </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/06/database-shard.html">数据库的分库和分表</a>
       </li>
@@ -345,9 +347,6 @@
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
       </li>
     </ul>
   </section>
@@ -366,7 +365,7 @@
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/dns.html">dns</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/user.html">user</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>  </section>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/dns.html">dns</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/user.html">user</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>  </section>
 
 
     <section>
