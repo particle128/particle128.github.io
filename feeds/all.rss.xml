@@ -49,14 +49,21 @@
 
 &lt;p&gt;这只后，就可以对cmd和develop申请pull request了  &lt;/p&gt;
 &lt;h4&gt;3、善后工作&lt;/h4&gt;
-&lt;p&gt;等师兄merge了我的请求，清除这些无用分支  &lt;/p&gt;
+&lt;p&gt;等师兄merge了我的请求，合并上游代码库中最新的版本，并提交到我fork出的代码库  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;remote&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;yyy&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;  
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;pull&lt;/span&gt; &lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;  
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;清除临时创建的无用分支  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;  
 &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;cmd&lt;/span&gt;  &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;强制删除&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt;&lt;span class="err"&gt;分支。因为没有合并，只能&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt;&lt;span class="err"&gt;强制删除&lt;/span&gt;  
 &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;develop&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;强制删除&lt;/span&gt;&lt;span class="n"&gt;develop&lt;/span&gt;&lt;span class="err"&gt;分支&lt;/span&gt;  
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;清除远程库的分支  &lt;/p&gt;
+&lt;p&gt;清除远程库的分支（这一条和上一条没有先后顺序）  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt;  
 &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;develop&lt;/span&gt;  
 &lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Tue, 24 Jun 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-06-24:posts/2014/06/git-cherry-pick.html</guid><category>git</category></item><item><title>数据库的分库和分表</title><link>http://particle128.com/posts/2014/06/database-shard.html</link><description>&lt;h2&gt;一、分表&lt;/h2&gt;
@@ -3978,6 +3985,7 @@ string.punctuation  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.or
 &lt;li&gt;安装pelican和markdown  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install markdown &lt;span class="c"&gt;#linux下的markdown软件  &lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install python-pip &lt;span class="c"&gt;#安装pip&lt;/span&gt;
 &lt;span class="nv"&gt;$ &lt;/span&gt;sudo pip install markdown &lt;span class="c"&gt;#python的markdown包  &lt;/span&gt;
 &lt;span class="nv"&gt;$ &lt;/span&gt;sudo pip install pelican &lt;span class="c"&gt;#python的pelican包  &lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;

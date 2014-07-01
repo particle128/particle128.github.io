@@ -7,8 +7,8 @@
   <title>particle128's Blog</title>
   <meta name="author" content="particle128">
 
-
-
+    
+  
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
@@ -30,11 +30,11 @@
 <body>
   <header role="banner"><hgroup>
   <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
-    <h2>失败并不可怕，可怕的是妥协</h2>
-</hgroup></header>
+      <h2>失败并不可怕，可怕的是妥协</h2>
+  </hgroup></header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
   <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
-</ul>
+  </ul>
 
 <!-- TODO: add search here
 <form action="" method="get">
@@ -46,75 +46,25 @@
 -->
 
 <ul class="main-navigation">
-    <li><a href="http://particle128.com/archives.html">archives</a></li>
-    <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
-    <li><a href="http://particle128.com/category/linux.html">linux</a></li>
-    <li><a href="http://particle128.com/category/python.html">python</a></li>
-    <li><a href="http://particle128.com/category/others.html">others</a></li>
-    <li><a href="http://particle128.com/category/life.html">life</a></li>
-      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
-      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
-    <!-- TODO: add categories here? -->
-</ul></nav>
+      <li><a href="http://particle128.com/archives.html">archives</a></li>
+      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+      <li><a href="http://particle128.com/category/python.html">python</a></li>
+      <li><a href="http://particle128.com/category/others.html">others</a></li>
+      <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+        <!-- TODO: add categories here? -->
+  </ul></nav>
   <div id="main">
     <div id="content">
-<div class="blog-index">
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Effective C++学习笔记(5)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-10-11T00:00:00" pubdate>2013-10-11</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item18:  Make interfaces easy to use correctly and hard to use incorrectly</h2>
-<p>1.促进接口被正确使用：<br />
-（1）接口一致性：stl中所有容器都具有size() 函数，而不像Java和.Net。<br />
-（2）与内置类型行为兼容：想想和int类比。<br />
-2.阻止接口被误用（！！！不正确的行为，编译都不能通过）：<br />
-例子：  </p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Date</span>  
-<span class="p">{</span>  
-    <span class="n">Date</span><span class="p">(</span><span class="kt">int</span> <span class="n">month</span><span class="p">,</span><span class="kt">int</span> <span class="n">day</span><span class="p">,</span><span class="kt">int</span> <span class="n">year</span><span class="p">);</span>  
-<span class="p">}</span>  
-</pre></div>
-
-
-<p>（1）建立新类型，防止调用顺序错乱，比如(2013,1,10)。  </p>
-<div class="highlight"><pre><span class="c1">//定义Month,Day,Year类型（struct，只含一个val变量和一个explicit单个参数构造函数即可）  </span>
-<span class="n">Date ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(6).html">Effective C++学习笔记(6)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-10-10T00:00:00" pubdate>2013-10-10</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 22: Declare data members private</h2>
-<p>1.把变量声明成private，然后通过public函数访问。好处：<br />
-（1）语法一致性。public里都是函数，不用考虑是否需要加括号。<br />
-（2）更精确的访问控制。可以通过get和set设置变量的可都写属性。<br />
-（3）封装。对底层的机制提供很大的弹性，成员变量的修改，不影响客户的使用。（比如averageSoFar()函数，可以返回average变量，也可以直接计算平均值再返回。一个占空间，一个费时间，在不同环境可以选择不同的实现）<br />
-2.只有private有封装性，protected和public都没有封装性。<br />
-因为封装性与“当其内容改变时可能造成的代码破坏量”成反比，内容改变可以理解成把它从class中移除。<br />
-（1）public变量移除，所有使用它的客户代码都会破坏。<br />
-（2）protected变量移除，所有继承自该类的派生类都会破坏。  </p>
-<h2>Item 23: Prefer non-member non-friend functions to member ...</h2></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(6).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
+      <div class="blog-index">
+    	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html">Effective C++学习笔记(3)</a>
       </h1>
-      <p class="meta"><time datetime="2013-10-04T00:00:00" pubdate>2013-10-04</time></p>
+          <p class="meta"><time datetime="2013-10-04T00:00:00" pubdate>2013-10-04</time></p>
 </header>
 
   <div class="entry-content"><h2>Item 09: Never call virtual functions in constructions and destructions</h2>
@@ -130,12 +80,12 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Effective C++学习笔记(4)</a>
       </h1>
-      <p class="meta"><time datetime="2013-10-04T00:00:00" pubdate>2013-10-04</time></p>
+          <p class="meta"><time datetime="2013-10-04T00:00:00" pubdate>2013-10-04</time></p>
 </header>
 
   <div class="entry-content"><h2>Item 13: Use objects to manage resources</h2>
@@ -151,20 +101,20 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/python-str.html">Python学习笔记-字符串</a>
       </h1>
-      <p class="meta"><time datetime="2013-09-22T00:00:00" pubdate>2013-09-22</time></p>
+          <p class="meta"><time datetime="2013-09-22T00:00:00" pubdate>2013-09-22</time></p>
 </header>
 
-  <div class="entry-content"><p><strong>注意：str支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
+  <div class="entry-content"><p><strong>注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
 <h3>（一） 具备的操作</h3>
 <p>str作为序列元素，包含其他序列共同的操作：<br />
 1. “hello” [not] in "hello world"<br />
 2. "hello" + " world"<br />
-3. 5*"hello" 或 “hello”*5<br />
+3. 5<em>"hello" 或 “hello”</em>5<br />
 4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
 5. len("hello")  min("hello")  max("hello")<br />
 6. "hello".index('o')   "hello".count('l ...</p></div>
@@ -172,12 +122,12 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/09/python-str.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/blog-build.html">Linux下使用Github Pages搭建博客</a>
       </h1>
-      <p class="meta"><time datetime="2013-09-20T00:00:00" pubdate>2013-09-20</time></p>
+          <p class="meta"><time datetime="2013-09-20T00:00:00" pubdate>2013-09-20</time></p>
 </header>
 
   <div class="entry-content"><h2>环境</h2>
@@ -190,7 +140,6 @@
 <li>安装pelican和markdown  </li>
 </ul>
 <div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install markdown <span class="c">#linux下的markdown软件  </span>
-<span class="nv">$ </span>sudo apt-get install python-pip <span class="c">#安装pip</span>
 <span class="nv">$ </span>sudo pip install markdown <span class="c">#python的markdown包  </span>
 <span class="nv">$ </span>sudo pip install pelican <span class="c">#python的pelican包  </span>
 </pre></div>
@@ -198,42 +147,24 @@
 
 <p>如果没有安装markdown或python的markdown包，会出现如下错误：  </p>
 <div class="highlight"><pre><span class="n">WARNING</span><span class="o">:</span> <span class="n">Could</span> <span class="n">not</span> <span class="n">process</span> <span class="sr">/path/to/</span><span class="n">file</span><span class="o">.</span><span class="na">md</span>  
-<span class="s1">&#39;bool&#39;</span> <span class="n">object</span> <span class="k">is</span> <span class="n">not</span> <span class="n">callable ...</span></pre></div></div>
+<span class="s1">&#39;bool&#39;</span> <span class="n">object</span> <span class="k">is</span> <span class="n">not</span> <span class="n">callable</span>  
+</pre></div>
+
+
+<h2>搭建pelican环境</h2>
+<ul>
+<li>具体pelican的操作，可以查看<a href="http://docs.getpelican.com/en/3.3.0/">文档</a><br />
+搭建命令如下 ...</li></ul></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2013/09/blog-build.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
-      </h1>
-      <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
-<p>r：可以查看文件内容<br />
-w：可以修改文件内容<br />
-x：可以执行文件内容  </p>
-<p><strong>Note：</strong> <br />
-一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
-<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
-<p>r：可以查看目录结构（ls）<br />
-w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
-x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
-<p><strong>Note：</strong><br />
-一个目录开放浏览，需要r+x权限。<br />
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/linux_user.html">Linux下的用户和用户组小结</a>
       </h1>
-      <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
+          <p class="meta"><time datetime="2013-09-08T12:37:12.005149" pubdate>2013-09-08</time></p>
 </header>
 
   <div class="entry-content"><h3>1. 修改文件的相应属性</h3>
@@ -262,12 +193,37 @@ chmod a+r aa.txt
     <a rel="full-article" href="http://particle128.com/posts/2013/09/linux_user.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
+      </h1>
+          <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
+</header>
+
+  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
+<p>r：可以查看文件内容<br />
+w：可以修改文件内容<br />
+x：可以执行文件内容  </p>
+<p><strong>Note：</strong> <br />
+一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
+<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
+<p>r：可以查看目录结构（ls）<br />
+w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
+x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
+<p><strong>Note：</strong><br />
+一个目录开放浏览，需要r+x权限。<br />
+有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
       </h1>
-      <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
+          <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
 </header>
 
   <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
@@ -286,12 +242,12 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
+  	  		<article>
+    		<header>
+          <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/09/androidSMS.html">android小工具-失败短信重新发送</a>
       </h1>
-      <p class="meta"><time datetime="2013-09-03T00:00:00" pubdate>2013-09-03</time></p>
+          <p class="meta"><time datetime="2013-09-03T00:00:00" pubdate>2013-09-03</time></p>
 </header>
 
   <div class="entry-content"><h3>由来</h3>
@@ -314,63 +270,63 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <a rel="full-article" href="http://particle128.com/posts/2013/09/androidSMS.html">Read On &crarr;</a>
   </footer>
   		</article>
-<div class="pagination">
-
-      <a class="next" href="http://particle128.com/index5.html">Newer &rarr;</a>
-  <br />
-</div></div>
-<aside class="sidebar">
+  	  	<div class="pagination">
+  
+            <a class="next" href="http://particle128.com/index5.html">Newer &rarr;</a>
+        <br />
+</div>  </div>
+      <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/06/database-shard.html">数据库的分库和分表</a>
-      </li>
-      <li class="post">
+            <li class="post">
           <a href="http://particle128.com/posts/2014/05/vdisk-one-question.html">项目中一个诡异的问题</a>
       </li>
-      <li class="post">
+            <li class="post">
           <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
       </li>
-      <li class="post">
+            <li class="post">
           <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
       </li>
-    </ul>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
+      </li>
+            <li class="post">
+          <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
+      </li>
+          </ul>
   </section>
-  <section>
+    <section>
       
     <h1>Categories</h1>
     <ul id="recent_posts">
-        <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
-        <li><a href="http://particle128.com/category/life.html">life</a></li>
-        <li><a href="http://particle128.com/category/linux.html">linux</a></li>
-        <li><a href="http://particle128.com/category/others.html">others</a></li>
-        <li><a href="http://particle128.com/category/python.html">python</a></li>
-    </ul>
+              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+              <li><a href="http://particle128.com/category/life.html">life</a></li>
+              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+              <li><a href="http://particle128.com/category/others.html">others</a></li>
+              <li><a href="http://particle128.com/category/python.html">python</a></li>
+          </ul>
   </section>
- 
+   
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/dns.html">dns</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/user.html">user</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>  </section>
+      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/storage.html">storage</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/select.html">select</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/lwp.html">lwp</a>,      <a href="http://particle128.com/tag/distributed.html">distributed</a>,      <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/android.html">android</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,      <a href="http://particle128.com/tag/finance.html">finance</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/ssl.html">ssl</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,      <a href="http://particle128.com/tag/thread.html">thread</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/vector.html">vector</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
 
-
+    
     <section>
         <h1>Social</h2>
         <ul>
             <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
-            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
-        </ul>
+                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+                </ul>
     </section>
-    <section>
+      <section>
         <h1>Blogroll</h2>
         <ul>
-            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
-            <li><a href="http://python.org" target="_blank">Python</a></li>
-        </ul>
+                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+                    <li><a href="http://python.org" target="_blank">Python</a></li>
+                </ul>
     </section>
 </aside>    </div>
   </div>
@@ -378,9 +334,9 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
   Copyright &copy; 2013 - particle128 -
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
-	<script type="text/javascript">
+  	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-	  (function() {
+      	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
 	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);

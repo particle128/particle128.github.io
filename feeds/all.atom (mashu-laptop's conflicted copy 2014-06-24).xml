@@ -1,129 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-24T00:00:00+08:00</updated><entry><title>新技能get：git cherry-pick</title><link href="http://particle128.com/posts/2014/06/git-cherry-pick.html" rel="alternate"></link><updated>2014-06-24T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-24:posts/2014/06/git-cherry-pick.html</id><summary type="html">&lt;h3&gt;背景&lt;/h3&gt;
-&lt;p&gt;形象化地表述就是：&lt;br /&gt;
-今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。&lt;br /&gt;
-在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。  &lt;/p&gt;
-&lt;h3&gt;问题&lt;/h3&gt;
-&lt;p&gt;原来的git提交结构是这样的(假设'old','content'...这些是commit的代号):  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;master:&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;old&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;change1&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;change2&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;为了把content和change1,change2分开,我需要建立如下的结构  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;master:&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;old&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;change1&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;change2&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;  
-&lt;span class="nl"&gt;cmd:&lt;/span&gt;          &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;  
-&lt;span class="nl"&gt;develop:&lt;/span&gt;      &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;change1&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;change2&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;其中,建立了两个分支'cmd'和'develop',分别对应内容和程序修改。  &lt;/p&gt;
-&lt;h3&gt;解决&lt;/h3&gt;
-&lt;h4&gt;1、操作本地git repository&lt;/h4&gt;
-&lt;p&gt;首先，  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;log&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;分别找到'old','content','change1','change2'这4次提交的散列码，假设分别为oldsum,consum,ch1sum,ch2sum&lt;br /&gt;
-然后，创建cmd分支，把'content'这次的提交合并进去  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;oldsum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="n"&gt;cmd&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;cherry&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pick&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;consum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;同样，创建develop分支，把'change1'和'change2'的提交合并进去  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;oldsum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="n"&gt;develop&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;cherry&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pick&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;ch1sum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;cherry&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pick&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;ch2sum&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;2、更新我fork出来的远程git repository&lt;/h4&gt;
-&lt;p&gt;把本地离线建立地分支，更新到远程库中  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="n"&gt;cmd&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="n"&gt;develop&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;develop&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;这只后，就可以对cmd和develop申请pull request了  &lt;/p&gt;
-&lt;h4&gt;3、善后工作&lt;/h4&gt;
-&lt;p&gt;等师兄merge了我的请求，合并上游代码库中最新的版本，并提交到我fork出的代码库  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;remote&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;yyy&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;pull&lt;/span&gt; &lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;清除临时创建的无用分支  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;cmd&lt;/span&gt;  &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;强制删除&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt;&lt;span class="err"&gt;分支。因为没有合并，只能&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt;&lt;span class="err"&gt;强制删除&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;develop&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;强制删除&lt;/span&gt;&lt;span class="n"&gt;develop&lt;/span&gt;&lt;span class="err"&gt;分支&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;清除远程库的分支（这一条和上一条没有先后顺序）  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt;  
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;develop&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="git"></category></entry><entry><title>数据库的分库和分表</title><link href="http://particle128.com/posts/2014/06/database-shard.html" rel="alternate"></link><updated>2014-06-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-23:posts/2014/06/database-shard.html</id><summary type="html">&lt;h2&gt;一、分表&lt;/h2&gt;
-&lt;h3&gt;水平分表&lt;/h3&gt;
-&lt;h4&gt;1、背景&lt;/h4&gt;
-&lt;p&gt;当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。&lt;br /&gt;
-以InnoDB的B+树索引为例，记录多的时候，B+树高度更大。  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;查询：层数多，每次查询需要访问的结点就多，速度就慢。&lt;/li&gt;
-&lt;li&gt;更新：当某个叶子结点达到容量极限的时候，再次插入应该落入该结点的元素，需要增加叶子结点，并且更新上层索引，极端情况下需要更新每一层索引，因此层数多也会导致速度慢。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;除此之外，还有写入表时锁的问题，数据表太大，一个写入操作可能阻塞后续的读取别的位置的读操作。&lt;/p&gt;
-&lt;h4&gt;2、概念&lt;/h4&gt;
-&lt;p&gt;把usr表分成usr_1, usr_2, usr_3...，每个表的结构都和原表一样，各包括原表的一部分数据。比如usr_1包括id从0到9999，usr_2包括id从10000到19999。&lt;/p&gt;
-&lt;h4&gt;3、意义&lt;/h4&gt;
-&lt;p&gt;提高数据的查询和更新效率（索引结构变小，锁住的数据量变少）&lt;/p&gt;
-&lt;h3&gt;垂直分表&lt;/h3&gt;
-&lt;h4&gt;1、背景&lt;/h4&gt;
-&lt;p&gt;当一张表，有些字段经常被查询不常更新，另外一些字段经常被更新的时候，这张表的效率是不高的。&lt;/p&gt;
-&lt;h4&gt;2、概念&lt;/h4&gt;
-&lt;p&gt;根据数据的活跃度，把一张表进行分离，比如usr表分成usr_static_info,usr_dynamic_info，分别保存冷数据和活跃数据。&lt;br /&gt;
-首先存储引擎的使用不同，冷数据使用MyIsam 可以有更好的查询效率。活跃数据，可以使用Innodb ,可以有更好的更新速度。 &lt;br /&gt;
-其次，对冷数据进行更多的从库配置，因为更多的操作时查询，这样来加快查询速度。对热数据，可以相对有更多的主库的横向分表处理。&lt;br /&gt;
-其实，对于一些特殊的活跃数据，也可以考虑使用memcache ,redis之类的缓存，等累计到一定量再去更新数据库，或者mongodb 一类的nosql 数据库。  &lt;/p&gt;
-&lt;h4&gt;3、意义&lt;/h4&gt;
-&lt;p&gt;提高数据的查询和更新效率（对活跃数据和冷数据的分别存储和优化，提高活跃数据的更新效率，和冷数据的查询效率）&lt;/p&gt;
-&lt;h2&gt;二、分库&lt;/h2&gt;
-&lt;h3&gt;1、背景&lt;/h3&gt;
-&lt;p&gt;对于一个大型的互联网应用，每天几十亿的PV会对单机数据库造成了相当高的负载，对于系统的稳定性和扩展性造成了极大的问题。&lt;/p&gt;
-&lt;h3&gt;2、概念&lt;/h3&gt;
-&lt;p&gt;为了克服单机的性能瓶颈，增加一个数据库主机，把原数据库DB1中的一些表，挪到另一个数据库DB2中，从而让查询语句分开访问不同的主机。&lt;br /&gt;
-重要的是对业务要细化，分库时候要想清楚各个模块业务之间的交互情况，避免将来写程序时出现过多的跨库操作（开销很大）。 &lt;/p&gt;
-&lt;h3&gt;3、意义&lt;/h3&gt;
-&lt;p&gt;减少了单机的访问压力。&lt;/p&gt;
-&lt;h2&gt;三、分库+分表&lt;/h2&gt;
-&lt;h3&gt;1、背景&lt;/h3&gt;
-&lt;p&gt;单表记录巨多，访问量巨大，单纯的分表克服不了访问压力，单纯的分库又不适用于单表的情况，就需要采用：分库+分表。&lt;/p&gt;
-&lt;h3&gt;2、概念&lt;/h3&gt;
-&lt;p&gt;分库+分表，把usr表分成DB1.usr, DB2.usr, ... 等。每个数据库中对应的同名表，保存了原来usr表的部分数据。&lt;/p&gt;
-&lt;h3&gt;3、意义&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;减少单机访问压力&lt;/li&gt;
-&lt;li&gt;提高查询和更新效率&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;4、原则&lt;/h3&gt;
-&lt;h4&gt;(1) 以user_id为区分&lt;/h4&gt;
-&lt;p&gt;1～1000的对应DB1，1001～2000的对应DB2，以此类推&lt;br /&gt;
-优点：可部分迁移&lt;br /&gt;
-缺点：数据分布不均  &lt;/p&gt;
-&lt;h4&gt;(2) 对user_id进行hash取模分&lt;/h4&gt;
-&lt;p&gt;对user_id进行hash（或者如果user_id是数值型的话直接使用user_id 的值也可），然后用一个特定的数字，比如应用中需要将一个数据库切分成4个数据库的话，我们就用4这个数字对user_id的hash值进行取模运算，也 就是user_id%4,这样的话每次运算就有四种可能：结果为1的时候对应DB1；结果为2的时候对应DB2；结果为3的时候对应DB3；结果为0的时 候对应DB4，这样一来就非常均匀的将数据分配到4个DB中。&lt;br /&gt;
-优点：数据分布均匀&lt;br /&gt;
-缺点：数据迁移的时候麻烦，不能按照机器性能分摊数据  &lt;/p&gt;
-&lt;h4&gt;(3) 在认证库中保存数据库配置&lt;/h4&gt;
-&lt;p&gt;就是建立一个DB，这个DB单独保存user_id到DB的映射关系，每次访问数据库的时候都要先查询一次这个数据库，以得到具体的DB信息，然后才能进行我们需要的查询操作。&lt;br /&gt;
-优点：灵活性强，一对一关系&lt;br /&gt;
-缺点：每次查询之前都要多一次查询，性能大打折扣  &lt;/p&gt;
-&lt;h3&gt;参考链接&lt;/h3&gt;
-&lt;p&gt;&lt;a href="http://zhengdl126.iteye.com/blog/419850"&gt;数据库水平切分的实现原理解析－－－分库，分表，主从，集群，负载均衡器&lt;/a&gt;&lt;br /&gt;
-&lt;a href="http://my.oschina.net/cmcm/blog/175104"&gt;mysql分库分表的一些技巧&lt;/a&gt;&lt;/p&gt;</summary><category term="database"></category></entry><entry><title>项目中一个诡异的问题</title><link href="http://particle128.com/posts/2014/05/vdisk-one-question.html" rel="alternate"></link><updated>2014-05-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-26:posts/2014/05/vdisk-one-question.html</id><summary type="html">&lt;p&gt;记录下今天在做虚拟磁盘过程中，遇到的一个问题。  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-05-26T00:00:00+08:00</updated><entry><title>项目中一个诡异的问题</title><link href="http://particle128.com/posts/2014/05/vdisk-one-question.html" rel="alternate"></link><updated>2014-05-26T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-05-26:posts/2014/05/vdisk-one-question.html</id><summary type="html">&lt;p&gt;记录下今天在做虚拟磁盘过程中，遇到的一个问题。  &lt;/p&gt;
 &lt;h3&gt;问题&lt;/h3&gt;
 &lt;p&gt;因为没有找到合适的fat32格式文件系统的扩容工具（fatresize没有效果，parted3.1可以检测到分区但是没有resize功能，parted2.x有resize功能但是检测不到分区），只能暂时采用如下方法来进行“磁盘扩容”。（假设原磁盘test.img，大小为100M，要扩容到200M）  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;dd&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zero&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;bigger&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="n"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;  
@@ -352,7 +228,7 @@ test.img的删除，是unlink的过程，即“将test.img的inode结点中的�
 &lt;p&gt;new和delete的底层会使用malloc和free，在堆上进行内存分配和释放。用malloc分配一个数组，使用，之后传递给free一个数组指针的时候，它如何知道释放多少空间呢？&lt;br /&gt;
 答案是，从指针位置前面的一个字中寻找要释放的内存的大小，块大小保存在实际数据位置-4的内存中。&lt;br /&gt;
 堆中分配的内存块的截图如下：&lt;br /&gt;
-&lt;img alt="image" src="http://particle128.com/images/heap_map.png" /&gt;  &lt;/p&gt;
+&lt;img alt="image" src="http://particle128.com/static/images/heap_map.png" /&gt;  &lt;/p&gt;
 &lt;p&gt;在gdb中测试一下，结果和解释：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;                  &lt;span class="c1"&gt;//输入，表示会动态分配10个int  &lt;/span&gt;
 &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;gdb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
@@ -3695,7 +3571,7 @@ typeid（返回type_info对象，支持相等比较运算和name()方法）：�
 （3）该自定义类型可能在之后的更新中，体积变大。&lt;br /&gt;
 4.不适合引用传递的情况：&lt;br /&gt;
 （1）内置类型：效率更高，见下图&lt;br /&gt;
-&lt;img alt="ec5" src="http://particle128.com/images/ec5.png" /&gt;
+&lt;img alt="ec5" src="http://particle128.com/static/images/ec5.png" /&gt;
 （2）STL迭代器：类似指针，STL会保证其复制构造效率高，习惯值传递&lt;br /&gt;
 （3）函数对象：实质是指针  &lt;/p&gt;
 &lt;h2&gt;Item21: Don't try to return a reference when you must return an object.&lt;/h2&gt;
@@ -3929,12 +3805,12 @@ delete执行过程：在该内存有一个或多个（delete [] arr）析构函�
 &lt;p&gt;解决办法：独立语句中将动态分配的对象存入智能指针。  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nl"&gt;tr1&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="nl"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;Widget&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;pw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Widget&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
 &lt;span class="nx"&gt;processWidget&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pw&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;priority&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;   
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Python学习笔记-字符串</title><link href="http://particle128.com/posts/2013/09/python-str.html" rel="alternate"></link><updated>2013-09-22T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-22:posts/2013/09/python-str.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：str支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="EffectiveCpp"></category></entry><entry><title>Python学习笔记-字符串</title><link href="http://particle128.com/posts/2013/09/python-str.html" rel="alternate"></link><updated>2013-09-22T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-22:posts/2013/09/python-str.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;注意：tr支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()&lt;/strong&gt;  &lt;/p&gt;
 &lt;h3&gt;（一） 具备的操作&lt;/h3&gt;
 &lt;p&gt;str作为序列元素，包含其他序列共同的操作：&lt;br /&gt;
 1. “hello” [not] in "hello world"&lt;br /&gt;
 2. "hello" + " world"&lt;br /&gt;
-3. 5*"hello" 或 “hello”*5&lt;br /&gt;
+3. 5&lt;em&gt;"hello" 或 “hello”&lt;/em&gt;5&lt;br /&gt;
 4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]&lt;br /&gt;
 5. len("hello")  min("hello")  max("hello")&lt;br /&gt;
 6. "hello".index('o')   "hello".count('l')  &lt;/p&gt;
@@ -3943,15 +3819,14 @@ delete执行过程：在该内存有一个或多个（delete [] arr）析构函�
 1. s[i] = x    s[i:j] = t 【t是任何可迭代对象】 s[i:j:k] = t 【t需要和s[i:j:k]有相同数量的元素】&lt;br /&gt;
 2. del s[i:j]    del s[i:j:k]   s.remove(x) =&amp;gt; del s[x]&lt;br /&gt;
 3. s.insert(i, x)  s.append(x)  s.extend(t) 【t是任何可迭代对象】&lt;br /&gt;
-4. s.reverse()    s.sort([cmp[, key[, reverse]]])&lt;br /&gt;
-5. s.pop([i]) =&amp;gt; x = s[i]; del s[i]; return x  &lt;/p&gt;
+4. s.index(x[, i[, j]]) 【匹配x的最小索引，可以给定一个范围i&amp;lt;=idx&lt;j】  s.count(x)&lt;br /&gt;5. .reverse()    s.sort([cmp[, key[, reverse]]])&lt;br /&gt;6. s.pop([i]) =&gt; x = s[i]; del s[i]; return x  &lt;/p&gt;
 &lt;h3&gt;（三） 字符串方法&lt;/h3&gt;
 &lt;p&gt;str.capitalize()第一个字母大写 str.title() 每一个单词首字母大写&lt;br /&gt;
 str.count(sub[, start[, end]])&lt;br /&gt;
 str.endswith(suffix[, start[, end]])返回True或False 同理str.startswith&lt;br /&gt;
 str.find(sub[, start[, end]]) 找不到返回-1 同理str.rfind&lt;br /&gt;
 str.index(sub[, start[, end]])找不到raise ValueError 同理str.rindex&lt;br /&gt;
-str.format(*args, **kwargs) 同格式化字符串&lt;br /&gt;
+str.format(&lt;em&gt;args, &lt;/em&gt;*kwargs) 同格式化字符串&lt;br /&gt;
 islower isupper isspace isdigit isalpha isalnum&lt;br /&gt;
 str.ljust(width[, fillchar])左对齐，可以选择填充字节，默认空格。 同理str.rjust，str.zfill(width)相当于str.rjust(width,'0')&lt;br /&gt;
 str.lower() str.upper() str.swapcase()交换大小写&lt;br /&gt;
@@ -3975,7 +3850,8 @@ string.octdigits&lt;br /&gt;
 string.lowercase&lt;br /&gt;
 string.uppercase&lt;br /&gt;
 string.whitespace&lt;br /&gt;
-string.punctuation  &lt;/p&gt;</summary><category term="python"></category><category term="str"></category></entry><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.com/posts/2013/09/blog-build.html" rel="alternate"></link><updated>2013-09-20T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-20:posts/2013/09/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
+string.punctuation&lt;br /&gt;
+string.printable  &lt;/p&gt;</summary><category term="python"></category><category term="str"></category></entry><entry><title>Linux下使用Github Pages搭建博客</title><link href="http://particle128.com/posts/2013/09/blog-build.html" rel="alternate"></link><updated>2013-09-20T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-20:posts/2013/09/blog-build.html</id><summary type="html">&lt;h2&gt;环境&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;ubuntu12.04LTS(自带python2.7)  &lt;/li&gt;
 &lt;/ul&gt;
@@ -3985,7 +3861,6 @@ string.punctuation  &lt;/p&gt;</summary><category term="python"></category><cate
 &lt;li&gt;安装pelican和markdown  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install markdown &lt;span class="c"&gt;#linux下的markdown软件  &lt;/span&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;sudo apt-get install python-pip &lt;span class="c"&gt;#安装pip&lt;/span&gt;
 &lt;span class="nv"&gt;$ &lt;/span&gt;sudo pip install markdown &lt;span class="c"&gt;#python的markdown包  &lt;/span&gt;
 &lt;span class="nv"&gt;$ &lt;/span&gt;sudo pip install pelican &lt;span class="c"&gt;#python的pelican包  &lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -4173,7 +4048,7 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把
 &lt;li&gt;在&lt;a href="http://www.goyouhuima.com/"&gt;GoDaddy优惠码网站&lt;/a&gt;选择一个链接，进入，购买一年的域名，比如particle128.com，55元左右,可以用支付宝购买。  &lt;/li&gt;
 &lt;li&gt;在&lt;a href="https://www.dnspod.cn/"&gt;DNSPOD&lt;/a&gt;上注册，然后建立一条A记录，一条CNAME记录，将购买的域名particle128.com绑定到Github Pages的ip地址（注意不是独立ip），将www.particle128.com重定向到particle128.com&lt;br /&gt;
 截图：&lt;br /&gt;
-&lt;img alt="dnspod_screenshot" src="http://particle128.com/images/DNSPod.png" /&gt;  &lt;/li&gt;
+&lt;img alt="dnspod_screenshot" src="http://particle128.com/static/images/DNSPod.png" /&gt;  &lt;/li&gt;
 &lt;li&gt;重新登陆GoDaddy，添加DNSPod的name server&lt;br /&gt;
 f1g1ns1.dnspod.net&lt;br /&gt;
 f1g1ns2.dnspod.net  &lt;/li&gt;
@@ -4183,42 +4058,7 @@ f1g1ns2.dnspod.net  &lt;/li&gt;
 &lt;/ol&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;blog/output  
 &lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;particle128.com&amp;#39;&lt;/span&gt; &amp;gt; CNAME  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="pelican"></category><category term="blog"></category></entry><entry><title>Linux权限小结</title><link href="http://particle128.com/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
-&lt;p&gt;r：可以查看文件内容&lt;br /&gt;
-w：可以修改文件内容&lt;br /&gt;
-x：可以执行文件内容  &lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt; &lt;br /&gt;
-一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。&lt;/p&gt;
-&lt;h4&gt;2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&amp;lt;文件名，inode号&amp;gt;）&lt;/h4&gt;
-&lt;p&gt;r：可以查看目录结构（ls）&lt;br /&gt;
-w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）&lt;br /&gt;
-x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  &lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt;&lt;br /&gt;
-一个目录开放浏览，需要r+x权限。&lt;br /&gt;
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号；&lt;br /&gt;
-有x没r，可以cd进去，不能ls查看内容。【所谓不能，是指执行该操作会返回“Permission denied”】&lt;br /&gt;
-仅有w，无法修改目录结构，因为命令进入不进去这个目录，需要x权限配合w才能完成修改目录的作用。&lt;/p&gt;
-&lt;h4&gt;3、umask：初始权限中需要屏蔽的部分，ubuntu12.04下默认是0002，去掉其他用户的写权限。&lt;/h4&gt;
-&lt;p&gt;文件初始权限：-rw-rw-rw- （0666）&lt;br /&gt;
-文件默认权限：初始-umask。0666-0002=0664，即-rw-rw-r--&lt;br /&gt;
-文件夹初始权限：drwxrwxrwx（0777）&lt;br /&gt;
-文件夹默认权限：初始-umask。0777-0002=0775，即drwxrwxr-x  &lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt;&lt;br /&gt;
-所有者和同组用户权限相同，其他用户剥夺写权限。&lt;br /&gt;
-命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;umask&lt;/span&gt; &lt;span class="mo"&gt;022&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;修改&lt;/span&gt;&lt;span class="n"&gt;umask&lt;/span&gt;&lt;span class="err"&gt;默认值&lt;/span&gt;
-&lt;span class="n"&gt;umask&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;S&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;以字符的形式显示&lt;/span&gt;&lt;span class="n"&gt;umask&lt;/span&gt;&lt;span class="err"&gt;之后的效果，&lt;/span&gt;&lt;span class="mo"&gt;0002&lt;/span&gt;&lt;span class="err"&gt;对应&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rwx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rwx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rx&lt;/span&gt;&lt;span class="err"&gt;。&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;4、三个特殊权限：&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;SUID（SetUID）&lt;/strong&gt;：ls-l显示所有者权限x-&amp;gt;s&lt;br /&gt;
-例子：/usr/bin/passwd。普通用户可以执行passwd修改自己的密码，执行该程序后默认UID变为root（passwd的所有者），因此可以修改仅仅root可读的/etc/shadow&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;SGID（SetGID）&lt;/strong&gt;：ls-l显示组权限x-&amp;gt;s&lt;br /&gt;
-例子：/usr/bin/locate。普通用户执行locate定位文件，执行该程序后默认GID变为slocate（locate的所属用户组），因此可以查询仅仅mlocate组内用户可以访问的mlocate.db&lt;br /&gt;
-另：作用于目录时，相当于用户cd进该目录后有效用户组就变成该目录的用户组了，影响此后新建的文件的所属用户组。  &lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;SBIT（Sticky Bit）&lt;/strong&gt;：ls-l显示其他权限x-&amp;gt;t&lt;br /&gt;
-例子：/tmp。用户进入/tmp下新建的文件，只有root和文件所有者可以删除，其他用户即使对/tmp有w权限也没用。&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.com/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="pelican"></category><category term="blog"></category></entry><entry><title>Linux下的用户和用户组小结</title><link href="http://particle128.com/posts/2013/09/linux_user.html" rel="alternate"></link><updated>2013-09-08T12:37:12+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/linux_user.html</id><summary type="html">&lt;h3&gt;1. 修改文件的相应属性&lt;/h3&gt;
 &lt;h4&gt;chown 修改文件所有者&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;chown mashu:mashu aa.txt &lt;span class="c"&gt;# 或chown mashu.mashu aa.txt 同时修改所有者和组&lt;/span&gt;
 chown mashu aa.txt &lt;span class="c"&gt;# 修改所有者&lt;/span&gt;
@@ -4287,7 +4127,42 @@ passwd
 &lt;p&gt;-g 指定GID，-r 创建系统组&lt;/p&gt;
 &lt;h4&gt;6) groupdel&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;groupdel &lt;span class="o"&gt;[&lt;/span&gt;组名&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.com/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="user"></category></entry><entry><title>Linux权限小结</title><link href="http://particle128.com/posts/2013/09/authority.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/authority.html</id><summary type="html">&lt;h4&gt;1、文件权限：针对文件的实际数据（data block中的内容）&lt;/h4&gt;
+&lt;p&gt;r：可以查看文件内容&lt;br /&gt;
+w：可以修改文件内容&lt;br /&gt;
+x：可以执行文件内容  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt; &lt;br /&gt;
+一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。&lt;/p&gt;
+&lt;h4&gt;2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&amp;lt;文件名，inode号&amp;gt;）&lt;/h4&gt;
+&lt;p&gt;r：可以查看目录结构（ls）&lt;br /&gt;
+w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）&lt;br /&gt;
+x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt;&lt;br /&gt;
+一个目录开放浏览，需要r+x权限。&lt;br /&gt;
+有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号；&lt;br /&gt;
+有x没r，可以cd进去，不能ls查看内容。【所谓不能，是指执行该操作会返回“Permission denied”】&lt;br /&gt;
+仅有w，无法修改目录结构，因为命令进入不进去这个目录，需要x权限配合w才能完成修改目录的作用。&lt;/p&gt;
+&lt;h4&gt;3、umask：初始权限中需要屏蔽的部分，ubuntu12.04下默认是0002，去掉其他用户的写权限。&lt;/h4&gt;
+&lt;p&gt;文件初始权限：-rw-rw-rw- （0666）&lt;br /&gt;
+文件默认权限：初始-umask。0666-0002=0664，即-rw-rw-r--&lt;br /&gt;
+文件夹初始权限：drwxrwxrwx（0777）&lt;br /&gt;
+文件夹默认权限：初始-umask。0777-0002=0775，即drwxrwxr-x  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note：&lt;/strong&gt;&lt;br /&gt;
+所有者和同组用户权限相同，其他用户剥夺写权限。&lt;br /&gt;
+命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;umask&lt;/span&gt; &lt;span class="mo"&gt;022&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;修改&lt;/span&gt;&lt;span class="n"&gt;umask&lt;/span&gt;&lt;span class="err"&gt;默认值&lt;/span&gt;
+&lt;span class="n"&gt;umask&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;S&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;以字符的形式显示&lt;/span&gt;&lt;span class="n"&gt;umask&lt;/span&gt;&lt;span class="err"&gt;之后的效果，&lt;/span&gt;&lt;span class="mo"&gt;0002&lt;/span&gt;&lt;span class="err"&gt;对应&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rwx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rwx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;rx&lt;/span&gt;&lt;span class="err"&gt;。&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;4、三个特殊权限：&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;SUID（SetUID）&lt;/strong&gt;：ls-l显示所有者权限x-&amp;gt;s&lt;br /&gt;
+例子：/usr/bin/passwd。普通用户可以执行passwd修改自己的密码，执行该程序后默认UID变为root（passwd的所有者），因此可以修改仅仅root可读的/etc/shadow&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SGID（SetGID）&lt;/strong&gt;：ls-l显示组权限x-&amp;gt;s&lt;br /&gt;
+例子：/usr/bin/locate。普通用户执行locate定位文件，执行该程序后默认GID变为slocate（locate的所属用户组），因此可以查询仅仅mlocate组内用户可以访问的mlocate.db&lt;br /&gt;
+另：作用于目录时，相当于用户cd进该目录后有效用户组就变成该目录的用户组了，影响此后新建的文件的所属用户组。  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SBIT（Sticky Bit）&lt;/strong&gt;：ls-l显示其他权限x-&amp;gt;t&lt;br /&gt;
+例子：/tmp。用户进入/tmp下新建的文件，只有root和文件所有者可以删除，其他用户即使对/tmp有w权限也没用。&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>Python学习笔记-logging模块</title><link href="http://particle128.com/posts/2013/09/python-logging.html" rel="alternate"></link><updated>2013-09-08T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-09-08:posts/2013/09/python-logging.html</id><summary type="html">&lt;h4&gt;Logging is a means of tracking events that happen when some software runs.&lt;/h4&gt;
 &lt;h3&gt;1、各种消息机制的使用场合&lt;/h3&gt;
 &lt;p&gt;终端输出来显示一些信息：print()&lt;br /&gt;
 报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，&lt;br /&gt;
