@@ -117,14 +117,16 @@
 <h4>3、善后工作</h4>
 <p>等师兄merge了我的请求，合并上游代码库中最新的版本，并提交到我fork出的代码库  </p>
 <div class="highlight"><pre><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">upstream</span> <span class="n">git</span><span class="err">@</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">:</span><span class="n">xxx</span><span class="o">/</span><span class="n">yyy</span><span class="p">.</span><span class="n">git</span>  
-<span class="n">git</span> <span class="n">pull</span> <span class="n">upstream</span> <span class="n">master</span>  
+<span class="n">git</span> <span class="n">fetch</span> <span class="n">upstream</span> <span class="n">master</span>  
+<span class="n">git</span> <span class="n">reabse</span> <span class="n">upstream</span><span class="o">/</span><span class="n">master</span> <span class="err">#</span> <span class="err">把本地</span><span class="n">master</span><span class="err">衍合到</span><span class="n">upstream</span><span class="o">/</span><span class="n">master</span><span class="err">分支上。</span><span class="n">merge</span><span class="err">也可，只是多一个合并的</span><span class="n">commit</span><span class="err">记录</span>
+<span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="n">HEAD</span><span class="o">~</span><span class="mi">3</span>   <span class="err">#</span> <span class="err">为了让提交历史干净，我把</span><span class="n">master</span><span class="err">上的已经被合并的</span><span class="mi">3</span><span class="err">个</span><span class="n">commit</span><span class="err">手动撤销了</span>
 <span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">master</span>  
 </pre></div>
 
 
 <p>清除临时创建的无用分支  </p>
 <div class="highlight"><pre><span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>  
-<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">cmd</span>  <span class="err">#</span> <span class="err">强制删除</span><span class="n">cmd</span><span class="err">分支。因为没有合并，只能</span><span class="o">-</span><span class="n">D</span><span class="err">强制删除</span>  
+<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">cmd</span>     <span class="err">#</span> <span class="err">强制删除</span><span class="n">cmd</span><span class="err">分支。因为没有合并，只能</span><span class="o">-</span><span class="n">D</span><span class="err">强制删除</span>  
 <span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">D</span> <span class="n">develop</span> <span class="err">#</span> <span class="err">强制删除</span><span class="n">develop</span><span class="err">分支</span>  
 </pre></div>
 
