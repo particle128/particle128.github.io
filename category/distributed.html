@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>EffectiveC++笔记汇总</title>
+  <title>particle128's Blog</title>
   <meta name="author" content="particle128">
 
 
@@ -58,60 +58,48 @@
 </ul></nav>
   <div id="main">
     <div id="content">
-<div>
-  <article class="hentry" role="article">
+<div class="blog-index">
+  		<article>
 <header>
-      <h1 class="entry-title">EffectiveC++笔记汇总</h1>
-      <p class="meta"><time datetime="2013-10-31T00:00:00" pubdate>2013-10-31</time></p>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
+      </h1>
+      <p class="meta"><time datetime="2014-07-29T00:00:00" pubdate>2014-07-29</time></p>
 </header>
 
-  <div class="entry-content"><p>笔记汇总：  </p>
-<p><a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">EffectiveC++(1)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">EffectiveC++(2)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html">EffectiveC++(3)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">EffectiveC++(4)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">EffectiveC++(5)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(6).html">EffectiveC++(6)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">EffectiveC++(7)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">EffectiveC++(8)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">EffectiveC++(9)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">EffectiveC++(10)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">EffectiveC++(11)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">EffectiveC++(12)</a>  </p></div>
-    <footer>
-<p class="meta">
-  <span class="byline author vcard">
-    Posted by <span class="fn">particle128</span>
-  </span>
-<time datetime="2013-10-31T00:00:00" pubdate>2013-10-31</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
-  </span>
-</p>    </footer>
-  </article>
+  <div class="entry-content"><h3>如何使用directGrouping</h3>
+<ol>
+<li>申明流是direct Stream<br />
+spout/bolt的declareOutputFields中<br />
+outputFieldsDeclarer.declare(/<em>direct</em>/true, new Fields("word"));  </li>
+<li>使用emitDirect来发送数据<br />
+spout/bolt的nextTuple/execute中<br />
+collector.emitDirect(/<em>taskId</em>/getWordCountIndex(word),new Values(word));<br />
+注意：因为第一个参数是taskid，首先需要在open/prepare里面获取下游bolt的taskid列表<br />
+topologyContext.getComponentTasks("word-counter")  </li>
+<li>topology定义中指定连接方式为directGrouping<br />
+builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  </li>
+</ol>
+<h3>如何利用Storm提供的可靠性保证</h3>
+<ol>
+<li>在spout中，用SpoutOutputCollector调用emit的时候，必须指定messageId。<br />
+一个messageId对应一个tuple树。<br />
+这样，在某个tuple树全部被处理完后，spout的回调函数ack会被调用，ack的参数是那个tuple树对应的messageId。  </li>
+<li>在每一个bolt中 ...</li></ol></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/07/storm-sum.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+<div class="pagination">
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
-  </section>
-</div>
+  <br />
+</div></div>
 <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
           <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/06/database-shard.html">数据库的分库和分表</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/05/vdisk-one-question.html">项目中一个诡异的问题</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
       </li>
     </ul>
   </section>
@@ -156,9 +144,6 @@
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2013/10/EffectiveCpp.html';
-          var disqus_url = 'http://particle128.com/posts/2013/10/EffectiveCpp.html';
-          var disqus_title = 'EffectiveC++笔记汇总';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/index.html</loc>
-<lastmod>2014-07-02T09:03:39-00:00</lastmod>
+<lastmod>2014-07-29T18:03:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/archives.html</loc>
-<lastmod>2014-07-02T09:03:39-00:00</lastmod>
+<lastmod>2014-07-29T18:03:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/tags.html</loc>
-<lastmod>2014-07-02T09:03:39-00:00</lastmod>
+<lastmod>2014-07-29T18:03:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/categories.html</loc>
-<lastmod>2014-07-02T09:03:39-00:00</lastmod>
+<lastmod>2014-07-29T18:03:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -43,6 +43,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <lastmod>2014-06-28T13:01:05-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
+</url>
+
+<url>
+<loc>http://particle128.com/posts/2014/07/storm-sum.html</loc>
+<lastmod>2014-07-29T00:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -473,6 +480,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://particle128.com/category/distributed.html</loc>
+<lastmod>2014-07-29T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://particle128.com/category/life.html</loc>
 <lastmod>2014-03-20T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -704,6 +718,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://particle128.com/tag/storm.html</loc>
+<lastmod>2014-07-29T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://particle128.com/tag/spinlock.html</loc>
 <lastmod>2014-04-02T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -796,7 +817,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/author/particle128.html</loc>
-<lastmod>2014-06-24T00:00:00-00:00</lastmod>
+<lastmod>2014-07-29T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

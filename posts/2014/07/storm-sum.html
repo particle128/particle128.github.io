@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>EffectiveC++笔记汇总</title>
+  <title>使用Storm 2个月后的总结</title>
   <meta name="author" content="particle128">
 
 
@@ -61,30 +61,64 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">EffectiveC++笔记汇总</h1>
-      <p class="meta"><time datetime="2013-10-31T00:00:00" pubdate>2013-10-31</time></p>
+      <h1 class="entry-title">使用Storm 2个月后的总结</h1>
+      <p class="meta"><time datetime="2014-07-29T00:00:00" pubdate>2014-07-29</time></p>
 </header>
 
-  <div class="entry-content"><p>笔记汇总：  </p>
-<p><a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">EffectiveC++(1)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">EffectiveC++(2)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html">EffectiveC++(3)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">EffectiveC++(4)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">EffectiveC++(5)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(6).html">EffectiveC++(6)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">EffectiveC++(7)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">EffectiveC++(8)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">EffectiveC++(9)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">EffectiveC++(10)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">EffectiveC++(11)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">EffectiveC++(12)</a>  </p></div>
+  <div class="entry-content"><h3>如何使用directGrouping</h3>
+<ol>
+<li>申明流是direct Stream<br />
+spout/bolt的declareOutputFields中<br />
+outputFieldsDeclarer.declare(/<em>direct</em>/true, new Fields("word"));  </li>
+<li>使用emitDirect来发送数据<br />
+spout/bolt的nextTuple/execute中<br />
+collector.emitDirect(/<em>taskId</em>/getWordCountIndex(word),new Values(word));<br />
+注意：因为第一个参数是taskid，首先需要在open/prepare里面获取下游bolt的taskid列表<br />
+topologyContext.getComponentTasks("word-counter")  </li>
+<li>topology定义中指定连接方式为directGrouping<br />
+builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  </li>
+</ol>
+<h3>如何利用Storm提供的可靠性保证</h3>
+<ol>
+<li>在spout中，用SpoutOutputCollector调用emit的时候，必须指定messageId。<br />
+一个messageId对应一个tuple树。<br />
+这样，在某个tuple树全部被处理完后，spout的回调函数ack会被调用，ack的参数是那个tuple树对应的messageId。  </li>
+<li>在每一个bolt中，用OutputCollector调用emit的时候，需要指定源tuple，并且在emit之后要调用ack。<br />
+如果该bolt继承自BaseBasicBolt，则自动完成上述操作。  </li>
+</ol>
+<h3>问题集锦</h3>
+<h4>Problem1</h4>
+<p><strong>问题</strong><br />
+Spout：emit出去一个map，下游Bolt：有时候读到空的map，有时候读到有内容的map<br />
+<strong>原因</strong><br />
+emit出去一个map，就调用pruneData函数把map给clear了。<br />
+因为本地模式在同一个虚拟机下，storm并没有把这个map深拷贝到tuple中保存，Bolt读到的map和上游Spout发送的map是来自同一块内存。<br />
+这样，就出现了一个竞争条件：如果Spout线程先clear，下游Bolt才接到的话，读到的就是空map；如果先接到，Spout再clear，读到的就是有内容的map。<br />
+<strong>解决</strong><br />
+pruneData不clear这个map了，而是new一个新的map。让垃圾回收器去把不用的map回收。  </p>
+<h4>Problem2</h4>
+<p><strong>问题</strong><br />
+Trident中，使用each和partitionAggregate函数，下游接收到空的tuple<br />
+<strong>原因</strong><br />
+这和<a href="http://storm.incubator.apache.org/documentation/Documentation.html">官方Documentation</a>不符，原因不详<br />
+<strong>解决</strong><br />
+不管是each，还是partitionAggregate函数，必须指定第一个参数（即Fields），表明输入的值列表。  </p>
+<h4>Probelm3</h4>
+<p><strong>问题</strong><br />
+Trident中，一旦加上partitionPersist函数，就会报错  </p>
+<div class="highlight"><pre><span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">NotSerializableException</span><span class="o">:</span> <span class="n">com</span><span class="o">.</span><span class="na">aliyun</span><span class="o">.</span><span class="na">aep</span><span class="o">.</span><span class="na">storm</span><span class="o">.</span><span class="na">binpacking</span><span class="o">.</span><span class="na">BinpackingTrident</span>  
+</pre></div>
+
+
+<p><strong>解决</strong><br />
+让BinpackTrident实现Serializable。  </p></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2013-10-31T00:00:00" pubdate>2013-10-31</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
+<time datetime="2014-07-29T00:00:00" pubdate>2014-07-29</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/storm.html">storm</a>
   </span>
 </p>    </footer>
   </article>
@@ -156,9 +190,9 @@
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2013/10/EffectiveCpp.html';
-          var disqus_url = 'http://particle128.com/posts/2013/10/EffectiveCpp.html';
-          var disqus_title = 'EffectiveC++笔记汇总';
+          var disqus_identifier = '/posts/2014/07/storm-sum.html';
+          var disqus_url = 'http://particle128.com/posts/2014/07/storm-sum.html';
+          var disqus_title = '使用Storm 2个月后的总结';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
