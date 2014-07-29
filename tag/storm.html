@@ -49,6 +49,7 @@
     <li><a href="http://particle128.com/archives.html">archives</a></li>
     <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
     <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+    <li><a href="http://particle128.com/category/distributed.html">distributed</a></li>
     <li><a href="http://particle128.com/category/python.html">python</a></li>
     <li><a href="http://particle128.com/category/others.html">others</a></li>
     <li><a href="http://particle128.com/category/life.html">life</a></li>
@@ -67,7 +68,7 @@
       <p class="meta"><time datetime="2014-07-29T00:00:00" pubdate>2014-07-29</time></p>
 </header>
 
-  <div class="entry-content"><h3>如何使用directGrouping</h3>
+  <div class="entry-content"><h2>如何使用directGrouping</h2>
 <ol>
 <li>申明流是direct Stream<br />
 spout/bolt的declareOutputFields中<br />
@@ -80,7 +81,7 @@ topologyContext.getComponentTasks("word-counter")  </li>
 <li>topology定义中指定连接方式为directGrouping<br />
 builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  </li>
 </ol>
-<h3>如何利用Storm提供的可靠性保证</h3>
+<h2>如何利用Storm提供的可靠性保证</h2>
 <ol>
 <li>在spout中，用SpoutOutputCollector调用emit的时候，必须指定messageId。<br />
 一个messageId对应一个tuple树。<br />
