@@ -1,81 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/distributed.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-07-30T00:00:00+08:00</updated><entry><title>Why do I refactor my Storm application using Trident</title><link href="http://particle128.com/posts/2014/07/why-use-trident.html" rel="alternate"></link><updated>2014-07-30T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-07-30:posts/2014/07/why-use-trident.html</id><summary type="html">&lt;h2&gt;Background&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/distributed.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-07-30T00:00:00+08:00</updated><entry><title>Why do I refactor my Storm application using Trident</title><link href="http://particle128.com/posts/2014/07/why-use-trident.html" rel="alternate"></link><updated>2014-07-30T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-07-30:posts/2014/07/why-use-trident.html</id><summary type="html">&lt;p&gt;undone...&lt;/p&gt;
+&lt;h2&gt;Background&lt;/h2&gt;
 &lt;h3&gt;What is storm&lt;/h3&gt;
-&lt;p&gt;&lt;a href="http://storm.incubator.apache.org/"&gt;Storm&lt;/a&gt; is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.
-Many large companies, including Twitter, Yahoo!, Alibaba and Baidu, have used Storm to do some realtime processing, such as realtime analytics of application logs, or DRPC. Twitter integrates storm with its other infrastructures, including database systems, the messaging infrastructure, and monitoring/altering system.
-Typical use cases for Storm:&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://storm.incubator.apache.org/"&gt;Storm&lt;/a&gt; is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.&lt;br /&gt;
+Many large companies, including Twitter, Yahoo!, Alibaba and Baidu, have used Storm to do some realtime processing, such as realtime analytics of application logs, or DRPC. Twitter integrates storm with its other infrastructures, including database systems, the messaging infrastructure, and monitoring/altering system.&lt;br /&gt;
+Typical use cases for Storm:  &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;processing stream
-  no need for intermediary queues -&amp;gt; faster&lt;/li&gt;
-&lt;li&gt;continuous computation
-  compute when data is available -&amp;gt; realtime&lt;/li&gt;
-&lt;li&gt;distributed remote procedure call
-  parallelize CPU-intensive operations -&amp;gt; higher throughput (somewhat like pipelining)&lt;/li&gt;
+&lt;li&gt;processing stream&lt;br /&gt;
+  no need for intermediary queues -&amp;gt; faster  &lt;/li&gt;
+&lt;li&gt;continuous computation&lt;br /&gt;
+  compute when data is available -&amp;gt; realtime  &lt;/li&gt;
+&lt;li&gt;distributed remote procedure call&lt;br /&gt;
+  parallelize CPU-intensive operations -&amp;gt; higher throughput (somewhat like pipelining)  &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;By the way, Alibaba has developed a special version of Storm, called &lt;a href="https://github.com/alibaba/jstorm"&gt;JStorm&lt;/a&gt;, which ueses Java (quicker than Clojure) to rewrite the core module of Storm and makes some changes (optimizing ack mechanism, ...), achieving higher performance and more stability.&lt;/p&gt;
+&lt;p&gt;By the way, Alibaba has developed a special version of Storm, called &lt;a href="https://github.com/alibaba/jstorm"&gt;JStorm&lt;/a&gt;, which ueses Java (quicker than Clojure) to rewrite the core module of Storm and makes some changes (optimizing ack mechanism, ...), achieving higher performance and more stability.  &lt;/p&gt;
 &lt;h3&gt;Basic concepts of storm&lt;/h3&gt;
 &lt;h4&gt;Stream&lt;/h4&gt;
-&lt;p&gt;A &lt;code&gt;stream&lt;/code&gt; is an unbounded sequence of data that is created and processed in parallel in a distributed fashion.
-Streams are composed of &lt;code&gt;tuples&lt;/code&gt;, which are the smallest units that can be emited from spout/bolt. And a tuple is constuited of 1 or more &lt;code&gt;fields&lt;/code&gt;.
-For example, &lt;code&gt;TestSpout&lt;/code&gt; reads tweets from a MQ, and emits &lt;code&gt;(author, tweet, date)&lt;/code&gt; to &lt;code&gt;TestBolt&lt;/code&gt;. &lt;code&gt;(author, tweet, date)&lt;/code&gt; is the tuple, and &lt;code&gt;author&lt;/code&gt;, &lt;code&gt;tweet&lt;/code&gt;, &lt;code&gt;date&lt;/code&gt; are three fields of this tuple.&lt;/p&gt;
+&lt;p&gt;A &lt;code&gt;stream&lt;/code&gt; is an unbounded sequence of data that is created and processed in parallel in a distributed fashion.&lt;br /&gt;
+Streams are composed of &lt;code&gt;tuples&lt;/code&gt;, which are the smallest units that can be emited from spout/bolt. And a tuple is constuited of 1 or more &lt;code&gt;fields&lt;/code&gt;.&lt;br /&gt;
+For example, &lt;code&gt;TestSpout&lt;/code&gt; reads tweets from a MQ, and emits &lt;code&gt;(author, tweet, date)&lt;/code&gt; to &lt;code&gt;TestBolt&lt;/code&gt;. &lt;code&gt;(author, tweet, date)&lt;/code&gt; is the tuple, and &lt;code&gt;author&lt;/code&gt;, &lt;code&gt;tweet&lt;/code&gt;, &lt;code&gt;date&lt;/code&gt; are three fields of this tuple.  &lt;/p&gt;
 &lt;h4&gt;Spout &amp;amp; Bolt&lt;/h4&gt;
-&lt;p&gt;The input stream of a Storm cluster is handled by a component called a &lt;code&gt;spout&lt;/code&gt;. The spout passes the data to a component called a &lt;code&gt;bolt&lt;/code&gt;, which transforms it in some way. A bolt either persists the data in some sort of storage, or passes it to some other bolt. You can imagine a Storm cluster as a chain of bolt components that each make some kind of transformation on the data exposed by the spout.&lt;/p&gt;
+&lt;p&gt;The input stream of a Storm cluster is handled by a component called a &lt;code&gt;spout&lt;/code&gt;. The spout passes the data to a component called a &lt;code&gt;bolt&lt;/code&gt;, which transforms it in some way. A bolt either persists the data in some sort of storage, or passes it to some other bolt. You can imagine a Storm cluster as a chain of bolt components that each make some kind of transformation on the data exposed by the spout.  &lt;/p&gt;
 &lt;h3&gt;Connection of spout/bolt&lt;/h3&gt;
-&lt;p&gt;there are 8 grouping methods, which defines how the downstream bolt read from the upstream spout/bolt.
-Common grouping method includes&lt;/p&gt;
+&lt;p&gt;there are 8 grouping methods, which defines how the downstream bolt read from the upstream spout/bolt.&lt;br /&gt;
+Common grouping method includes  &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Shuffle grouping
-  Tuples are randomly distributed across the bolt’s tasks in a way such that each bolt is guaranteed to get an equal number of tuples.&lt;/li&gt;
-&lt;li&gt;Fields grouping
-  The stream is partitioned by the fields specified in the grouping. For example, if the stream is grouped by the “user-id” field, tuples with the same “user-id” will always go to the same task, but tuples with different “user-id”’s may go to different tasks.&lt;/li&gt;
-&lt;li&gt;All grouping
-  The stream is replicated across all the bolt’s tasks. Use this grouping with care.&lt;/li&gt;
-&lt;li&gt;Global grouping
-  The entire stream goes to a single one of the bolt’s tasks. Specifically, it goes to the task with the lowest id.&lt;/li&gt;
-&lt;li&gt;Custom grouping
-  You defines the grouping rule.&lt;/li&gt;
+&lt;li&gt;Shuffle grouping&lt;br /&gt;
+  Tuples are randomly distributed across the bolt’s tasks in a way such that each bolt is guaranteed to get an equal number of tuples.  &lt;/li&gt;
+&lt;li&gt;Fields grouping&lt;br /&gt;
+  The stream is partitioned by the fields specified in the grouping. For example, if the stream is grouped by the “user-id” field, tuples with the same “user-id” will always go to the same task, but tuples with different “user-id”’s may go to different tasks.  &lt;/li&gt;
+&lt;li&gt;All grouping&lt;br /&gt;
+  The stream is replicated across all the bolt’s tasks. Use this grouping with care.  &lt;/li&gt;
+&lt;li&gt;Global grouping&lt;br /&gt;
+  The entire stream goes to a single one of the bolt’s tasks. Specifically, it goes to the task with the lowest id.  &lt;/li&gt;
+&lt;li&gt;Custom grouping&lt;br /&gt;
+  You defines the grouping rule.  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4&gt;Topology&lt;/h4&gt;
-&lt;p&gt;The arrangement of all the components (spouts and bolts) and their connections is called a &lt;code&gt;topology&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The arrangement of all the components (spouts and bolts) and their connections is called a &lt;code&gt;topology&lt;/code&gt;  &lt;/p&gt;
 &lt;h4&gt;Nimbus &amp;amp; Supervior&lt;/h4&gt;
-&lt;p&gt;Since it's a distributed system, there are more than one machine (node) in the system's cluster.&lt;/p&gt;
+&lt;p&gt;Since it's a distributed system, there are more than one machine (node) in the system's cluster.  &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;master node
-  runs &lt;code&gt;Nimbus&lt;/code&gt; daemon, which is responsible for distributing code around the cluster, assigning tasks to each worker node, and monitoring for failures.&lt;/li&gt;
-&lt;li&gt;worker node
-  runs &lt;code&gt;Supervisor&lt;/code&gt; daemon, which consists of 1 or more worker processes and executes a portion of a topology (such as 1 spout and 2 bolts)&lt;/li&gt;
-&lt;li&gt;zookeeper node
-  runs zookeeper, in which the states of Nimbus and Supervisor are stored&lt;/li&gt;
+&lt;li&gt;master node&lt;br /&gt;
+  runs &lt;code&gt;Nimbus&lt;/code&gt; daemon, which is responsible for distributing code around the cluster, assigning tasks to each worker node, and monitoring for failures.  &lt;/li&gt;
+&lt;li&gt;worker node&lt;br /&gt;
+  runs &lt;code&gt;Supervisor&lt;/code&gt; daemon, which consists of 1 or more worker processes and executes a portion of a topology (such as 1 spout and 2 bolts)  &lt;/li&gt;
+&lt;li&gt;zookeeper node&lt;br /&gt;
+  runs zookeeper, in which the states of Nimbus and Supervisor are stored  &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The illustration below shows the relationship among them 
-&lt;img alt="image" src="http://particle128.com/images/storm1.png" /&gt;&lt;/p&gt;
+&lt;p&gt;The illustration below shows the relationship among them&lt;br /&gt;
+&lt;img alt="image" src="http://particle128.com/images/storm1.png" /&gt;  &lt;/p&gt;
 &lt;h4&gt;worker &amp;amp; executor &amp;amp; task&lt;/h4&gt;
-&lt;p&gt;all the three concepts are inside the supervisor daemon, since the master node and the zk node are controlling nodes&lt;/p&gt;
+&lt;p&gt;all the three concepts are inside the supervisor daemon, since the master node and the zk node are controlling nodes  &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;worker (process)
-  runs inside the supervisor daemon
-  You can configure the number of workers across machines by &lt;code&gt;Config config = new Config(); config.setNumWorkers(3)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;executor (thread)
-  runs inside the worker process
-  You can configure the initial number of executors per component(bolt/spout) by &lt;code&gt;topologyBuilder.setBolt("test", new TestBolt(), 2)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;task (bolt/spout instance)
-  runs inside the executor, 1 executor has 1 task by default
-  You can configure the number of tasks per component by &lt;code&gt;topologyBuilder.setBolt("test", new TestBolt(), 2).setNumTasks(4)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;worker (process)&lt;br /&gt;
+  runs inside the supervisor daemon&lt;br /&gt;
+  You can configure the number of workers across machines by &lt;code&gt;Config config = new Config(); config.setNumWorkers(3)&lt;/code&gt;  &lt;/li&gt;
+&lt;li&gt;executor (thread)&lt;br /&gt;
+  runs inside the worker process&lt;br /&gt;
+  You can configure the initial number of executors per component(bolt/spout) by &lt;code&gt;topologyBuilder.setBolt("test", new TestBolt(), 2)&lt;/code&gt;  &lt;/li&gt;
+&lt;li&gt;task (bolt/spout instance)&lt;br /&gt;
+  runs inside the executor, 1 executor has 1 task by default&lt;br /&gt;
+  You can configure the number of tasks per component by &lt;code&gt;topologyBuilder.setBolt("test", new TestBolt(), 2).setNumTasks(4)&lt;/code&gt;  &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The following two illustrations show the relationship among them
-&lt;img alt="image" src="http://particle128.com/images/storm2.png" /&gt;
-&lt;img alt="image" src="http://particle128.com/images/storm3.png" /&gt;&lt;/p&gt;
-&lt;p&gt;What is the reason for have 2+ tasks per executor, see &lt;a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The following two illustrations show the relationship among them&lt;br /&gt;
+&lt;img alt="image" src="http://particle128.com/images/storm2.png" /&gt;&lt;br /&gt;
+&lt;img alt="image" src="http://particle128.com/images/storm3.png" /&gt;  &lt;/p&gt;
+&lt;p&gt;What is the reason for have 2+ tasks per executor, see &lt;a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism"&gt;here&lt;/a&gt;  &lt;/p&gt;
 &lt;h3&gt;Trident model of storm&lt;/h3&gt;
 &lt;h2&gt;Practice&lt;/h2&gt;
 &lt;h3&gt;First version&lt;/h3&gt;
 &lt;h3&gt;Problem&lt;/h3&gt;
 &lt;h3&gt;Second version&lt;/h3&gt;
 &lt;h2&gt;References&lt;/h2&gt;
-&lt;p&gt;&lt;a href="http://storm.incubator.apache.org/documentation"&gt;storm documentation&lt;/a&gt;
-&lt;a href="http://www.michael-noll.com/blog/2012/10/16/understanding-the-parallelism-of-a-storm-topology/"&gt;Understanding the Parallelism of a Storm Topology&lt;/a&gt;
-&lt;a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism"&gt;What is the “task” in twitter Storm parallelism&lt;/a&gt;
-&lt;a href="http://shop.oreilly.com/product/0636920024835.do"&gt;Getting Started with Storm&lt;/a&gt;&lt;/p&gt;</summary><category term="storm"></category><category term="trident"></category></entry><entry><title>使用Storm 2个月后的总结</title><link href="http://particle128.com/posts/2014/07/storm-sum.html" rel="alternate"></link><updated>2014-07-29T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-07-29:posts/2014/07/storm-sum.html</id><summary type="html">&lt;h2&gt;如何使用directGrouping&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://storm.incubator.apache.org/documentation"&gt;storm documentation&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://www.michael-noll.com/blog/2012/10/16/understanding-the-parallelism-of-a-storm-topology/"&gt;Understanding the Parallelism of a Storm Topology&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism"&gt;What is the “task” in twitter Storm parallelism&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://shop.oreilly.com/product/0636920024835.do"&gt;Getting Started with Storm&lt;/a&gt;  &lt;/p&gt;</summary><category term="storm"></category><category term="trident"></category></entry><entry><title>使用Storm 2个月后的总结</title><link href="http://particle128.com/posts/2014/07/storm-sum.html" rel="alternate"></link><updated>2014-07-29T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-07-29:posts/2014/07/storm-sum.html</id><summary type="html">&lt;h2&gt;如何使用directGrouping&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;申明流是direct Stream&lt;br /&gt;
 spout/bolt的declareOutputFields中&lt;br /&gt;
