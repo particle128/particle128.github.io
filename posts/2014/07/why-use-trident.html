@@ -67,7 +67,7 @@
 </header>
 
   <div class="entry-content"><p>undone...</p>
-<h2>Background</h2>
+<h1>Background</h1>
 <h3>What is storm</h3>
 <p><a href="http://storm.incubator.apache.org/">Storm</a> is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.<br />
 Many large companies, including Twitter, Yahoo!, Alibaba and Baidu, have used Storm to do some realtime processing, such as realtime analytics of application logs, or DRPC. Twitter integrates storm with its other infrastructures, including database systems, the messaging infrastructure, and monitoring/altering system.<br />
@@ -88,7 +88,7 @@ Streams are composed of <code>tuples</code>, which are the smallest units that c
 For example, <code>TestSpout</code> reads tweets from a MQ, and emits <code>(author, tweet, date)</code> to <code>TestBolt</code>. <code>(author, tweet, date)</code> is the tuple, and <code>author</code>, <code>tweet</code>, <code>date</code> are three fields of this tuple.  </p>
 <h4>Spout &amp; Bolt</h4>
 <p>The input stream of a Storm cluster is handled by a component called a <code>spout</code>. The spout passes the data to a component called a <code>bolt</code>, which transforms it in some way. A bolt either persists the data in some sort of storage, or passes it to some other bolt. You can imagine a Storm cluster as a chain of bolt components that each make some kind of transformation on the data exposed by the spout.  </p>
-<h3>Connection of spout/bolt</h3>
+<h4>Connection of spout/bolt</h4>
 <p>there are 8 grouping methods, which defines how the downstream bolt read from the upstream spout/bolt.<br />
 Common grouping method includes  </p>
 <ul>
@@ -135,7 +135,7 @@ Common grouping method includes  </p>
 <img alt="image" src="http://particle128.com/images/storm3.png" />  </p>
 <p>What is the reason for have 2+ tasks per executor, see <a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism">here</a>  </p>
 <h3>Trident model of storm</h3>
-<h2>Practice</h2>
+<h1>Practice</h1>
 <h3>First version</h3>
 <h3>Problem</h3>
 <h3>Second version</h3>

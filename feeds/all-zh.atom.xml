@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-07-30T00:00:00+08:00</updated><entry><title>Why do I refactor my Storm application using Trident</title><link href="http://particle128.com/posts/2014/07/why-use-trident.html" rel="alternate"></link><updated>2014-07-30T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-07-30:posts/2014/07/why-use-trident.html</id><summary type="html">&lt;p&gt;undone...&lt;/p&gt;
-&lt;h2&gt;Background&lt;/h2&gt;
+&lt;h1&gt;Background&lt;/h1&gt;
 &lt;h3&gt;What is storm&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://storm.incubator.apache.org/"&gt;Storm&lt;/a&gt; is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.&lt;br /&gt;
 Many large companies, including Twitter, Yahoo!, Alibaba and Baidu, have used Storm to do some realtime processing, such as realtime analytics of application logs, or DRPC. Twitter integrates storm with its other infrastructures, including database systems, the messaging infrastructure, and monitoring/altering system.&lt;br /&gt;
@@ -21,7 +21,7 @@ Streams are composed of &lt;code&gt;tuples&lt;/code&gt;, which are the smallest 
 For example, &lt;code&gt;TestSpout&lt;/code&gt; reads tweets from a MQ, and emits &lt;code&gt;(author, tweet, date)&lt;/code&gt; to &lt;code&gt;TestBolt&lt;/code&gt;. &lt;code&gt;(author, tweet, date)&lt;/code&gt; is the tuple, and &lt;code&gt;author&lt;/code&gt;, &lt;code&gt;tweet&lt;/code&gt;, &lt;code&gt;date&lt;/code&gt; are three fields of this tuple.  &lt;/p&gt;
 &lt;h4&gt;Spout &amp;amp; Bolt&lt;/h4&gt;
 &lt;p&gt;The input stream of a Storm cluster is handled by a component called a &lt;code&gt;spout&lt;/code&gt;. The spout passes the data to a component called a &lt;code&gt;bolt&lt;/code&gt;, which transforms it in some way. A bolt either persists the data in some sort of storage, or passes it to some other bolt. You can imagine a Storm cluster as a chain of bolt components that each make some kind of transformation on the data exposed by the spout.  &lt;/p&gt;
-&lt;h3&gt;Connection of spout/bolt&lt;/h3&gt;
+&lt;h4&gt;Connection of spout/bolt&lt;/h4&gt;
 &lt;p&gt;there are 8 grouping methods, which defines how the downstream bolt read from the upstream spout/bolt.&lt;br /&gt;
 Common grouping method includes  &lt;/p&gt;
 &lt;ul&gt;
@@ -68,7 +68,7 @@ Common grouping method includes  &lt;/p&gt;
 &lt;img alt="image" src="http://particle128.com/images/storm3.png" /&gt;  &lt;/p&gt;
 &lt;p&gt;What is the reason for have 2+ tasks per executor, see &lt;a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism"&gt;here&lt;/a&gt;  &lt;/p&gt;
 &lt;h3&gt;Trident model of storm&lt;/h3&gt;
-&lt;h2&gt;Practice&lt;/h2&gt;
+&lt;h1&gt;Practice&lt;/h1&gt;
 &lt;h3&gt;First version&lt;/h3&gt;
 &lt;h3&gt;Problem&lt;/h3&gt;
 &lt;h3&gt;Second version&lt;/h3&gt;
