@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - multi-thread</title>
+  <title>particle128's Blog - trident</title>
   <meta name="author" content="particle128">
 
 
@@ -63,19 +63,17 @@
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
+        <a href="http://particle128.com/posts/2014/07/why-use-trident.html">Why do I refactor my Storm application using Trident</a>
       </h1>
-      <p class="meta"><time datetime="2014-04-02T00:00:00" pubdate>2014-04-02</time></p>
+      <p class="meta"><time datetime="2014-07-30T00:00:00" pubdate>2014-07-30</time></p>
 </header>
 
-  <div class="entry-content"><h3>起因</h3>
-<p>虚拟磁盘的项目中，使用了互斥锁(mutex)来控制任务队列的访问。但是mutex开销过大，让线程池的效果大打折扣，于是发现了spinlock的存在。  </p>
-<h3>概念</h3>
-<p>来自<a href="http://en.wikipedia.org/wiki/Spinlock">wiki</a>的定义：  </p>
-<blockquote>
-<p>In software engineering, a spinlock is a lock which causes a thread trying to acquire it to simply wait in a loop ("spin") while repeatedly checking if the lock is available. Since the thread remains active but is ...</p></blockquote></div>
+  <div class="entry-content"><h2>Background</h2>
+<h3>What is storm</h3>
+<p><a href="http://storm.incubator.apache.org/">Storm</a> is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.
+Many large companies, including Twitter, Yahoo!, Alibaba and Baidu, have used Storm to do ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/04/spinlock.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2014/07/why-use-trident.html">Read On &crarr;</a>
   </footer>
   		</article>
 <div class="pagination">
@@ -87,7 +85,7 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
+          <a href="http://particle128.com/posts/2014/07/why-use-trident.html">Why do I refactor my Storm application using Trident</a>
       </li>
     </ul>
   </section>
