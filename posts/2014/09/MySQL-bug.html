@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MySQL存储过程中变量名不能和列名相同</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>失败并不可怕，可怕的是妥协</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://particle128.com/archives.html">archives</a></li>
+    <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+    <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+    <li><a href="http://particle128.com/category/distributed.html">distributed</a></li>
+    <li><a href="http://particle128.com/category/python.html">python</a></li>
+    <li><a href="http://particle128.com/category/others.html">others</a></li>
+    <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">MySQL存储过程中变量名不能和列名相同</h1>
+      <p class="meta"><time datetime="2014-09-30T00:00:00" pubdate>2014-09-30</time></p>
+</header>
+
+  <div class="entry-content"><p>鞍山项目，追到北京来折磨我了。</p>
+<h3>问题</h3>
+<p>专家评审部分，需要提交意见和各个指标的分数，<em>有一个</em>专家评审的意见保存在了数据库，但是分数没有保存进去。  </p>
+<p>评审专家系统里，打分的表格是前端js动态绘制的。专家提交打分情况的时候，把分数保存在HiddenField里上传服务端。因为不知道客户浏览器的情况，推测:  </p>
+<ol>
+<li>表格没有绘制成功。js绘制表格的语句不被浏览器支持，所以客户端直接看不到打分表格。</li>
+<li>分数没有提交成功。因为HiddenField实质是type="hidden"的input标签元素，它可以随表单一起提交给服务器。或许那个专家用的浏览器不支持hidden input标签。</li>
+</ol>
+<p>解决办法就是在服务器端对HiddenField提交上来的数据，进行检测，如果发现为空或者不合法，就提示用户换浏览器尝试。最初代码中没有检测数据为空，是因为前端写了js代码，保证分数都填写完毕才会提交表单。但是如果遇到推测的第2种情况，就会检测不出来。</p>
+<h3>修改数据库</h3>
+<p>代码改完，并没有万事大吉。因为数据库丢数据了，需要手动订正。</p>
+<p>大约1、2年前用过存储过程，不过太久远了，又去<a href="http://dev.mysql.com">MySQL官网</a>上浏览了一下相关文档。写的过程中遇到了些问题，简单记录下。</p>
+<p>代码如下：  </p>
+<div class="highlight"><pre><span class="n">delimiter</span> <span class="c1">//</span>
+
+<span class="n">CREATE</span> <span class="n">PROCEDURE</span> <span class="n">insert_rows</span> <span class="p">(</span><span class="n">sheetid</span> <span class="n">INT</span><span class="p">,</span> <span class="n">groupid</span> <span class="n">INT</span><span class="p">,</span> <span class="n">expertid</span> <span class="n">INT</span><span class="p">)</span>
+<span class="n">BEGIN</span>
+    <span class="n">DECLARE</span> <span class="n">done</span> <span class="n">INT</span> <span class="n">DEFAULT</span> <span class="n">FALSE</span><span class="p">;</span>
+    <span class="n">DECLARE</span> <span class="n">itemID</span><span class="p">,</span> <span class="n">itemScore</span><span class="p">,</span> <span class="n">projID</span> <span class="n">INT</span><span class="p">;</span>
+    <span class="n">DECLARE</span> <span class="n">itemCur</span> <span class="n">CURSOR</span> <span class="n">FOR</span> <span class="n">SELECT</span> <span class="n">ItemID</span><span class="p">,</span> <span class="n">ItemScore</span> <span class="n">from</span> <span class="n">sheetitem</span> <span class="n">where</span> <span class="n">SheetID</span> <span class="o">=</span> <span class="n">sheetid</span><span class="p">;</span>
+    <span class="n">DECLARE</span> <span class="n">projCur</span> <span class="n">CURSOR</span> <span class="n">FOR</span> <span class="n">SELECT</span> <span class="n">ProjID</span> <span class="n">from</span> <span class="n">projstate</span> <span class="n">where</span> <span class="n">GroupID</span> <span class="o">=</span> <span class="n">groupid</span><span class="p">;</span>
+    <span class="n">DECLARE</span> <span class="n">CONTINUE</span> <span class="n">HANDLER</span> <span class="n">FOR</span> <span class="n">NOT</span> <span class="n">FOUND</span> <span class="n">SET</span> <span class="n">done</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+
+    <span class="n">OPEN</span> <span class="n">itemCur</span><span class="p">;</span>
+    <span class="nl">item_loop:</span> <span class="n">LOOP</span>
+        <span class="n">SET</span> <span class="n">done</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+        <span class="n">FETCH</span> <span class="n">itemCur</span> <span class="n">INTO</span> <span class="n">itemID</span><span class="p">,</span> <span class="n">itemScore</span><span class="p">;</span>
+        <span class="o">--</span> <span class="n">select</span> <span class="n">itemID</span><span class="p">,</span> <span class="n">itemScore</span><span class="p">;</span>
+        <span class="n">IF</span> <span class="n">done</span> <span class="n">THEN</span>
+            <span class="n">LEAVE</span> <span class="n">item_loop</span><span class="p">;</span>
+        <span class="n">END</span> <span class="n">IF</span><span class="p">;</span>
+
+        <span class="n">OPEN</span> <span class="n">projCur</span><span class="p">;</span>
+        <span class="nl">proj_loop:</span> <span class="n">LOOP</span>
+            <span class="n">FETCH</span> <span class="n">projCur</span> <span class="n">INTO</span> <span class="n">projID</span><span class="p">;</span>
+
+            <span class="n">IF</span> <span class="n">done</span> <span class="n">THEN</span>
+                <span class="n">LEAVE</span> <span class="n">proj_loop</span><span class="p">;</span>
+            <span class="n">END</span> <span class="n">IF</span><span class="p">;</span>
+
+            <span class="o">--</span> <span class="n">select</span> <span class="n">projID</span><span class="p">,</span> <span class="n">expertid</span><span class="p">,</span> <span class="n">itemID</span><span class="p">,</span> <span class="n">itemScore</span><span class="o">*</span><span class="mf">0.8</span><span class="p">;</span>
+            <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">expertscore</span> <span class="nf">values</span><span class="p">(</span><span class="n">projID</span><span class="p">,</span> <span class="n">expertid</span><span class="p">,</span> <span class="n">itemID</span><span class="p">,</span> <span class="n">itemScore</span><span class="o">*</span><span class="mf">0.8</span><span class="p">);</span>
+        <span class="n">END</span> <span class="n">LOOP</span><span class="p">;</span>
+        <span class="n">CLOSE</span> <span class="n">projCur</span><span class="p">;</span>
+    <span class="n">END</span> <span class="n">LOOP</span><span class="p">;</span>
+    <span class="n">CLOSE</span> <span class="n">itemCur</span><span class="p">;</span>
+<span class="n">END</span><span class="p">;</span>
+<span class="c1">//</span>
+<span class="n">delimiter</span> <span class="p">;</span> 
+</pre></div>
+
+
+<p><em>注意</em>：</p>
+<ul>
+<li>delimiter语句，临时把分号结束符改成双斜杠结束符，保证存储过程作为一个整体被mysql读入，否则mysql会在分号结束的地方断句，并进行解释执行，报错<code>syntax error: unexpected end_of_input</code></li>
+<li>MySQL中没有所谓数组类型，所以不能通过<code>select xx from xx where xx into results</code>这种形式，用变量来保存多条记录。可以通过加<code>limit [offset,]len</code>来限制只输出一行，保存到对应的变量中。</li>
+<li>没有数组，只能通过游标实现遍历。</li>
+<li>SQLSTATE是MySQL内部状态，过去叫error code。每次执行一句mysql，都会设置SQLSTATE，类似Unix下的errno。</li>
+<li>游标结束的条件，就是获取不到新的行，即'NOT FOUND'，对应错误码是'02000'。所以用一个continue handler来捕获这个事件，在这个事件中设置done变量，然后检查该变量判断是否需要退出循环。</li>
+</ul>
+<h3>遇到坑</h3>
+<p>这个存储过程执行没有错误，但是并没有插入数据，通过注释部分的select取出的数据发现，变量全是null。  </p>
+<p>google了一下，发现了问题所在：  </p>
+<blockquote>
+<p>You should avoid using the same name for multiple different things. Specifically, give the variable a different name than the column you are selecting.</p>
+</blockquote>
+<p>意思就是：<strong>不能取和列名一样的变量名。</strong></p>
+<p>这个在bugs.mysql.com下有人提出过，但是好像被MySQL无视了。见<a href="http://bugs.mysql.com/bug.php?id=28227">这个链接</a>，从mysql5.1到5.6都一直没有修复。下面有人吐槽了</p>
+<blockquote>
+<p>This is ridiculous that this is considered not to be a bug. It shouldn't break the Fetch just because you are using the same local variable names as the column names in the select cursor. If MySQL ever hopes to become a real database, it should probably up its standards......somewhere towards usable.</p>
+</blockquote>
+<p>改过的代码：</p>
+<div class="highlight"><pre><span class="n">delimiter</span> <span class="c1">//</span>
+
+<span class="n">CREATE</span> <span class="n">PROCEDURE</span> <span class="n">insert_rows</span> <span class="p">(</span><span class="n">a_sheetid</span> <span class="n">INT</span><span class="p">,</span> <span class="n">a_groupid</span> <span class="n">INT</span><span class="p">,</span> <span class="n">a_expertid</span> <span class="n">INT</span><span class="p">)</span>
+<span class="n">BEGIN</span>
+    <span class="n">DECLARE</span> <span class="n">done</span> <span class="n">INT</span> <span class="n">DEFAULT</span> <span class="n">FALSE</span><span class="p">;</span>
+    <span class="n">DECLARE</span> <span class="n">v_itemID</span><span class="p">,</span> <span class="n">v_itemScore</span><span class="p">,</span> <span class="n">v_projID</span> <span class="n">INT</span><span class="p">;</span>
+    <span class="n">DECLARE</span> <span class="n">itemCur</span> <span class="n">CURSOR</span> <span class="n">FOR</span> <span class="n">SELECT</span> <span class="n">ItemID</span><span class="p">,</span> <span class="n">ItemScore</span> <span class="n">from</span> <span class="n">sheetitem</span> <span class="n">where</span> <span class="n">SheetID</span> <span class="o">=</span> <span class="n">a_sheetid</span><span class="p">;</span>
+    <span class="n">DECLARE</span> <span class="n">projCur</span> <span class="n">CURSOR</span> <span class="n">FOR</span> <span class="n">SELECT</span> <span class="n">ProjID</span> <span class="n">from</span> <span class="n">projstate</span> <span class="n">where</span> <span class="n">GroupID</span> <span class="o">=</span> <span class="n">a_groupid</span><span class="p">;</span>
+    <span class="n">DECLARE</span> <span class="n">CONTINUE</span> <span class="n">HANDLER</span> <span class="n">FOR</span> <span class="n">NOT</span> <span class="n">FOUND</span> <span class="n">SET</span> <span class="n">done</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+
+    <span class="n">OPEN</span> <span class="n">itemCur</span><span class="p">;</span>
+    <span class="nl">item_loop:</span> <span class="n">LOOP</span>
+        <span class="n">SET</span> <span class="n">done</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+        <span class="n">FETCH</span> <span class="n">itemCur</span> <span class="n">INTO</span> <span class="n">v_itemID</span><span class="p">,</span> <span class="n">v_itemScore</span><span class="p">;</span>
+
+        <span class="n">IF</span> <span class="n">done</span> <span class="n">THEN</span>
+            <span class="n">LEAVE</span> <span class="n">item_loop</span><span class="p">;</span>
+        <span class="n">END</span> <span class="n">IF</span><span class="p">;</span>
+
+        <span class="n">OPEN</span> <span class="n">projCur</span><span class="p">;</span>
+        <span class="nl">proj_loop:</span> <span class="n">LOOP</span>
+            <span class="n">FETCH</span> <span class="n">projCur</span> <span class="n">INTO</span> <span class="n">v_projID</span><span class="p">;</span>
+
+            <span class="n">IF</span> <span class="n">done</span> <span class="n">THEN</span>
+                <span class="n">LEAVE</span> <span class="n">proj_loop</span><span class="p">;</span>
+            <span class="n">END</span> <span class="n">IF</span><span class="p">;</span>
+
+            <span class="o">--</span> <span class="n">select</span> <span class="n">v_projID</span><span class="p">,</span> <span class="n">a_expertid</span><span class="p">,</span> <span class="n">v_itemID</span><span class="p">,</span> <span class="n">v_itemScore</span><span class="o">*</span><span class="mf">0.8</span><span class="p">;</span>
+            <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">expertscore</span> <span class="nf">values</span><span class="p">(</span><span class="n">v_projID</span><span class="p">,</span> <span class="n">a_expertid</span><span class="p">,</span> <span class="n">v_itemID</span><span class="p">,</span> <span class="n">v_itemScore</span><span class="o">*</span><span class="mf">0.8</span><span class="p">);</span>
+        <span class="n">END</span> <span class="n">LOOP</span><span class="p">;</span>
+        <span class="n">CLOSE</span> <span class="n">projCur</span><span class="p">;</span>
+    <span class="n">END</span> <span class="n">LOOP</span><span class="p">;</span>
+    <span class="n">CLOSE</span> <span class="n">itemCur</span><span class="p">;</span>
+<span class="n">END</span><span class="p">;</span>
+<span class="c1">//</span>
+<span class="n">delimiter</span> <span class="p">;</span>
+</pre></div>
+
+
+<h3>参考链接</h3>
+<p><a href="http://dev.mysql.com/doc/refman/5.6/en/cursors.html">mysql cursors</a><br />
+<a href="http://stackoverflow.com/questions/8731779/apparently-fetch-returns-null">Apparently fetch returns NULL</a></p></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+<time datetime="2014-09-30T00:00:00" pubdate>2014-09-30</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/mysql.html">MySQL</a>
+  </span>
+</p>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/07/why-use-trident.html">Why do I refactor my Storm application using Trident</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/06/database-shard.html">数据库的分库和分表</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+        <li><a href="http://particle128.com/category/distributed.html">distributed</a></li>
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+        <li><a href="http://particle128.com/category/others.html">others</a></li>
+        <li><a href="http://particle128.com/category/python.html">python</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/user.html">user</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>  </section>
+
+
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+          var disqus_identifier = '/posts/2014/09/MySQL-bug.html';
+          var disqus_url = 'http://particle128.com/posts/2014/09/MySQL-bug.html';
+          var disqus_title = 'MySQL存储过程中变量名不能和列名相同';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

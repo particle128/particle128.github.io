@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>C++中指向成员函数的指针</title>
+  <title>particle128's Blog - MySQL</title>
   <meta name="author" content="particle128">
 
 
@@ -59,101 +59,45 @@
 </ul></nav>
   <div id="main">
     <div id="content">
-<div>
-  <article class="hentry" role="article">
+<div class="blog-index">
+  		<article>
 <header>
-      <h1 class="entry-title">C++中指向成员函数的指针</h1>
-      <p class="meta"><time datetime="2013-11-28T00:00:00" pubdate>2013-11-28</time></p>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
+      </h1>
+      <p class="meta"><time datetime="2014-09-30T00:00:00" pubdate>2014-09-30</time></p>
 </header>
 
-  <div class="entry-content"><p>在C++中，类的非静态成员函数因为含有隐含的this指针，不同于普通函数。所以C++引入了一个新的指针类型：指向成员函数的指针。<br />
-<strong>注意</strong>：类的static成员函数和普通函数的指针是一样的。  </p>
-<ul>
-<li>普通函数指针：可以通过直接调用  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (*)(int)&quot;  </span>
-</pre></div>
+  <div class="entry-content"><p>鞍山项目，追到北京来折磨我了。</p>
+<h3>问题</h3>
+<p>专家评审部分，需要提交意见和各个指标的分数，<em>有一个</em>专家评审的意见保存在了数据库，但是分数没有保存进去。  </p>
+<p>评审专家系统里，打分的表格是前端js动态绘制的。专家提交打分情况的时候，把分数保存在HiddenField里上传服务端。因为不知道客户浏览器的情况，推测:  </p>
+<ol>
+<li>表格没有绘制成功。js绘制表格的语句不被浏览器支持，所以客户端直接看不到打分表格。</li>
+<li>分数没有提交成功。因为HiddenField实质是type="hidden"的input标签元素，它可以随表单一起提交给服务器。或许那个专家用的浏览器不支持hidden input标签。</li>
+</ol>
+<p>解决办法就是在服务器端对HiddenField提交上来的数据，进行检测，如果发现为空或者不合法，就提示用户换浏览器尝试。最初代码中没有检测数据为空，是因为前端写了js代码，保证分数都填写完毕才会提交表单。但是如果遇到推测的第2种情况，就会检测不出来。</p>
+<h3>修改数据库</h3>
+<p>代码改完，并没有万事大吉。因为数据库丢数据了，需要手动订正。</p>
+<p>大约1、2年前用过存储过程，不过太久远了，又去<a href="http://dev.mysql.com">MySQL官网</a>上浏览了一下相关文档。写的过程中遇到了些问题，简单记录下。</p>
+<p>代码如下：  </p>
+<div class="highlight"><pre><span class="n">delimiter</span> <span class="c1">//</span>
 
+<span class="n">CREATE</span> <span class="n">PROCEDURE ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/09/MySQL-bug.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+<div class="pagination">
 
-<ul>
-<li>非静态成员函数指针：只能通过类对象调用  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">int</span> <span class="n">Mat</span><span class="o">::</span><span class="n">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span> <span class="c1">//the type is &quot;int (Mat::*)(int)&quot;  </span>
-</pre></div>
-
-
-<p><strong>指向成员函数的指针和普通指针，是两种不同类型指针，C++实现机制是不一样的（例如成员函数指针不一定包含具体函数的内存地址），如果强制进行两者之间的转换，结果是未定义的</strong>  </p>
-<p>使用方法如下：  </p>
-<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
-<span class="k">class</span> <span class="nc">A</span>  
-<span class="p">{</span>  
-    <span class="k">public</span><span class="o">:</span>  
-        <span class="c1">//定义指向成员函数的指针类型  </span>
-        <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="n">A</span><span class="o">::*</span><span class="n">method</span><span class="p">)();</span>  
-
-        <span class="n">method</span> <span class="n">p</span><span class="p">;</span>  
-        <span class="n">A</span><span class="p">(){</span>  
-            <span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">foo</span><span class="p">;</span> <span class="c1">// 用类成员函数给指针赋值  </span>
-            <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">p</span><span class="p">)();</span> <span class="c1">// 类内调用  </span>
-        <span class="p">}</span>  
-        <span class="kt">int</span> <span class="n">foo</span><span class="p">(){</span>  
-            <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;A::foo&quot;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  
-            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
-        <span class="p">}</span>  
-<span class="p">};</span>  
-<span class="kt">int</span> <span class="nf">foo</span><span class="p">()</span>  
-<span class="p">{</span>  
-    <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;global::foo&quot;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
-<span class="p">}</span>  
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
-<span class="p">{</span>  
-    <span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">method</span><span class="p">)();</span>  
-    <span class="n">method</span> <span class="n">pf</span><span class="o">=</span><span class="n">foo</span><span class="p">;</span> <span class="c1">//或者 method pf=&amp;foo;  </span>
-    <span class="n">pf</span><span class="p">();</span> <span class="c1">//或者(*pf)();  </span>
-    <span class="n">A</span> <span class="n">a</span><span class="p">;</span>  
-    <span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">p</span><span class="p">)();</span> <span class="c1">// 类外调用  </span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
-<span class="p">}</span>  
-</pre></div>
-
-
-<p><strong>注意</strong>:普通函数，和指向普通函数的指针，可以隐式互相转换；但是非静态成员函数和其指针之间不能进行任何转换，所以*和&amp;符号不能省略。  </p></div>
-    <footer>
-<p class="meta">
-  <span class="byline author vcard">
-    Posted by <span class="fn">particle128</span>
-  </span>
-<time datetime="2013-11-28T00:00:00" pubdate>2013-11-28</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/cpp.html">cpp</a>
-  </span>
-</p>    </footer>
-  </article>
-
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
-  </section>
-</div>
+  <br />
+</div></div>
 <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
           <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/07/why-use-trident.html">Why do I refactor my Storm application using Trident</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/06/database-shard.html">数据库的分库和分表</a>
       </li>
     </ul>
   </section>
@@ -198,9 +142,6 @@
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2013/11/pointer-to-member-func.html';
-          var disqus_url = 'http://particle128.com/posts/2013/11/pointer-to-member-func.html';
-          var disqus_title = 'C++中指向成员函数的指针';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

@@ -1,5 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-07-30T00:00:00+08:00</updated><entry><title>Why do I refactor my Storm application using Trident</title><link href="http://particle128.com/posts/2014/07/why-use-trident.html" rel="alternate"></link><updated>2014-07-30T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-07-30:posts/2014/07/why-use-trident.html</id><summary type="html">&lt;p&gt;undone...&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-09-30T00:00:00+08:00</updated><entry><title>MySQL存储过程中变量名不能和列名相同</title><link href="http://particle128.com/posts/2014/09/MySQL-bug.html" rel="alternate"></link><updated>2014-09-30T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-09-30:posts/2014/09/MySQL-bug.html</id><summary type="html">&lt;p&gt;鞍山项目，追到北京来折磨我了。&lt;/p&gt;
+&lt;h3&gt;问题&lt;/h3&gt;
+&lt;p&gt;专家评审部分，需要提交意见和各个指标的分数，&lt;em&gt;有一个&lt;/em&gt;专家评审的意见保存在了数据库，但是分数没有保存进去。  &lt;/p&gt;
+&lt;p&gt;评审专家系统里，打分的表格是前端js动态绘制的。专家提交打分情况的时候，把分数保存在HiddenField里上传服务端。因为不知道客户浏览器的情况，推测:  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;表格没有绘制成功。js绘制表格的语句不被浏览器支持，所以客户端直接看不到打分表格。&lt;/li&gt;
+&lt;li&gt;分数没有提交成功。因为HiddenField实质是type="hidden"的input标签元素，它可以随表单一起提交给服务器。或许那个专家用的浏览器不支持hidden input标签。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;解决办法就是在服务器端对HiddenField提交上来的数据，进行检测，如果发现为空或者不合法，就提示用户换浏览器尝试。最初代码中没有检测数据为空，是因为前端写了js代码，保证分数都填写完毕才会提交表单。但是如果遇到推测的第2种情况，就会检测不出来。&lt;/p&gt;
+&lt;h3&gt;修改数据库&lt;/h3&gt;
+&lt;p&gt;代码改完，并没有万事大吉。因为数据库丢数据了，需要手动订正。&lt;/p&gt;
+&lt;p&gt;大约1、2年前用过存储过程，不过太久远了，又去&lt;a href="http://dev.mysql.com"&gt;MySQL官网&lt;/a&gt;上浏览了一下相关文档。写的过程中遇到了些问题，简单记录下。&lt;/p&gt;
+&lt;p&gt;代码如下：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;delimiter&lt;/span&gt; &lt;span class="c1"&gt;//&lt;/span&gt;
+
+&lt;span class="n"&gt;CREATE&lt;/span&gt; &lt;span class="n"&gt;PROCEDURE&lt;/span&gt; &lt;span class="n"&gt;insert_rows&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sheetid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;groupid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;expertid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;BEGIN&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt; &lt;span class="n"&gt;DEFAULT&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;projID&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt; &lt;span class="n"&gt;CURSOR&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;ItemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ItemScore&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;sheetitem&lt;/span&gt; &lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;SheetID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sheetid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt; &lt;span class="n"&gt;CURSOR&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;ProjID&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;projstate&lt;/span&gt; &lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;GroupID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;groupid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;CONTINUE&lt;/span&gt; &lt;span class="n"&gt;HANDLER&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;NOT&lt;/span&gt; &lt;span class="n"&gt;FOUND&lt;/span&gt; &lt;span class="n"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;OPEN&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nl"&gt;item_loop:&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;
+        &lt;span class="n"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;FETCH&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="n"&gt;select&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;IF&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;THEN&lt;/span&gt;
+            &lt;span class="n"&gt;LEAVE&lt;/span&gt; &lt;span class="n"&gt;item_loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;IF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="n"&gt;OPEN&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="nl"&gt;proj_loop:&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;
+            &lt;span class="n"&gt;FETCH&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;projID&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="n"&gt;IF&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;THEN&lt;/span&gt;
+                &lt;span class="n"&gt;LEAVE&lt;/span&gt; &lt;span class="n"&gt;proj_loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;IF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="n"&gt;select&lt;/span&gt; &lt;span class="n"&gt;projID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;expertid&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mf"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;INSERT&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;expertscore&lt;/span&gt; &lt;span class="nf"&gt;values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;projID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;expertid&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mf"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;CLOSE&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;CLOSE&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;END&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//&lt;/span&gt;
+&lt;span class="n"&gt;delimiter&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;注意&lt;/em&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;delimiter语句，临时把分号结束符改成双斜杠结束符，保证存储过程作为一个整体被mysql读入，否则mysql会在分号结束的地方断句，并进行解释执行，报错&lt;code&gt;syntax error: unexpected end_of_input&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;MySQL中没有所谓数组类型，所以不能通过&lt;code&gt;select xx from xx where xx into results&lt;/code&gt;这种形式，用变量来保存多条记录。可以通过加&lt;code&gt;limit [offset,]len&lt;/code&gt;来限制只输出一行，保存到对应的变量中。&lt;/li&gt;
+&lt;li&gt;没有数组，只能通过游标实现遍历。&lt;/li&gt;
+&lt;li&gt;SQLSTATE是MySQL内部状态，过去叫error code。每次执行一句mysql，都会设置SQLSTATE，类似Unix下的errno。&lt;/li&gt;
+&lt;li&gt;游标结束的条件，就是获取不到新的行，即'NOT FOUND'，对应错误码是'02000'。所以用一个continue handler来捕获这个事件，在这个事件中设置done变量，然后检查该变量判断是否需要退出循环。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;遇到坑&lt;/h3&gt;
+&lt;p&gt;这个存储过程执行没有错误，但是并没有插入数据，通过注释部分的select取出的数据发现，变量全是null。  &lt;/p&gt;
+&lt;p&gt;google了一下，发现了问题所在：  &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;You should avoid using the same name for multiple different things. Specifically, give the variable a different name than the column you are selecting.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;意思就是：&lt;strong&gt;不能取和列名一样的变量名。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这个在bugs.mysql.com下有人提出过，但是好像被MySQL无视了。见&lt;a href="http://bugs.mysql.com/bug.php?id=28227"&gt;这个链接&lt;/a&gt;，从mysql5.1到5.6都一直没有修复。下面有人吐槽了&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is ridiculous that this is considered not to be a bug. It shouldn't break the Fetch just because you are using the same local variable names as the column names in the select cursor. If MySQL ever hopes to become a real database, it should probably up its standards......somewhere towards usable.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;改过的代码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;delimiter&lt;/span&gt; &lt;span class="c1"&gt;//&lt;/span&gt;
+
+&lt;span class="n"&gt;CREATE&lt;/span&gt; &lt;span class="n"&gt;PROCEDURE&lt;/span&gt; &lt;span class="n"&gt;insert_rows&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a_sheetid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a_groupid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a_expertid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;BEGIN&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt; &lt;span class="n"&gt;DEFAULT&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;v_itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemScore&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_projID&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt; &lt;span class="n"&gt;CURSOR&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;ItemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ItemScore&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;sheetitem&lt;/span&gt; &lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;SheetID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a_sheetid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt; &lt;span class="n"&gt;CURSOR&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;ProjID&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;projstate&lt;/span&gt; &lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;GroupID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a_groupid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;CONTINUE&lt;/span&gt; &lt;span class="n"&gt;HANDLER&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;NOT&lt;/span&gt; &lt;span class="n"&gt;FOUND&lt;/span&gt; &lt;span class="n"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;OPEN&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nl"&gt;item_loop:&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;
+        &lt;span class="n"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;FETCH&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;v_itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemScore&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="n"&gt;IF&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;THEN&lt;/span&gt;
+            &lt;span class="n"&gt;LEAVE&lt;/span&gt; &lt;span class="n"&gt;item_loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;IF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="n"&gt;OPEN&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="nl"&gt;proj_loop:&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;
+            &lt;span class="n"&gt;FETCH&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;v_projID&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="n"&gt;IF&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;THEN&lt;/span&gt;
+                &lt;span class="n"&gt;LEAVE&lt;/span&gt; &lt;span class="n"&gt;proj_loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;IF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="n"&gt;select&lt;/span&gt; &lt;span class="n"&gt;v_projID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a_expertid&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemScore&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mf"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;INSERT&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;expertscore&lt;/span&gt; &lt;span class="nf"&gt;values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v_projID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a_expertid&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemScore&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mf"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;CLOSE&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;CLOSE&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;END&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//&lt;/span&gt;
+&lt;span class="n"&gt;delimiter&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;参考链接&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://dev.mysql.com/doc/refman/5.6/en/cursors.html"&gt;mysql cursors&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://stackoverflow.com/questions/8731779/apparently-fetch-returns-null"&gt;Apparently fetch returns NULL&lt;/a&gt;&lt;/p&gt;</summary><category term="MySQL"></category></entry><entry><title>Why do I refactor my Storm application using Trident</title><link href="http://particle128.com/posts/2014/07/why-use-trident.html" rel="alternate"></link><updated>2014-07-30T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-07-30:posts/2014/07/why-use-trident.html</id><summary type="html">&lt;p&gt;undone...&lt;/p&gt;
 &lt;h1&gt;Background&lt;/h1&gt;
 &lt;h3&gt;What is storm&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://storm.incubator.apache.org/"&gt;Storm&lt;/a&gt; is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.&lt;br /&gt;
@@ -1101,87 +1214,7 @@ xpath参考 &lt;a href="http://www.w3school.com.cn/xpath"&gt;w3c文档&lt;/a&gt;
 &lt;span class="n"&gt;ff&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;implicitly_wait&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# seconds&lt;/span&gt;
 &lt;span class="n"&gt;ff&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://somedomain/url_that_delays_loading&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;myDynamicElement&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ff&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_element_by_id&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;myDynamicElement&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="selenium"></category></entry><entry><title>DNS相关</title><link href="http://particle128.com/posts/2013/12/dns.html" rel="alternate"></link><updated>2013-12-27T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-27:posts/2013/12/dns.html</id><summary type="html">&lt;p&gt;信息来源：谢希仁-计算机网络(第5版)，wikipedia，unp，tcp/ip详解。  &lt;/p&gt;
-&lt;h3&gt;Domain Name System&lt;/h3&gt;
-&lt;p&gt;host name &amp;lt; - &amp;gt; ip address&lt;br /&gt;
-主机名可以是不完全域名，比如solaris；也可以是FQDN(fully-qualified domain name)，以点号结尾的域名，如solaris.unpbook.com. 。另：如果不完全域名中包含2个或以上的点号，则认为是完全限定域名。&lt;br /&gt;
-如果主机名使用不完全域名，需要在/etc/resolv.conf文件里配置search unpbook.com或domain unpbook.com，以便帮助完成全限定域名的补全。  &lt;/p&gt;
-&lt;h3&gt;名字/域名服务器层次结构：&lt;/h3&gt;
-&lt;p&gt;root name server 根域名服务器（无名）&lt;br /&gt;
-TLD(tol-level-domain) name server 顶级域名服务器（包括特殊域arpa，普通域com等，和国家域cn等）&lt;br /&gt;
-authoritative name server 授权域名服务器&lt;br /&gt;
-local name server 本地域名服务器  &lt;/p&gt;
-&lt;h3&gt;DNS查询过程：&lt;/h3&gt;
-&lt;p&gt;本地主机高速缓存里有记录的话，不用查找了。&lt;br /&gt;
-本地主机缓存里记录过期或没有，以递归方式查找local。&lt;br /&gt;
-local没有记录的话，一般以迭代方式分别查找root,TLD,authoritative，直到找到，返回给local。&lt;br /&gt;
-以本地主机的视角，就看到查找local并得到local的回应了，local的查找过程时透明的。  &lt;/p&gt;
-&lt;h3&gt;解析器的配置文件/etc/resolv.conf：&lt;/h3&gt;
-&lt;p&gt;格式：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;search&lt;/span&gt; &lt;span class="n"&gt;example&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt; &lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lan&lt;/span&gt;  
-&lt;span class="n"&gt;nameserver&lt;/span&gt; &lt;span class="mf"&gt;172.16.1.254&lt;/span&gt;  
-&lt;span class="n"&gt;nameserver&lt;/span&gt; &lt;span class="mf"&gt;172.16.2.254&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;资源记录（resource record）&lt;/h3&gt;
-&lt;p&gt;都可以简略理解成&amp;lt;域名，数据&amp;gt;对，数据有时候是ip地址，有时候是域名。PTR也不例外。&lt;br /&gt;
-DNS中的常用RR：  &lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;A（address）：host name-&amp;gt;ipv4&lt;br /&gt;
-AAAA：host name-&amp;gt;ipv6&lt;br /&gt;
-PTR(pointer)：ipv4/ipv6-&amp;gt;hostname&lt;br /&gt;
-MX(mail exchanger)：host name-&amp;gt;its mail exchanger&lt;br /&gt;
-CNAME(canonical name):server name-&amp;gt; host name&lt;br /&gt;
-NS（name server）:domain-&amp;gt;authoritive name server of this domain  &lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3&gt;指针查询&lt;/h3&gt;
-&lt;p&gt;一个组织申请一个域名的时候，同时给其分配一个in-addr.arpa下的域名。&lt;br /&gt;
-比如申请210.30.97.139的域名为www.mashu.com，那么名字服务器上会增加两条记录：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mashu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;                   &lt;span class="n"&gt;A&lt;/span&gt;      &lt;span class="mf"&gt;210.30.97.139&lt;/span&gt;  
-&lt;span class="mf"&gt;139.97.30.210&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;in&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arpa&lt;/span&gt; &lt;span class="n"&gt;PTR&lt;/span&gt; &lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mashu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;这样，ip地址反向查找域名就直接找PTR记录即可，而不用遍历所有A记录了。&lt;br /&gt;
-注：我理解的逆序有一定好处是，一个区域的ip地址高字节都是相同的，比如都是210.30，区分每一台主机的主要是低位的字节，所以把低字节排在前面，查找更迅速。&lt;br /&gt;
-设想学校的local：逆序，第一个字节符合要求的就1个记录；正序，第一个字节所有记录都匹配。  &lt;/p&gt;
-&lt;h3&gt;传输层协议：&lt;/h3&gt;
-&lt;p&gt;DNS请求一般是解析器（resolver）发出的，解析器是应用程序的一部分（以模块的形式加入应用程序），而不是内核的一部分。&lt;br /&gt;
-DNS一般都使用UDP数据报，只有2个特例：&lt;br /&gt;
-1）DNS响应报文超过UDP的上限512B，解析器就会用TCP重发原来的请求。&lt;br /&gt;
-2）一个域的辅助名字服务器从主名字服务器上拉取数据的时候，区域传送使用TCP。  &lt;/p&gt;
-&lt;h3&gt;备份&lt;/h3&gt;
-&lt;p&gt;除了本地名字服务器，网上有OpenDNS和googleDNS服务器的ip地址，应该是被墙了，现在访问不到。所以一旦学校的本地名字服务器崩了，就没办法通过主机名访问外网了。&lt;br /&gt;
-常用网站ip地址：&lt;br /&gt;
-google : 74.125.31.106  173.194.45.20 &lt;br /&gt;
-yinxiang : 119.254.30.32/Home.action&lt;br /&gt;
-youdao dict : 121.195.178.201  &lt;/p&gt;
-&lt;h3&gt;查看DNS解析的linux工具：&lt;/h3&gt;
-&lt;p&gt;[1] host&lt;br /&gt;
-格式：$ host [-t type]{name} [server]&lt;br /&gt;
-说明：&lt;br /&gt;
-DNS解析工具。&lt;br /&gt;
-name如果是一个主机名，就解析出其ip地址；name如果是ip地址，就反解析出其主机名。&lt;br /&gt;
-server可选参数。默认从/etc/resolv.conf读取名字服务器（nameserver），加上该参数（ip地址或主机名形式均可）后，就采用该名字服务器。&lt;br /&gt;
--t后面接类型，比如cname，a等&lt;br /&gt;
-示例：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$host&lt;/span&gt; google.com    
-&lt;span class="nv"&gt;$host&lt;/span&gt; google.com 202.118.66.6    
-&lt;span class="nv"&gt;$host&lt;/span&gt; 127.0.0.1  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;[2] nslookup&lt;br /&gt;
-格式：$ nslookup [name] [server]&lt;br /&gt;
-说明：交互式(interactve)DNS解析工具，输入nslookup之后出现交互式操作提示符“&amp;gt;”，之后就可以多次输入需要解析的host name。给出的解析结果相对host详细一些。  &lt;/p&gt;
-&lt;p&gt;[3] dig(domain information groper)&lt;br /&gt;
-格式： $ dig [server] {name} [type]&lt;br /&gt;
-示例：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$dig&lt;/span&gt; google.com （默认只寻找资源类型A）  
-&lt;span class="nv"&gt;$dig&lt;/span&gt; google.com ANY  
-&lt;span class="nv"&gt;$dig&lt;/span&gt; google.com MX  
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="dns"></category></entry><entry><title>常量map容器只能调用find来获取元素</title><link href="http://particle128.com/posts/2013/12/map-operator.html" rel="alternate"></link><updated>2013-12-18T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-18:posts/2013/12/map-operator.html</id><summary type="html">&lt;h2&gt;Problem&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="selenium"></category></entry><entry><title>常量map容器只能调用find来获取元素</title><link href="http://particle128.com/posts/2013/12/map-operator.html" rel="alternate"></link><updated>2013-12-18T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2013-12-18:posts/2013/12/map-operator.html</id><summary type="html">&lt;h2&gt;Problem&lt;/h2&gt;
 &lt;p&gt;做我的http server的时候，遇到了个错误，出错相关代码如下  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;namespace&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;  
     &lt;span class="cm"&gt;/* ... */&lt;/span&gt;  

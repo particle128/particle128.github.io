@@ -1,5 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/others.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-06-24T00:00:00+08:00</updated><entry><title>新技能get：git cherry-pick</title><link href="http://particle128.com/posts/2014/06/git-cherry-pick.html" rel="alternate"></link><updated>2014-06-24T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-24:posts/2014/06/git-cherry-pick.html</id><summary type="html">&lt;h3&gt;背景&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/others.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-09-30T00:00:00+08:00</updated><entry><title>MySQL存储过程中变量名不能和列名相同</title><link href="http://particle128.com/posts/2014/09/MySQL-bug.html" rel="alternate"></link><updated>2014-09-30T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-09-30:posts/2014/09/MySQL-bug.html</id><summary type="html">&lt;p&gt;鞍山项目，追到北京来折磨我了。&lt;/p&gt;
+&lt;h3&gt;问题&lt;/h3&gt;
+&lt;p&gt;专家评审部分，需要提交意见和各个指标的分数，&lt;em&gt;有一个&lt;/em&gt;专家评审的意见保存在了数据库，但是分数没有保存进去。  &lt;/p&gt;
+&lt;p&gt;评审专家系统里，打分的表格是前端js动态绘制的。专家提交打分情况的时候，把分数保存在HiddenField里上传服务端。因为不知道客户浏览器的情况，推测:  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;表格没有绘制成功。js绘制表格的语句不被浏览器支持，所以客户端直接看不到打分表格。&lt;/li&gt;
+&lt;li&gt;分数没有提交成功。因为HiddenField实质是type="hidden"的input标签元素，它可以随表单一起提交给服务器。或许那个专家用的浏览器不支持hidden input标签。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;解决办法就是在服务器端对HiddenField提交上来的数据，进行检测，如果发现为空或者不合法，就提示用户换浏览器尝试。最初代码中没有检测数据为空，是因为前端写了js代码，保证分数都填写完毕才会提交表单。但是如果遇到推测的第2种情况，就会检测不出来。&lt;/p&gt;
+&lt;h3&gt;修改数据库&lt;/h3&gt;
+&lt;p&gt;代码改完，并没有万事大吉。因为数据库丢数据了，需要手动订正。&lt;/p&gt;
+&lt;p&gt;大约1、2年前用过存储过程，不过太久远了，又去&lt;a href="http://dev.mysql.com"&gt;MySQL官网&lt;/a&gt;上浏览了一下相关文档。写的过程中遇到了些问题，简单记录下。&lt;/p&gt;
+&lt;p&gt;代码如下：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;delimiter&lt;/span&gt; &lt;span class="c1"&gt;//&lt;/span&gt;
+
+&lt;span class="n"&gt;CREATE&lt;/span&gt; &lt;span class="n"&gt;PROCEDURE&lt;/span&gt; &lt;span class="n"&gt;insert_rows&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sheetid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;groupid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;expertid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;BEGIN&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt; &lt;span class="n"&gt;DEFAULT&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;projID&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt; &lt;span class="n"&gt;CURSOR&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;ItemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ItemScore&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;sheetitem&lt;/span&gt; &lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;SheetID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sheetid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt; &lt;span class="n"&gt;CURSOR&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;ProjID&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;projstate&lt;/span&gt; &lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;GroupID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;groupid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;CONTINUE&lt;/span&gt; &lt;span class="n"&gt;HANDLER&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;NOT&lt;/span&gt; &lt;span class="n"&gt;FOUND&lt;/span&gt; &lt;span class="n"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;OPEN&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nl"&gt;item_loop:&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;
+        &lt;span class="n"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;FETCH&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="n"&gt;select&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;IF&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;THEN&lt;/span&gt;
+            &lt;span class="n"&gt;LEAVE&lt;/span&gt; &lt;span class="n"&gt;item_loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;IF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="n"&gt;OPEN&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="nl"&gt;proj_loop:&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;
+            &lt;span class="n"&gt;FETCH&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;projID&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="n"&gt;IF&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;THEN&lt;/span&gt;
+                &lt;span class="n"&gt;LEAVE&lt;/span&gt; &lt;span class="n"&gt;proj_loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;IF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="n"&gt;select&lt;/span&gt; &lt;span class="n"&gt;projID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;expertid&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mf"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;INSERT&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;expertscore&lt;/span&gt; &lt;span class="nf"&gt;values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;projID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;expertid&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;itemScore&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mf"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;CLOSE&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;CLOSE&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;END&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//&lt;/span&gt;
+&lt;span class="n"&gt;delimiter&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;注意&lt;/em&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;delimiter语句，临时把分号结束符改成双斜杠结束符，保证存储过程作为一个整体被mysql读入，否则mysql会在分号结束的地方断句，并进行解释执行，报错&lt;code&gt;syntax error: unexpected end_of_input&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;MySQL中没有所谓数组类型，所以不能通过&lt;code&gt;select xx from xx where xx into results&lt;/code&gt;这种形式，用变量来保存多条记录。可以通过加&lt;code&gt;limit [offset,]len&lt;/code&gt;来限制只输出一行，保存到对应的变量中。&lt;/li&gt;
+&lt;li&gt;没有数组，只能通过游标实现遍历。&lt;/li&gt;
+&lt;li&gt;SQLSTATE是MySQL内部状态，过去叫error code。每次执行一句mysql，都会设置SQLSTATE，类似Unix下的errno。&lt;/li&gt;
+&lt;li&gt;游标结束的条件，就是获取不到新的行，即'NOT FOUND'，对应错误码是'02000'。所以用一个continue handler来捕获这个事件，在这个事件中设置done变量，然后检查该变量判断是否需要退出循环。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;遇到坑&lt;/h3&gt;
+&lt;p&gt;这个存储过程执行没有错误，但是并没有插入数据，通过注释部分的select取出的数据发现，变量全是null。  &lt;/p&gt;
+&lt;p&gt;google了一下，发现了问题所在：  &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;You should avoid using the same name for multiple different things. Specifically, give the variable a different name than the column you are selecting.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;意思就是：&lt;strong&gt;不能取和列名一样的变量名。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这个在bugs.mysql.com下有人提出过，但是好像被MySQL无视了。见&lt;a href="http://bugs.mysql.com/bug.php?id=28227"&gt;这个链接&lt;/a&gt;，从mysql5.1到5.6都一直没有修复。下面有人吐槽了&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is ridiculous that this is considered not to be a bug. It shouldn't break the Fetch just because you are using the same local variable names as the column names in the select cursor. If MySQL ever hopes to become a real database, it should probably up its standards......somewhere towards usable.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;改过的代码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;delimiter&lt;/span&gt; &lt;span class="c1"&gt;//&lt;/span&gt;
+
+&lt;span class="n"&gt;CREATE&lt;/span&gt; &lt;span class="n"&gt;PROCEDURE&lt;/span&gt; &lt;span class="n"&gt;insert_rows&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a_sheetid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a_groupid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a_expertid&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;BEGIN&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt; &lt;span class="n"&gt;DEFAULT&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;v_itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemScore&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_projID&lt;/span&gt; &lt;span class="n"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt; &lt;span class="n"&gt;CURSOR&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;ItemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ItemScore&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;sheetitem&lt;/span&gt; &lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;SheetID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a_sheetid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt; &lt;span class="n"&gt;CURSOR&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;SELECT&lt;/span&gt; &lt;span class="n"&gt;ProjID&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;projstate&lt;/span&gt; &lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;GroupID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a_groupid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE&lt;/span&gt; &lt;span class="n"&gt;CONTINUE&lt;/span&gt; &lt;span class="n"&gt;HANDLER&lt;/span&gt; &lt;span class="n"&gt;FOR&lt;/span&gt; &lt;span class="n"&gt;NOT&lt;/span&gt; &lt;span class="n"&gt;FOUND&lt;/span&gt; &lt;span class="n"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;OPEN&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nl"&gt;item_loop:&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;
+        &lt;span class="n"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;FETCH&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;v_itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemScore&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="n"&gt;IF&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;THEN&lt;/span&gt;
+            &lt;span class="n"&gt;LEAVE&lt;/span&gt; &lt;span class="n"&gt;item_loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;IF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="n"&gt;OPEN&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="nl"&gt;proj_loop:&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;
+            &lt;span class="n"&gt;FETCH&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;v_projID&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="n"&gt;IF&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt; &lt;span class="n"&gt;THEN&lt;/span&gt;
+                &lt;span class="n"&gt;LEAVE&lt;/span&gt; &lt;span class="n"&gt;proj_loop&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;IF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="n"&gt;select&lt;/span&gt; &lt;span class="n"&gt;v_projID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a_expertid&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemScore&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mf"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;INSERT&lt;/span&gt; &lt;span class="n"&gt;INTO&lt;/span&gt; &lt;span class="n"&gt;expertscore&lt;/span&gt; &lt;span class="nf"&gt;values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v_projID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a_expertid&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemID&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;v_itemScore&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mf"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;CLOSE&lt;/span&gt; &lt;span class="n"&gt;projCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;END&lt;/span&gt; &lt;span class="n"&gt;LOOP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;CLOSE&lt;/span&gt; &lt;span class="n"&gt;itemCur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;END&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//&lt;/span&gt;
+&lt;span class="n"&gt;delimiter&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;参考链接&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://dev.mysql.com/doc/refman/5.6/en/cursors.html"&gt;mysql cursors&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://stackoverflow.com/questions/8731779/apparently-fetch-returns-null"&gt;Apparently fetch returns NULL&lt;/a&gt;&lt;/p&gt;</summary><category term="MySQL"></category></entry><entry><title>新技能get：git cherry-pick</title><link href="http://particle128.com/posts/2014/06/git-cherry-pick.html" rel="alternate"></link><updated>2014-06-24T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-06-24:posts/2014/06/git-cherry-pick.html</id><summary type="html">&lt;h3&gt;背景&lt;/h3&gt;
 &lt;p&gt;形象化地表述就是：&lt;br /&gt;
 今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。&lt;br /&gt;
 在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。  &lt;/p&gt;
