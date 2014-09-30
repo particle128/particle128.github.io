@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/distributed.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-07-30T00:00:00+08:00</updated><entry><title>Why do I refactor my Storm application using Trident</title><link href="http://particle128.com/posts/2014/07/why-use-trident.html" rel="alternate"></link><updated>2014-07-30T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-07-30:posts/2014/07/why-use-trident.html</id><summary type="html">&lt;p&gt;undone...&lt;/p&gt;
-&lt;h1&gt;Background&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/distributed.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-08-25T00:00:00+08:00</updated><entry><title>brief introduction of storm</title><link href="http://particle128.com/posts/2014/08/introduction-storm.html" rel="alternate"></link><updated>2014-08-25T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-08-25:posts/2014/08/introduction-storm.html</id><summary type="html">&lt;p&gt;I have used Storm for 3 months at my internship in Alibaba, and this article is a brief introduction of storm. Use English for fun, haha...&lt;/p&gt;
 &lt;h3&gt;What is storm&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://storm.incubator.apache.org/"&gt;Storm&lt;/a&gt; is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.&lt;br /&gt;
 Many large companies, including Twitter, Yahoo!, Alibaba and Baidu, have used Storm to do some realtime processing, such as realtime analytics of application logs, or DRPC. Twitter integrates storm with its other infrastructures, including database systems, the messaging infrastructure, and monitoring/altering system.&lt;br /&gt;
@@ -67,11 +66,6 @@ Common grouping method includes  &lt;/p&gt;
 &lt;img alt="image" src="http://particle128.com/images/storm2.png" /&gt;&lt;br /&gt;
 &lt;img alt="image" src="http://particle128.com/images/storm3.png" /&gt;  &lt;/p&gt;
 &lt;p&gt;What is the reason for have 2+ tasks per executor, see &lt;a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism"&gt;here&lt;/a&gt;  &lt;/p&gt;
-&lt;h3&gt;Trident model of storm&lt;/h3&gt;
-&lt;h1&gt;Practice&lt;/h1&gt;
-&lt;h3&gt;First version&lt;/h3&gt;
-&lt;h3&gt;Problem&lt;/h3&gt;
-&lt;h3&gt;Second version&lt;/h3&gt;
 &lt;h2&gt;References&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://storm.incubator.apache.org/documentation"&gt;storm documentation&lt;/a&gt;&lt;br /&gt;
 &lt;a href="http://www.michael-noll.com/blog/2012/10/16/understanding-the-parallelism-of-a-storm-topology/"&gt;Understanding the Parallelism of a Storm Topology&lt;/a&gt;&lt;br /&gt;

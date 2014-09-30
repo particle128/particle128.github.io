@@ -112,8 +112,7 @@
 
 &lt;h3&gt;参考链接&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://dev.mysql.com/doc/refman/5.6/en/cursors.html"&gt;mysql cursors&lt;/a&gt;&lt;br /&gt;
-&lt;a href="http://stackoverflow.com/questions/8731779/apparently-fetch-returns-null"&gt;Apparently fetch returns NULL&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Tue, 30 Sep 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-09-30:posts/2014/09/MySQL-bug.html</guid><category>MySQL</category></item><item><title>Why do I refactor my Storm application using Trident</title><link>http://particle128.com/posts/2014/07/why-use-trident.html</link><description>&lt;p&gt;undone...&lt;/p&gt;
-&lt;h1&gt;Background&lt;/h1&gt;
+&lt;a href="http://stackoverflow.com/questions/8731779/apparently-fetch-returns-null"&gt;Apparently fetch returns NULL&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Tue, 30 Sep 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-09-30:posts/2014/09/MySQL-bug.html</guid><category>MySQL</category></item><item><title>brief introduction of storm</title><link>http://particle128.com/posts/2014/08/introduction-storm.html</link><description>&lt;p&gt;I have used Storm for 3 months at my internship in Alibaba, and this article is a brief introduction of storm. Use English for fun, haha...&lt;/p&gt;
 &lt;h3&gt;What is storm&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://storm.incubator.apache.org/"&gt;Storm&lt;/a&gt; is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.&lt;br /&gt;
 Many large companies, including Twitter, Yahoo!, Alibaba and Baidu, have used Storm to do some realtime processing, such as realtime analytics of application logs, or DRPC. Twitter integrates storm with its other infrastructures, including database systems, the messaging infrastructure, and monitoring/altering system.&lt;br /&gt;
@@ -180,16 +179,11 @@ Common grouping method includes  &lt;/p&gt;
 &lt;img alt="image" src="http://particle128.com/images/storm2.png" /&gt;&lt;br /&gt;
 &lt;img alt="image" src="http://particle128.com/images/storm3.png" /&gt;  &lt;/p&gt;
 &lt;p&gt;What is the reason for have 2+ tasks per executor, see &lt;a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism"&gt;here&lt;/a&gt;  &lt;/p&gt;
-&lt;h3&gt;Trident model of storm&lt;/h3&gt;
-&lt;h1&gt;Practice&lt;/h1&gt;
-&lt;h3&gt;First version&lt;/h3&gt;
-&lt;h3&gt;Problem&lt;/h3&gt;
-&lt;h3&gt;Second version&lt;/h3&gt;
 &lt;h2&gt;References&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://storm.incubator.apache.org/documentation"&gt;storm documentation&lt;/a&gt;&lt;br /&gt;
 &lt;a href="http://www.michael-noll.com/blog/2012/10/16/understanding-the-parallelism-of-a-storm-topology/"&gt;Understanding the Parallelism of a Storm Topology&lt;/a&gt;&lt;br /&gt;
 &lt;a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism"&gt;What is the “task” in twitter Storm parallelism&lt;/a&gt;&lt;br /&gt;
-&lt;a href="http://shop.oreilly.com/product/0636920024835.do"&gt;Getting Started with Storm&lt;/a&gt;  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Wed, 30 Jul 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-07-30:posts/2014/07/why-use-trident.html</guid><category>storm</category><category>trident</category></item><item><title>使用Storm 2个月后的总结</title><link>http://particle128.com/posts/2014/07/storm-sum.html</link><description>&lt;h2&gt;如何使用directGrouping&lt;/h2&gt;
+&lt;a href="http://shop.oreilly.com/product/0636920024835.do"&gt;Getting Started with Storm&lt;/a&gt;  &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Mon, 25 Aug 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-08-25:posts/2014/08/introduction-storm.html</guid><category>storm</category><category>trident</category></item><item><title>使用Storm 2个月后的总结</title><link>http://particle128.com/posts/2014/07/storm-sum.html</link><description>&lt;h2&gt;如何使用directGrouping&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;申明流是direct Stream&lt;br /&gt;
 spout/bolt的declareOutputFields中&lt;br /&gt;
