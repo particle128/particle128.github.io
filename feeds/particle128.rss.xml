@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>失败并不可怕，可怕的是妥协</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 30 Sep 2014 00:00:00 +0800</lastBuildDate><item><title>MySQL存储过程中变量名不能和列名相同</title><link>http://particle128.com/posts/2014/09/MySQL-bug.html</link><description>&lt;p&gt;鞍山项目，追到北京来折磨我了。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>遇到棘手的问题越多，想退缩的次数越多，挺过来，这一天进步越大；平顺的一天，无异于原地踏步</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 30 Sep 2014 00:00:00 +0800</lastBuildDate><item><title>MySQL存储过程中变量名不能和列名相同</title><link>http://particle128.com/posts/2014/09/MySQL-bug.html</link><description>&lt;p&gt;鞍山项目，追到北京来折磨我了。&lt;/p&gt;
 &lt;h3&gt;问题&lt;/h3&gt;
 &lt;p&gt;专家评审部分，需要提交意见和各个指标的分数，&lt;em&gt;有一个&lt;/em&gt;专家评审的意见保存在了数据库，但是分数没有保存进去。  &lt;/p&gt;
 &lt;p&gt;评审专家系统里，打分的表格是前端js动态绘制的。专家提交打分情况的时候，把分数保存在HiddenField里上传服务端。因为不知道客户浏览器的情况，推测:  &lt;/p&gt;
