@@ -63,6 +63,30 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
+      </h1>
+      <p class="meta"><time datetime="2014-10-14T00:00:00" pubdate>2014-10-14</time></p>
+</header>
+
+  <div class="entry-content"><p>找工作期间，复习了一遍Unix Network Programming，对部分知识进行一下总结。</p>
+<h3>基础</h3>
+<p>编写基于网络通信的程序，就是网络编程。通信的发起方是客户，响应客户的是服务器，比如浏览器是客户（发出GET，POST等请求给服务器），web server是服务器。  </p>
+<p>套接字对是一个四元组，（local ip, local port, remote ip, remote port），通过这一四元组，唯一确定了网络通信的两端（两个进程），ip地址确定主机，端口确定进程。  </p>
+<p>TCP比UDP复杂，体现在TCP两端维护状态机（11个状态），UDP则不需要。</p>
+<p>UDP中，客户用socket创建套接字之后，就可以用sendto和recvfrom和服务器通信了。</p>
+<p>TCP客户存在一种套接字：主动套接字。基本调用序列：</p>
+<ul>
+<li>socket 创建套接字，默认是主动套接字</li>
+<li>connect  指定套接字对的远端ip和端口，分配套接字发送和接收缓冲区。向服务器套接字地址发起连接，进入SYN_SENT，返回时进入ESTABLISED。</li>
+</ul>
+<p>TCP服务器存在两种套接字：被动套接字 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/10/unp.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/05/vdisk-one-question.html">项目中一个诡异的问题</a>
       </h1>
       <p class="meta"><time datetime="2014-05-26T00:00:00" pubdate>2014-05-26</time></p>
@@ -276,6 +300,9 @@ chmod a+r aa.txt
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/05/vdisk-one-question.html">项目中一个诡异的问题</a>
       </li>
       <li class="post">
@@ -286,9 +313,6 @@ chmod a+r aa.txt
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
       </li>
     </ul>
   </section>
