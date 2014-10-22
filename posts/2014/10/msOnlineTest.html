@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>微软校招在线测试</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>遇到棘手的问题越多，想退缩的次数越多，挺过来，这一天进步越大；平顺的一天，无异于原地踏步</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://particle128.com/archives.html">archives</a></li>
+    <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+    <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+    <li><a href="http://particle128.com/category/distributed.html">distributed</a></li>
+    <li><a href="http://particle128.com/category/python.html">python</a></li>
+    <li><a href="http://particle128.com/category/others.html">others</a></li>
+    <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">微软校招在线测试</h1>
+      <p class="meta"><time datetime="2014-10-22T00:00:00" pubdate>2014-10-22</time></p>
+</header>
+
+  <div class="entry-content"><p>前三题都不难，但我第一题没考虑完全就写了，corner case调试了太久(1.5h才AC)，只留给第三题了0.5h，最终没有提交上去，仅仅AC了两道题。逆序总结一下这三道题吧。</p>
+<h3>题目3 : String Matching Content Length</h3>
+<p>题目： <a href="http://hihocoder.com/contest/mstest2015oct/problem/3">链接</a></p>
+<p>思路：两轮DP</p>
+<ol>
+<li>很容易想到这是“最长公共子串”的变形，所以，第一步是实现最长公共子串，用DP，得到一个二维数组len[m][n]。</li>
+<li>要求“最长的匹配子串集的总长度”，最简单的方法是DFS。即从上一步得到的len的最下角开始，向左、向上查找，直到找到第一个len[i][j]&gt;=3；之后，查找的范围被限制在0~i-len[i][j]和0~j-len[i][j]之间，继续从右下角开始，向左、向上查找...直到左上角。这样就找到了一个“匹配子串集”。用这种方法，可以找到所有“匹配子串集”，取最小的即可。</li>
+<li>上一步提到的方法，可能出现重复计算，最坏复杂度是指数级的，故考虑DP，状态转移方程略。</li>
+</ol>
+<p>代码：</p>
+<div class="highlight"><pre><span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> 
+<span class="p">{</span>
+    <span class="kt">string</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">;</span>
+    <span class="nx">cin</span> <span class="o">&gt;&gt;</span> <span class="nx">a</span> <span class="o">&gt;&gt;</span> <span class="nx">b</span><span class="p">;</span>
+    <span class="nx">int</span> <span class="n">m</span> <span class="o">=</span> <span class="nx">a.size</span><span class="p">(),</span> <span class="n">n</span> <span class="o">=</span> <span class="nx">b.size</span><span class="p">();</span>
+    <span class="c1">// len[i][j] means the max matching length of a and b that end at i-1 and j-1 respectively</span>
+    <span class="nx">vector</span><span class="o">&lt;</span><span class="nx">vector</span><span class="o">&lt;</span><span class="nx">int</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="nx">len</span><span class="p">(</span><span class="nx">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">vector</span><span class="o">&lt;</span><span class="nx">int</span><span class="o">&gt;</span><span class="p">(</span><span class="nb">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span> 
+    <span class="nb">for</span> <span class="p">(</span><span class="nx">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">m</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">for</span> <span class="p">(</span><span class="nx">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;=</span> <span class="nb">n</span><span class="p">;</span> <span class="o">++</span><span class="nx">j</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="err">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="cp">]</span> == b<span class="cp">[</span><span class="nx">j</span><span class="o">-</span><span class="mi">1</span><span class="cp">]</span>) {
+                len<span class="cp">[</span><span class="nx">i</span><span class="cp">][</span><span class="nx">j</span><span class="cp">]</span> = len<span class="cp">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="cp">][</span><span class="nx">j</span><span class="o">-</span><span class="mi">1</span><span class="cp">]</span> + 1;
+            }
+        }
+    }
+    // maxLen<span class="cp">[</span><span class="nx">i</span><span class="cp">][</span><span class="nx">j</span><span class="cp">]</span> means the max length of maching contents of a and b that end at i-1 and j-1 respectively
+    vector<span class="nt">&lt;vector</span><span class="err">&lt;</span><span class="na">int</span><span class="nt">&gt;</span> &gt; maxLen(m+1, vector<span class="nt">&lt;int&gt;</span>(n+1, 0));
+    for (int i = 1; i <span class="err">&lt;</span>= m; ++i) {
+        for (int j = 1; j <span class="err">&lt;</span>= n; ++j) {
+            maxLen<span class="cp">[</span><span class="nx">i</span><span class="cp">][</span><span class="nx">j</span><span class="cp">]</span> = max(maxLen<span class="cp">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="cp">][</span><span class="nx">j</span><span class="cp">]</span>, maxLen<span class="cp">[</span><span class="nx">i</span><span class="cp">][</span><span class="nx">j</span><span class="o">-</span><span class="mi">1</span><span class="cp">]</span>);
+            if (len<span class="cp">[</span><span class="nx">i</span><span class="cp">][</span><span class="nx">j</span><span class="cp">]</span> &gt;= 3) {
+                for (int k = 3; k <span class="err">&lt;</span>= len<span class="cp">[</span><span class="nx">i</span><span class="cp">][</span><span class="nx">j</span><span class="cp">]</span>; ++k) {
+                    maxLen<span class="cp">[</span><span class="nx">i</span><span class="cp">][</span><span class="nx">j</span><span class="cp">]</span> = max(maxLen<span class="cp">[</span><span class="nx">i</span><span class="cp">][</span><span class="nx">j</span><span class="cp">]</span>, maxLen<span class="cp">[</span><span class="nx">i</span><span class="na">-k</span><span class="cp">][</span><span class="nx">j</span><span class="na">-k</span><span class="cp">]</span> + k);
+                }
+            }
+        }
+    }
+    cout <span class="err">&lt;</span><span class="nt">&lt; maxLen</span><span class="cp">[</span><span class="nx">m</span><span class="cp">][</span><span class="nb">n</span><span class="cp">]</span> <span class="err">&lt;&lt;</span> <span class="na">endl</span><span class="err">;</span>
+    <span class="na">return</span> <span class="na">0</span><span class="err">;</span>
+<span class="err">}</span>
+</pre></div>
+
+
+<h3>题目2 : Performance Log</h3>
+<p>题目：<a href="http://hihocoder.com/contest/mstest2015oct/problem/2">链接</a></p>
+<p>思路：</p>
+<ul>
+<li>栈模拟函数调用序列，栈中保存数组的下标，在数组中保存实际函数名和时间（进栈时保存开始时间，退栈时保存持续时间）。</li>
+<li>进栈顺序就是调用图的dfs顺序，所以，最后顺序打印数组内容即可。</li>
+</ul>
+<p>代码：</p>
+<div class="highlight"><pre><span class="nx">struct</span> <span class="nx">record</span><span class="p">{</span>
+    <span class="nx">int</span> <span class="nx">h</span><span class="p">;</span>
+    <span class="nx">int</span> <span class="nx">m</span><span class="p">;</span>
+    <span class="nx">int</span> <span class="nb">s</span><span class="p">;</span>
+    <span class="kt">string</span> <span class="nx">fun</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">inline</span> <span class="nx">bool</span> <span class="nx">changeTime</span><span class="p">(</span><span class="nx">record</span> <span class="o">&amp;</span><span class="nb">start</span><span class="p">,</span> <span class="nx">record</span> <span class="o">&amp;</span><span class="nb">end</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">int</span> <span class="n">start_sec</span> <span class="o">=</span> <span class="nx">start.h</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="nx">start.m</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="nx">start.s</span><span class="p">;</span>
+    <span class="nx">int</span> <span class="n">end_sec</span> <span class="o">=</span> <span class="nx">end.h</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="nx">end.m</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="nx">end.s</span><span class="p">;</span>
+    <span class="nx">int</span> <span class="n">gap</span> <span class="o">=</span> <span class="nx">end_sec</span> <span class="o">-</span> <span class="nx">start_sec</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">gap</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="n">start.s</span> <span class="o">=</span> <span class="nx">gap</span><span class="o">%</span><span class="mi">60</span><span class="p">;</span>
+    <span class="nx">gap</span><span class="o">/=</span><span class="mi">60</span><span class="p">;</span>
+    <span class="n">start.m</span> <span class="o">=</span> <span class="nx">gap</span><span class="o">%</span><span class="mi">60</span><span class="p">;</span>
+    <span class="n">start.h</span> <span class="o">=</span> <span class="nx">gap</span><span class="p">/</span><span class="nx">60</span><span class="p">;</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">int</span> <span class="nx">ncase</span><span class="p">;</span>
+    <span class="nx">cin</span> <span class="o">&gt;&gt;</span> <span class="nx">ncase</span><span class="p">;</span>
+    <span class="nx">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">h</span><span class="p">,</span><span class="nx">m</span><span class="p">,</span><span class="nb">s</span><span class="p">;</span>
+    <span class="kt">string</span> <span class="nx">fun</span><span class="p">,</span> <span class="nb">action</span><span class="p">;</span>
+    <span class="nx">char</span> <span class="nx">tmp</span><span class="p">;</span>
+    <span class="nb">stack</span><span class="o">&lt;</span><span class="nx">int</span><span class="o">&gt;</span> <span class="nx">stk</span><span class="p">;</span>
+    <span class="nx">vector</span><span class="o">&lt;</span><span class="nx">record</span><span class="o">&gt;</span> <span class="nx">vec</span><span class="p">;</span>
+    <span class="nx">bool</span> <span class="n">error</span> <span class="o">=</span><span class="kc">false</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">ncase</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">cin</span> <span class="o">&gt;&gt;</span> <span class="nx">fun</span> <span class="o">&gt;&gt;</span> <span class="nx">h</span> <span class="o">&gt;&gt;</span> <span class="nx">tmp</span> <span class="o">&gt;&gt;</span> <span class="nx">m</span> <span class="o">&gt;&gt;</span> <span class="nx">tmp</span> <span class="o">&gt;&gt;</span> <span class="nb">s</span> <span class="o">&gt;&gt;</span> <span class="nb">action</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">error</span><span class="p">)</span> 
+            <span class="nb">continue</span><span class="p">;</span>
+        <span class="nx">record</span> <span class="n">re</span> <span class="o">=</span> <span class="p">{</span><span class="nx">h</span><span class="p">,</span><span class="nx">m</span><span class="p">,</span><span class="nb">s</span><span class="p">,</span><span class="nx">fun</span><span class="p">};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">action</span> <span class="o">==</span> <span class="s2">&quot;START&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">stk.push</span><span class="p">(</span><span class="o">++</span><span class="nx">idx</span><span class="p">);</span>
+            <span class="nx">vec.push_back</span><span class="p">(</span><span class="nx">re</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">stk.size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">vec</span><span class="err">[</span><span class="nx">stk.top</span><span class="p">()</span><span class="cp">]</span>.fun != fun) {
+                error = true;
+                continue;
+            }
+            if (changeTime(vec<span class="cp">[</span><span class="nx">stk.top</span><span class="p">()</span><span class="cp">]</span>, re) == false) {
+                error = true;
+                continue;
+            }
+            stk.pop();
+        }
+    }
+    if (error || !stk.empty()) {
+        cout <span class="err">&lt;&lt;</span> &quot;Incorrect performance log&quot; <span class="err">&lt;</span><span class="nt">&lt; endl</span><span class="err">;</span>
+    <span class="err">}</span> <span class="na">else</span> <span class="err">{</span>
+        <span class="na">for</span> <span class="err">(</span><span class="na">int</span> <span class="na">i =</span><span class="err"> </span><span class="s">0;</span> <span class="na">i</span> <span class="err">&lt;</span> <span class="na">vec</span><span class="err">.</span><span class="na">size</span><span class="err">();</span> <span class="err">++</span><span class="na">i</span><span class="err">)</span> <span class="err">{</span>
+            <span class="na">printf</span><span class="err">(&quot;%</span><span class="na">s</span> <span class="err">%</span><span class="na">02d:</span><span class="err">%</span><span class="na">02d:</span><span class="err">%</span><span class="na">02d</span><span class="err">\</span><span class="na">n</span><span class="err">&quot;,</span> <span class="na">vec</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span><span class="err">.</span><span class="na">fun</span><span class="err">.</span><span class="na">c_str</span><span class="err">(),</span> <span class="na">vec</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span><span class="err">.</span><span class="na">h</span><span class="err">,</span> <span class="na">vec</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span><span class="err">.</span><span class="na">m</span><span class="err">,</span> <span class="na">vec</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span><span class="err">.</span><span class="na">s</span><span class="err">);</span>
+        <span class="err">}</span>
+    <span class="err">}</span>
+    <span class="na">return</span> <span class="na">0</span><span class="err">;</span>
+<span class="err">}</span>
+</pre></div>
+
+
+<h3>题目1 : Beautiful String</h3>
+<p>题目：<a href="http://hihocoder.com/contest/mstest2015oct/problem/1">链接</a></p>
+<p>思路：状态机转换</p>
+<ul>
+<li>数据太大，只能一个字符一个字符的读入。</li>
+<li>循环中维持4个变量<br />
+cnt 正在处理的字符是beatiful string中的第几个元素，范围0~3<br />
+cur 正在处理的字符<br />
+ncur 正在处理的字符累计数量<br />
+nprev beautiful string中上一个元素的数量</li>
+</ul>
+<p>一开始没考虑到的case：</p>
+<ul>
+<li>aaaabbcc</li>
+<li>aaaabbbccde</li>
+</ul>
+<p>代码：</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ncase</span><span class="p">,</span><span class="n">n</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+    <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">ncase</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">ncase</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">nprev</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">char</span> <span class="n">cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">ncur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">result</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">c</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="k">continue</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">cur</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+                <span class="n">ncur</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="n">cnt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">cur</span> <span class="o">==</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="o">++</span><span class="n">ncur</span><span class="p">;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">nprev</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">ncur</span> <span class="o">&gt;</span> <span class="n">nprev</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// restart</span>
+                        <span class="n">nprev</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">cur</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">nprev</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">ncur</span> <span class="o">&lt;=</span> <span class="n">nprev</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// ncur &lt;= nprev !!!</span>
+                        <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">// restart</span>
+                        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="n">nprev</span> <span class="o">=</span> <span class="n">ncur</span><span class="p">;</span>
+                    <span class="n">ncur</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                    <span class="n">nprev</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                    <span class="n">ncur</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">cnt</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">ncur</span> <span class="o">==</span> <span class="n">nprev</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// over  cnt&gt;=3 !!!</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;YES&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;NO&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+<time datetime="2014-10-22T00:00:00" pubdate>2014-10-22</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/algorithm.html">algorithm</a>
+  </span>
+</p>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
+        <li><a href="http://particle128.com/category/distributed.html">distributed</a></li>
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/linux.html">linux</a></li>
+        <li><a href="http://particle128.com/category/others.html">others</a></li>
+        <li><a href="http://particle128.com/category/python.html">python</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+          var disqus_identifier = '/posts/2014/10/msOnlineTest.html';
+          var disqus_url = 'http://particle128.com/posts/2014/10/msOnlineTest.html';
+          var disqus_title = '微软校招在线测试';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

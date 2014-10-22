@@ -63,6 +63,25 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </h1>
+      <p class="meta"><time datetime="2014-10-22T00:00:00" pubdate>2014-10-22</time></p>
+</header>
+
+  <div class="entry-content"><p>前三题都不难，但我第一题没考虑完全就写了，corner case调试了太久(1.5h才AC)，只留给第三题了0.5h，最终没有提交上去，仅仅AC了两道题。逆序总结一下这三道题吧。</p>
+<h3>题目3 : String Matching Content Length</h3>
+<p>题目： <a href="http://hihocoder.com/contest/mstest2015oct/problem/3">链接</a></p>
+<p>思路：两轮DP</p>
+<ol>
+<li>很容易想到这是“最长公共子串”的变形，所以，第一步是实现最长公共子串，用DP，得到一个二维数组len[m][n]。</li>
+<li>要求“最长的匹配子串集的总长度”，最简单的方法是DFS。即从上一步得到的len的最下角开始，向左、向上查找，直到找到第一个len[i][j]&gt;=3；之后，查找的范围被限制在0~i-len[i][j]和0~j-len[i][j]之间，继续从右下角开始 ...</li></ol></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/10/msOnlineTest.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
       </h1>
       <p class="meta"><time datetime="2014-09-30T00:00:00" pubdate>2014-09-30</time></p>
@@ -260,6 +279,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
       </li>
       <li class="post">
@@ -270,9 +292,6 @@
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
       </li>
     </ul>
   </section>

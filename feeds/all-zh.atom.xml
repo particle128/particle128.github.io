@@ -1,5 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-10-14T00:00:00+08:00</updated><entry><title>UNP部分知识小结</title><link href="http://particle128.com/posts/2014/10/unp.html" rel="alternate"></link><updated>2014-10-14T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-10-14:posts/2014/10/unp.html</id><summary type="html">&lt;p&gt;找工作期间，复习了一遍Unix Network Programming，对部分知识进行一下总结。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-10-22T00:00:00+08:00</updated><entry><title>微软校招在线测试</title><link href="http://particle128.com/posts/2014/10/msOnlineTest.html" rel="alternate"></link><updated>2014-10-22T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-10-22:posts/2014/10/msOnlineTest.html</id><summary type="html">&lt;p&gt;前三题都不难，但我第一题没考虑完全就写了，corner case调试了太久(1.5h才AC)，只留给第三题了0.5h，最终没有提交上去，仅仅AC了两道题。逆序总结一下这三道题吧。&lt;/p&gt;
+&lt;h3&gt;题目3 : String Matching Content Length&lt;/h3&gt;
+&lt;p&gt;题目： &lt;a href="http://hihocoder.com/contest/mstest2015oct/problem/3"&gt;链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;思路：两轮DP&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;很容易想到这是“最长公共子串”的变形，所以，第一步是实现最长公共子串，用DP，得到一个二维数组len[m][n]。&lt;/li&gt;
+&lt;li&gt;要求“最长的匹配子串集的总长度”，最简单的方法是DFS。即从上一步得到的len的最下角开始，向左、向上查找，直到找到第一个len[i][j]&amp;gt;=3；之后，查找的范围被限制在0~i-len[i][j]和0~j-len[i][j]之间，继续从右下角开始，向左、向上查找...直到左上角。这样就找到了一个“匹配子串集”。用这种方法，可以找到所有“匹配子串集”，取最小的即可。&lt;/li&gt;
+&lt;li&gt;上一步提到的方法，可能出现重复计算，最坏复杂度是指数级的，故考虑DP，状态转移方程略。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; 
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;cin&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;a&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;a.size&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;b.size&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="c1"&gt;// len[i][j] means the max matching length of a and b that end at i-1 and j-1 respectively&lt;/span&gt;
+    &lt;span class="nx"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;n&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; 
+    &lt;span class="nb"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nb"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;j&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="nb"&gt;n&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; == b&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;) {
+                len&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; = len&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; + 1;
+            }
+        }
+    }
+    // maxLen&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; means the max length of maching contents of a and b that end at i-1 and j-1 respectively
+    vector&lt;span class="nt"&gt;&amp;lt;vector&lt;/span&gt;&lt;span class="err"&gt;&amp;lt;&lt;/span&gt;&lt;span class="na"&gt;int&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; &amp;gt; maxLen(m+1, vector&lt;span class="nt"&gt;&amp;lt;int&amp;gt;&lt;/span&gt;(n+1, 0));
+    for (int i = 1; i &lt;span class="err"&gt;&amp;lt;&lt;/span&gt;= m; ++i) {
+        for (int j = 1; j &lt;span class="err"&gt;&amp;lt;&lt;/span&gt;= n; ++j) {
+            maxLen&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; = max(maxLen&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;, maxLen&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;);
+            if (len&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; &amp;gt;= 3) {
+                for (int k = 3; k &lt;span class="err"&gt;&amp;lt;&lt;/span&gt;= len&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;; ++k) {
+                    maxLen&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; = max(maxLen&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;, maxLen&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="na"&gt;-k&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="na"&gt;-k&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; + k);
+                }
+            }
+        }
+    }
+    cout &lt;span class="err"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt; maxLen&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="cp"&gt;][&lt;/span&gt;&lt;span class="nb"&gt;n&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; &lt;span class="err"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="na"&gt;endl&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt;
+    &lt;span class="na"&gt;return&lt;/span&gt; &lt;span class="na"&gt;0&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;题目2 : Performance Log&lt;/h3&gt;
+&lt;p&gt;题目：&lt;a href="http://hihocoder.com/contest/mstest2015oct/problem/2"&gt;链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;思路：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;栈模拟函数调用序列，栈中保存数组的下标，在数组中保存实际函数名和时间（进栈时保存开始时间，退栈时保存持续时间）。&lt;/li&gt;
+&lt;li&gt;进栈顺序就是调用图的dfs顺序，所以，最后顺序打印数组内容即可。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;struct&lt;/span&gt; &lt;span class="nx"&gt;record&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;h&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="nx"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="k"&gt;inline&lt;/span&gt; &lt;span class="nx"&gt;bool&lt;/span&gt; &lt;span class="nx"&gt;changeTime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;record&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nb"&gt;start&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;record&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nb"&gt;end&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="n"&gt;start_sec&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;start.h&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;start.m&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;start.s&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="n"&gt;end_sec&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;end.h&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;end.m&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;end.s&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="n"&gt;gap&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;end_sec&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nx"&gt;start_sec&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;gap&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;start.s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;gap&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;gap&lt;/span&gt;&lt;span class="o"&gt;/=&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;start.m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;gap&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;start.h&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;gap&lt;/span&gt;&lt;span class="p"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;60&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;ncase&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;cin&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;ncase&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;h&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="nx"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;action&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;char&lt;/span&gt; &lt;span class="nx"&gt;tmp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nb"&gt;stack&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;stk&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;record&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;vec&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;ncase&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nx"&gt;cin&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;fun&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;h&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;tmp&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;m&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;tmp&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;s&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;action&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+            &lt;span class="nb"&gt;continue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="nx"&gt;record&lt;/span&gt; &lt;span class="n"&gt;re&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;h&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;action&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;START&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nx"&gt;stk.push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="nx"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="nx"&gt;vec.push_back&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;re&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;stk.size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="nx"&gt;vec&lt;/span&gt;&lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;stk.top&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;.fun != fun) {
+                error = true;
+                continue;
+            }
+            if (changeTime(vec&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;stk.top&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;, re) == false) {
+                error = true;
+                continue;
+            }
+            stk.pop();
+        }
+    }
+    if (error || !stk.empty()) {
+        cout &lt;span class="err"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &amp;quot;Incorrect performance log&amp;quot; &lt;span class="err"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt; endl&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt;
+    &lt;span class="err"&gt;}&lt;/span&gt; &lt;span class="na"&gt;else&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
+        &lt;span class="na"&gt;for&lt;/span&gt; &lt;span class="err"&gt;(&lt;/span&gt;&lt;span class="na"&gt;int&lt;/span&gt; &lt;span class="na"&gt;i =&lt;/span&gt;&lt;span class="err"&gt; &lt;/span&gt;&lt;span class="s"&gt;0;&lt;/span&gt; &lt;span class="na"&gt;i&lt;/span&gt; &lt;span class="err"&gt;&amp;lt;&lt;/span&gt; &lt;span class="na"&gt;vec&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;size&lt;/span&gt;&lt;span class="err"&gt;();&lt;/span&gt; &lt;span class="err"&gt;++&lt;/span&gt;&lt;span class="na"&gt;i&lt;/span&gt;&lt;span class="err"&gt;)&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
+            &lt;span class="na"&gt;printf&lt;/span&gt;&lt;span class="err"&gt;(&amp;quot;%&lt;/span&gt;&lt;span class="na"&gt;s&lt;/span&gt; &lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="na"&gt;02d:&lt;/span&gt;&lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="na"&gt;02d:&lt;/span&gt;&lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="na"&gt;02d&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="na"&gt;n&lt;/span&gt;&lt;span class="err"&gt;&amp;quot;,&lt;/span&gt; &lt;span class="na"&gt;vec&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;fun&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;c_str&lt;/span&gt;&lt;span class="err"&gt;(),&lt;/span&gt; &lt;span class="na"&gt;vec&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;h&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;vec&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;m&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;vec&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;s&lt;/span&gt;&lt;span class="err"&gt;);&lt;/span&gt;
+        &lt;span class="err"&gt;}&lt;/span&gt;
+    &lt;span class="err"&gt;}&lt;/span&gt;
+    &lt;span class="na"&gt;return&lt;/span&gt; &lt;span class="na"&gt;0&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;题目1 : Beautiful String&lt;/h3&gt;
+&lt;p&gt;题目：&lt;a href="http://hihocoder.com/contest/mstest2015oct/problem/1"&gt;链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;思路：状态机转换&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据太大，只能一个字符一个字符的读入。&lt;/li&gt;
+&lt;li&gt;循环中维持4个变量&lt;br /&gt;
+cnt 正在处理的字符是beatiful string中的第几个元素，范围0~3&lt;br /&gt;
+cur 正在处理的字符&lt;br /&gt;
+ncur 正在处理的字符累计数量&lt;br /&gt;
+nprev beautiful string中上一个元素的数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一开始没考虑到的case：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;aaaabbcc&lt;/li&gt;
+&lt;li&gt;aaaabbbccde&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;ncase&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;cin&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;ncase&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ncase&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;cin&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;nprev&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;cur&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;ncur&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;cnt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;cin&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="k"&gt;continue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cur&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;cur&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;ncur&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;cnt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cur&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                    &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;ncur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nprev&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;ncur&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;nprev&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// restart&lt;/span&gt;
+                        &lt;span class="n"&gt;nprev&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                        &lt;span class="n"&gt;cnt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;cur&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nprev&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;ncur&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="n"&gt;nprev&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// ncur &amp;lt;= nprev !!!&lt;/span&gt;
+                        &lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// restart&lt;/span&gt;
+                        &lt;span class="n"&gt;cnt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt;
+                    &lt;span class="n"&gt;nprev&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ncur&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="n"&gt;ncur&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                    &lt;span class="n"&gt;cnt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="n"&gt;nprev&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="n"&gt;ncur&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt;
+                &lt;span class="n"&gt;cur&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cnt&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;ncur&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;nprev&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// over  cnt&amp;gt;=3 !!!&lt;/span&gt;
+                    &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;YES&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;else&lt;/span&gt;
+            &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;NO&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="algorithm"></category></entry><entry><title>UNP部分知识小结</title><link href="http://particle128.com/posts/2014/10/unp.html" rel="alternate"></link><updated>2014-10-14T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-10-14:posts/2014/10/unp.html</id><summary type="html">&lt;p&gt;找工作期间，复习了一遍Unix Network Programming，对部分知识进行一下总结。&lt;/p&gt;
 &lt;h3&gt;基础&lt;/h3&gt;
 &lt;p&gt;编写基于网络通信的程序，就是网络编程。通信的发起方是客户，响应客户的是服务器，比如浏览器是客户（发出GET，POST等请求给服务器），web server是服务器。  &lt;/p&gt;
 &lt;p&gt;套接字对是一个四元组，（local ip, local port, remote ip, remote port），通过这一四元组，唯一确定了网络通信的两端（两个进程），ip地址确定主机，端口确定进程。  &lt;/p&gt;

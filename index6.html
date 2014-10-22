@@ -63,6 +63,31 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><p>关于new和delete的东西，笔记不够详尽，因为新知识比较多，不太方便记录笔记。发现相关知识漏洞的时候，再去查看Cpp Primer和Effective Cpp相关章节。  </p>
+<h2>Item 49: Understand the behavior of the new-handler</h2>
+<p>1.<code>std::set_new_handler()</code>可以绑定一个<code>new_handler</code>（类型为<code>void (*)()</code>），即new获取不到所需内存时调用的客户定制函数。如果不设置函数，或设置null，直接抛出异常<code>std::bad_alloc</code>。<br />
+2.获取<code>new_handler</code>函数的方式：  </p>
+<div class="highlight"><pre><span class="n">handler</span><span class="o">=</span><span class="n">set_new_handler</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  
+<span class="n">set_new_handler</span><span class="p">(</span><span class="n">handler</span><span class="p">);</span>  
+</pre></div>
+
+
+<p>3.new_handler应该具备以下一种功能：<br />
+（1）让更多内存可被使用。否则::operator new会无限循环调用非空的new_handler。例如程序开始分配一个内存池，动态分配不到资源的时候释放一些资源出来。<br />
+（2）安装另一个可以释放更多内存的new_handler函数。<br />
+（3 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
       </h1>
       <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
@@ -267,31 +292,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/09/blog-build.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/authority.html">Linux权限小结</a>
-      </h1>
-      <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>1、文件权限：针对文件的实际数据（data block中的内容）</h4>
-<p>r：可以查看文件内容<br />
-w：可以修改文件内容<br />
-x：可以执行文件内容  </p>
-<p><strong>Note：</strong> <br />
-一个文件可以仅有r权限，修改需要强制写入，比如vim下:w!，然后再:q。</p>
-<h4>2、目录权限：针对目录的结构，实际也是目录的实际数据（data block里存的就是目录里的文件列表&lt;文件名，inode号&gt;）</h4>
-<p>r：可以查看目录结构（ls）<br />
-w：可以修改目录结构（如touch新文件，rm文件，其他无出其右：mv重命名是先删再增）<br />
-x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进行各种操作比如读、修改文件也要有目录的x权限）  </p>
-<p><strong>Note：</strong><br />
-一个目录开放浏览，需要r+x权限。<br />
-有r没x，ls可以看到文件名，不能cd进入，ls -l看到其他属性都是问号 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/authority.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index7.html">&larr; Older</a>
 
@@ -303,6 +303,9 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
       </li>
       <li class="post">
@@ -313,9 +316,6 @@ x：可以把目录当作工作目录（cd。即使不cd进去，在目录下进
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
       </li>
     </ul>
   </section>

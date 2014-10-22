@@ -63,6 +63,25 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-10-18T00:00:00" pubdate>2013-10-18</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 05: Know what functions C++ silently writes and calls</h2>
+<p>1.默认生成的4种函数，都是public+inline类型的。  <br />
+2.复制构造函数原型：<code>Empty(const Empty&amp;);</code> 赋值操作符原型：<code>Empty&amp; operator=(const Empty&amp;);</code> 为了和内置类型的赋值操作意义相同，返回左值的引用  <br />
+3.唯有这4个函数被调用时，才被产生出来。  <br />
+4.默认产生的析构函数是non-virtual的，除非base class是virtual的。  <br />
+5.3种情况下，赋值操作符不会自动生成：含有const成员，含有ref成员，base class的赋值操作符号是private（这时候，子类无法调用父类的赋值操作符）。    </p>
+<h2>Item 06: Explicitly disallow the use of compiler-generated ...</h2></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
       </h1>
       <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
@@ -296,31 +315,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><p>关于new和delete的东西，笔记不够详尽，因为新知识比较多，不太方便记录笔记。发现相关知识漏洞的时候，再去查看Cpp Primer和Effective Cpp相关章节。  </p>
-<h2>Item 49: Understand the behavior of the new-handler</h2>
-<p>1.<code>std::set_new_handler()</code>可以绑定一个<code>new_handler</code>（类型为<code>void (*)()</code>），即new获取不到所需内存时调用的客户定制函数。如果不设置函数，或设置null，直接抛出异常<code>std::bad_alloc</code>。<br />
-2.获取<code>new_handler</code>函数的方式：  </p>
-<div class="highlight"><pre><span class="n">handler</span><span class="o">=</span><span class="n">set_new_handler</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  
-<span class="n">set_new_handler</span><span class="p">(</span><span class="n">handler</span><span class="p">);</span>  
-</pre></div>
-
-
-<p>3.new_handler应该具备以下一种功能：<br />
-（1）让更多内存可被使用。否则::operator new会无限循环调用非空的new_handler。例如程序开始分配一个内存池，动态分配不到资源的时候释放一些资源出来。<br />
-（2）安装另一个可以释放更多内存的new_handler函数。<br />
-（3 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index6.html">&larr; Older</a>
 
@@ -332,6 +326,9 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
       </li>
       <li class="post">
@@ -342,9 +339,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
       </li>
     </ul>
   </section>
