@@ -1,5 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/particle128.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-10-22T00:00:00+08:00</updated><entry><title>微软校招在线测试</title><link href="http://particle128.com/posts/2014/10/msOnlineTest.html" rel="alternate"></link><updated>2014-10-22T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-10-22:posts/2014/10/msOnlineTest.html</id><summary type="html">&lt;p&gt;前三题都不难，但我第一题没考虑完全就写了，corner case调试了太久(1.5h才AC)，只留给第三题了0.5h，最终没有提交上去，仅仅AC了两道题。逆序总结一下这三道题吧。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/particle128.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-05T00:00:00+08:00</updated><entry><title>Clean Code (1)</title><link href="http://particle128.com/posts/2014/12/cleanCode(1).html" rel="alternate"></link><updated>2014-12-05T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-05:posts/2014/12/cleanCode(1).html</id><summary type="html">&lt;h3&gt;Chapter1 Clean Code&lt;/h3&gt;
+&lt;p&gt;通过一个“坏代码毁了一个初创公司”的例子，讲了messy code的危害，不禁让我想到VPC的第一版。然后，列举了多个名人对clean code的推崇和理解，这些名人包括C++之父、UML创始人、程序员修炼之道作者、wiki之父...&lt;/p&gt;
+&lt;h3&gt;Chapter2 Meaningful Names&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;使用表明意义（intention-revealing）的名字，而不是简单的名字+注释。比如&lt;code&gt;elapsedTimeInDays&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;避免误导信息（disinformation）。尽量少自己定义缩略形式，如果不是List别用&lt;code&gt;accountList&lt;/code&gt;（用&lt;code&gt;accounts&lt;/code&gt;,或&lt;code&gt;bunchOfAccounts&lt;/code&gt;,或&lt;code&gt;accountGroup&lt;/code&gt;），别用小写的l和大写的O&lt;/li&gt;
+&lt;li&gt;做有意义的区分。避免用&lt;code&gt;a1,a2,..&lt;/code&gt;来区分多个同类元素，避免用&lt;code&gt;a,an,the,data,info&lt;/code&gt;修饰变量名，来做字面的区分&lt;/li&gt;
+&lt;li&gt;用可以发出音的名字。别用&lt;code&gt;genymdhms (generation year,mon,day,hour,min,sec)&lt;/code&gt;，换成&lt;code&gt;generationTimestamp&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;用可搜索的名字。魔数不要用，简单的单字母变量少用。名字的长度应该对应它所在作用域的大小，即短名字仅可以出现在很小的作用域上，比如for循环中的&lt;code&gt;i,j,k&lt;/code&gt;，意义明确的短小函数中的&lt;code&gt;sum&lt;/code&gt;。当然，如果有很好表示的明确意义，还是用有意义的变量来代替&lt;code&gt;i,j,k&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;不需要加类似&lt;code&gt;m_&lt;/code&gt;的前缀&lt;/li&gt;
+&lt;li&gt;接口不要用&lt;code&gt;IShapeFactory&lt;/code&gt;，直接用&lt;code&gt;ShapeFactory&lt;/code&gt;，然后使用&lt;code&gt;ShapeFactoryImp&lt;/code&gt;。目的：用户不需要关心自己处理的是接口还是实现，名字中暴漏更少的信息。&lt;/li&gt;
+&lt;li&gt;类名，名词或名词短语，避免添加&lt;code&gt;Manager,Processor,Data,Info&lt;/code&gt;这类没信息量的名字&lt;/li&gt;
+&lt;li&gt;方法名，动词或动词短语&lt;/li&gt;
+&lt;li&gt;如果能用解决方案域的名字（Solution Domain Names），就不用问题域的名字（Problem Domain Names），因为这样更容易让程序员理解，而不需要首先咨询专业人员。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;起名是一件很难的事情，需要不断练习。要在开发、测试和维护中，修改代码中欠佳的名字，别担心这会让其他人困惑，这是非常值得的。&lt;/p&gt;
+&lt;h3&gt;Chapter3 Functions&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;一个函数应当短到只有2~4行，缩进级别不应该超过两层（即，最多两重循环）&lt;/li&gt;
+&lt;li&gt;一个函数只做一件事。界定的两种方法：&lt;br /&gt;
+(1) 能否用一个TO语句描述，看描述出来是否在同一个抽象层次 (2) 能不能从一个函数中提取出另一个不同名的函数&lt;/li&gt;
+&lt;li&gt;函数在源文件中的顺序：上面的函数引用下面的函数。&lt;/li&gt;
+&lt;li&gt;不应该在代码中出现switch语句，switch结构肯定会很长。用抽象工场（可以包含switch，以便根据另一个对象的类型或根据一个字符串，决定创建什么类）+多态（根据类型动态选择对应的函数）替代。&lt;/li&gt;
+&lt;li&gt;给函数起一个描述性的名字，比如&lt;code&gt;includeSetupAndTeardownPages&lt;/code&gt;。别怕长：长的描述性名字，好于短的不明其意的名字，好于长的描述性注释。别怕花时间选取名字+改动：现代IDE很容易全局替换名字，改名也常常带来有价值的重构代码。&lt;/li&gt;
+&lt;li&gt;函数参数尽量少，不要超过3个参数。参数越少，越利于函数的理解和测试(需要测试参数的所有组合)。&lt;/li&gt;
+&lt;li&gt;单参函数尽量保持三种形式之一，其余形式要考虑是不是需要重构：1、关于参数的一个判断，如&lt;code&gt;fileExists&lt;/code&gt;；2、将参数转换成别的，如&lt;code&gt;fileOpen&lt;/code&gt;；3、参数引起了一个事件，无返回值，如&lt;code&gt;passwordAttemptFailedNtimes&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;不要传标记（boolean类型），这显然违背了“只做一件事”原则，因为它至少做了两件事（true时..false时..）。在上层用if判断，然后调用不同函数，比如&lt;code&gt;renderForSuite()&lt;/code&gt;和&lt;code&gt;renderForNonSuite()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;函数不要有副作用（side effect），比如改变成员变量，改变全局变量，改变参数，等。如需改变，写在名字上，或拆成两个函数&lt;/li&gt;
+&lt;li&gt;不要值-结果参数，容易让人迷惑，需要再去看函数原型——double-take(再看一眼)&lt;/li&gt;
+&lt;li&gt;优先使用异常，而不是错误码，防止混合错误处理逻辑和正常逻辑，进而导致代码不清晰。把可能出现异常的语句放到一个函数中，单独定义一个，仅仅包含try-catch-finally的函数，调用前面的函数——错误处理和正常逻辑分开。&lt;/li&gt;
+&lt;li&gt;用异常层次结构，而不是错误码（error class/enum，其他类需要import），解决&lt;code&gt;dependency magnet&lt;/code&gt;，即增加新的异常/错误时，不需要重新编译和部署&lt;/li&gt;
+&lt;li&gt;一开始先写出长的、复杂的、有重复的、随意命名的函数，之后再按照本章的方法拆分和提炼。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总结：&lt;/p&gt;
+&lt;p&gt;目标是，写源代码，就像写小说，函数调用的意义都很清晰，让读者读起来很流畅，不需要跳到函数原型甚至函数注释或源码中才能理解。&lt;/p&gt;
+&lt;h3&gt;Chapter4 Comments&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;写注释前，仔细考虑能否把注释的东西表达在代码里。因为，注释非常容易do evil（因为没能随着代码进行更新）。&lt;/li&gt;
+&lt;li&gt;很多时候，写一个函数就可以免去注释了，比如&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// check to see if the the employee is eligible for full benefits&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;employee&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flags&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="no"&gt;HOURLY_FLAG&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;employee&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;age&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mh"&gt;65&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;应当改成&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;employee&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isEligibleForFullBenefits&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;加注释的时机：&lt;br /&gt;
+1.版权声明(&lt;code&gt;all rights reserved&lt;/code&gt;)
+2.提供信息&lt;br /&gt;
+3.解释意图&lt;br /&gt;
+4.澄清意思&lt;br /&gt;
+5.警告可能的结果&lt;br /&gt;
+6.善用TODO注释和javadoc&lt;/li&gt;
+&lt;li&gt;不要加这类注释：&lt;br /&gt;
+1.冗余的注释（从函数名或函数本身，很容易知道函数的意图）&lt;br /&gt;
+2.关闭括号的注释（语句太多才需要关闭括号注释，考虑拆开它）&lt;br /&gt;
+3.注释掉的代码、标注代码修改者、标注代码修改记录（这类可以用版本控制软件如git来杜绝）&lt;br /&gt;
+4.太多信息的注释（简要描述，提到关键字即可，别长篇大论）&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="cleanCode"></category></entry><entry><title>微软校招在线测试</title><link href="http://particle128.com/posts/2014/10/msOnlineTest.html" rel="alternate"></link><updated>2014-10-22T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-10-22:posts/2014/10/msOnlineTest.html</id><summary type="html">&lt;p&gt;前三题都不难，但我第一题没考虑完全就写了，corner case调试了太久(1.5h才AC)，只留给第三题了0.5h，最终没有提交上去，仅仅AC了两道题。逆序总结一下这三道题吧。&lt;/p&gt;
 &lt;h3&gt;题目3 : String Matching Content Length&lt;/h3&gt;
 &lt;p&gt;题目： &lt;a href="http://hihocoder.com/contest/mstest2015oct/problem/3"&gt;链接&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;思路：两轮DP&lt;/p&gt;

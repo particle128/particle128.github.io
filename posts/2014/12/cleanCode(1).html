@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clean Code (1)</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>遇到棘手的问题越多，想退缩的次数越多，挺过来，这一天进步越大；平顺的一天，无异于原地踏步</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://localhost:8000/archives.html">archives</a></li>
+    <li><a href="http://localhost:8000/category/tech.html">tech</a></li>
+    <li><a href="http://localhost:8000/category/note.html">note</a></li>
+    <li><a href="http://localhost:8000/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">Clean Code (1)</h1>
+      <p class="meta"><time datetime="2014-12-05T00:00:00" pubdate>2014-12-05</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter1 Clean Code</h3>
+<p>通过一个“坏代码毁了一个初创公司”的例子，讲了messy code的危害，不禁让我想到VPC的第一版。然后，列举了多个名人对clean code的推崇和理解，这些名人包括C++之父、UML创始人、程序员修炼之道作者、wiki之父...</p>
+<h3>Chapter2 Meaningful Names</h3>
+<ul>
+<li>使用表明意义（intention-revealing）的名字，而不是简单的名字+注释。比如<code>elapsedTimeInDays</code></li>
+<li>避免误导信息（disinformation）。尽量少自己定义缩略形式，如果不是List别用<code>accountList</code>（用<code>accounts</code>,或<code>bunchOfAccounts</code>,或<code>accountGroup</code>），别用小写的l和大写的O</li>
+<li>做有意义的区分。避免用<code>a1,a2,..</code>来区分多个同类元素，避免用<code>a,an,the,data,info</code>修饰变量名，来做字面的区分</li>
+<li>用可以发出音的名字。别用<code>genymdhms (generation year,mon,day,hour,min,sec)</code>，换成<code>generationTimestamp</code></li>
+<li>用可搜索的名字。魔数不要用，简单的单字母变量少用。名字的长度应该对应它所在作用域的大小，即短名字仅可以出现在很小的作用域上，比如for循环中的<code>i,j,k</code>，意义明确的短小函数中的<code>sum</code>。当然，如果有很好表示的明确意义，还是用有意义的变量来代替<code>i,j,k</code></li>
+<li>不需要加类似<code>m_</code>的前缀</li>
+<li>接口不要用<code>IShapeFactory</code>，直接用<code>ShapeFactory</code>，然后使用<code>ShapeFactoryImp</code>。目的：用户不需要关心自己处理的是接口还是实现，名字中暴漏更少的信息。</li>
+<li>类名，名词或名词短语，避免添加<code>Manager,Processor,Data,Info</code>这类没信息量的名字</li>
+<li>方法名，动词或动词短语</li>
+<li>如果能用解决方案域的名字（Solution Domain Names），就不用问题域的名字（Problem Domain Names），因为这样更容易让程序员理解，而不需要首先咨询专业人员。</li>
+</ul>
+<p>起名是一件很难的事情，需要不断练习。要在开发、测试和维护中，修改代码中欠佳的名字，别担心这会让其他人困惑，这是非常值得的。</p>
+<h3>Chapter3 Functions</h3>
+<ul>
+<li>一个函数应当短到只有2~4行，缩进级别不应该超过两层（即，最多两重循环）</li>
+<li>一个函数只做一件事。界定的两种方法：<br />
+(1) 能否用一个TO语句描述，看描述出来是否在同一个抽象层次 (2) 能不能从一个函数中提取出另一个不同名的函数</li>
+<li>函数在源文件中的顺序：上面的函数引用下面的函数。</li>
+<li>不应该在代码中出现switch语句，switch结构肯定会很长。用抽象工场（可以包含switch，以便根据另一个对象的类型或根据一个字符串，决定创建什么类）+多态（根据类型动态选择对应的函数）替代。</li>
+<li>给函数起一个描述性的名字，比如<code>includeSetupAndTeardownPages</code>。别怕长：长的描述性名字，好于短的不明其意的名字，好于长的描述性注释。别怕花时间选取名字+改动：现代IDE很容易全局替换名字，改名也常常带来有价值的重构代码。</li>
+<li>函数参数尽量少，不要超过3个参数。参数越少，越利于函数的理解和测试(需要测试参数的所有组合)。</li>
+<li>单参函数尽量保持三种形式之一，其余形式要考虑是不是需要重构：1、关于参数的一个判断，如<code>fileExists</code>；2、将参数转换成别的，如<code>fileOpen</code>；3、参数引起了一个事件，无返回值，如<code>passwordAttemptFailedNtimes</code></li>
+<li>不要传标记（boolean类型），这显然违背了“只做一件事”原则，因为它至少做了两件事（true时..false时..）。在上层用if判断，然后调用不同函数，比如<code>renderForSuite()</code>和<code>renderForNonSuite()</code></li>
+<li>函数不要有副作用（side effect），比如改变成员变量，改变全局变量，改变参数，等。如需改变，写在名字上，或拆成两个函数</li>
+<li>不要值-结果参数，容易让人迷惑，需要再去看函数原型——double-take(再看一眼)</li>
+<li>优先使用异常，而不是错误码，防止混合错误处理逻辑和正常逻辑，进而导致代码不清晰。把可能出现异常的语句放到一个函数中，单独定义一个，仅仅包含try-catch-finally的函数，调用前面的函数——错误处理和正常逻辑分开。</li>
+<li>用异常层次结构，而不是错误码（error class/enum，其他类需要import），解决<code>dependency magnet</code>，即增加新的异常/错误时，不需要重新编译和部署</li>
+<li>一开始先写出长的、复杂的、有重复的、随意命名的函数，之后再按照本章的方法拆分和提炼。</li>
+</ul>
+<p>总结：</p>
+<p>目标是，写源代码，就像写小说，函数调用的意义都很清晰，让读者读起来很流畅，不需要跳到函数原型甚至函数注释或源码中才能理解。</p>
+<h3>Chapter4 Comments</h3>
+<ul>
+<li>写注释前，仔细考虑能否把注释的东西表达在代码里。因为，注释非常容易do evil（因为没能随着代码进行更新）。</li>
+<li>很多时候，写一个函数就可以免去注释了，比如</li>
+</ul>
+<div class="highlight"><pre><span class="c1">// check to see if the the employee is eligible for full benefits</span>
+<span class="k">if</span> <span class="p">((</span><span class="n">employee</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="no">HOURLY_FLAG</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">employee</span><span class="p">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mh">65</span><span class="p">))</span>
+</pre></div>
+
+
+<p>应当改成</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="n">employee</span><span class="p">.</span><span class="n">isEligibleForFullBenefits</span><span class="p">())</span>
+</pre></div>
+
+
+<ul>
+<li>加注释的时机：<br />
+1.版权声明(<code>all rights reserved</code>)
+2.提供信息<br />
+3.解释意图<br />
+4.澄清意思<br />
+5.警告可能的结果<br />
+6.善用TODO注释和javadoc</li>
+<li>不要加这类注释：<br />
+1.冗余的注释（从函数名或函数本身，很容易知道函数的意图）<br />
+2.关闭括号的注释（语句太多才需要关闭括号注释，考虑拆开它）<br />
+3.注释掉的代码、标注代码修改者、标注代码修改记录（这类可以用版本控制软件如git来杜绝）<br />
+4.太多信息的注释（简要描述，提到关键字即可，别长篇大论）</li>
+</ul></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+<time datetime="2014-12-05T00:00:00" pubdate>2014-12-05</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/cleancode.html">cleanCode</a>
+  </span>
+</p>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+          var disqus_identifier = '/posts/2014/12/cleanCode(1).html';
+          var disqus_url = 'http://particle128.com/posts/2014/12/cleanCode(1).html';
+          var disqus_title = 'Clean Code (1)';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

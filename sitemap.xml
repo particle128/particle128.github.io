@@ -5,35 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/index.html</loc>
-<lastmod>2014-11-09T22:23:07-00:00</lastmod>
+<lastmod>2014-12-05T22:41:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/archives.html</loc>
-<lastmod>2014-11-09T22:23:07-00:00</lastmod>
+<lastmod>2014-12-05T22:41:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/tags.html</loc>
-<lastmod>2014-11-09T22:23:07-00:00</lastmod>
+<lastmod>2014-12-05T22:41:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/categories.html</loc>
-<lastmod>2014-11-09T22:23:07-00:00</lastmod>
+<lastmod>2014-12-05T22:41:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/pages/aboutme.html</loc>
-<lastmod>2014-11-09T22:22:28-00:00</lastmod>
+<lastmod>2014-12-05T22:19:48-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
 </url>
@@ -43,6 +43,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <lastmod>2014-09-29T19:31:26-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
+</url>
+
+<url>
+<loc>http://particle128.com/posts/2014/12/cleanCode(1).html</loc>
+<lastmod>2014-12-05T00:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -494,20 +501,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://particle128.com/category/cpp.html</loc>
-<lastmod>2014-03-08T00:00:00-00:00</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://particle128.com/category/distributed.html</loc>
-<lastmod>2014-08-25T00:00:00-00:00</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
 <loc>http://particle128.com/category/life.html</loc>
 <lastmod>2014-03-20T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -515,22 +508,15 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://particle128.com/category/linux.html</loc>
-<lastmod>2014-10-14T00:00:00-00:00</lastmod>
+<loc>http://particle128.com/category/note.html</loc>
+<lastmod>2014-12-05T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/category/others.html</loc>
+<loc>http://particle128.com/category/tech.html</loc>
 <lastmod>2014-10-22T00:00:00-00:00</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://particle128.com/category/python.html</loc>
-<lastmod>2014-03-10T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -746,8 +732,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://particle128.com/tag/encapsulation.html</loc>
-<lastmod>2013-10-14T00:00:00-00:00</lastmod>
+<loc>http://particle128.com/tag/cleancode.html</loc>
+<lastmod>2014-12-05T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -755,6 +741,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://particle128.com/tag/spinlock.html</loc>
 <lastmod>2014-04-02T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://particle128.com/tag/encapsulation.html</loc>
+<lastmod>2013-10-14T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -845,7 +838,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/author/particle128.html</loc>
-<lastmod>2014-10-22T00:00:00-00:00</lastmod>
+<lastmod>2014-12-05T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

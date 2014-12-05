@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>particle128's Blog</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>遇到棘手的问题越多，想退缩的次数越多，挺过来，这一天进步越大；平顺的一天，无异于原地踏步</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://localhost:8000/archives.html">archives</a></li>
+    <li><a href="http://localhost:8000/category/tech.html">tech</a></li>
+    <li><a href="http://localhost:8000/category/note.html">note</a></li>
+    <li><a href="http://localhost:8000/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div class="blog-index">
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-05T00:00:00" pubdate>2014-12-05</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter1 Clean Code</h3>
+<p>通过一个“坏代码毁了一个初创公司”的例子，讲了messy code的危害，不禁让我想到VPC的第一版。然后，列举了多个名人对clean code的推崇和理解，这些名人包括C++之父、UML创始人、程序员修炼之道作者、wiki之父...</p>
+<h3>Chapter2 Meaningful Names</h3>
+<ul>
+<li>使用表明意义（intention-revealing）的名字，而不是简单的名字+注释。比如<code>elapsedTimeInDays</code></li>
+<li>避免误导信息（disinformation）。尽量少自己定义缩略形式，如果不是List别用<code>accountList</code>（用<code>accounts</code>,或<code>bunchOfAccounts</code>,或<code>accountGroup</code>），别用小写的l和大写的O</li>
+<li>做有意义的区分。避免用<code>a1,a2,..</code>来区分多个同类元素，避免用<code>a,an,the,data,info ...</code></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
+      </h1>
+      <p class="meta"><time datetime="2014-04-26T00:00:00" pubdate>2014-04-26</time></p>
+</header>
+
+  <div class="entry-content"><h2>Chapter2 单机存储系统</h2>
+<h3>2.1硬件基础</h3>
+<h4>CPU架构</h4>
+<ul>
+<li>SMP（对称多处理）:经典的CPU架构，一个计算机上汇集了一组CPU（一个CPU往往包括不止一个核），对称工作、无主次或从属关系，共享相同的物理内存和总线。<br />
+  某些CPU还通过超线程技术（Hyper-Threading Technology），在一个核心上同时执行两个线程。  </li>
+<li>NUMA（非一致存储访问）:克服SMP中多CPU对总线资源的竞争，一个NUMA包括多个NUMA节点，一个NUMA节点就是一个SMP结构（n个CPU，1个内存）  </li>
+</ul>
+<h4>IO总线</h4>
+<p>Intel的主板，一般为南、北桥架构  </p>
+<ul>
+<li>北桥芯片：CPU，内存，高端SSD (高速IO)  </li>
+<li>南桥芯片：网卡，硬盘，中低端SSD  </li>
+</ul>
+<h4>网路拓扑</h4>
+<p>数据中心网络拓扑结构，主要分为  </p>
+<ul>
+<li>三层结构：核心层、汇聚层、接入层。一个接入层交换机下的服务器部署在一个机架内  </li>
+<li>三级CLOS网络：Google设计的扁平化拓扑结构（从wiki上看图，感觉挺复杂的）  </li>
+</ul>
+<p>传输时延 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore2.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
+      </h1>
+      <p class="meta"><time datetime="2014-04-15T00:00:00" pubdate>2014-04-15</time></p>
+</header>
+
+  <div class="entry-content"><h2>Chapter1 概述</h2>
+<h3>分布式存储特征</h3>
+<ul>
+<li>可扩展：随着集群规模增大，整体性能表现为线性增长  </li>
+<li>低成本：构建在普通PC上，实现自动容错、自动负载均衡  </li>
+<li>高性能  </li>
+<li>易用：提供易用的外部接口，也具备完善的监控和运维工具  </li>
+</ul>
+<p>鸡汤：  </p>
+<blockquote>
+<p>一般来讲，工程师如果能够深入理解分布式存储系统，理解其他互联网后台架构不再会有任何困难。  </p>
+</blockquote>
+<h3>分布式存储分类</h3>
+<ul>
+<li>非结构化数据：文档、图片、视频等  </li>
+<li>结构化数据：数据库中的表  </li>
+<li>半结构化数据：HTML文档，模式结构和内容混在一起  </li>
+</ul>
+<h3>分布式存储系统分类</h3>
+<p>1、分布式文件系统<br />
+存储非结构化数据，可以用作分布式数据库或分布式表格系统的底层存储  </p>
+<ul>
+<li>存储BLOB，Facebook Haystack以及Taobao File System  </li>
+<li>存储大文件，Google File System，分布式表格系统Google Bigtable的基础  </li>
+<li>存储定长块，Amazon的Elastic Block Store，分布式数据库Amazon RDS的基础 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore1.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
+</header>
+
+  <div class="entry-content"><h2>Column6 Perspective on performance</h2>
+<h3>Design Levels</h3>
+<ul>
+<li>
+<p>problem definition<br />
+Good specifications are quite important.<br />
+Good error recovery may make a compiler slightly slower, but it usually decreases its overall time by reducing the number of compilations.  </p>
+</li>
+<li>
+<p>system structure<br />
+Decomposition of a large system into modules is probably the single most important ...</p></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/02/pp6.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
+</header>
+
+  <div class="entry-content"><h2>Column 7 The back of the envelope</h2>
+<h3>rules of thumb</h3>
+<ul>
+<li>
+<p>rule of 72<br />
+Used for estimating the growth of any exponential process.<br />
+<em>Assume that you invest a sum of money for y years at an interest rate of r percent per year. The financial version of the rule says that ...</em></p></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/02/pp7.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
+<h2>Item25 构造函数、非成员函数的虚化</h2>
+<ul>
+<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
+<li>3种语义上的虚化：<br />
+1.虚构造函数<br />
+根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
+2.虚拷贝构造函数<br />
+定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
+3.虚非成员函数<br />
+定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c ...</code></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item28 Smart pointer</h2>
+<ul>
+<li>智能指针相比于内置指针的优势：<br />
+1.构造和析构：分别防止wild指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
+2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
+3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
+<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
+<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
+<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
+<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">MoreEffectiveC++(3)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-06T00:00:00" pubdate>2013-12-06</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>效率Efficiency</strong>  </p>
+<h2>Item16 80-20 principal</h2>
+<ul>
+<li>Most programs' performance bottle-neck is inclined to high counter-intuition. If you just improve programs here and there, it won't help a lot.  </li>
+<li>The accurate way to do this is to use program profiler(程序分析器).  </li>
+<li>Offer as much data as possible to the profiler, to find ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-03T00:00:00" pubdate>2013-12-03</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item6</h2>
+<ul>
+<li>自增自减操作符，两原则：<br />
+1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  <blockquote>
+<p>设计类的一条无上宝典就是：一旦有疑虑，试看int行为如何并遵循之。  </p>
+</blockquote>
+</li>
+</ul>
+<p>2.后自增和自减应该调用前自增和自减，而不是自己写函数，这样只需要维护前自增。  </p>
+<h2>Item7</h2>
+<ul>
+<li>不要重载&amp;&amp;，||和，操作符，因为无论定义成员或非成员函数，都无法模拟C++中这3个操作符的行为模式（短路，求值顺序）。  </li>
+<li>for语句头包括3个部分，第1部分是语句，所以可以定义多个变量。第3部分是表达式，所以只能用逗号隔开多个表达式，而不能使用定义变量。  </li>
+</ul>
+<h2>Item8</h2>
+<ul>
+<li>placement new类似于new，首先调用operator new，然后调用对象构造函数，然后返回内存指针。<br />
+不同点，是placement new调用的operator new的原型和实现如下：  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location</span><span class="p">)</span><span class="c1">//第一个参数不提供名字 ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-02T00:00:00" pubdate>2013-12-02</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>Introduction</strong>  </p>
+<ul>
+<li>没有实现bool类型的编译器，替代方案：<br />
+(1)enum bool{false,true};<br />
+缺点：无法int赋值给bool变量<br />
+(2)typedef int bool;<br />
+const bool false=0;<br />
+const bool true=1;<br />
+缺点：无法重载bool和int参数的函数  </li>
+<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
+</ul>
+<p><strong>基础议题Basics</strong></p>
+<h2>Item1</h2>
+<ul>
+<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
+</ul>
+<div class="highlight"><pre><span class="c1">//使用指针  </span>
+<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
+    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
+<span class="c1">//使用引用  </span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
+</pre></div>
+
+
+<h2>Item2</h2>
+<ul>
+<li>const_cast用于改变constnest和valatileness  </li>
+<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+<div class="pagination">
+    <a class="prev" href="http://particle128.com/category/note2.html">&larr; Older</a>
+
+  <br />
+</div></div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

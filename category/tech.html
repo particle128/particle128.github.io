@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>particle128's Blog</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>遇到棘手的问题越多，想退缩的次数越多，挺过来，这一天进步越大；平顺的一天，无异于原地踏步</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://localhost:8000/archives.html">archives</a></li>
+    <li><a href="http://localhost:8000/category/tech.html">tech</a></li>
+    <li><a href="http://localhost:8000/category/note.html">note</a></li>
+    <li><a href="http://localhost:8000/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div class="blog-index">
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </h1>
+      <p class="meta"><time datetime="2014-10-22T00:00:00" pubdate>2014-10-22</time></p>
+</header>
+
+  <div class="entry-content"><p>前三题都不难，但我第一题没考虑完全就写了，corner case调试了太久(1.5h才AC)，只留给第三题了0.5h，最终没有提交上去，仅仅AC了两道题。逆序总结一下这三道题吧。</p>
+<h3>题目3 : String Matching Content Length</h3>
+<p>题目： <a href="http://hihocoder.com/contest/mstest2015oct/problem/3">链接</a></p>
+<p>思路：两轮DP</p>
+<ol>
+<li>很容易想到这是“最长公共子串”的变形，所以，第一步是实现最长公共子串，用DP，得到一个二维数组len[m][n]。</li>
+<li>要求“最长的匹配子串集的总长度”，最简单的方法是DFS。即从上一步得到的len的最下角开始，向左、向上查找，直到找到第一个len[i][j]&gt;=3；之后，查找的范围被限制在0~i-len[i][j]和0~j-len[i][j]之间，继续从右下角开始 ...</li></ol></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/10/msOnlineTest.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
+      </h1>
+      <p class="meta"><time datetime="2014-10-14T00:00:00" pubdate>2014-10-14</time></p>
+</header>
+
+  <div class="entry-content"><p>找工作期间，复习了一遍Unix Network Programming，对部分知识进行一下总结。</p>
+<h3>基础</h3>
+<p>编写基于网络通信的程序，就是网络编程。通信的发起方是客户，响应客户的是服务器，比如浏览器是客户（发出GET，POST等请求给服务器），web server是服务器。  </p>
+<p>套接字对是一个四元组，（local ip, local port, remote ip, remote port），通过这一四元组，唯一确定了网络通信的两端（两个进程），ip地址确定主机，端口确定进程。  </p>
+<p>TCP比UDP复杂，体现在TCP两端维护状态机（11个状态），UDP则不需要。</p>
+<p>UDP中，客户用socket创建套接字之后，就可以用sendto和recvfrom和服务器通信了。</p>
+<p>TCP客户存在一种套接字：主动套接字。基本调用序列：</p>
+<ul>
+<li>socket 创建套接字，默认是主动套接字</li>
+<li>connect  指定套接字对的远端ip和端口，分配套接字发送和接收缓冲区。向服务器套接字地址发起连接，进入SYN_SENT，返回时进入ESTABLISED。</li>
+</ul>
+<p>TCP服务器存在两种套接字：被动套接字 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/10/unp.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
+      </h1>
+      <p class="meta"><time datetime="2014-09-30T00:00:00" pubdate>2014-09-30</time></p>
+</header>
+
+  <div class="entry-content"><p>鞍山项目，追到北京来折磨我了。</p>
+<h3>问题</h3>
+<p>专家评审部分，需要提交意见和各个指标的分数，<em>有一个</em>专家评审的意见保存在了数据库，但是分数没有保存进去。  </p>
+<p>评审专家系统里，打分的表格是前端js动态绘制的。专家提交打分情况的时候，把分数保存在HiddenField里上传服务端。因为不知道客户浏览器的情况，推测:  </p>
+<ol>
+<li>表格没有绘制成功。js绘制表格的语句不被浏览器支持，所以客户端直接看不到打分表格。</li>
+<li>分数没有提交成功。因为HiddenField实质是type="hidden"的input标签元素，它可以随表单一起提交给服务器。或许那个专家用的浏览器不支持hidden input标签。</li>
+</ol>
+<p>解决办法就是在服务器端对HiddenField提交上来的数据，进行检测，如果发现为空或者不合法，就提示用户换浏览器尝试。最初代码中没有检测数据为空，是因为前端写了js代码，保证分数都填写完毕才会提交表单。但是如果遇到推测的第2种情况，就会检测不出来。</p>
+<h3>修改数据库</h3>
+<p>代码改完，并没有万事大吉。因为数据库丢数据了，需要手动订正。</p>
+<p>大约1、2年前用过存储过程，不过太久远了，又去<a href="http://dev.mysql.com">MySQL官网</a>上浏览了一下相关文档。写的过程中遇到了些问题，简单记录下。</p>
+<p>代码如下：  </p>
+<div class="highlight"><pre><span class="n">delimiter</span> <span class="c1">//</span>
+
+<span class="n">CREATE</span> <span class="n">PROCEDURE ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/09/MySQL-bug.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
+      </h1>
+      <p class="meta"><time datetime="2014-08-25T00:00:00" pubdate>2014-08-25</time></p>
+</header>
+
+  <div class="entry-content"><p>I have used Storm for 3 months at my internship in Alibaba, and this article is a brief introduction of storm. Use English for fun, haha...</p>
+<h3>What is storm</h3>
+<p><a href="http://storm.incubator.apache.org/">Storm</a> is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/08/introduction-storm.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
+      </h1>
+      <p class="meta"><time datetime="2014-07-29T00:00:00" pubdate>2014-07-29</time></p>
+</header>
+
+  <div class="entry-content"><h2>如何使用directGrouping</h2>
+<ol>
+<li>申明流是direct Stream<br />
+spout/bolt的declareOutputFields中<br />
+outputFieldsDeclarer.declare(/<em>direct</em>/true, new Fields("word"));  </li>
+<li>使用emitDirect来发送数据<br />
+spout/bolt的nextTuple/execute中<br />
+collector.emitDirect(/<em>taskId</em>/getWordCountIndex(word),new Values(word));<br />
+注意：因为第一个参数是taskid，首先需要在open/prepare里面获取下游bolt的taskid列表<br />
+topologyContext.getComponentTasks("word-counter")  </li>
+<li>topology定义中指定连接方式为directGrouping<br />
+builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  </li>
+</ol>
+<h2>如何利用Storm提供的可靠性保证</h2>
+<ol>
+<li>在spout中，用SpoutOutputCollector调用emit的时候，必须指定messageId。<br />
+一个messageId对应一个tuple树。<br />
+这样，在某个tuple树全部被处理完后，spout的回调函数ack会被调用，ack的参数是那个tuple树对应的messageId。  </li>
+<li>在每一个bolt中 ...</li></ol></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/07/storm-sum.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
+      </h1>
+      <p class="meta"><time datetime="2014-06-24T00:00:00" pubdate>2014-06-24</time></p>
+</header>
+
+  <div class="entry-content"><h3>背景</h3>
+<p>形象化地表述就是：<br />
+今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。<br />
+在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。  </p>
+<h3>问题</h3>
+<p>原来的git提交结构是这样的(假设'old','content'...这些是commit的代号):  </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span>  
+</pre></div>
+
+
+<p>为了把content和change1,change2分开,我需要建立如下的结构  </p>
+<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span>  
+<span class="nl">cmd:</span>          <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span>  
+<span class="nl">develop ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/06/git-cherry-pick.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/06/database-shard.html">数据库的分库和分表</a>
+      </h1>
+      <p class="meta"><time datetime="2014-06-23T00:00:00" pubdate>2014-06-23</time></p>
+</header>
+
+  <div class="entry-content"><h2>一、分表</h2>
+<h3>水平分表</h3>
+<h4>1、背景</h4>
+<p>当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。<br />
+以InnoDB的B+树索引为例，记录多的时候，B+树高度更大。  </p>
+<ul>
+<li>查询：层数多，每次查询需要访问的结点就多，速度就慢。</li>
+<li>更新：当某个叶子结点达到容量极限的时候，再次插入应该落入该结点的元素，需要增加叶子结点，并且更新上层索引，极端情况下需要更新每一层索引，因此层数多也会导致速度慢。</li>
+</ul>
+<p>除此之外，还有写入表时锁的问题，数据表太大，一个写入操作可能阻塞后续的读取别的位置的读操作。</p>
+<h4>2、概念</h4>
+<p>把usr表分成usr_1, usr_2, usr_3...，每个表的结构都和原表一样，各包括原表的一部分数据。比如usr_1包括id从0到9999，usr_2包括id从10000到19999。</p>
+<h4>3、意义</h4>
+<p>提高数据的查询和更新效率（索引结构变小，锁住的数据量变少）</p>
+<h3>垂直分表</h3>
+<h4>1、背景</h4>
+<p>当一张表，有些字段经常被查询不常更新，另外一些字段经常被更新的时候，这张表的效率是不高的。</p>
+<h4>2 ...</h4></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/06/database-shard.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/05/vdisk-one-question.html">项目中一个诡异的问题</a>
+      </h1>
+      <p class="meta"><time datetime="2014-05-26T00:00:00" pubdate>2014-05-26</time></p>
+</header>
+
+  <div class="entry-content"><p>记录下今天在做虚拟磁盘过程中，遇到的一个问题。  </p>
+<h3>问题</h3>
+<p>因为没有找到合适的fat32格式文件系统的扩容工具（fatresize没有效果，parted3.1可以检测到分区但是没有resize功能，parted2.x有resize功能但是检测不到分区），只能暂时采用如下方法来进行“磁盘扩容”。（假设原磁盘test.img，大小为100M，要扩容到200M）  </p>
+<div class="highlight"><pre><span class="n">dd</span> <span class="k">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span> <span class="n">of</span><span class="o">=</span><span class="n">bigger</span><span class="p">.</span><span class="n">img</span> <span class="n">bs</span><span class="o">=</span><span class="mi">200</span><span class="n">M</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span>  
+<span class="n">mkdosfs</span> <span class="o">-</span><span class="n">F</span> <span class="mi">32</span> <span class="n">bigger</span><span class="p">.</span><span class="n">img</span>  
+<span class="n">mount</span> <span class="o">-</span><span class="n">o</span> <span class="n">iocharset</span><span class="o">=</span><span class="n">gb2312</span> <span class="n">test</span><span class="p">.</span><span class="n">img</span> <span class="o">/</span><span class="n">cdrom</span>  
+<span class="n">mount</span> <span class="o">-</span><span class="n">o</span> <span class="n">iocharset</span><span class="o">=</span><span class="n">gb2312</span> <span class="n">bigger</span><span class="p">.</span><span class="n">img</span> <span class="o">/</span><span class="n">mnt</span>  
+<span class="n">cp</span> <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">cdrom</span><span class="o">/*</span> <span class="o">/</span><span class="n">mnt ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/vdisk-one-question.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
+      </h1>
+      <p class="meta"><time datetime="2014-05-20T00:00:00" pubdate>2014-05-20</time></p>
+</header>
+
+  <div class="entry-content"><h3>线程的实质</h3>
+<p>gdb调试线程，在线程创建和退出的时候，会看到这样的字样  </p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">New</span> <span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)]</span>  
+<span class="p">...</span>  
+<span class="p">[</span><span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)</span> <span class="n">exited</span><span class="p">]</span>  
+</pre></div>
+
+
+<p>Thread后面的数字是线程id，但是后面出现的LWP是什么呢？  </p>
+<p>LWP(light weighted process)，即轻量级进程。它是进程，但是和普通进程的区别在于，子进程和父进程共享绝大多数地址空间和资源:  </p>
+<ul>
+<li>地址空间中，除了栈，其他段（text、data、bss、heap等）都是共享的。  </li>
+<li>资源中，除了tid、线程特定的信号屏蔽字、errno等少数几个，其余的（pid、ppid、pgid、sid、controlling terminal、uid、gid、open file descriptors、record locks ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/linux-thread.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
+      </h1>
+      <p class="meta"><time datetime="2014-05-19T00:00:00" pubdate>2014-05-19</time></p>
+</header>
+
+  <div class="entry-content"><h3>起因</h3>
+<p>上午在实现算法“找出最小的k个元素/找出第k大的元素”时，遇到了core dump。代码如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="cp">#include &lt;iterator&gt;  </span>
+<span class="cp">#include &lt;algorithm&gt;  </span>
+<span class="cp">#include &lt;cstdlib&gt;  </span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
+
+<span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span><span class="kt">int</span> <span class="n">begin</span><span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">begin</span><span class="p">;</span>  
+    <span class="c1">//copy(arr+begin,arr+end+1,ostream_iterator&lt;int&gt;(cout,&quot;,&quot;));  </span>
+    <span class="c1">//cout&lt;&lt;endl&lt;&lt;&quot;begin:&quot;&lt;&lt;begin&lt;&lt;&quot;,end:&quot;&lt;&lt;end&lt;&lt;&quot;,mid ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/delete-core-dump.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+<div class="pagination">
+    <a class="prev" href="http://particle128.com/category/tech2.html">&larr; Older</a>
+
+  <br />
+</div></div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

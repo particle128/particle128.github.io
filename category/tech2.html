@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>particle128's Blog</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>遇到棘手的问题越多，想退缩的次数越多，挺过来，这一天进步越大；平顺的一天，无异于原地踏步</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://localhost:8000/archives.html">archives</a></li>
+    <li><a href="http://localhost:8000/category/tech.html">tech</a></li>
+    <li><a href="http://localhost:8000/category/note.html">note</a></li>
+    <li><a href="http://localhost:8000/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div class="blog-index">
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
+      </h1>
+      <p class="meta"><time datetime="2014-05-05T00:00:00" pubdate>2014-05-05</time></p>
+</header>
+
+  <div class="entry-content"><p>以下内容汇总自APUE不同章节，还包括自己的一些测试  </p>
+<h3>可重入</h3>
+<p>可重入（reentrant）函数，字面意思就是可以重复进入执行，而不会发生数据错乱等异常情况。包括两重意思：  </p>
+<ul>
+<li>信号处理程序可重入 —— 满足这个条件的函数，称之为异步-信号安全的(async-signal-safe)  </li>
+<li>线程可重入 —— 满足这个条件的函数，称之为线程安全的(thread-safe)  </li>
+</ul>
+<p>这两个概念并不对等:<br />
+标准IO库函数比如printf，是线程安全的，因为内部使用了递归锁，即用<code>flockfile(FILE*fp)</code>和<code>funlockfile(FILE*fp)</code>包裹;<br />
+但是，它并不是异步信号安全的，因为毕竟<code>FILE</code>结构是全局的，信号处理程序中可能会修改它(flockfile和funlockfile之间).  </p>
+<h3>信号处理程序可重入</h3>
+<p>不可重入的几种情况：  </p>
+<ul>
+<li>使用静态数据结构，比如getpwnam，getpwuid：如果信号发生时正在执行getpwnam，信号处理程序中执行getpwnam可能覆盖原来getpwnam获取的旧值  </li>
+<li>调用malloc或free：如果信号发生时正在malloc（修改堆上存储空间的链接表），信号处理程序又调用malloc，会破坏内核的数据结构  </li>
+<li>使用标准IO函数 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/reentrant.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
+      </h1>
+      <p class="meta"><time datetime="2014-04-02T00:00:00" pubdate>2014-04-02</time></p>
+</header>
+
+  <div class="entry-content"><h3>起因</h3>
+<p>虚拟磁盘的项目中，使用了互斥锁(mutex)来控制任务队列的访问。但是mutex开销过大，让线程池的效果大打折扣，于是发现了spinlock的存在。  </p>
+<h3>概念</h3>
+<p>来自<a href="http://en.wikipedia.org/wiki/Spinlock">wiki</a>的定义：  </p>
+<blockquote>
+<p>In software engineering, a spinlock is a lock which causes a thread trying to acquire it to simply wait in a loop ("spin") while repeatedly checking if the lock is available. Since the thread remains active but is ...</p></blockquote></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/04/spinlock.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/03/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
+      </h1>
+      <p class="meta"><time datetime="2014-03-10T00:00:00" pubdate>2014-03-10</time></p>
+</header>
+
+  <div class="entry-content"><p>以下汇总的内容均来自本人的博客，或github站点。</p>
+<h3>源码</h3>
+<ul>
+<li><a href="https://github.com/particle128/vipshop-buy">particle128的github</a></li>
+</ul>
+<h3>所用到的技术</h3>
+<ul>
+<li><a href="http://particle128.com/posts/2013/12/selenium.html">Selenium WebDriver总结</a></li>
+</ul>
+<h3>项目相关总结</h3>
+<ul>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-intro.html">使用方法</a></li>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-tech.html">技术问题</a></li>
+<li><a href="http://particle128.com/posts/2013/12/vipshop-port.html">移植到windows</a></li>
+</ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/03/vipshop.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/03/inserter.html">vector的安插语义</a>
+      </h1>
+      <p class="meta"><time datetime="2014-03-08T00:00:00" pubdate>2014-03-08</time></p>
+</header>
+
+  <div class="entry-content"><p>今天做Online Judge的时候，遇到一个问题如下：  </p>
+<div class="highlight"><pre><span class="c1">//把A和B两个有序数组合并到A里，A空间足够大  </span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">;</span>  
+<span class="n">temp</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">);</span>  
+<span class="n">std</span><span class="o">::</span><span class="n">merge</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">A</span><span class="o">+</span><span class="n">m</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">B</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span>  
+<span class="n">std</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span><span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">temp</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="n">A</span><span class="p">);</span>  
+</pre></div>
+
+
+<p>结果显示A并没有变.  </p>
+<p>稍微考虑了一下，修改第一版如下：  </p>
+<div class="highlight"><pre><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">;</span>  
+<span class="n">temp</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">);</span>  
+<span class="n">std</span><span class="o">::</span><span class="n">merge</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">A</span><span class="o">+</span><span class="n">m</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">B</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="o">&amp;</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>  
+<span class="n">std ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/03/inserter.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/01/ssl.html">SSL总结</a>
+      </h1>
+      <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
+</header>
+
+  <div class="entry-content"><p>TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  </p>
+<h2>特点</h2>
+<p>用RSA分发密钥；用双方商定的对称加密算法加密通信。  </p>
+<h2>使用SSL，服务器和客户端需要首先进行握手（handshake）</h2>
+<p>【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器<br />
+【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端<br />
+【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。<br />
+【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/01/ssl.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-28T00:00:00" pubdate>2013-12-28</time></p>
+</header>
+
+  <div class="entry-content"><p>用Selenium Webdriver有段时间了，一直learning on demand，浏览了大部分API，并没有对这个工具进行详细和彻底的学习。<br />
+今天正好闲下来，梳理一下相关知识。  </p>
+<h2>Some Links</h2>
+<p><a href="http://code.google.com/p/selenium/">工程主页</a><br />
+<a href="http://www.seleniumhq.org/docs">文档主页</a><br />
+<a href="http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html">Python文档</a><br />
+<a href="http://selenium-python.readthedocs.org/en/latest/index.html">Python非官方文档</a><br />
+本人的两个使用Selenium的小项目
+<a href="https://github.com/particle128/vipshop-buy">vip.com shop assistant</a> <a href="https://github.com/particle128/qunar-flight-reminder">qunar flight-fare reminder</a></p>
+<h2>Some Concepts</h2>
+<h3>敏捷开发（Agile development）</h3>
+<p>是一个软件开发方法学，强调3点：<br />
+(1)adaptive&gt;predictive (2)iterative&gt;waterfall (3)codes&gt;documents<br />
+强调软件快速迭代，随着需求变化而修改或重构程序，而不是一开始就为将来可能出现的所有需求来设计。  </p>
+<h3>极限编程（extreme programming）</h3>
+<p>是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/selenium.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/map-operator.html">常量map容器只能调用find来获取元素</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-18T00:00:00" pubdate>2013-12-18</time></p>
+</header>
+
+  <div class="entry-content"><h2>Problem</h2>
+<p>做我的http server的时候，遇到了个错误，出错相关代码如下  </p>
+<div class="highlight"><pre><span class="k">namespace</span><span class="p">{</span>  
+    <span class="cm">/* ... */</span>  
+    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="kt">status_map_t</span><span class="p">;</span>  
+    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">init_status_code</span><span class="p">()</span>  
+    <span class="p">{</span>  
+        <span class="k">static</span> <span class="kt">status_map_t</span> <span class="n">status</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">404</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;404 Not Found</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="n">status</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;500 Internal Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">;</span>  
+        <span class="k">return</span> <span class="n">status</span><span class="p">;</span>  
+    <span class="p">}</span>  
+    <span class="k">const</span> <span class="kt">status_map_t</span><span class="o">&amp;</span> <span class="n">status_code</span><span class="o">=</span><span class="n">init_status_code</span><span class="p">();</span>  
+<span class="p">}</span>  
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">header_code</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">pstr ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
+<h2>Introduction</h2>
+<p>This project is used to check the airfare in <a href="http://www.qunar.com">www.qunar.com</a>, and send you a SMS message when the price is lower than what you set in config.py  </p>
+<h2>Requirements</h2>
+<p>Download the ChromeDriver in <a href="https://code.google.com/p/chromedriver/downloads/list">here</a>  </p>
+<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">selenium</span>  
+</pre></div>
+
+
+<h2>Configuration</h2>
+<p>see config.py  </p>
+<h2>Usage</h2>
+<div class="highlight"><pre><span class="n">python</span> <span class="n">main ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/qunar.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">Bargain Snatcher:使用说明</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码请移步<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>Two Modes</h2>
+<ul>
+<li>自选模式<br />
+配置config.ini，运行软件，键盘控制购买哪些看中的物品。<br />
+打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  </li>
+<li>全自动模式<br />
+配置config.ini，运行软件，自动购买符合过滤条件的物品。<br />
+打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  </li>
+</ul>
+<h2>Configuration</h2>
+<p><code>config.ini</code>配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  </p>
+<h3>url</h3>
+<p>包括登陆界面和主页的url，一般不需要动。  </p>
+<h3>screen</h3>
+<p>配置屏幕和选购窗口的大小安排，一般默认即可。  </p>
+<h3>auto_pick</h3>
+<ul>
+<li>
+<p>【AutoPickMode】：可选值是True或False。<br />
+选择True，将使软件进入<strong>全自动模式</strong>，auto_pick部分配置的其他选项才有意义。<br />
+选择False，则直接忽略auto_pick部分的其余配置，进入<strong>自选模式 ...</strong></p></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-intro.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/vipshop-port.html">Bargain Snatcher:linux到windows的移植问题</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>步骤</h2>
+<p>0.登陆windows系统  </p>
+<p>1.安装python2.7<br />
+google上搜索exe安装包安装之。  </p>
+<p>2.安装pip<br />
+参考：http://www.pip-installer.org/en/latest/installing.html<br />
+下载setuptools源码tar.gz ——&gt; 解压后执行python path/of/the/setuptools/setup.py install<br />
+——&gt;下载get-pip.py ——&gt;执行python get-pip.py  </p>
+<p>3.用pip安装需要的扩展包：selenium<br />
+D:\Python27\Scripts\pip install -U selenium  </p>
+<p>4.安装py2exe<br />
+下载地址：http://sourceforge ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+<div class="pagination">
+    <a class="prev" href="http://particle128.com/category/tech3.html">&larr; Older</a>
+
+      <a class="next" href="http://particle128.com/category/tech.html">Newer &rarr;</a>
+  <br />
+</div></div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>
