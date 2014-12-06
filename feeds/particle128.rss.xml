@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>遇到棘手的问题越多，想退缩的次数越多，挺过来，这一天进步越大；平顺的一天，无异于原地踏步</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 05 Dec 2014 00:00:00 +0800</lastBuildDate><item><title>Clean Code (1)</title><link>http://particle128.com/posts/2014/12/cleanCode(1).html</link><description>&lt;h3&gt;Chapter1 Clean Code&lt;/h3&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>May your choices reflect your hopes, not your fears.</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 05 Dec 2014 00:00:00 +0800</lastBuildDate><item><title>Clean Code (1)</title><link>http://particle128.com/posts/2014/12/cleanCode(1).html</link><description>&lt;h3&gt;Chapter1 Clean Code&lt;/h3&gt;
 &lt;p&gt;通过一个“坏代码毁了一个初创公司”的例子，讲了messy code的危害，不禁让我想到VPC的第一版。然后，列举了多个名人对clean code的推崇和理解，这些名人包括C++之父、UML创始人、程序员修炼之道作者、wiki之父...&lt;/p&gt;
 &lt;h3&gt;Chapter2 Meaningful Names&lt;/h3&gt;
 &lt;ul&gt;
