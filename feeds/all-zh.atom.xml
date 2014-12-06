@@ -1,5 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-05T00:00:00+08:00</updated><entry><title>Clean Code (1)</title><link href="http://particle128.com/posts/2014/12/cleanCode(1).html" rel="alternate"></link><updated>2014-12-05T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-05:posts/2014/12/cleanCode(1).html</id><summary type="html">&lt;h3&gt;Chapter1 Clean Code&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-06T00:00:00+08:00</updated><entry><title>Clean Code (2)</title><link href="http://particle128.com/posts/2014/12/cleanCode(2).html" rel="alternate"></link><updated>2014-12-06T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-06:posts/2014/12/cleanCode(2).html</id><summary type="html">&lt;h3&gt;Chapter5 Formatting&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;你的代码可能随着版本的升级，逐渐被替换；但是你的代码风格/格式会被后继开发者一直传承下去。&lt;/li&gt;
+&lt;li&gt;文件的长度：通常200行以内，最多500行&lt;/li&gt;
+&lt;li&gt;C++类文件，通常遵循scissors rule，即上面是成员函数，下面是成员变量；java相反，上面是成员变量，下面是共有函数&lt;br /&gt;
+根据Sun的&lt;a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html"&gt;Code Convention for Java&lt;/a&gt;，类中的成员的顺序如下：&lt;br /&gt;
+1.static成员变量：public -&amp;gt; protected -&amp;gt; package -&amp;gt; private&lt;br /&gt;
+2.non-static成员变量：public -&amp;gt; protected -&amp;gt; package -&amp;gt; private&lt;br /&gt;
+3.构造函数&lt;br /&gt;
+4.成员函数：按照语义顺序，而不是访问级别&lt;/li&gt;
+&lt;li&gt;一行不超过120个字符，可以设置屏幕字符宽度为120，是否需要向右滚动屏幕是判断是否超过行限制的方法（Sun Java Convention规定是80个字符）&lt;/li&gt;
+&lt;li&gt;操作符之间的空格：*和/符号两边不加空格，+和-符号两边加空格，用优先级来区分更加清晰。&lt;/li&gt;
+&lt;li&gt;常量应该出现在，对该常量有意义的高层函数，然后通过参数传递给低层函数，而不是直接定义在低层函数中。&lt;/li&gt;
+&lt;li&gt;不建议声明变量和赋值语句的对齐，这会导致读者只注意看变量名或赋值的右值，而忽视类型或左值&lt;/li&gt;
+&lt;li&gt;尽量避免空的代码块。即使是空的代码块，也要加上括号和适当缩进，比如（书中没给出正确的例子）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dis&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;but&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;readBufferSize&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c1"&gt;// empty&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Chapter6 Objects and Data Structures&lt;/h3&gt;
+&lt;p&gt;我理解文中所谓的Objects应该是指类。&lt;/p&gt;
+&lt;p&gt;对象暴漏行为，而隐藏数据，很容易增加新的对象，而不改变已经存在的行为；但很难增加行为，因为增加行为需要改变所有对象的行为。数据结构暴露数据，没有重要的行为，很容易增加新的行为，而不改变已经存在的对象；但很难增加数据结构，因为增加对象意味着需要改变所有操作这些数据结构的函数。例子如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// 数据结构&lt;/span&gt;
+&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Square&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="cm"&gt;/*public member*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Rectangle&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="cm"&gt;/*public member*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Circle&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="cm"&gt;/*public member*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Geometry&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="n"&gt;double&lt;/span&gt; &lt;span class="n"&gt;area&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;throws&lt;/span&gt; &lt;span class="n"&gt;NoSuchShapeException&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt; &lt;span class="k"&gt;instance&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;Square&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="p"&gt;...&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt; &lt;span class="k"&gt;instance&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;Rectangle&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="p"&gt;...&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt; &lt;span class="k"&gt;instance&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;Circle&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+            &lt;span class="p"&gt;...&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;throw&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;NoSuchShapeException&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;// 对象&lt;/span&gt;
+&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Square&lt;/span&gt; &lt;span class="n"&gt;implements&lt;/span&gt; &lt;span class="n"&gt;Shape&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="cm"&gt;/*private member and public method &amp;#39;area&amp;#39;*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Rectangle&lt;/span&gt; &lt;span class="n"&gt;implements&lt;/span&gt; &lt;span class="n"&gt;Shape&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="cm"&gt;/*private member and public method &amp;#39;area&amp;#39;*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Circle&lt;/span&gt; &lt;span class="n"&gt;implements&lt;/span&gt; &lt;span class="n"&gt;Shape&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="cm"&gt;/*private member and public method &amp;#39;area&amp;#39;*/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;// 用多态获取不同类型对象的面积&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;对象和数据结构，几乎有相反的特性，根据实际需要进行选择&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;得墨忒耳率（The Law of Demeter）&lt;/strong&gt;：一个模块不应该知道它所操纵的对象的内部结构。具体来说来，类C的一个方法f应该仅能访问如下类的方法：&lt;br /&gt;
+1.C这个对象&lt;br /&gt;
+2.f中定义的对象&lt;br /&gt;
+3.f的参数对象&lt;br /&gt;
+4.C的成员对象  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;下面这句话是违反该规则的，因为getOptions()返回的对象，不属于上面四类之一，调用它的getDir意味着知道该返回对象的内部结构（成员函数）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getOptions&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;getDir&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;getAbsolutePath&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;应该改成：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getAbsolutePathOfDirOption&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getDirOption&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;getAbsolutePath&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// 假设arg.getDirOption()返回的是数据结构，而不是对象。&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;数据结构：成员变量是公有的，可能含有成员函数（构造函数，get函数...）。有时被称为DTO（Data Transfer Objects），与数据库或socket通信时常用到。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Error Handling&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;用异常，而不是错误码（errno或return code），可以让代码更清晰，分离异常处理和程序逻辑。这让我想到UNP的头文件，作者Steven封装了所有网络相关系统调用（connect -&amp;gt; Connect, listen -&amp;gt; Listen），才得以让异常处理不扰乱代码逻辑。&lt;/li&gt;
+&lt;li&gt;先写单元测试，再写try-catch-finally块，最后写主体逻辑&lt;/li&gt;
+&lt;li&gt;未检查的异常，好处是：限制你必须catch它。但是，这不是可靠程序的必要条件（C#,C++,Python,Ruby都没有），而且底层的一次改动（比如抛出新的异常了），会导致上面好几层的函数都要重新改写异常说明符（如果到了上面第n层才catch的话），这破坏了封装！&lt;/li&gt;
+&lt;li&gt;抛异常的时候，只有调用堆栈还不够，尽量提供详细的上下文，比如抛出该异常时的局部变量、第几轮循环等。&lt;/li&gt;
+&lt;li&gt;可以定义包裹类，来包裹第三方API，例如把原先抛出三种异常的代码，包裹之后只抛出一种异常。好处：(1)减少依赖，即当第三方API更换时，你只需该wrapper，应用代码可以不动 (2)测试时方便模拟出第三方库的调用...&lt;strong&gt;啥意思???? &lt;/strong&gt;(2)设计一组更符合自己使用习惯的新的接口&lt;/li&gt;
+&lt;li&gt;一种场景，定义一个异常类就行了，可以通过错误信息来区分不同错误。使用多种异常类的情况：你想捕获一种异常，而放行另一种异常！！！&lt;/li&gt;
+&lt;li&gt;不要用异常应付正常现象的特殊情况，用SPECIAL CASE PATTERN&lt;/li&gt;
+&lt;li&gt;不要返回null，会导致太多null检查，且容易漏掉检查。用异常，或special case object（比如空列表）&lt;/li&gt;
+&lt;li&gt;不要传入null，因为如果可能接收null，需要做异常处理（抛出InvalidArgumentException异常，再catch）。。。&lt;strong&gt;我感觉很多时候都没法避免啊，如果其他程序员调用该函数的时候传入null了咋办？？？放着不管？？？&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="cleanCode"></category></entry><entry><title>Clean Code (1)</title><link href="http://particle128.com/posts/2014/12/cleanCode(1).html" rel="alternate"></link><updated>2014-12-05T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-05:posts/2014/12/cleanCode(1).html</id><summary type="html">&lt;h3&gt;Chapter1 Clean Code&lt;/h3&gt;
 &lt;p&gt;通过一个“坏代码毁了一个初创公司”的例子，讲了messy code的危害，不禁让我想到VPC的第一版。然后，列举了多个名人对clean code的推崇和理解，这些名人包括C++之父、UML创始人、程序员修炼之道作者、wiki之父...&lt;/p&gt;
 &lt;h3&gt;Chapter2 Meaningful Names&lt;/h3&gt;
 &lt;ul&gt;

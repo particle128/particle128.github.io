@@ -60,6 +60,31 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
+      </h1>
+      <p class="meta"><time datetime="2014-05-20T00:00:00" pubdate>2014-05-20</time></p>
+</header>
+
+  <div class="entry-content"><h3>线程的实质</h3>
+<p>gdb调试线程，在线程创建和退出的时候，会看到这样的字样  </p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">New</span> <span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)]</span>  
+<span class="p">...</span>  
+<span class="p">[</span><span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)</span> <span class="n">exited</span><span class="p">]</span>  
+</pre></div>
+
+
+<p>Thread后面的数字是线程id，但是后面出现的LWP是什么呢？  </p>
+<p>LWP(light weighted process)，即轻量级进程。它是进程，但是和普通进程的区别在于，子进程和父进程共享绝大多数地址空间和资源:  </p>
+<ul>
+<li>地址空间中，除了栈，其他段（text、data、bss、heap等）都是共享的。  </li>
+<li>资源中，除了tid、线程特定的信号屏蔽字、errno等少数几个，其余的（pid、ppid、pgid、sid、controlling terminal、uid、gid、open file descriptors、record locks ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/linux-thread.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
       </h1>
       <p class="meta"><time datetime="2014-05-19T00:00:00" pubdate>2014-05-19</time></p>
@@ -298,25 +323,6 @@ Decomposition of a large system into modules is probably the single most importa
     <a rel="full-article" href="http://particle128.com/posts/2014/02/pp6.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
-      </h1>
-      <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
-</header>
-
-  <div class="entry-content"><h2>Column 7 The back of the envelope</h2>
-<h3>rules of thumb</h3>
-<ul>
-<li>
-<p>rule of 72<br />
-Used for estimating the growth of any exponential process.<br />
-<em>Assume that you invest a sum of money for y years at an interest rate of r percent per year. The financial version of the rule says that ...</em></p></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/02/pp7.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
 
@@ -328,6 +334,9 @@ Used for estimating the growth of any exponential process.<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
       </li>
       <li class="post">
@@ -338,9 +347,6 @@ Used for estimating the growth of any exponential process.<br />
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
       </li>
     </ul>
   </section>

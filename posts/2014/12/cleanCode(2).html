@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clean Code (2)</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>May your choices reflect your hopes, not your fears.</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://particle128.com/archives.html">archives</a></li>
+    <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    <li><a href="http://particle128.com/category/note.html">note</a></li>
+    <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">Clean Code (2)</h1>
+      <p class="meta"><time datetime="2014-12-06T00:00:00" pubdate>2014-12-06</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter5 Formatting</h3>
+<ul>
+<li>你的代码可能随着版本的升级，逐渐被替换；但是你的代码风格/格式会被后继开发者一直传承下去。</li>
+<li>文件的长度：通常200行以内，最多500行</li>
+<li>C++类文件，通常遵循scissors rule，即上面是成员函数，下面是成员变量；java相反，上面是成员变量，下面是共有函数<br />
+根据Sun的<a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html">Code Convention for Java</a>，类中的成员的顺序如下：<br />
+1.static成员变量：public -&gt; protected -&gt; package -&gt; private<br />
+2.non-static成员变量：public -&gt; protected -&gt; package -&gt; private<br />
+3.构造函数<br />
+4.成员函数：按照语义顺序，而不是访问级别</li>
+<li>一行不超过120个字符，可以设置屏幕字符宽度为120，是否需要向右滚动屏幕是判断是否超过行限制的方法（Sun Java Convention规定是80个字符）</li>
+<li>操作符之间的空格：*和/符号两边不加空格，+和-符号两边加空格，用优先级来区分更加清晰。</li>
+<li>常量应该出现在，对该常量有意义的高层函数，然后通过参数传递给低层函数，而不是直接定义在低层函数中。</li>
+<li>不建议声明变量和赋值语句的对齐，这会导致读者只注意看变量名或赋值的右值，而忽视类型或左值</li>
+<li>尽量避免空的代码块。即使是空的代码块，也要加上括号和适当缩进，比如（书中没给出正确的例子）</li>
+</ul>
+<div class="highlight"><pre><span class="k">while</span><span class="p">(</span><span class="n">dis</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="n">but</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">readBufferSize</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// empty</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>Chapter6 Objects and Data Structures</h3>
+<p>我理解文中所谓的Objects应该是指类。</p>
+<p>对象暴漏行为，而隐藏数据，很容易增加新的对象，而不改变已经存在的行为；但很难增加行为，因为增加行为需要改变所有对象的行为。数据结构暴露数据，没有重要的行为，很容易增加新的行为，而不改变已经存在的对象；但很难增加数据结构，因为增加对象意味着需要改变所有操作这些数据结构的函数。例子如下：</p>
+<div class="highlight"><pre><span class="c1">// 数据结构</span>
+<span class="n">public</span> <span class="k">class</span> <span class="n">Square</span> <span class="p">{</span><span class="cm">/*public member*/</span><span class="p">}</span>
+<span class="n">public</span> <span class="k">class</span> <span class="n">Rectangle</span> <span class="p">{</span><span class="cm">/*public member*/</span><span class="p">}</span>
+<span class="n">public</span> <span class="k">class</span> <span class="n">Circle</span> <span class="p">{</span><span class="cm">/*public member*/</span><span class="p">}</span>
+<span class="n">public</span> <span class="k">class</span> <span class="n">Geometry</span> <span class="p">{</span>
+    <span class="n">public</span> <span class="n">double</span> <span class="n">area</span><span class="p">(</span><span class="n">Object</span> <span class="n">shape</span><span class="p">)</span> <span class="n">throws</span> <span class="n">NoSuchShapeException</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">shape</span> <span class="k">instance</span> <span class="n">of</span> <span class="n">Square</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">...</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">shape</span> <span class="k">instance</span> <span class="n">of</span> <span class="n">Rectangle</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">...</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">shape</span> <span class="k">instance</span> <span class="n">of</span> <span class="n">Circle</span><span class="p">){</span>
+            <span class="p">...</span>
+        <span class="p">}</span>
+        <span class="n">throw</span> <span class="k">new</span> <span class="n">NoSuchShapeException</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 对象</span>
+<span class="n">public</span> <span class="k">class</span> <span class="n">Square</span> <span class="n">implements</span> <span class="n">Shape</span> <span class="p">{</span><span class="cm">/*private member and public method &#39;area&#39;*/</span><span class="p">}</span>
+<span class="n">public</span> <span class="k">class</span> <span class="n">Rectangle</span> <span class="n">implements</span> <span class="n">Shape</span> <span class="p">{</span><span class="cm">/*private member and public method &#39;area&#39;*/</span><span class="p">}</span>
+<span class="n">public</span> <span class="k">class</span> <span class="n">Circle</span> <span class="n">implements</span> <span class="n">Shape</span> <span class="p">{</span><span class="cm">/*private member and public method &#39;area&#39;*/</span><span class="p">}</span>
+<span class="c1">// 用多态获取不同类型对象的面积</span>
+</pre></div>
+
+
+<ul>
+<li>对象和数据结构，几乎有相反的特性，根据实际需要进行选择</li>
+<li>
+<p><strong>得墨忒耳率（The Law of Demeter）</strong>：一个模块不应该知道它所操纵的对象的内部结构。具体来说来，类C的一个方法f应该仅能访问如下类的方法：<br />
+1.C这个对象<br />
+2.f中定义的对象<br />
+3.f的参数对象<br />
+4.C的成员对象  </p>
+</li>
+<li>
+<p>下面这句话是违反该规则的，因为getOptions()返回的对象，不属于上面四类之一，调用它的getDir意味着知道该返回对象的内部结构（成员函数）。</p>
+</li>
+</ul>
+<div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">arg</span><span class="p">.</span><span class="n">getOptions</span><span class="p">().</span><span class="n">getDir</span><span class="p">().</span><span class="n">getAbsolutePath</span><span class="p">()</span><span class="err">`</span>
+</pre></div>
+
+
+<p>应该改成：</p>
+<div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">arg</span><span class="p">.</span><span class="n">getAbsolutePathOfDirOption</span><span class="p">();</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">arg</span><span class="p">.</span><span class="n">getDirOption</span><span class="p">().</span><span class="n">getAbsolutePath</span><span class="p">();</span> <span class="c1">// 假设arg.getDirOption()返回的是数据结构，而不是对象。</span>
+</pre></div>
+
+
+<ul>
+<li>数据结构：成员变量是公有的，可能含有成员函数（构造函数，get函数...）。有时被称为DTO（Data Transfer Objects），与数据库或socket通信时常用到。</li>
+</ul>
+<h3>Error Handling</h3>
+<ul>
+<li>用异常，而不是错误码（errno或return code），可以让代码更清晰，分离异常处理和程序逻辑。这让我想到UNP的头文件，作者Steven封装了所有网络相关系统调用（connect -&gt; Connect, listen -&gt; Listen），才得以让异常处理不扰乱代码逻辑。</li>
+<li>先写单元测试，再写try-catch-finally块，最后写主体逻辑</li>
+<li>未检查的异常，好处是：限制你必须catch它。但是，这不是可靠程序的必要条件（C#,C++,Python,Ruby都没有），而且底层的一次改动（比如抛出新的异常了），会导致上面好几层的函数都要重新改写异常说明符（如果到了上面第n层才catch的话），这破坏了封装！</li>
+<li>抛异常的时候，只有调用堆栈还不够，尽量提供详细的上下文，比如抛出该异常时的局部变量、第几轮循环等。</li>
+<li>可以定义包裹类，来包裹第三方API，例如把原先抛出三种异常的代码，包裹之后只抛出一种异常。好处：(1)减少依赖，即当第三方API更换时，你只需该wrapper，应用代码可以不动 (2)测试时方便模拟出第三方库的调用...<strong>啥意思???? </strong>(2)设计一组更符合自己使用习惯的新的接口</li>
+<li>一种场景，定义一个异常类就行了，可以通过错误信息来区分不同错误。使用多种异常类的情况：你想捕获一种异常，而放行另一种异常！！！</li>
+<li>不要用异常应付正常现象的特殊情况，用SPECIAL CASE PATTERN</li>
+<li>不要返回null，会导致太多null检查，且容易漏掉检查。用异常，或special case object（比如空列表）</li>
+<li>不要传入null，因为如果可能接收null，需要做异常处理（抛出InvalidArgumentException异常，再catch）。。。<strong>我感觉很多时候都没法避免啊，如果其他程序员调用该函数的时候传入null了咋办？？？放着不管？？？</strong></li>
+</ul></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+<time datetime="2014-12-06T00:00:00" pubdate>2014-12-06</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/cleancode.html">cleanCode</a>
+  </span>
+</p>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+          var disqus_identifier = '/posts/2014/12/cleanCode(2).html';
+          var disqus_url = 'http://particle128.com/posts/2014/12/cleanCode(2).html';
+          var disqus_title = 'Clean Code (2)';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>
