@@ -139,7 +139,7 @@
 <ul>
 <li>数据结构：成员变量是公有的，可能含有成员函数（构造函数，get函数...）。有时被称为DTO（Data Transfer Objects），与数据库或socket通信时常用到。</li>
 </ul>
-<h3>Error Handling</h3>
+<h3>Chapter7 Error Handling</h3>
 <ul>
 <li>用异常，而不是错误码（errno或return code），可以让代码更清晰，分离异常处理和程序逻辑。这让我想到UNP的头文件，作者Steven封装了所有网络相关系统调用（connect -&gt; Connect, listen -&gt; Listen），才得以让异常处理不扰乱代码逻辑。</li>
 <li>先写单元测试，再写try-catch-finally块，最后写主体逻辑</li>
