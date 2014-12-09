@@ -60,6 +60,36 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-09T00:00:00" pubdate>2014-12-09</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter8 Boundaries</h3>
+<p>边界指的是第三方库和应用程序的边界。</p>
+<p>用包裹类，或适配器模式，来封装第三方代码（third-party code），可以：</p>
+<ol>
+<li>限制第三方代码的功能</li>
+<li>提供更一致和好用的接口</li>
+<li>减少受第三方代码改变带来的影响</li>
+</ol>
+<p>经常出现匪夷所思的bug，可能是由于第三方库导致的。所以，在使用之前应该做一个Learning Test（一遍学习文档，一遍写单元测试），确保我们需要的功能它都能正确提供。Learning Test好处：</p>
+<ol>
+<li>帮助学习文档</li>
+<li>确保得到如期的结果，避免以后bug不知道从哪儿来</li>
+<li>第三方库版本更新后，继续用它测试是否符合预期（很多时候我们都不及时更新第三方库，因为我们怕更新后带来新的问题)</li>
+</ol>
+<h3>Chapter9 Unit Tests</h3>
+<ul>
+<li>TDD（Test Driven Development）的三法则：写了失败的UT再写成产代码；一旦可以保证生产代码失败，就停止写UT；一旦生产代码通过了UT，就停止写生产代码。这样一轮循环大约30s。</li>
+<li>测试代码和生产代码一样重要，也要简洁、可读。因为如果一开始测试代码标准不高，随着生产代码的演化，阅读和修改单元测试的成本会非常高，高到一定程度 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(3).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
       </h1>
       <p class="meta"><time datetime="2014-12-06T00:00:00" pubdate>2014-12-06</time></p>
@@ -275,38 +305,6 @@ Used for estimating the growth of any exponential process.<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-12-03T00:00:00" pubdate>2013-12-03</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item6</h2>
-<ul>
-<li>自增自减操作符，两原则：<br />
-1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  <blockquote>
-<p>设计类的一条无上宝典就是：一旦有疑虑，试看int行为如何并遵循之。  </p>
-</blockquote>
-</li>
-</ul>
-<p>2.后自增和自减应该调用前自增和自减，而不是自己写函数，这样只需要维护前自增。  </p>
-<h2>Item7</h2>
-<ul>
-<li>不要重载&amp;&amp;，||和，操作符，因为无论定义成员或非成员函数，都无法模拟C++中这3个操作符的行为模式（短路，求值顺序）。  </li>
-<li>for语句头包括3个部分，第1部分是语句，所以可以定义多个变量。第3部分是表达式，所以只能用逗号隔开多个表达式，而不能使用定义变量。  </li>
-</ul>
-<h2>Item8</h2>
-<ul>
-<li>placement new类似于new，首先调用operator new，然后调用对象构造函数，然后返回内存指针。<br />
-不同点，是placement new调用的operator new的原型和实现如下：  </li>
-</ul>
-<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location</span><span class="p">)</span><span class="c1">//第一个参数不提供名字 ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/category/note2.html">&larr; Older</a>
 
@@ -316,6 +314,9 @@ Used for estimating the growth of any exponential process.<br />
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
+      </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
       </li>
@@ -327,9 +328,6 @@ Used for estimating the growth of any exponential process.<br />
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
       </li>
     </ul>
   </section>

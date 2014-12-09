@@ -60,6 +60,38 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">MoreEffectiveC++(2)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-03T00:00:00" pubdate>2013-12-03</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item6</h2>
+<ul>
+<li>自增自减操作符，两原则：<br />
+1.postfix increment和decrement操作符，应该返回const对象，理由是：不允许进行两次后置++，防止用户把比较操作符写成赋值操作符而通过编译。  <blockquote>
+<p>设计类的一条无上宝典就是：一旦有疑虑，试看int行为如何并遵循之。  </p>
+</blockquote>
+</li>
+</ul>
+<p>2.后自增和自减应该调用前自增和自减，而不是自己写函数，这样只需要维护前自增。  </p>
+<h2>Item7</h2>
+<ul>
+<li>不要重载&amp;&amp;，||和，操作符，因为无论定义成员或非成员函数，都无法模拟C++中这3个操作符的行为模式（短路，求值顺序）。  </li>
+<li>for语句头包括3个部分，第1部分是语句，所以可以定义多个变量。第3部分是表达式，所以只能用逗号隔开多个表达式，而不能使用定义变量。  </li>
+</ul>
+<h2>Item8</h2>
+<ul>
+<li>placement new类似于new，首先调用operator new，然后调用对象构造函数，然后返回内存指针。<br />
+不同点，是placement new调用的operator new的原型和实现如下：  </li>
+</ul>
+<div class="highlight"><pre><span class="kt">void</span> <span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">size_t</span><span class="p">,</span><span class="kt">void</span> <span class="o">*</span><span class="n">location</span><span class="p">)</span><span class="c1">//第一个参数不提供名字 ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
       </h1>
       <p class="meta"><time datetime="2013-12-02T00:00:00" pubdate>2013-12-02</time></p>
@@ -295,31 +327,6 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 39: Use private inheritance judiciously</h2>
-<p>1.私有继承和复合(composition)意义相同：根据某物实现出（is-implemented-in-terms-of）。<br />
-2.除非必要，尽量用复合实现这种语义。<br />
-3.可以考虑使用private继承的情况：<br />
-（1）需要需要访问protected成员<br />
-（2）需要重写virtual函数。（替代策略:可以派生一个类，重写virtual函数。然后包含这个类的对象）<br />
-（3）如果需要包含的是一个空类对象，用private继承，节省空间。<br />
-Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual函数的类。因为不含非静态成员变量和虚函数，所以一般不需要内存空间。<br />
-注：<br />
-1)类中包含一个空类对象的时候，大多数编译器至少需要1个字节的内存空间。<br />
-2)继承自空类对象，不需要任何内存空间。<br />
-4.尽量复用已有代码，所以平时注意积累自己的工具箱，设计的越通用越好，随时可以拿来复用。  </p>
-<h2>Item 40 ...</h2></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/category/note3.html">&larr; Older</a>
 
@@ -331,6 +338,9 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
       </li>
       <li class="post">
@@ -341,9 +351,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
       </li>
     </ul>
   </section>
