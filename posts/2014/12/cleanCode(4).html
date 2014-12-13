@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>SSL总结</title>
+  <title>Clean Code (4)</title>
   <meta name="author" content="particle128">
 
 
@@ -59,47 +59,71 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">SSL总结</h1>
-      <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
+      <h1 class="entry-title">Clean Code (4)</h1>
+      <p class="meta"><time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time></p>
 </header>
 
-  <div class="entry-content"><p>TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  </p>
-<h2>特点</h2>
-<p>用RSA分发密钥；用双方商定的对称加密算法加密通信。  </p>
-<h2>使用SSL，服务器和客户端需要首先进行握手（handshake）</h2>
-<p>【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器<br />
-【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端<br />
-【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。<br />
-【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master secret生成master secret，再生成session key。<br />
-》》之后的通信用session key进行对称加密。<br />
-【5】客户端用对称密钥加密数据，告诉服务器握手过程结束<br />
-【6】服务器用对称密钥加密数据，告诉客户端握手过程结束  </p>
-<h2>补充</h2>
-<p>[0] 对称加密中，公钥和私钥都可以进行加密，另外一个进行解密。<br />
-公钥是可以发给别人的，私钥是永远留在自己本地的。<br />
-公钥加密，最常见，提供加密功能。因为私钥只有对端才有，所以其他人截获了也无法打开，保密功能实现。<br />
-私钥加密，主要用在证书上，提供数字签名功能。如果自己能用公钥解密一个文件，说明该文件一定被私钥加密的，所以一定来自对端，第三方不能伪造，签名功能实现。  </p>
-<p>[1] 证书certificate，在cryptography中全名是public key certificate，又叫digital certificate。<br />
-公钥和公钥所有者一些信息被绑定在证书中，同时证书被CA（certificate authority证书颁发机构）进行了数字签名（也就是用私钥进行加密了）。PKI（public key infrastructure）公钥基础设施方案中，CA是可信的，所以CA的数字签名保证公钥所有者的真实身份。<br />
-证书的意义是：作为公钥的载体，让公钥可以在不加密的信道传输，而不用担心被伪造。  </p>
-<p>[2] 客户端可以不提供证书，这样仅仅保证对端是可信的服务器，而服务器无法确定客户端的身份。<br />
-无论哪种情况，都可以保证客户端和服务器之间的通信是加密的。  </p>
-<p>[3] 过程剖析<br />
-1、2两步通信不加密，用来传递服务器证书；<br />
-3、4两步通信公钥加密，用来传递pre-master secret（对称密钥的雏形）和客户端证书；<br />
-5、6两步以及之后的通信对称加密。<br />
-【1~4】构成3次握手，【5~6】构成2次挥手  </p>
-<p>[4] 身份认证<br />
-客户端的身份是【4】时确定的，解开证书确定公钥是可信的，解开签名确定对端有私钥，身份确定。<br />
-服务器的身份是【6】时确定的，客户端解开证书确定公钥是可信的，服务器用session key加密说明其已经获得了pre-master，必有私钥，身份确定。<br />
-其实，如果服务器在【2】时也传递自己签名的数据过去的话，自己的身份可以提前确定。但是提前确定对后面的步骤没有影响，所以省略传递这个数据，更加节省握手过程中的流量。  </p></div>
+  <div class="entry-content"><h3>Chapter12 Emergence</h3>
+<blockquote>
+<p>The majority of the cost of a software project is in long-term maintenance  </p>
+</blockquote>
+<p>解析极限编程：拥抱变化（Extreme Programming Explained: Embrace Change）里列举了“简单设计”的四原则，优先级依次降低：</p>
+<ol>
+<li>跑通所有的测试：单一原则的简洁代码，依赖更少的代码，<strong>更加可测</strong>。所以，测试功能的同时，也能确保程序逐渐符合“低耦合高内聚”的面向对象目标。此外，也能让我们更加大胆的重构。</li>
+<li>没有重复：提取重复的部分组成新的方法/新的类，用模板办法把公共的部分提升到抽象父类中</li>
+<li>有表达力：一个软件工程耗费最多时间的是长期的维护，所以，选好的名字、让方法和类尽可能小、写单元测试。有句话叫：想象你代码的维护者是一个精神狂暴症患者，并且他知道你家在哪儿。</li>
+<li>尽可能减少类和方法的数量：按照CLEAN CODE的各种原则，应该会产生更多的类和方法，但是过犹不及，别拆的太细了。</li>
+</ol>
+<p>掌握了这些原则可以节省很多年的探索，但是只有在实践中才能更深入的理解这些原则！！！</p>
+<h3>Chapter13 Concurrency</h3>
+<ul>
+<li>并发解耦了“做什么”和“什么时候做”。单线程程序通过加断点，我们很明确的知道当时程序的状态，即执行到哪里了，将要执行到哪儿。但是，多线程并不是如此，多个线程的“什么时候做”并不能通过“做什么”推导出先后顺序。</li>
+<li>并发防卫原则<br />
+1.单一职责。让并发代码和其他代码分隔开。<br />
+2.限制共享数据的使用范围。减少临界区。<br />
+3.优先拷贝数据(线程独占)而不是共享数据，除非效率开销在当前应用场景下影响很大。<br />
+4.线程越独立越好，尽量不与其他线程扯上关系（比如共享数据之类的）。</li>
+<li>使用线程安全的集合，<code>java.util.concurrent</code>下的<code>ConcurrentHashMap</code>。</li>
+<li>熟悉一些常用模型和解决方法：生产者消费者、读者写者、哲学家就餐。绝大多数遇到的兵法问题，都是这些模型的变形。</li>
+<li>……………………………………</li>
+</ul>
+<p>测试线程代码</p>
+<ul>
+<li>不要把一些不常见的失败，当做一次性（one-off）的，研究它的原因。</li>
+<li>先测试代码的非线程版本，再测试线程，从而确定是逻辑错了，还是线程同步出错了。</li>
+<li>开辟多于处理器的线程数，易于暴露问题</li>
+<li>尽早在多个平台上运行，易于暴露问题（不同平台的线程策略不同，在一个平台上不常见的bug可能在另一个平台上经常发生）</li>
+<li>很多多线程bug不容易发现是因为，有太多可能的执行路径，或者常见路径的概率太高（比如两个相邻的语句看似原子的执行），导致发生不常见路径的概率很低。</li>
+</ul>
+<p>解决办法：</p>
+<ol>
+<li>手动插入<code>yield()</code>或<code>wait()</code>或<code>sleep()</code>或<code>priority()</code>，改变执行顺序</li>
+<li>借助AOP，在测试时，随机插入这些语句之一，在生产代码中，插入空语句。如下所示：</li>
+</ol>
+<div class="highlight"><pre><span class="n">public</span> <span class="n">class</span> <span class="n">ThreadJigglePoint</span> <span class="p">{</span>
+    <span class="n">public</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">jiggle</span><span class="p">()</span> <span class="p">{</span>   <span class="c1">//根据配置文件，随机插入不同的语句，或不插入语句</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">public</span> <span class="n">synchronized</span> <span class="n">String</span> <span class="n">nextUrlOrNull</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">hasNext</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">ThreadJigglePoint</span><span class="p">.</span><span class="n">jiggle</span><span class="p">();</span>
+        <span class="n">String</span> <span class="n">url</span> <span class="o">=</span> <span class="n">urlGenerator</span><span class="p">.</span><span class="n">next</span><span class="p">();</span>
+        <span class="n">ThreadJigglePoint</span><span class="p">.</span><span class="n">jiggle</span><span class="p">();</span>
+        <span class="n">updateHasNext</span><span class="p">();</span>
+        <span class="n">ThreadJigglePoint</span><span class="p">.</span><span class="n">jiggle</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">url</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">null</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/ssl.html">ssl</a>
+<time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/cleancode.html">cleanCode</a>
   </span>
 </p>    </footer>
   </article>
@@ -168,9 +192,9 @@
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2014/01/ssl.html';
-          var disqus_url = 'http://particle128.com/posts/2014/01/ssl.html';
-          var disqus_title = 'SSL总结';
+          var disqus_identifier = '/posts/2014/12/cleanCode(4).html';
+          var disqus_url = 'http://particle128.com/posts/2014/12/cleanCode(4).html';
+          var disqus_title = 'Clean Code (4)';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
