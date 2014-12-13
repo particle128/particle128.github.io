@@ -21,7 +21,7 @@
 4.线程越独立越好，尽量不与其他线程扯上关系（比如共享数据之类的）。&lt;/li&gt;
 &lt;li&gt;使用线程安全的集合，&lt;code&gt;java.util.concurrent&lt;/code&gt;下的&lt;code&gt;ConcurrentHashMap&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;熟悉一些常用模型和解决方法：生产者消费者、读者写者、哲学家就餐。绝大多数遇到的兵法问题，都是这些模型的变形。&lt;/li&gt;
-&lt;li&gt;……………………………………&lt;/li&gt;
+&lt;li&gt;尽量不要让一个共享对象有两个公共方法？？？？？解决方法：基于客户端的锁、基于服务器的锁、适配的服务器？？？？&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;测试线程代码&lt;/p&gt;
 &lt;ul&gt;
