@@ -60,6 +60,27 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time></p>
+</header>
+
+  <div class="entry-content"><p>刚接手了老师的一个安卓项目，考虑到实验室闲置了一台PC，决定把这个pc配置成git服务器，用来进行版本控制。以为是分分钟钟的事儿呢，结果用了一整天才搞定。被网上残缺不全的新旧教程整懵了，决定自己写一个。</p>
+<h3>协议选择</h3>
+<p>git可以使用五种网络协议进行通信：</p>
+<ol>
+<li>Local：团队成员用不同账户登录同一台电脑，或者共享一个挂载的NFS<br />
+语法：<code>git clone /opt/git/project.git</code> 或 <code>git clone file:///opt/git/project.git</code><br />
+前者根据是否在同一个文件系统，选择硬链接或拷贝。后者类似网络传输，效率稍低。</li>
+<li>SSH：最常用的方式，使用简单，方便搭建，加密传输+访问认证<br />
+语法：<code>git clone ssh://user@server/project.git</code> 或 <code>git clone user ...</code></li></ol></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/git-server.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
       </h1>
       <p class="meta"><time datetime="2014-10-22T00:00:00" pubdate>2014-10-22</time></p>
@@ -275,32 +296,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <a rel="full-article" href="http://particle128.com/posts/2014/05/linux-thread.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
-      </h1>
-      <p class="meta"><time datetime="2014-05-19T00:00:00" pubdate>2014-05-19</time></p>
-</header>
-
-  <div class="entry-content"><h3>起因</h3>
-<p>上午在实现算法“找出最小的k个元素/找出第k大的元素”时，遇到了core dump。代码如下：  </p>
-<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
-<span class="cp">#include &lt;iterator&gt;  </span>
-<span class="cp">#include &lt;algorithm&gt;  </span>
-<span class="cp">#include &lt;cstdlib&gt;  </span>
-
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
-
-<span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span><span class="kt">int</span> <span class="n">begin</span><span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">begin</span><span class="p">;</span>  
-    <span class="c1">//copy(arr+begin,arr+end+1,ostream_iterator&lt;int&gt;(cout,&quot;,&quot;));  </span>
-    <span class="c1">//cout&lt;&lt;endl&lt;&lt;&quot;begin:&quot;&lt;&lt;begin&lt;&lt;&quot;,end:&quot;&lt;&lt;end&lt;&lt;&quot;,mid ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/05/delete-core-dump.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/category/tech2.html">&larr; Older</a>
 
@@ -310,6 +305,9 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
+      </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
       </li>
@@ -321,9 +319,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
       </li>
     </ul>
   </section>

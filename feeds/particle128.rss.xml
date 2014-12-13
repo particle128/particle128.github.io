@@ -1,5 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>May your choices reflect your hopes, not your fears.</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 09 Dec 2014 00:00:00 +0800</lastBuildDate><item><title>Clean Code (3)</title><link>http://particle128.com/posts/2014/12/cleanCode(3).html</link><description>&lt;h3&gt;Chapter8 Boundaries&lt;/h3&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>May your choices reflect your hopes, not your fears.</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 13 Dec 2014 00:00:00 +0800</lastBuildDate><item><title>使用Smart HTTP的git服务器搭建过程</title><link>http://particle128.com/posts/2014/12/git-server.html</link><description>&lt;p&gt;刚接手了老师的一个安卓项目，考虑到实验室闲置了一台PC，决定把这个pc配置成git服务器，用来进行版本控制。以为是分分钟钟的事儿呢，结果用了一整天才搞定。被网上残缺不全的新旧教程整懵了，决定自己写一个。&lt;/p&gt;
+&lt;h3&gt;协议选择&lt;/h3&gt;
+&lt;p&gt;git可以使用五种网络协议进行通信：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Local：团队成员用不同账户登录同一台电脑，或者共享一个挂载的NFS&lt;br /&gt;
+语法：&lt;code&gt;git clone /opt/git/project.git&lt;/code&gt; 或 &lt;code&gt;git clone file:///opt/git/project.git&lt;/code&gt;&lt;br /&gt;
+前者根据是否在同一个文件系统，选择硬链接或拷贝。后者类似网络传输，效率稍低。&lt;/li&gt;
+&lt;li&gt;SSH：最常用的方式，使用简单，方便搭建，加密传输+访问认证&lt;br /&gt;
+语法：&lt;code&gt;git clone ssh://user@server/project.git&lt;/code&gt; 或 &lt;code&gt;git clone user@server:project.git&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Git Protocol：最快的方式，但是没有认证功能&lt;/li&gt;
+&lt;li&gt;HTTP：最兼容的方式，该协议一般不会被防火墙阻隔，有认证没加密&lt;br /&gt;
+语法：&lt;code&gt;git clone http://server/project.git&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;HTTPS：最安全的方式，加密+认证，但效率低（SSL的握手需要6步）&lt;br /&gt;
+语法：&lt;code&gt;git clone https://server/project.git&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;因为学校封SSH的22端口，而且有一个同学在校外，排除了SSH协议。HTTPS协议太慢，我们的项目不需要加密数据，排除。GIT协议连认证都没有，太过简陋，排除。不同账户登录一台pc机远程办公，丧失了git作为分布式版本控制系统的优势，排除。&lt;/p&gt;
+&lt;p&gt;最终，我决定用HTTP协议。用HTTP协议也有两种方式：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;dumb http  &lt;/li&gt;
+&lt;li&gt;smart http&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;区别是，&lt;strong&gt;dumb http&lt;/strong&gt;模式中，如果get请求的文件在packfile中，只能请求整个packfile，即使你需要的只有其中的一个文件。另外一方面，&lt;strong&gt;smart http&lt;/strong&gt;模式中，在http服务器后面，又加了一层CGI，叫git-http-backend，它会像git或ssh协议那样，当请求到来后，把需要的文件，从各个packfile中抽取，然后组成一个自定义packfile后再传给客户端。&lt;/p&gt;
+&lt;p&gt;故选择Smart HTTP。既然都用HTTP协议了，干脆把gitweb也配出来，方便通过浏览器查看git的版本库。下面是配置过程。&lt;/p&gt;
+&lt;h3&gt;配置过程&lt;/h3&gt;
+&lt;h4&gt;1、软硬件环境&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Pentium Dual-Core CPU，32 bits&lt;/li&gt;
+&lt;li&gt;ubuntu 12.04 LTS&lt;/li&gt;
+&lt;li&gt;apache 2.4.7&lt;/li&gt;
+&lt;li&gt;git 1.9.1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;apache2、git、gitweb的安装：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;apt&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;
+&lt;span class="n"&gt;apt&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;gitweb&lt;/span&gt;
+&lt;span class="n"&gt;apt&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;apache2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2、创建git库&lt;/h3&gt;
+&lt;p&gt;我选择在/srv/目录下创建一个bare repo，叫test.git，并把该目录下所有文件的所有者和组都改成www-data（apache2的默认所有者和默认组），以便apache2有权限访问它。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;srv&lt;/span&gt;
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;init&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;bare&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;
+&lt;span class="n"&gt;chown&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt; &lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;3、配置apache2&lt;/h4&gt;
+&lt;p&gt;apache2的总配置文件是/etc/apache2/apache2.conf，它会读取/etc/apache2/sites-enabled/下的配置文件。而该目录下的文件，一般是/etc/apache2/sites-available/下配置文件的软链接。&lt;/p&gt;
+&lt;p&gt;打开/etc/apache2/apache2.conf，在最后添加如下内容。每条命令的解释，见注释。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;# 默认apache2只对两个目录（/usr/share和/var/www）有访问权限，如下指令赋予apache2对/srv的访问权限。
+&lt;span class="nt"&gt;&amp;lt;Directory&lt;/span&gt; &lt;span class="err"&gt;/srv&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+&lt;span class="nt"&gt;&amp;lt;/Directory&amp;gt;&lt;/span&gt;
+
+# 如果没有这句，在其他机器上执行git clone等命令会返回403错误，参照最后一条“参考”
+&lt;span class="nt"&gt;&amp;lt;Location&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    Options +ExecCGI
+    Require all granted
+&lt;span class="nt"&gt;&amp;lt;/Location&amp;gt;&lt;/span&gt;
+
+# 设置git的工程目录
+SetEnv GIT_PROJECT_ROOT /srv/
+# 默认情况下，含有git-daemon-export-ok文件的目录才可以被导出（用作git库目录）。设置这个环境变量以便所有目录都可以被导出
+SetEnv GIT_HTTP_EXPORT_ALL
+
+# 虚拟主机，匹配80端口的任何ip地址的请求，访问gitweb
+&lt;span class="nt"&gt;&amp;lt;virtualhost&lt;/span&gt; &lt;span class="err"&gt;*:80&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    # 顺便在/etc/hosts里添加上一句：127.0.0.1 git.example.com。这样，在服务器上可以通过该名字访问这个页面
+    ServerName git.example.com
+    DocumentRoot /usr/share/gitweb
+    ErrorLog &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;APACHE_LOG_DIR&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;/git_error.log
+    CustomLog &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;APACHE_LOG_DIR&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;/git_access.log combined
+&lt;span class="nt"&gt;&amp;lt;/virtualhost&amp;gt;&lt;/span&gt;
+
+# gitweb目录添加ExecCGI的功能
+&lt;span class="nt"&gt;&amp;lt;Directory&lt;/span&gt; &lt;span class="err"&gt;/usr/share/gitweb&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    Options FollowSymLinks ExecCGI
+    AddHandler cgi-script .cgi
+    DirectoryIndex gitweb.cgi
+&lt;span class="nt"&gt;&amp;lt;/Directory&amp;gt;&lt;/span&gt;
+
+# 对git库的各种请求，执行git-http-backend.cgi
+ScriptAliasMatch \
+    &amp;quot;(?x)^/(.*/(HEAD | \
+    info/refs | \
+    objects/(info/[^/]+ | \
+     [0-9a-f]{2}/[0-9a-f]{38} | \
+     pack/pack-[0-9a-f]{40}\.(pack|idx)) | \
+    git-(upload|receive)-pack))$&amp;quot; \
+    /usr/lib/git-core/git-http-backend/$1
+# 其余的请求，执行gitweb.cgi
+ScriptAlias / /usr/share/gitweb/gitweb.cgi
+
+# 设置git push等操作的认证方式为文件认证，/var/www/git-auth后面会创建。
+&lt;span class="nt"&gt;&amp;lt;LocationMatch&lt;/span&gt; &lt;span class="err"&gt;&amp;quot;^/.*/git-receive-pack$&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    AuthType Basic
+    AuthName &amp;quot;Git Access&amp;quot;
+    Require valid-user
+    AuthBasicProvider file
+    AuthUserfile /var/www/git-auth
+&lt;span class="nt"&gt;&amp;lt;/LocationMatch&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4、push操作的认证&lt;/h3&gt;
+&lt;p&gt;默认git-http-backend的upload-pack是被置为真的，即可以执行git clone/pull/fetch。但是，默认receive-pack是被置为false，即不能git push。为了支持带认证的git push，需要两步操作。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第一步&lt;/strong&gt;，打开/srv/test.git/config，添加如下内容：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[http]&lt;/span&gt;
+    &lt;span class="na"&gt;receivepack&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果不加上面这句，git clone下来的版本库，git push时会提示403错误，即没有授权。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第二步&lt;/strong&gt;，生成一个包含用户名和密码的文件，该文件能被apache2读取，作为文件认证的依据。假设我要添加两个用户mashu和ouyang，密码在提示下输入，我要执行如下命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;
+&lt;span class="n"&gt;htpasswd&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;auth&lt;/span&gt; &lt;span class="n"&gt;mashu&lt;/span&gt;
+&lt;span class="n"&gt;htpasswd&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;auth&lt;/span&gt; &lt;span class="n"&gt;ouyang&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;有了这个文件，添加到上面的apache2的配置文件中即可。&lt;/p&gt;
+&lt;h3&gt;5、gitweb的配置&lt;/h3&gt;
+&lt;p&gt;修改/etc/gitweb.conf中的一句：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;projectroot&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;/srv&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;6、重启apache2&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;apache2&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;7、客户端检查&lt;/h3&gt;
+&lt;p&gt;在客户端电脑上，找一个目录，执行如下命令&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//server-ip/test.git test-repo&lt;/span&gt;
+&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;
+&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;aaa&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt;
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;commit&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;am&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;first commit&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;然后，在浏览器上输入http://server-ip，查看刚才的操作是否记录到gitweb上了。&lt;/p&gt;
+&lt;h3&gt;参考&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/00137583770360579bc4b458f044ce7afed3df579123eca000"&gt;使用SSH协议的git服务器搭建&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://git-scm.com/book/en/v1/Git-on-the-Server"&gt;Git on the Server&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://git-scm.com/2010/03/04/smart-http.html"&gt;Smart Http&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html"&gt;git-http-backend Manual&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 13 Dec 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-12-13:posts/2014/12/git-server.html</guid><category>git</category></item><item><title>Clean Code (3)</title><link>http://particle128.com/posts/2014/12/cleanCode(3).html</link><description>&lt;h3&gt;Chapter8 Boundaries&lt;/h3&gt;
 &lt;p&gt;边界指的是第三方库和应用程序的边界。&lt;/p&gt;
 &lt;p&gt;用包裹类，或适配器模式，来封装第三方代码（third-party code），可以：&lt;/p&gt;
 &lt;ol&gt;

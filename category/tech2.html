@@ -60,6 +60,32 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
+      </h1>
+      <p class="meta"><time datetime="2014-05-19T00:00:00" pubdate>2014-05-19</time></p>
+</header>
+
+  <div class="entry-content"><h3>起因</h3>
+<p>上午在实现算法“找出最小的k个元素/找出第k大的元素”时，遇到了core dump。代码如下：  </p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
+<span class="cp">#include &lt;iterator&gt;  </span>
+<span class="cp">#include &lt;algorithm&gt;  </span>
+<span class="cp">#include &lt;cstdlib&gt;  </span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
+
+<span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span><span class="kt">int</span> <span class="n">begin</span><span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">begin</span><span class="p">;</span>  
+    <span class="c1">//copy(arr+begin,arr+end+1,ostream_iterator&lt;int&gt;(cout,&quot;,&quot;));  </span>
+    <span class="c1">//cout&lt;&lt;endl&lt;&lt;&quot;begin:&quot;&lt;&lt;begin&lt;&lt;&quot;,end:&quot;&lt;&lt;end&lt;&lt;&quot;,mid ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/delete-core-dump.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/05/reentrant.html">类unix系统下函数的可重入性</a>
       </h1>
       <p class="meta"><time datetime="2014-05-05T00:00:00" pubdate>2014-05-05</time></p>
@@ -293,31 +319,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-intro.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-port.html">Bargain Snatcher:linux到windows的移植问题</a>
-      </h1>
-      <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>步骤</h2>
-<p>0.登陆windows系统  </p>
-<p>1.安装python2.7<br />
-google上搜索exe安装包安装之。  </p>
-<p>2.安装pip<br />
-参考：http://www.pip-installer.org/en/latest/installing.html<br />
-下载setuptools源码tar.gz ——&gt; 解压后执行python path/of/the/setuptools/setup.py install<br />
-——&gt;下载get-pip.py ——&gt;执行python get-pip.py  </p>
-<p>3.用pip安装需要的扩展包：selenium<br />
-D:\Python27\Scripts\pip install -U selenium  </p>
-<p>4.安装py2exe<br />
-下载地址：http://sourceforge ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/category/tech3.html">&larr; Older</a>
 
@@ -329,6 +330,9 @@ D:\Python27\Scripts\pip install -U selenium  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
       </li>
       <li class="post">
@@ -339,9 +343,6 @@ D:\Python27\Scripts\pip install -U selenium  </p>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
       </li>
     </ul>
   </section>
