@@ -47,7 +47,7 @@ Timely：及时&lt;/li&gt;
 &lt;li&gt;拆分一个函数的过程，可能拆分出来多个类：函数太长 -&amp;gt; 拆出一个函数（含有4个参数） -&amp;gt; 因为参数太多，考虑提升为实体变量 -&amp;gt; 类多了四个、仅仅被一个方法使用的实体变量，内聚性差 -&amp;gt; 拆出一个类，包含这四个实体变量&lt;/li&gt;
 &lt;li&gt;文中，Uncle Bob把Knuth的一个“产生素数”的算法拆成了3个，代码量长度多了一倍，但是却的确更好理解了。Knuth的代码需要加很多注释，但是Uncle Bob的代码已经自解释了。它里面的一些函数和变量的命名也让我大开眼界，原来名字这么长（最长的名字 &amp;gt; 40个字符），反而这么容易读懂。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img alt="image" src="|xxx|/images/long_name.jpg" /&gt;  &lt;/p&gt;
+&lt;p&gt;&lt;img alt="image" src="http://particle128.com/images/long_name.jpg" /&gt;  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;为了适应随时都会发生的变化（需求、演化），应该：&lt;br /&gt;
 （1）用Single Responsibility Principal和Open Closed Principal来构造类（修改时，不用改原来的代码，只通过增加子类即可扩展）&lt;br /&gt;
