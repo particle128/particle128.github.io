@@ -150,6 +150,7 @@ ScriptAlias / /usr/share/gitweb/gitweb.cgi
 &lt;li&gt;&lt;a href="http://git-scm.com/book/en/v1/Git-on-the-Server"&gt;Git on the Server&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://git-scm.com/2010/03/04/smart-http.html"&gt;Smart Http&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html"&gt;git-http-backend Manual&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://bugs.launchpad.net/nav/+bug/1248205"&gt;bug:403 Forbidden on front page with apache 2.4&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</summary><category term="git"></category></entry><entry><title>微软校招在线测试</title><link href="http://particle128.com/posts/2014/10/msOnlineTest.html" rel="alternate"></link><updated>2014-10-22T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-10-22:posts/2014/10/msOnlineTest.html</id><summary type="html">&lt;p&gt;前三题都不难，但我第一题没考虑完全就写了，corner case调试了太久(1.5h才AC)，只留给第三题了0.5h，最终没有提交上去，仅仅AC了两道题。逆序总结一下这三道题吧。&lt;/p&gt;
 &lt;h3&gt;题目3 : String Matching Content Length&lt;/h3&gt;
 &lt;p&gt;题目： &lt;a href="http://hihocoder.com/contest/mstest2015oct/problem/3"&gt;链接&lt;/a&gt;&lt;/p&gt;

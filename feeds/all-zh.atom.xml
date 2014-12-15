@@ -203,6 +203,7 @@ ScriptAlias / /usr/share/gitweb/gitweb.cgi
 &lt;li&gt;&lt;a href="http://git-scm.com/book/en/v1/Git-on-the-Server"&gt;Git on the Server&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://git-scm.com/2010/03/04/smart-http.html"&gt;Smart Http&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html"&gt;git-http-backend Manual&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://bugs.launchpad.net/nav/+bug/1248205"&gt;bug:403 Forbidden on front page with apache 2.4&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</summary><category term="git"></category></entry><entry><title>Clean Code (3)</title><link href="http://particle128.com/posts/2014/12/cleanCode(3).html" rel="alternate"></link><updated>2014-12-09T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-09:posts/2014/12/cleanCode(3).html</id><summary type="html">&lt;h3&gt;Chapter8 Boundaries&lt;/h3&gt;
 &lt;p&gt;边界指的是第三方库和应用程序的边界。&lt;/p&gt;
 &lt;p&gt;用包裹类，或适配器模式，来封装第三方代码（third-party code），可以：&lt;/p&gt;
