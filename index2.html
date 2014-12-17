@@ -60,6 +60,37 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
+      </h1>
+      <p class="meta"><time datetime="2014-07-29T00:00:00" pubdate>2014-07-29</time></p>
+</header>
+
+  <div class="entry-content"><h2>如何使用directGrouping</h2>
+<ol>
+<li>申明流是direct Stream<br />
+spout/bolt的declareOutputFields中<br />
+outputFieldsDeclarer.declare(/<em>direct</em>/true, new Fields("word"));  </li>
+<li>使用emitDirect来发送数据<br />
+spout/bolt的nextTuple/execute中<br />
+collector.emitDirect(/<em>taskId</em>/getWordCountIndex(word),new Values(word));<br />
+注意：因为第一个参数是taskid，首先需要在open/prepare里面获取下游bolt的taskid列表<br />
+topologyContext.getComponentTasks("word-counter")  </li>
+<li>topology定义中指定连接方式为directGrouping<br />
+builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  </li>
+</ol>
+<h2>如何利用Storm提供的可靠性保证</h2>
+<ol>
+<li>在spout中，用SpoutOutputCollector调用emit的时候，必须指定messageId。<br />
+一个messageId对应一个tuple树。<br />
+这样，在某个tuple树全部被处理完后，spout的回调函数ack会被调用，ack的参数是那个tuple树对应的messageId。  </li>
+<li>在每一个bolt中 ...</li></ol></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/07/storm-sum.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
       </h1>
       <p class="meta"><time datetime="2014-06-24T00:00:00" pubdate>2014-06-24</time></p>
@@ -300,28 +331,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2014/04/spinlock.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/03/selectFear.html">选择恐惧症</a>
-      </h1>
-      <p class="meta"><time datetime="2014-03-20T00:00:00" pubdate>2014-03-20</time></p>
-</header>
-
-  <div class="entry-content"><h3>症状</h3>
-<p>这个名词是我在《天生购物狂》这部电影里看到的。时隔这么多年，发现自己身上的“选择困难”问题愈演愈烈了。稍微回顾下我的症状：  </p>
-<ul>
-<li>配眼镜：假期要换一副黑框眼镜，逛了3个眼镜店，在第三个眼镜店挑了接近1h的眼镜。假期回来后发现自己挑了这么久的眼镜还是不太合适，于是决定换一副：去了学校眼镜店两次+试了各种眼镜，累计1h；在网上逛了n次，累计2h；问了3个人（亚南，小雷，涵姐），累计2h，最终才买下了这款眼镜，事后发现也一般。。。  </li>
-<li>选实习部门：好几个单位，都找了人内推。但是每次跟这些同学或师兄谈论关于内推的事情，都要纠结至少2h，而且每次都把可怜的内推er（姑且这么称呼他们）弄的有点不爽。。。毕竟人家内推你是出于情面，但是你一直纠结这个部门前景好还是那个部门工资高，人家肯定不耐烦了。  </li>
-</ul>
-<h3>产生原因</h3>
-<p>完美主义的非正常心理的作怪  </p>
-<p>凡是有选择恐惧症的人，都是极度追求完美的人，而且是极度苛刻的人——他们要求自己必须做一个单选，而且这唯一的选择必须是最大限度的理想化的选择。可以说，这些病人也属于强迫症人群。他们往往追求完美，并赋予选项太多的意义。  </p>
-<h3>诊断 ...</h3></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/03/selectFear.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
 
@@ -333,6 +342,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(4).html">Clean Code (4)</a>
       </li>
       <li class="post">
@@ -343,9 +355,6 @@
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
       </li>
     </ul>
   </section>

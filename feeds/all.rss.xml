@@ -1,5 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>May your choices reflect your hopes, not your fears.</description><atom:link href="http://particle128.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 13 Dec 2014 00:00:00 +0800</lastBuildDate><item><title>Clean Code (4)</title><link>http://particle128.com/posts/2014/12/cleanCode(4).html</link><description>&lt;h3&gt;Chapter12 Emergence&lt;/h3&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>May your choices reflect your hopes, not your fears.</description><atom:link href="http://particle128.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 17 Dec 2014 00:00:00 +0800</lastBuildDate><item><title>Clean Code (5)</title><link>http://particle128.com/posts/2014/12/cleanCode(5).html</link><description>&lt;h3&gt;Chapter14 Successive Refinement&lt;/h3&gt;
+&lt;p&gt;本章通过一个例子（处理命令参数的工具类，它把它命名为Args），给我们展现了作者是如何一步一步重构代码的。这一章很赞，重构的步骤很有借鉴之处，代码非常可读。&lt;/p&gt;
+&lt;p&gt;引用一句：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To write clean code, you must first write dirty code and then clean it.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;焦义师兄写代码也是按照两步走来的。一开始写一个面向过程的，由许多文件构成的模块。之后，用面向对象思想和设计模式，将原来的代码重构成可读性、可扩展性、可维护性更强的版本。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;测试驱动开发（TDD）对于重构非常重要。重构过程中，每次只修改一点，刚好导致测试无法通过，然后再改到可以通过；再修改一点，刚好导致测试无法通过，再改到可以通过。。。这样循序渐进，保证重构不会引入新的问题。如果一次全部改完再测试，可能会引入新的bug，而且不容易定位bug的位置。&lt;/li&gt;
+&lt;li&gt;重构的思路：找出每次扩展（对应该例子中，参数中增加新的类型），都要修改的地方。如果这些地方有共性，把这些方法抽离出来，形成一个类。&lt;/li&gt;
+&lt;li&gt;在小作用域内，用简短的名字（比如&lt;code&gt;ArgumentMarshaler am&lt;/code&gt;），而不是更长和更有描述性的名字，更易读。&lt;/li&gt;
+&lt;li&gt;尽早进行代码的调整和重构，越晚重构，成本越高！！！&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;重构的细节：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;重构，不是重写，所以不要上来就写所有要新增加的类，然后把原来的代码全部推翻，这样非常混乱，而且相当于把所有代码都重写之后再编译运行，并看结果如何。之前实习时的第二次重构，我就犯了这个错误，越改代码越乱，原来的代码还不敢删，所以各种注释代码，各种新增的、都还跑不通编译的代码。最后，我都要丧失了继续该下去的动力。而且即使这样改完，测试出bug，我还是需要跟踪到具体哪里的bug。&lt;/li&gt;
+&lt;li&gt;假设新增一个类，其他代码保持原样（不要删除原来的旧类），然后，用新增的类替换现在类的一个出现位置，如果可以通过测试，再替换另一个出现位置，再测试。当所有这些位置，都已经通过了测试，再要被替换掉的类，这时候肯定也能通过测试。&lt;/li&gt;
+&lt;li&gt;假设要定义一个类层次，首先把需要的一个功能添加到父类，子类只继承，不做其他的事情，替换代码，测试。像这样逐渐增加功能到父类，并全部通过测试。然后，再一步一步的把父类的东西挪到对应的子类。或许你会觉得这样很麻烦，但是如果上来就重头定义这个类层次，那么也意味着要重头修改所有用到该类的地方。这会导致同时产生过多没有通过测试的代码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Chapter15 JUnit Internals&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;比较长的表达式，要封装到函数中；否定比肯定要难理解一些，尽量用肯定语气的函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;expected&lt;/span&gt;  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;null&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;actual&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;null&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;areStringEqual&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// shouldNotCompact&lt;/span&gt;
+    &lt;span class="n"&gt;aaa&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;bbb&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;// 改成&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;shouldBeCompacted&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;bbb&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;aaa&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;shouldBeCompacted&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;shouldNotBeCompacted&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;shouldNotBeCompacted&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;expected&lt;/span&gt;  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;null&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;actual&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;null&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;areStringEqual&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;解决隐藏的时间耦合（hidden temporal coupling），防止程序员不经意间因为调换执行顺序，导致不易发现的bug。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;findCommonPrefix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// change prefixIndex&lt;/span&gt;
+&lt;span class="nx"&gt;findCommonSuffix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// use the prefixIndex that was assigned by the previous function&lt;/span&gt;
+
+&lt;span class="c1"&gt;// 改成&lt;/span&gt;
+
+&lt;span class="nx"&gt;findCommonPrefixAndSuffix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+&lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="nx"&gt;findCommonPrefixAndSuffix&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// 去掉了findCommonSuffix()，把先后顺序硬编码进该函数中&lt;/span&gt;
+    &lt;span class="nx"&gt;findCommonPrefix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="c1"&gt;// the content of previous findCommonSuffix()&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;把复杂的for循环条件条件表达式和最后一个表达式抽成函数，或者重新定义循环变量，以简化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// 原代码略&lt;/span&gt;
+
+&lt;span class="c1"&gt;// 改成&lt;/span&gt;
+
+&lt;span class="c1"&gt;// 把循环变量由index -&amp;gt; length, 自定义suffixOverlapsPrefix和charFromEnd&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(;&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;suffixOverlapsPrefix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;suffixLength&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="n"&gt;suffixLength&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;charFromEnd&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;expected&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;suffixLength&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt;
+        &lt;span class="n"&gt;charFromEnd&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;actual&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;suffixLength&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;重构是一个迭代的过程，不断的尝试、出错、再尝试。而且经常会出现一种情况，就是，我们虽然刚刚重构了一些东西，但是由于发现了新的情况，我们要撤销之前重构的部分，以满足刚刚发现的情况需要进行的重构。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;本章所使用的例子，在重构之前就已经比较简洁和清晰了。但是任何代码都有改进的余地，而且我们有责任将遇到的代码修改的更好一些。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Wed, 17 Dec 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-12-17:posts/2014/12/cleanCode(5).html</guid><category>cleanCode</category></item><item><title>Clean Code (4)</title><link>http://particle128.com/posts/2014/12/cleanCode(4).html</link><description>&lt;h3&gt;Chapter12 Emergence&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;The majority of the cost of a software project is in long-term maintenance  &lt;/p&gt;
 &lt;/blockquote&gt;

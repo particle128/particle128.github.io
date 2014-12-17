@@ -60,6 +60,28 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-17T00:00:00" pubdate>2014-12-17</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter14 Successive Refinement</h3>
+<p>本章通过一个例子（处理命令参数的工具类，它把它命名为Args），给我们展现了作者是如何一步一步重构代码的。这一章很赞，重构的步骤很有借鉴之处，代码非常可读。</p>
+<p>引用一句：</p>
+<blockquote>
+<p>To write clean code, you must first write dirty code and then clean it.</p>
+</blockquote>
+<p>焦义师兄写代码也是按照两步走来的。一开始写一个面向过程的，由许多文件构成的模块。之后，用面向对象思想和设计模式，将原来的代码重构成可读性、可扩展性、可维护性更强的版本。</p>
+<ul>
+<li>测试驱动开发（TDD）对于重构非常重要。重构过程中，每次只修改一点，刚好导致测试无法通过，然后再改到可以通过；再修改一点，刚好导致测试无法通过，再改到可以通过。。。这样循序渐进，保证重构不会引入新的问题。如果一次全部改完再测试，可能会引入新的bug，而且不容易定位bug的位置。</li>
+<li>重构的思路：找出每次扩展 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(5).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/12/cleanCode(4).html">Clean Code (4)</a>
       </h1>
       <p class="meta"><time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time></p>
@@ -286,28 +308,6 @@ Used for estimating the growth of any exponential process.<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item28 Smart pointer</h2>
-<ul>
-<li>智能指针相比于内置指针的优势：<br />
-1.构造和析构：分别防止wild指针（默认实参是0）和内存泄露（dtor内delete对象）<br />
-2.复制和赋值：可以定义出3种语义：深复制、浅复制(加引用计数、或转移控制权)、不允许复制<br />
-3.解引用(dereference)：包括<code>-&gt;</code>和<code>*</code>操作符(都是const函数)，可以实现出lazy fetching（数据库中的对象的访问）  </li>
-<li>志记工作最好使用一个类的构造函数和析构函数(自动调用)来标明开始和结束，而不是显示调用两个函数。这对异常更加稳健。  </li>
-<li><code>auto_ptr</code>作为参数，必须引用传递，否则调用之后，原<code>auto_ptr</code>对象中的指针为0，不能访问了。<br />
-<strong>注意</strong>：除了内置类型、STL迭代器、函数对象，其余对象最好都用引用传递参数  </li>
-<li><code>auto_ptr</code>的operator=操作符，需要在开始处判断 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/category/note2.html">&larr; Older</a>
 
@@ -317,6 +317,9 @@ Used for estimating the growth of any exponential process.<br />
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
+      </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(4).html">Clean Code (4)</a>
       </li>
@@ -328,9 +331,6 @@ Used for estimating the growth of any exponential process.<br />
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
       </li>
     </ul>
   </section>

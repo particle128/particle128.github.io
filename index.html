@@ -60,6 +60,28 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-17T00:00:00" pubdate>2014-12-17</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter14 Successive Refinement</h3>
+<p>本章通过一个例子（处理命令参数的工具类，它把它命名为Args），给我们展现了作者是如何一步一步重构代码的。这一章很赞，重构的步骤很有借鉴之处，代码非常可读。</p>
+<p>引用一句：</p>
+<blockquote>
+<p>To write clean code, you must first write dirty code and then clean it.</p>
+</blockquote>
+<p>焦义师兄写代码也是按照两步走来的。一开始写一个面向过程的，由许多文件构成的模块。之后，用面向对象思想和设计模式，将原来的代码重构成可读性、可扩展性、可维护性更强的版本。</p>
+<ul>
+<li>测试驱动开发（TDD）对于重构非常重要。重构过程中，每次只修改一点，刚好导致测试无法通过，然后再改到可以通过；再修改一点，刚好导致测试无法通过，再改到可以通过。。。这样循序渐进，保证重构不会引入新的问题。如果一次全部改完再测试，可能会引入新的bug，而且不容易定位bug的位置。</li>
+<li>重构的思路：找出每次扩展 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(5).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/12/cleanCode(4).html">Clean Code (4)</a>
       </h1>
       <p class="meta"><time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time></p>
@@ -258,37 +280,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2014/08/introduction-storm.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/07/storm-sum.html">使用Storm 2个月后的总结</a>
-      </h1>
-      <p class="meta"><time datetime="2014-07-29T00:00:00" pubdate>2014-07-29</time></p>
-</header>
-
-  <div class="entry-content"><h2>如何使用directGrouping</h2>
-<ol>
-<li>申明流是direct Stream<br />
-spout/bolt的declareOutputFields中<br />
-outputFieldsDeclarer.declare(/<em>direct</em>/true, new Fields("word"));  </li>
-<li>使用emitDirect来发送数据<br />
-spout/bolt的nextTuple/execute中<br />
-collector.emitDirect(/<em>taskId</em>/getWordCountIndex(word),new Values(word));<br />
-注意：因为第一个参数是taskid，首先需要在open/prepare里面获取下游bolt的taskid列表<br />
-topologyContext.getComponentTasks("word-counter")  </li>
-<li>topology定义中指定连接方式为directGrouping<br />
-builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  </li>
-</ol>
-<h2>如何利用Storm提供的可靠性保证</h2>
-<ol>
-<li>在spout中，用SpoutOutputCollector调用emit的时候，必须指定messageId。<br />
-一个messageId对应一个tuple树。<br />
-这样，在某个tuple树全部被处理完后，spout的回调函数ack会被调用，ack的参数是那个tuple树对应的messageId。  </li>
-<li>在每一个bolt中 ...</li></ol></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/07/storm-sum.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index2.html">&larr; Older</a>
 
@@ -298,6 +289,9 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
+      </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(4).html">Clean Code (4)</a>
       </li>
@@ -309,9 +303,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
       </li>
     </ul>
   </section>

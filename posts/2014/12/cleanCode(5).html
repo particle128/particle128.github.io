@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Effective C++学习笔记(5)</title>
+  <title>Clean Code (5)</title>
   <meta name="author" content="particle128">
 
 
@@ -59,88 +59,104 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">Effective C++学习笔记(5)</h1>
-      <p class="meta"><time datetime="2013-10-11T00:00:00" pubdate>2013-10-11</time></p>
+      <h1 class="entry-title">Clean Code (5)</h1>
+      <p class="meta"><time datetime="2014-12-17T00:00:00" pubdate>2014-12-17</time></p>
 </header>
 
-  <div class="entry-content"><h2>Item18:  Make interfaces easy to use correctly and hard to use incorrectly</h2>
-<p>1.促进接口被正确使用：<br />
-（1）接口一致性：stl中所有容器都具有size() 函数，而不像Java和.Net。<br />
-（2）与内置类型行为兼容：想想和int类比。<br />
-2.阻止接口被误用（！！！不正确的行为，编译都不能通过）：<br />
-例子：  </p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Date</span>  
-<span class="p">{</span>  
-    <span class="n">Date</span><span class="p">(</span><span class="kt">int</span> <span class="n">month</span><span class="p">,</span><span class="kt">int</span> <span class="n">day</span><span class="p">,</span><span class="kt">int</span> <span class="n">year</span><span class="p">);</span>  
-<span class="p">}</span>  
+  <div class="entry-content"><h3>Chapter14 Successive Refinement</h3>
+<p>本章通过一个例子（处理命令参数的工具类，它把它命名为Args），给我们展现了作者是如何一步一步重构代码的。这一章很赞，重构的步骤很有借鉴之处，代码非常可读。</p>
+<p>引用一句：</p>
+<blockquote>
+<p>To write clean code, you must first write dirty code and then clean it.</p>
+</blockquote>
+<p>焦义师兄写代码也是按照两步走来的。一开始写一个面向过程的，由许多文件构成的模块。之后，用面向对象思想和设计模式，将原来的代码重构成可读性、可扩展性、可维护性更强的版本。</p>
+<ul>
+<li>测试驱动开发（TDD）对于重构非常重要。重构过程中，每次只修改一点，刚好导致测试无法通过，然后再改到可以通过；再修改一点，刚好导致测试无法通过，再改到可以通过。。。这样循序渐进，保证重构不会引入新的问题。如果一次全部改完再测试，可能会引入新的bug，而且不容易定位bug的位置。</li>
+<li>重构的思路：找出每次扩展（对应该例子中，参数中增加新的类型），都要修改的地方。如果这些地方有共性，把这些方法抽离出来，形成一个类。</li>
+<li>在小作用域内，用简短的名字（比如<code>ArgumentMarshaler am</code>），而不是更长和更有描述性的名字，更易读。</li>
+<li>尽早进行代码的调整和重构，越晚重构，成本越高！！！</li>
+</ul>
+<p>重构的细节：</p>
+<ul>
+<li>重构，不是重写，所以不要上来就写所有要新增加的类，然后把原来的代码全部推翻，这样非常混乱，而且相当于把所有代码都重写之后再编译运行，并看结果如何。之前实习时的第二次重构，我就犯了这个错误，越改代码越乱，原来的代码还不敢删，所以各种注释代码，各种新增的、都还跑不通编译的代码。最后，我都要丧失了继续该下去的动力。而且即使这样改完，测试出bug，我还是需要跟踪到具体哪里的bug。</li>
+<li>假设新增一个类，其他代码保持原样（不要删除原来的旧类），然后，用新增的类替换现在类的一个出现位置，如果可以通过测试，再替换另一个出现位置，再测试。当所有这些位置，都已经通过了测试，再要被替换掉的类，这时候肯定也能通过测试。</li>
+<li>假设要定义一个类层次，首先把需要的一个功能添加到父类，子类只继承，不做其他的事情，替换代码，测试。像这样逐渐增加功能到父类，并全部通过测试。然后，再一步一步的把父类的东西挪到对应的子类。或许你会觉得这样很麻烦，但是如果上来就重头定义这个类层次，那么也意味着要重头修改所有用到该类的地方。这会导致同时产生过多没有通过测试的代码。</li>
+</ul>
+<h3>Chapter15 JUnit Internals</h3>
+<ul>
+<li>比较长的表达式，要封装到函数中；否定比肯定要难理解一些，尽量用肯定语气的函数。</li>
+</ul>
+<div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="n">expected</span>  <span class="o">==</span> <span class="n">null</span> <span class="o">||</span> <span class="n">actual</span> <span class="o">==</span> <span class="n">null</span> <span class="o">||</span> <span class="n">areStringEqual</span><span class="p">())</span> <span class="p">{</span> <span class="c1">// shouldNotCompact</span>
+    <span class="n">aaa</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">bbb</span>
+<span class="p">}</span>
+
+<span class="c1">// 改成</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">shouldBeCompacted</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">bbb</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">aaa</span>
+<span class="p">}</span>
+<span class="n">boolean</span> <span class="n">shouldBeCompacted</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="n">shouldNotBeCompacted</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="n">boolean</span> <span class="n">shouldNotBeCompacted</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">expected</span>  <span class="o">==</span> <span class="n">null</span> <span class="o">||</span> <span class="n">actual</span> <span class="o">==</span> <span class="n">null</span> <span class="o">||</span> <span class="n">areStringEqual</span><span class="p">();</span>
+<span class="p">}</span>
 </pre></div>
 
 
-<p>（1）建立新类型，防止调用顺序错乱，比如(2013,1,10)。  </p>
-<div class="highlight"><pre><span class="c1">//定义Month,Day,Year类型（struct，只含一个val变量和一个explicit单个参数构造函数即可）  </span>
-<span class="n">Date</span> <span class="nf">d</span><span class="p">(</span><span class="n">Month</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">Day</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="n">Year</span><span class="p">(</span><span class="mi">2013</span><span class="p">));</span>  
+<ul>
+<li>解决隐藏的时间耦合（hidden temporal coupling），防止程序员不经意间因为调换执行顺序，导致不易发现的bug。</li>
+</ul>
+<div class="highlight"><pre><span class="nx">findCommonPrefix</span><span class="p">();</span> <span class="c1">// change prefixIndex</span>
+<span class="nx">findCommonSuffix</span><span class="p">();</span> <span class="c1">// use the prefixIndex that was assigned by the previous function</span>
+
+<span class="c1">// 改成</span>
+
+<span class="nx">findCommonPrefixAndSuffix</span><span class="p">();</span>
+
+<span class="k">void</span> <span class="nx">findCommonPrefixAndSuffix</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// 去掉了findCommonSuffix()，把先后顺序硬编码进该函数中</span>
+    <span class="nx">findCommonPrefix</span><span class="p">();</span>
+    <span class="c1">// the content of previous findCommonSuffix()</span>
+<span class="p">}</span>
 </pre></div>
 
 
-<p>（2）束缚对象值，防止无意义的值，比如(Month(13),Day(1),Year(2013))。  </p>
-<div class="highlight"><pre><span class="c1">//Date类中私有化构造函数。  </span>
-<span class="c1">//只提供一系列静态函数供调用。static Month Jan() {return Month(1);}  </span>
-<span class="c1">//不能定义static Month Jan(1);因为 非局部静态对象的初始化顺序未定义，万一d是全局的对象，构造时可能Jan对象尚未初始化。  </span>
-<span class="n">Date</span> <span class="nf">d</span><span class="p">(</span><span class="n">Month</span><span class="o">::</span><span class="n">Jan</span><span class="p">(),</span><span class="n">Day</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="n">Year</span><span class="p">(</span><span class="mi">2013</span><span class="p">));</span>  
+<ul>
+<li>把复杂的for循环条件条件表达式和最后一个表达式抽成函数，或者重新定义循环变量，以简化。</li>
+</ul>
+<div class="highlight"><pre><span class="c1">// 原代码略</span>
+
+<span class="c1">// 改成</span>
+
+<span class="c1">// 把循环变量由index -&gt; length, 自定义suffixOverlapsPrefix和charFromEnd</span>
+<span class="k">for</span> <span class="p">(;</span> <span class="o">!</span><span class="n">suffixOverlapsPrefix</span><span class="p">(</span><span class="n">suffixLength</span><span class="p">);</span> <span class="n">suffixLength</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">charFromEnd</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">suffixLength</span><span class="p">)</span> <span class="o">!=</span>
+        <span class="n">charFromEnd</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">suffixLength</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
-<p>（3）消除对象的资源管理责任，防止忘记释放资源。<br />
-//提供智能指针对象，而不是原始资源<br />
-总结：C++中为了保证接口不被误用，可能会增加很多C语言程序员看起来感觉冗余的代码，比如增加Month，Day，Year 3个类，比如定义Month::Jan()等静态函数。但是的确起到了C语言没法起到的作用：<br />
-（1）没法，只能认真看接口原型。<br />
-（2）可以通过函数内语句判断合法性，但是就将错误推迟到了运行时。<br />
-（3）没法，只能提醒自己释放。  </p>
-<h2>Item19: Treat class design as type design</h2>
-<p>1.应该带着和“语言设计者当初设计语言内置类型时”一样的谨慎来研究class的设计。<br />
-2.允许T1类型被隐式转换成T2类型：<br />
-（1）T1类内定义operator T2()函数。<br />
-（2）T2含有非explicit的构造函数，且函数参数只有一个T1类型的对象。<br />
-3.设计类时遵循的准则略，需要设计类时查阅该书。  </p>
-<h2>Item20: Prefer pass-by-reference-to-const to pass-by-value</h2>
-<p>1.传递对象的引用，好处：<br />
-（1）效率高。值传递会调用参数的复制构造函数（同时调用其基类和成员变量的复制构造函数），函数退出时还要调用它们的析构函数。<br />
-（2）易于优化。常量引用的实现是指针，编译器通常更愿意将其放入缓存器。即使class尽含有一个double变量，编译器也不视其为内置类型，拒绝将其放入缓存器。<br />
-2.传递“常量”引用，好处：<br />
-（1）调用者不必担心传入的实参被改变。<br />
-（2）const或non-const对象都可以传入，适用范围更广。<br />
-3.小型自定义类型也不要值传递，原因：<br />
-（1）复制构造函数不一定小型（比如可能要deep-copy）。<br />
-（2）不易于被编译器优化，放入缓存器。<br />
-（3）该自定义类型可能在之后的更新中，体积变大。<br />
-4.不适合引用传递的情况：<br />
-（1）内置类型：效率更高，见下图<br />
-<img alt="ec5" src="http://particle128.com/images/ec5.png" />
-（2）STL迭代器：类似指针，STL会保证其复制构造效率高，习惯值传递<br />
-（3）函数对象：实质是指针  </p>
-<h2>Item21: Don't try to return a reference when you must return an object.</h2>
-<p>函数返回对象的时候，也会执行一次构造和析构函数。为了减少这次的构造和析构，可能考虑返回引用。问题：<br />
-（1）指向局部变量：显而易见不行。<br />
-（2）指向动态分配的堆上的对象：内存泄露。  </p>
-<div class="highlight"><pre><span class="c1">//假设友元函数operator *返回Rational&amp;  </span>
-<span class="n">Rational</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>  
-<span class="n">Rational</span> <span class="n">c</span><span class="o">=</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">c</span><span class="p">;</span> <span class="c1">//两个new出来的对象都没有办法释放，因为接触不到new出的指针。  </span>
-</pre></div>
-
-
-<p>（3）指向静态变量：多线程问题，还有语义上瑕疵。  </p>
-<div class="highlight"><pre><span class="c1">//假设友元函数operator *返回Rational&amp;  </span>
-<span class="n">Rational</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>  
-<span class="k">if</span> <span class="p">((</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="o">==</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">d</span><span class="p">))</span>  <span class="c1">//总是返回true，因为返回的都是同一个static对象  </span>
-<span class="p">{...}</span>  
-</pre></div></div>
+<ul>
+<li>
+<p>重构是一个迭代的过程，不断的尝试、出错、再尝试。而且经常会出现一种情况，就是，我们虽然刚刚重构了一些东西，但是由于发现了新的情况，我们要撤销之前重构的部分，以满足刚刚发现的情况需要进行的重构。</p>
+</li>
+<li>
+<p>本章所使用的例子，在重构之前就已经比较简洁和清晰了。但是任何代码都有改进的余地，而且我们有责任将遇到的代码修改的更好一些。</p>
+</li>
+</ul></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2013-10-11T00:00:00" pubdate>2013-10-11</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
+<time datetime="2014-12-17T00:00:00" pubdate>2014-12-17</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/cleancode.html">cleanCode</a>
   </span>
 </p>    </footer>
   </article>
@@ -209,9 +225,9 @@
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2013/10/EffectiveCpp(5).html';
-          var disqus_url = 'http://particle128.com/posts/2013/10/EffectiveCpp(5).html';
-          var disqus_title = 'Effective C++学习笔记(5)';
+          var disqus_identifier = '/posts/2014/12/cleanCode(5).html';
+          var disqus_url = 'http://particle128.com/posts/2014/12/cleanCode(5).html';
+          var disqus_title = 'Clean Code (5)';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
