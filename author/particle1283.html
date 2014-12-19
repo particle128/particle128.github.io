@@ -60,6 +60,24 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
+      </h1>
+      <p class="meta"><time datetime="2014-04-02T00:00:00" pubdate>2014-04-02</time></p>
+</header>
+
+  <div class="entry-content"><h3>起因</h3>
+<p>虚拟磁盘的项目中，使用了互斥锁(mutex)来控制任务队列的访问。但是mutex开销过大，让线程池的效果大打折扣，于是发现了spinlock的存在。  </p>
+<h3>概念</h3>
+<p>来自<a href="http://en.wikipedia.org/wiki/Spinlock">wiki</a>的定义：  </p>
+<blockquote>
+<p>In software engineering, a spinlock is a lock which causes a thread trying to acquire it to simply wait in a loop ("spin") while repeatedly checking if the lock is available. Since the thread remains active but is ...</p></blockquote></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/04/spinlock.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/03/selectFear.html">选择恐惧症</a>
       </h1>
       <p class="meta"><time datetime="2014-03-20T00:00:00" pubdate>2014-03-20</time></p>
@@ -290,29 +308,6 @@ Used for estimating the growth of any exponential process.<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/map-operator.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
-<h2>Item25 构造函数、非成员函数的虚化</h2>
-<ul>
-<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
-<li>3种语义上的虚化：<br />
-1.虚构造函数<br />
-根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
-2.虚拷贝构造函数<br />
-定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
-3.虚非成员函数<br />
-定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c ...</code></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1284.html">&larr; Older</a>
 
@@ -324,6 +319,9 @@ Used for estimating the growth of any exponential process.<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
       </li>
       <li class="post">
@@ -334,9 +332,6 @@ Used for estimating the growth of any exponential process.<br />
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
       </li>
     </ul>
   </section>

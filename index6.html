@@ -60,6 +60,47 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
+      </h1>
+      <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
+</header>
+
+  <div class="entry-content"><p>两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  </p>
+<ul>
+<li>例子：  </li>
+</ul>
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
+<span class="k">struct</span> <span class="n">X</span>  
+<span class="p">{</span>  
+        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+<span class="k">struct</span> <span class="n">Y</span>  
+<span class="p">{</span>  
+        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
+<span class="p">};</span>  
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
+        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
+<ul>
+<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
+</ul>
+<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
+<span class="k">operator ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
       </h1>
       <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
@@ -268,26 +309,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-10-12T00:00:00" pubdate>2013-10-12</time></p>
-</header>
-
-  <div class="entry-content"><h2>Item 26: Postpone variable definitions as long as possible.</h2>
-<p>1.延后变量定义的意义是，有可能变量定义后，出现异常导致变量用不到，这样变量的构造和析构函数就白费了。所以，只在使用这个变量的代码之前定义它。<br />
-2.循环内变量的使用，是个特殊情况。但是仍然鼓励在循环内，变量使用前才定义变量。除非满足下面两点<br />
-(1)赋值成本比构造+析构成本低 (2)该段代码是效率敏感（performance-sensitive）的部分<br />
-因为：缩小变量的作用域，对于程序的可理解性和易维护性好。  </p>
-<h2>Item 27:Minimizing casting</h2>
-<p>1.C++风格类型转换中，<code>dynamic_cast&lt;T&gt;(expr)</code>是唯一一个无法用旧式语法（C风格，函数风格）执行的动作，用来将基类的指针或引用转化为子类的指针或引用。<br />
-2.能用C++风格转型 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index7.html">&larr; Older</a>
 
@@ -299,6 +320,9 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
       </li>
       <li class="post">
@@ -309,9 +333,6 @@ Empty Class是指，只包含typedef，enum，statice成员变量和non-virtual�
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
       </li>
     </ul>
   </section>

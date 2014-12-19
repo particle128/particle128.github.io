@@ -7,8 +7,8 @@
   <title>particle128's Blog - Articles by particle128</title>
   <meta name="author" content="particle128">
 
-    
-  
+
+
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
@@ -30,10 +30,11 @@
 <body>
   <header role="banner"><hgroup>
   <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
-  </hgroup></header>
+    <h2>May your choices reflect your hopes, not your fears.</h2>
+</hgroup></header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
   <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
-  </ul>
+</ul>
 
 <!-- TODO: add search here
 <form action="" method="get">
@@ -45,213 +46,100 @@
 -->
 
 <ul class="main-navigation">
-      <li><a href="http://particle128.com/archives.html">archives</a></li>
-      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
-      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
-      <li><a href="http://particle128.com/category/python.html">python</a></li>
-      <li><a href="http://particle128.com/category/others.html">others</a></li>
-      <li><a href="http://particle128.com/category/life.html">life</a></li>
-              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
-          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
-        <!-- TODO: add categories here? -->
-  </ul></nav>
+    <li><a href="http://particle128.com/archives.html">archives</a></li>
+    <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    <li><a href="http://particle128.com/category/note.html">note</a></li>
+    <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/qunar.html">去哪儿网机票提醒脚本</a>
+<div class="blog-index">
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/androidSMS.html">android小工具-失败短信重新发送</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+      <p class="meta"><time datetime="2013-09-03T00:00:00" pubdate>2013-09-03</time></p>
 </header>
 
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/qunar-flight-reminder">particle128的github</a></p>
-<h2>Introduction</h2>
-<p>This project is used to check the airfare in <a href="http://www.qunar.com">www.qunar.com</a>, and send you a SMS message when the price is lower than what you set in config.py  </p>
-<h2>Requirements</h2>
-<p>Download the ChromeDriver in <a href="https://code.google.com/p/chromedriver/downloads/list">here</a>  </p>
-<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">selenium</span>  
-</pre></div>
+  <div class="entry-content"><h3>由来</h3>
+<p>开学伊始，更换手机卡，群发260条短信，后察觉不对。只有一开始的100条左右的短信发送成功了，后面的短信都失败了。上网一查，是联通卡的一种限制，1h最多发送100条短信，超过就误认为你是在发送垃圾短信，自动锁住短信功能，发不出去任何短信了。<br />
+第二天经过10010报修，恢复短信功能。但是要一个一个的找哪些发送失败了，然后就只给那些人发送短信又不现实，因为有260个人失败了。。。给所有人都发一遍又觉得有点扰民。。。相关软件在安卓系统又找不到。。。干脆自己搞一个吧。  </p>
+<h3>实现</h3>
+<p>代码如下：  </p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kt">void</span> <span class="nf">ResendSms</span><span class="o">()</span>  
+<span class="o">{</span>  
+    <span class="c1">//发件箱  </span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">SMS_URI_SEND</span> <span class="o">=</span> <span class="s">&quot;content://sms/sent&quot;</span><span class="o">;</span>  
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">message</span><span class="o">=</span><span class="s">&quot;因故手机换号，原号废弃，敬请惠存新号xxxxxxxxxxx，带来的不便敬请谅解。 署名&quot;</span><span class="o">;</span>  
 
+    <span class="n">StringBuilder</span> <span class="n">smsBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>  
 
-<h2>Configuration</h2>
-<p>see config.py  </p>
-<h2>Usage</h2>
-<div class="highlight"><pre><span class="n">python</span> <span class="n">main ...</span></pre></div></div>
+    <span class="k">try</span><span class="o">{</span>  
+        <span class="n">ContentResolver</span> <span class="n">cr</span> <span class="o">=</span> <span class="n">getContentResolver</span><span class="o">();</span>  
+        <span class="n">String ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/qunar.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/androidSMS.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/selenium.html">关于Selenium WebDriver</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-28T00:00:00" pubdate>2013-12-28</time></p>
-</header>
+<div class="pagination">
 
-  <div class="entry-content"><p>用Selenium Webdriver有段时间了，一直learning on demand，浏览了大部分API，并没有对这个工具进行详细和彻底的学习。<br />
-今天正好闲下来，梳理一下相关知识。  </p>
-<h2>Some Links</h2>
-<p><a href="http://code.google.com/p/selenium/">工程主页</a><br />
-<a href="http://www.seleniumhq.org/docs">文档主页</a><br />
-<a href="http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html">Python文档</a><br />
-<a href="http://selenium-python.readthedocs.org/en/latest/index.html">Python非官方文档</a><br />
-本人的两个使用Selenium的小项目
-<a href="https://github.com/particle128/vipshop-buy">vip.com shop assistant</a> <a href="https://github.com/particle128/qunar-flight-reminder">qunar flight-fare reminder</a></p>
-<h2>Some Concepts</h2>
-<h3>敏捷开发（Agile development）</h3>
-<p>是一个软件开发方法学，强调3点：<br />
-(1)adaptive&gt;predictive (2)iterative&gt;waterfall (3)codes&gt;documents<br />
-强调软件快速迭代，随着需求变化而修改或重构程序，而不是一开始就为将来可能出现的所有需求来设计。  </p>
-<h3>极限编程（extreme programming）</h3>
-<p>是敏捷开发中最有成效的方法，强调简单（只为今天的需求设计）、勇气（对随时可能进行的重构做好心里准备 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/selenium.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/some-thought.html">一些反思</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>来实验室的路上，总结自己过去比较失败的地方，发现了这几点：    </p>
-<ul>
-<li>目标不具体    </li>
-</ul>
-<p>没有具体的目标，只有空泛的目标，比如要好好锻炼身体，要加强技术。这些空洞的、口号性质的目标往往让我坚持不了几天。但是如果采用更加具体的目标，比如要找一个漂亮的女朋友（所以要让自己强壮起来），要去某某公司（所以要加强哪几个方面的技术），就容易让人坚持下来，而且更加有针对性，不会出现走很多弯路的情况。容易坚持的原因，我觉得是有憧憬，想放弃的时候想到佳人在旁或Offer在手的情形，会让人又鼓起斗志。当然，这只是举个例子，我锻炼身体的目标有好几个，找妹子只是比重比较小的一个。    </p>
-<ul>
-<li>花了很多时间在做重要但不紧急的事情，但是收效甚微。    </li>
-</ul>
-<p>最主要的原因是我没有坚持下来，比如每天记单词啦，健身啦，什么的，都尝试过一段时间，但是都半途而废了。  <br />
-<strong>要么不做一件事，节省下来时间做其他事；要么坚持做一件事。</strong>做一件事，没有坚持下来的话，会浪费很多时间，最后还相当于零。没有明确目标的做一件事，就容易半途而废。就像《高效能人士的七个习惯》中说的，绝大多数情况下不是自制力差，而是制定目标的能力差。这个我也有些许感触：别靠自制力 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/some-thought.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop.html">Bargain Snatcher：全自动极速抢购脚本</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-30T00:00:00" pubdate>2013-12-30</time></p>
-</header>
-
-  <div class="entry-content"><p>以下汇总的内容均来自本人的博客，或github站点。</p>
-<h3>源码</h3>
-<ul>
-<li><a href="https://github.com/particle128/vipshop-buy">particle128的github</a></li>
-</ul>
-<h3>所用到的技术</h3>
-<ul>
-<li><a href="http://particle128.com/posts/2013/12/selenium.html">Selenium WebDriver总结</a></li>
-</ul>
-<h3>项目相关总结</h3>
-<ul>
-<li><a href="http://particle128.com/posts/2013/12/vipshop-intro.html">使用方法</a></li>
-<li><a href="http://particle128.com/posts/2013/12/vipshop-tech.html">技术问题</a></li>
-<li><a href="http://particle128.com/posts/2013/12/vipshop-port.html">移植到windows</a></li>
-</ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-intro.html">Bargain Snatcher:使用说明</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
-
-  <div class="entry-content"><p>源码请移步<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>Two Modes</h2>
-<ul>
-<li>自选模式<br />
-配置config.ini，运行软件，键盘控制购买哪些看中的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=False。  </li>
-<li>全自动模式<br />
-配置config.ini，运行软件，自动购买符合过滤条件的物品。<br />
-打开方式：设置config.ini中auto_pick下的AutoPickMode=True。  </li>
-</ul>
-<h2>Configuration</h2>
-<p><code>config.ini</code>配置文件分为url，screen，auto_pick，config，type，size，empty，sort几个section。  </p>
-<h3>url</h3>
-<p>包括登陆界面和主页的url，一般不需要动。  </p>
-<h3>screen</h3>
-<p>配置屏幕和选购窗口的大小安排，一般默认即可。  </p>
-<h3>auto_pick</h3>
-<ul>
-<li>
-<p>【AutoPickMode】：可选值是True或False。<br />
-选择True，将使软件进入<strong>全自动模式</strong>，auto_pick部分配置的其他选项才有意义。<br />
-选择False，则直接忽略auto_pick部分的其余配置，进入<strong>自选模式 ...</strong></p></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-intro.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-      <a class="prev" href="http://particle128.com/author/particle1289.html">&larr; Older</a>
-  
-            <a class="next" href="http://particle128.com/author/particle1287.html">Newer &rarr;</a>
-        <br />
-</div>  </div>
-      <aside class="sidebar">
+      <a class="next" href="http://particle128.com/author/particle1287.html">Newer &rarr;</a>
+  <br />
+</div></div>
+<aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(4).html">Clean Code (4)</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
       </li>
-          </ul>
+    </ul>
   </section>
-    <section>
+  <section>
       
     <h1>Categories</h1>
     <ul id="recent_posts">
-              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
-              <li><a href="http://particle128.com/category/life.html">life</a></li>
-              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
-              <li><a href="http://particle128.com/category/others.html">others</a></li>
-              <li><a href="http://particle128.com/category/python.html">python</a></li>
-          </ul>
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
   </section>
-   
+ 
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
 
-    
+
     <section>
         <h1>Social</h2>
         <ul>
             <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
-                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
-                </ul>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
     </section>
-      <section>
+    <section>
         <h1>Blogroll</h2>
         <ul>
-                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
-                    <li><a href="http://python.org" target="_blank">Python</a></li>
-                </ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
     </section>
 </aside>    </div>
   </div>
@@ -259,9 +147,9 @@
   Copyright &copy; 2013 - particle128 -
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
-  	<script type="text/javascript">
+	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-      	  (function() {
+	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
 	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);

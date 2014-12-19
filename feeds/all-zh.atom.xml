@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-17T00:00:00+08:00</updated><entry><title>Clean Code (5)</title><link href="http://particle128.com/posts/2014/12/cleanCode(5).html" rel="alternate"></link><updated>2014-12-17T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-17:posts/2014/12/cleanCode(5).html</id><summary type="html">&lt;h3&gt;Chapter14 Successive Refinement&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-19T00:00:00+08:00</updated><entry><title>科普一下gitignore</title><link href="http://particle128.com/posts/2014/12/gitignore.html" rel="alternate"></link><updated>2014-12-19T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-19:posts/2014/12/gitignore.html</id><summary type="html">&lt;p&gt;给实验室的师弟们科普一下gitignore的用法&lt;/p&gt;
+&lt;h3&gt;gitignore是干嘛的&lt;/h3&gt;
+&lt;p&gt;当我们不想让git上传/管理特定于本地开发环境的文件时，我们可以添加这些东西到git工程根目录下的.gitignore文件中。当新增的文件匹配上了.gitignore中的一个模式，git会忽略该文件，即&lt;code&gt;git status&lt;/code&gt;不会提示他们处于untracked状态，之后的&lt;code&gt;git add .&lt;/code&gt;也不会添加该文件，除非你强制添加，即&lt;code&gt;git add -f .&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;gitignore使用的通配符，和shell里的通配符几乎是一样的。&lt;br /&gt;
+一点除外：在被/隔开的表达式中出现的*，只匹配所有非/的字符，也就是不能通配目录。&lt;/p&gt;
+&lt;h3&gt;gitignore的位置&lt;/h3&gt;
+&lt;p&gt;有三处：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;git管理的工程目录下的.gitignore： 项目所有成员的环境下都需要排除的文件&lt;/li&gt;
+&lt;li&gt;git管理的工程目录下的.git/info/exclude：某个开发者，在某个工程，需要排除的文件&lt;/li&gt;
+&lt;li&gt;~/.gitconfig：某个开发者，所有工程中，要排除的文件（比如~后缀的临时文件）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;例子&lt;/h3&gt;
+&lt;p&gt;我尽量在下面的例子中涵盖了gitignore的所有功能&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# gitignore test&lt;/span&gt;
+
+&lt;span class="cp"&gt;# exclude &amp;quot;#123&amp;quot;, &amp;quot;!hehe&amp;quot;, and &amp;quot;123    &amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;\#&lt;/span&gt;&lt;span class="mi"&gt;123&lt;/span&gt;
+&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;hehe&lt;/span&gt;
+&lt;span class="mi"&gt;123&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt; 
+
+&lt;span class="cp"&gt;# in gitignore, excluding a directory means exluding all the files under it&lt;/span&gt;
+&lt;span class="cp"&gt;# exclude dir &amp;quot;/container&amp;quot; and all the pathname under it&lt;/span&gt;
+&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+
+&lt;span class="cp"&gt;# exclude &amp;quot;haha&amp;quot; in the root directory of this git repository&lt;/span&gt;
+&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;
+
+&lt;span class="cp"&gt;# exclude &amp;quot;hehe&amp;quot; in all directories of this git repository, including &amp;quot;/hehe&amp;quot;, &amp;quot;dir/hehe&lt;/span&gt;&lt;span class="cm"&gt;/*&amp;quot;&lt;/span&gt;
+&lt;span class="cm"&gt;h[exyz]h?&lt;/span&gt;
+
+&lt;span class="cm"&gt;# exclude all the files under &amp;quot;/folder&amp;quot;, except &amp;quot;/folder/added&amp;quot;&lt;/span&gt;
+&lt;span class="cm"&gt;/folder/*&lt;/span&gt;
+&lt;span class="cm"&gt;!/folder/added&lt;/span&gt;
+
+&lt;span class="cm"&gt;# consecutive asterisks  &lt;/span&gt;
+&lt;span class="cm"&gt;**/&lt;/span&gt;&lt;span class="cp"&gt;hehe # equivalent to &amp;quot;hehe&amp;quot;&lt;/span&gt;
+&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="cm"&gt;/** # equivalent to &amp;quot;/container/&amp;quot;&lt;/span&gt;
+&lt;span class="cm"&gt;dir/**/&lt;/span&gt;&lt;span class="n"&gt;hehe&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;exclude&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;dir/hehe&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;dir/xx/hehe&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="n"&gt;so&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;引用&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://git-scm.com/docs/gitignore"&gt;git-scm.com&lt;/a&gt;&lt;/p&gt;</summary><category term="git"></category></entry><entry><title>Clean Code (5)</title><link href="http://particle128.com/posts/2014/12/cleanCode(5).html" rel="alternate"></link><updated>2014-12-17T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-17:posts/2014/12/cleanCode(5).html</id><summary type="html">&lt;h3&gt;Chapter14 Successive Refinement&lt;/h3&gt;
 &lt;p&gt;本章通过一个例子（处理命令参数的工具类，它把它命名为Args），给我们展现了作者是如何一步一步重构代码的。这一章很赞，重构的步骤很有借鉴之处，代码非常可读。&lt;/p&gt;
 &lt;p&gt;引用一句：&lt;/p&gt;
 &lt;blockquote&gt;

@@ -60,6 +60,32 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-19T00:00:00" pubdate>2014-12-19</time></p>
+</header>
+
+  <div class="entry-content"><p>给实验室的师弟们科普一下gitignore的用法</p>
+<h3>gitignore是干嘛的</h3>
+<p>当我们不想让git上传/管理特定于本地开发环境的文件时，我们可以添加这些东西到git工程根目录下的.gitignore文件中。当新增的文件匹配上了.gitignore中的一个模式，git会忽略该文件，即<code>git status</code>不会提示他们处于untracked状态，之后的<code>git add .</code>也不会添加该文件，除非你强制添加，即<code>git add -f .</code>。</p>
+<p>gitignore使用的通配符，和shell里的通配符几乎是一样的。<br />
+一点除外：在被/隔开的表达式中出现的*，只匹配所有非/的字符，也就是不能通配目录。</p>
+<h3>gitignore的位置</h3>
+<p>有三处：</p>
+<ul>
+<li>git管理的工程目录下的.gitignore： 项目所有成员的环境下都需要排除的文件</li>
+<li>git管理的工程目录下的.git/info/exclude：某个开发者，在某个工程，需要排除的文件</li>
+<li>~/.gitconfig：某个开发者，所有工程中，要排除的文件（比如~后缀的临时文件）</li>
+</ul>
+<h3>例子</h3>
+<p>我尽量在下面的例子中涵盖了gitignore的所有功能 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/gitignore.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
       </h1>
       <p class="meta"><time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time></p>
@@ -271,31 +297,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <a rel="full-article" href="http://particle128.com/posts/2014/05/vdisk-one-question.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
-      </h1>
-      <p class="meta"><time datetime="2014-05-20T00:00:00" pubdate>2014-05-20</time></p>
-</header>
-
-  <div class="entry-content"><h3>线程的实质</h3>
-<p>gdb调试线程，在线程创建和退出的时候，会看到这样的字样  </p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">New</span> <span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)]</span>  
-<span class="p">...</span>  
-<span class="p">[</span><span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)</span> <span class="n">exited</span><span class="p">]</span>  
-</pre></div>
-
-
-<p>Thread后面的数字是线程id，但是后面出现的LWP是什么呢？  </p>
-<p>LWP(light weighted process)，即轻量级进程。它是进程，但是和普通进程的区别在于，子进程和父进程共享绝大多数地址空间和资源:  </p>
-<ul>
-<li>地址空间中，除了栈，其他段（text、data、bss、heap等）都是共享的。  </li>
-<li>资源中，除了tid、线程特定的信号屏蔽字、errno等少数几个，其余的（pid、ppid、pgid、sid、controlling terminal、uid、gid、open file descriptors、record locks ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/05/linux-thread.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/category/tech2.html">&larr; Older</a>
 
@@ -305,6 +306,9 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
+      </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
       </li>
@@ -316,9 +320,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
       </li>
     </ul>
   </section>

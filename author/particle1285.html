@@ -60,6 +60,40 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">Bargain Snatcher:技术问题</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+</header>
+
+  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
+<h2>环境:</h2>
+<p>下载selenium chrome driver：<br />
+<a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
+安装selenium ：<code>pip install -U selenium</code>  </p>
+<h2>遇到的问题和总结：</h2>
+<ul>
+<li>不输入回车直接读入键盘操作，因此需要设置终端输入no buffer模式  </li>
+</ul>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>  
+<span class="kn">import</span> <span class="nn">termios</span>  
+
+<span class="k">try</span><span class="p">:</span>  
+     <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
+     <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
+     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>  
+     <span class="n">new</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>  
+     <span class="n">new</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">termios</span><span class="o">.</span><span class="n">ICANON</span>  
+     <span class="n">termios</span><span class="o">.</span><span class="n">tcsetattr</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">termios</span><span class="o">.</span><span class="n">TCSADRAIN</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>  
+     <span class="c"># code here  </span>
+
+<span class="k">except ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
       </h1>
       <p class="meta"><time datetime="2013-11-29T00:00:00" pubdate>2013-11-29</time></p>
@@ -284,47 +318,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/10/core-dump.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/inter-convert.html">两个类定义相互转换时的二义性</a>
-      </h1>
-      <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p>两个类，分别定义了到对方的转换，隐式使用这种转换的时候，一般会出现二义性。  </p>
-<ul>
-<li>例子：  </li>
-</ul>
-<div class="highlight"><pre><span class="k">struct</span> <span class="n">Y</span><span class="p">;</span>  
-<span class="k">struct</span> <span class="n">X</span>  
-<span class="p">{</span>  
-        <span class="n">X</span><span class="p">(</span><span class="n">Y</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;converting constructor&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
-<span class="p">};</span>  
-<span class="k">struct</span> <span class="n">Y</span>  
-<span class="p">{</span>  
-        <span class="k">operator</span> <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;conversion function&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>  
-<span class="p">};</span>  
-
-<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span> <span class="n">x</span><span class="p">)</span> <span class="p">{}</span>  
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
-<span class="p">{</span>  
-        <span class="n">Y</span> <span class="n">y</span><span class="p">;</span>  
-        <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>  
-<span class="p">}</span>  
-</pre></div>
-
-
-<p>根据C++Primer P460的讲解，很显然这段代码在编译时会报二义性（ambiguous）的错误。原因在于：conversion constructor和conversion operator并没有高下之分，所以在Y类型转换成X类型的时候，出现了二义。  </p>
-<ul>
-<li>如果X的构造函数和Y的转换操作符变成如下声明形式：  </li>
-</ul>
-<div class="highlight"><pre><span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">Y</span><span class="o">&amp;</span><span class="p">);</span>  
-<span class="k">operator ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/inter-convert.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1286.html">&larr; Older</a>
 
@@ -336,6 +329,9 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
       </li>
       <li class="post">
@@ -346,9 +342,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
       </li>
     </ul>
   </section>
