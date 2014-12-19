@@ -77,9 +77,30 @@
 </ul>
 <h3>例子</h3>
 <p>我尽量在下面的例子中涵盖了gitignore的所有功能</p>
-<div class="highlight"><pre><span class="cp"># gitignore test</span>
+<p>目录结构：</p>
+<div class="highlight"><pre><span class="p">.</span>
+<span class="err">├──</span> <span class="o">!</span><span class="n">hehe</span>
+<span class="err">├──</span> <span class="err">#</span><span class="mi">123</span>
+<span class="err">├──</span> <span class="mi">123</span><span class="err">\</span> <span class="err">\</span> <span class="err">\</span> \
+<span class="err">├──</span> <span class="n">container</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">a</span>
+<span class="err">│  </span> <span class="err">└──</span> <span class="n">b</span>
+<span class="err">├──</span> <span class="n">dir</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">added</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">haha</span>
+<span class="err">│  </span> <span class="err">└──</span> <span class="n">hehe</span>
+<span class="err">│  </span>     <span class="err">├──</span> <span class="n">a</span>
+<span class="err">│  </span>     <span class="err">└──</span> <span class="n">b</span>
+<span class="err">├──</span> <span class="n">folder</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">added</span>
+<span class="err">│  </span> <span class="err">└──</span> <span class="n">file</span>
+<span class="err">├──</span> <span class="n">haha</span>
+<span class="err">└──</span> <span class="n">hehe</span>
+</pre></div>
 
-<span class="cp"># exclude &quot;#123&quot;, &quot;!hehe&quot;, and &quot;123    &quot;</span>
+
+<p>gitignore文件:</p>
+<div class="highlight"><pre><span class="cp"># exclude &quot;#123&quot;, &quot;!hehe&quot;, and &quot;123    &quot;</span>
 <span class="err">\#</span><span class="mi">123</span>
 <span class="err">\</span><span class="o">!</span><span class="n">hehe</span>
 <span class="mi">123</span><span class="err">\</span> <span class="err">\</span> <span class="err">\</span> <span class="err">\</span> 

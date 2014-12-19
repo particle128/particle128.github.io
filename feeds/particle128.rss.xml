@@ -13,9 +13,30 @@
 &lt;/ul&gt;
 &lt;h3&gt;例子&lt;/h3&gt;
 &lt;p&gt;我尽量在下面的例子中涵盖了gitignore的所有功能&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# gitignore test&lt;/span&gt;
+&lt;p&gt;目录结构：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;hehe&lt;/span&gt;
+&lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="mi"&gt;123&lt;/span&gt;
+&lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="mi"&gt;123&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt; \
+&lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;
+&lt;span class="err"&gt;│  &lt;/span&gt; &lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+&lt;span class="err"&gt;│  &lt;/span&gt; &lt;span class="err"&gt;└──&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+&lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="n"&gt;dir&lt;/span&gt;
+&lt;span class="err"&gt;│  &lt;/span&gt; &lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="n"&gt;added&lt;/span&gt;
+&lt;span class="err"&gt;│  &lt;/span&gt; &lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="n"&gt;haha&lt;/span&gt;
+&lt;span class="err"&gt;│  &lt;/span&gt; &lt;span class="err"&gt;└──&lt;/span&gt; &lt;span class="n"&gt;hehe&lt;/span&gt;
+&lt;span class="err"&gt;│  &lt;/span&gt;     &lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;
+&lt;span class="err"&gt;│  &lt;/span&gt;     &lt;span class="err"&gt;└──&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+&lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="n"&gt;folder&lt;/span&gt;
+&lt;span class="err"&gt;│  &lt;/span&gt; &lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="n"&gt;added&lt;/span&gt;
+&lt;span class="err"&gt;│  &lt;/span&gt; &lt;span class="err"&gt;└──&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt;
+&lt;span class="err"&gt;├──&lt;/span&gt; &lt;span class="n"&gt;haha&lt;/span&gt;
+&lt;span class="err"&gt;└──&lt;/span&gt; &lt;span class="n"&gt;hehe&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-&lt;span class="cp"&gt;# exclude &amp;quot;#123&amp;quot;, &amp;quot;!hehe&amp;quot;, and &amp;quot;123    &amp;quot;&lt;/span&gt;
+
+&lt;p&gt;gitignore文件:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# exclude &amp;quot;#123&amp;quot;, &amp;quot;!hehe&amp;quot;, and &amp;quot;123    &amp;quot;&lt;/span&gt;
 &lt;span class="err"&gt;\#&lt;/span&gt;&lt;span class="mi"&gt;123&lt;/span&gt;
 &lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;hehe&lt;/span&gt;
 &lt;span class="mi"&gt;123&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt; 
