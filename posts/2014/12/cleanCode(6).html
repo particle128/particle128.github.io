@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Clean Code (6)</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>May your choices reflect your hopes, not your fears.</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://particle128.com/archives.html">archives</a></li>
+    <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    <li><a href="http://particle128.com/category/note.html">note</a></li>
+    <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">Clean Code (6)</h1>
+      <p class="meta"><time datetime="2014-12-28T00:00:00" pubdate>2014-12-28</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter17 Smells and Heuristics</h3>
+<p>这一章，是前面描述的内容的总结，列举了一些“不简洁代码”的表现。简单记录一下。</p>
+<ul>
+<li>构建工程，应当只需要一条命令；测试工程，也应该只需要一条命令。</li>
+<li>注释掉的代码，没有被调用的代码，不用担心，直接删掉就行。版本控制器会帮你管理。</li>
+<li>最小惊讶原则：你实现的函数，应当具有其他程序员凭直觉认定的，你这个函数应当具有的功能。比如<code>StringToDay</code>函数，应当将字符串"Monday"转化成enum Day类型的对象，并且，支持缩写（"Mon"）、不缺分大小写（"monday"）。如果没有实现某些感觉上显而易见的功能，使用该函数的程序员就需要去看代码或文档。</li>
+<li>最重要的原则之一：去重复。不单单是代码的重复，还包括<br />
+1.大段的if/else或switch/case结构，用多态和抽象工场代替<br />
+2.相似的算法，用模板方法模式或策略模式代替</li>
+<li>将概念进行分层抽象，不要将代码写到错误的抽象层次上。</li>
+</ul>
+<blockquote>
+<p>Isolating abstractions is one of the hardest things that software developers do, and there is no quick fix when you get it wrong.</p>
+</blockquote>
+<ul>
+<li>基类应对派生类一无所知，这是分离概念的要求。它们一般位于不同的jar文件中，当派生类替换时，基类不需要重新部署。例外：有限自动机，父类需要知道所有派生类的情况，父类和子类位于同一个jar文件中。</li>
+<li>接口越小越好，提供出来的公有函数越少越好。</li>
+<li>当两个模块之间没有依赖关系，不要仅仅因为一个模块需要使用另一个模块定义的一个东西时，建立了耦合。考虑一下，是不是我们把变量、常量、函数放错了地方？</li>
+<li>特性依恋（Features Envy），是指类A的方法使用了类B（参数或成员）的访问器或修改器。这种情况下，可以考虑把该方法实现在类B中。但是，以上解决方法，仅仅在不破坏其他方面的前提下，才成立。如果如下这种情况，就不能照顾特型依恋了，否则会破坏单一职责原则、打开闭合原则等。。。</li>
+</ul>
+<div class="highlight"><pre><span class="n">public</span> <span class="n">class</span> <span class="n">HourlyEmployeeReport</span> <span class="p">{</span>
+    <span class="n">private</span> <span class="n">HourlyEmployee</span> <span class="n">employee</span><span class="p">;</span>
+
+    <span class="n">String</span> <span class="nf">reportHours</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">String</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;Name: %s</span><span class="se">\t</span><span class="s">Hours:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> 
+        <span class="n">employee</span><span class="p">.</span><span class="n">getName</span><span class="p">(),</span>
+        <span class="n">employee</span><span class="p">.</span><span class="n">getHours</span><span class="p">());</span>
+    <span class="p">}</span>   
+<span class="p">}</span>
+</pre></div>
+
+
+<ul>
+<li>尽可能不用选择器参数（selector argument）。因为这样的方法，往往需要加注释，用来说明每种选项对应代码部分的意义。应当拆成几个方法，方法名就自我解释了。</li>
+<li>连续的长表达式，匈牙利标记法（Hungarian notation，用变量类型的缩写作为变量名的开头），魔数，都会让作者的意图很难理解。</li>
+</ul>
+<div class="highlight"><pre><span class="n">public</span> <span class="kt">int</span> <span class="nf">m_otCalc</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">iThsWkd</span> <span class="o">*</span> <span class="n">iThsRte</span> <span class="o">+</span>
+        <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">Math</span><span class="p">.</span><span class="n">round</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">iThsRte</span> <span class="o">*</span>
+          <span class="n">Math</span><span class="p">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">iThsWkd</span> <span class="o">-</span> <span class="mi">400</span><span class="p">)</span>
+        <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<ul>
+<li><em>变量/常量/方法应该放在哪儿？</em>用最少惊讶原则，即放置在语义上最合理的地方，而不是实现起来最方便的地方。好处：让读者可以很容易猜到它们的位置。</li>
+<li>静态方法还是非静态方法？优先非静态方法。如果感觉静态比较好，考虑是否将来会用到多态，如果可能用到多态，还是得非静态。</li>
+<li>用解释性变量，分拆一个长的表达式：</li>
+</ul>
+<div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="n">match</span><span class="p">.</span><span class="n">find</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">key</span> <span class="o">=</span> <span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">headers</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">key</span><span class="p">.</span><span class="n">toLowerCase</span><span class="p">(),</span> <span class="n">value</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 而不是</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">match</span><span class="p">.</span><span class="n">find</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">headers</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">toLowerCase</span><span class="p">(),</span>
+                <span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<ul>
+<li>给date变量增加几天，命名：修改date本身，用<code>addDaysTo</code>或<code>increaseByDays</code>；不修改date，返回一个新的对象，用<code>daysLater</code>或<code>daysSince</code>。</li>
+<li>用常量取代魔数，例外：常量是众所周知的，出现在很清晰的代码上。</li>
+</ul>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">dailyPay</span> <span class="o">=</span> <span class="n">hourlyRate</span> <span class="o">*</span> <span class="mi">8</span><span class="p">;</span>
+<span class="kt">double</span> <span class="n">circumference</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">Math</span><span class="p">.</span><span class="n">PI</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</pre></div>
+
+
+<ul>
+<li><a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>里提到了一种解决时间耦合的方法。还有一种方法，用返回值和参数约束：先调用的方法的返回值，作为后调用的方法的参数。</li>
+<li>封装边界条件，比如出现了两次的<code>level+1</code>，可以用<code>nextLevel = level+1</code>代替。</li>
+<li>如果模块A与模块B合作，模块B与模块C合作，我们不希望A知道C的存在。换句话说，让直接合作者（本例中的B）提供所有的服务。否则，如果想在B和C之间插入一个新的模块Q，将需要大动干戈：</li>
+</ul>
+<div class="highlight"><pre><span class="n">a</span><span class="p">.</span><span class="n">getB</span><span class="p">().</span><span class="n">getC</span><span class="p">().</span><span class="n">doSomething</span><span class="p">();</span>
+
+<span class="c1">// 应该是</span>
+
+<span class="n">a</span><span class="p">.</span><span class="n">getB</span><span class="p">().</span><span class="n">doSomething</span><span class="p">();</span>
+</pre></div>
+
+
+<ul>
+<li>如果我们需要引入同一个模块的两个以上的类，用通配符，好处（1）简洁（2）不是强依赖，降低耦合</li>
+</ul>
+<h3>全书总结</h3>
+<p>全书从代码层面和设计层面讲解了“简洁之道”，提到了很多我之前不知道的原则：SRP（单一职责原则）、OCP（打开闭合原则）、DRY（不要重复自己）、PLS（最少惊讶原则）...让我大开眼界。</p>
+<p>一年前，写paper的时候，我把实验代码封装成一些类，用继承和组合关系来关联它们。在这个过程中，我经常遇到一个让我头疼的问题，一个方法到底应该放在哪里：派生类还是基类？这个类还是那个类？引用一句Clean Code中的话：</p>
+<blockquote>
+<p>One of the most important decisions a software developer can make is where to put code.</p>
+</blockquote>
+<p>clean code这本书里提到的一些坏味道（bad smell）和一些实践经验，给了我很好的指导。让我知道了哪些东西应该有（好的名字）、哪些东西不应该有（不言自明的注释）、代码应该有哪些功能、代码应该放在哪里（最少惊讶原则）。</p></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+<time datetime="2014-12-28T00:00:00" pubdate>2014-12-28</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/cleancode.html">cleanCode</a>
+  </span>
+</p>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(4).html">Clean Code (4)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Social</h2>
+        <ul>
+            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://github.com/particle128" target="_blank">github</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
+            <li><a href="http://python.org" target="_blank">Python</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+          var disqus_identifier = '/posts/2014/12/cleanCode(6).html';
+          var disqus_url = 'http://particle128.com/posts/2014/12/cleanCode(6).html';
+          var disqus_title = 'Clean Code (6)';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

@@ -60,6 +60,34 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
+      </h1>
+      <p class="meta"><time datetime="2014-09-30T00:00:00" pubdate>2014-09-30</time></p>
+</header>
+
+  <div class="entry-content"><p>鞍山项目，追到北京来折磨我了。</p>
+<h3>问题</h3>
+<p>专家评审部分，需要提交意见和各个指标的分数，<em>有一个</em>专家评审的意见保存在了数据库，但是分数没有保存进去。  </p>
+<p>评审专家系统里，打分的表格是前端js动态绘制的。专家提交打分情况的时候，把分数保存在HiddenField里上传服务端。因为不知道客户浏览器的情况，推测:  </p>
+<ol>
+<li>表格没有绘制成功。js绘制表格的语句不被浏览器支持，所以客户端直接看不到打分表格。</li>
+<li>分数没有提交成功。因为HiddenField实质是type="hidden"的input标签元素，它可以随表单一起提交给服务器。或许那个专家用的浏览器不支持hidden input标签。</li>
+</ol>
+<p>解决办法就是在服务器端对HiddenField提交上来的数据，进行检测，如果发现为空或者不合法，就提示用户换浏览器尝试。最初代码中没有检测数据为空，是因为前端写了js代码，保证分数都填写完毕才会提交表单。但是如果遇到推测的第2种情况，就会检测不出来。</p>
+<h3>修改数据库</h3>
+<p>代码改完，并没有万事大吉。因为数据库丢数据了，需要手动订正。</p>
+<p>大约1、2年前用过存储过程，不过太久远了，又去<a href="http://dev.mysql.com">MySQL官网</a>上浏览了一下相关文档。写的过程中遇到了些问题，简单记录下。</p>
+<p>代码如下：  </p>
+<div class="highlight"><pre><span class="n">delimiter</span> <span class="c1">//</span>
+
+<span class="n">CREATE</span> <span class="n">PROCEDURE ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/09/MySQL-bug.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/08/introduction-storm.html">brief introduction of storm</a>
       </h1>
       <p class="meta"><time datetime="2014-08-25T00:00:00" pubdate>2014-08-25</time></p>
@@ -291,43 +319,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore2.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
-      </h1>
-      <p class="meta"><time datetime="2014-04-15T00:00:00" pubdate>2014-04-15</time></p>
-</header>
-
-  <div class="entry-content"><h2>Chapter1 概述</h2>
-<h3>分布式存储特征</h3>
-<ul>
-<li>可扩展：随着集群规模增大，整体性能表现为线性增长  </li>
-<li>低成本：构建在普通PC上，实现自动容错、自动负载均衡  </li>
-<li>高性能  </li>
-<li>易用：提供易用的外部接口，也具备完善的监控和运维工具  </li>
-</ul>
-<p>鸡汤：  </p>
-<blockquote>
-<p>一般来讲，工程师如果能够深入理解分布式存储系统，理解其他互联网后台架构不再会有任何困难。  </p>
-</blockquote>
-<h3>分布式存储分类</h3>
-<ul>
-<li>非结构化数据：文档、图片、视频等  </li>
-<li>结构化数据：数据库中的表  </li>
-<li>半结构化数据：HTML文档，模式结构和内容混在一起  </li>
-</ul>
-<h3>分布式存储系统分类</h3>
-<p>1、分布式文件系统<br />
-存储非结构化数据，可以用作分布式数据库或分布式表格系统的底层存储  </p>
-<ul>
-<li>存储BLOB，Facebook Haystack以及Taobao File System  </li>
-<li>存储大文件，Google File System，分布式表格系统Google Bigtable的基础  </li>
-<li>存储定长块，Amazon的Elastic Block Store，分布式数据库Amazon RDS的基础 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore1.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1283.html">&larr; Older</a>
 
@@ -339,6 +330,9 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
       </li>
       <li class="post">
@@ -349,9 +343,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
       </li>
     </ul>
   </section>

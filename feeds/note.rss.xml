@@ -1,5 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/note.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-17T00:00:00+08:00</updated><entry><title>Clean Code (5)</title><link href="http://particle128.com/posts/2014/12/cleanCode(5).html" rel="alternate"></link><updated>2014-12-17T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-17:posts/2014/12/cleanCode(5).html</id><summary type="html">&lt;h3&gt;Chapter14 Successive Refinement&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/note.rss.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-28T00:00:00+08:00</updated><entry><title>Clean Code (6)</title><link href="http://particle128.com/posts/2014/12/cleanCode(6).html" rel="alternate"></link><updated>2014-12-28T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-28:posts/2014/12/cleanCode(6).html</id><summary type="html">&lt;h3&gt;Chapter17 Smells and Heuristics&lt;/h3&gt;
+&lt;p&gt;这一章，是前面描述的内容的总结，列举了一些“不简洁代码”的表现。简单记录一下。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;构建工程，应当只需要一条命令；测试工程，也应该只需要一条命令。&lt;/li&gt;
+&lt;li&gt;注释掉的代码，没有被调用的代码，不用担心，直接删掉就行。版本控制器会帮你管理。&lt;/li&gt;
+&lt;li&gt;最小惊讶原则：你实现的函数，应当具有其他程序员凭直觉认定的，你这个函数应当具有的功能。比如&lt;code&gt;StringToDay&lt;/code&gt;函数，应当将字符串"Monday"转化成enum Day类型的对象，并且，支持缩写（"Mon"）、不缺分大小写（"monday"）。如果没有实现某些感觉上显而易见的功能，使用该函数的程序员就需要去看代码或文档。&lt;/li&gt;
+&lt;li&gt;最重要的原则之一：去重复。不单单是代码的重复，还包括&lt;br /&gt;
+1.大段的if/else或switch/case结构，用多态和抽象工场代替&lt;br /&gt;
+2.相似的算法，用模板方法模式或策略模式代替&lt;/li&gt;
+&lt;li&gt;将概念进行分层抽象，不要将代码写到错误的抽象层次上。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Isolating abstractions is one of the hardest things that software developers do, and there is no quick fix when you get it wrong.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;基类应对派生类一无所知，这是分离概念的要求。它们一般位于不同的jar文件中，当派生类替换时，基类不需要重新部署。例外：有限自动机，父类需要知道所有派生类的情况，父类和子类位于同一个jar文件中。&lt;/li&gt;
+&lt;li&gt;接口越小越好，提供出来的公有函数越少越好。&lt;/li&gt;
+&lt;li&gt;当两个模块之间没有依赖关系，不要仅仅因为一个模块需要使用另一个模块定义的一个东西时，建立了耦合。考虑一下，是不是我们把变量、常量、函数放错了地方？&lt;/li&gt;
+&lt;li&gt;特性依恋（Features Envy），是指类A的方法使用了类B（参数或成员）的访问器或修改器。这种情况下，可以考虑把该方法实现在类B中。但是，以上解决方法，仅仅在不破坏其他方面的前提下，才成立。如果如下这种情况，就不能照顾特型依恋了，否则会破坏单一职责原则、打开闭合原则等。。。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;HourlyEmployeeReport&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;private&lt;/span&gt; &lt;span class="n"&gt;HourlyEmployee&lt;/span&gt; &lt;span class="n"&gt;employee&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="nf"&gt;reportHours&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Name: %s&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s"&gt;Hours:%d&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+        &lt;span class="n"&gt;employee&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getName&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
+        &lt;span class="n"&gt;employee&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getHours&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;   
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;尽可能不用选择器参数（selector argument）。因为这样的方法，往往需要加注释，用来说明每种选项对应代码部分的意义。应当拆成几个方法，方法名就自我解释了。&lt;/li&gt;
+&lt;li&gt;连续的长表达式，匈牙利标记法（Hungarian notation，用变量类型的缩写作为变量名的开头），魔数，都会让作者的意图很难理解。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;m_otCalc&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;iThsWkd&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;iThsRte&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;round&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;iThsRte&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+          &lt;span class="n"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;iThsWkd&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;400&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;变量/常量/方法应该放在哪儿？&lt;/em&gt;用最少惊讶原则，即放置在语义上最合理的地方，而不是实现起来最方便的地方。好处：让读者可以很容易猜到它们的位置。&lt;/li&gt;
+&lt;li&gt;静态方法还是非静态方法？优先非静态方法。如果感觉静态比较好，考虑是否将来会用到多态，如果可能用到多态，还是得非静态。&lt;/li&gt;
+&lt;li&gt;用解释性变量，分拆一个长的表达式：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;match&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;match&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;match&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;toLowerCase&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;// 而不是&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;match&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;match&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;toLowerCase&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
+                &lt;span class="n"&gt;match&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;给date变量增加几天，命名：修改date本身，用&lt;code&gt;addDaysTo&lt;/code&gt;或&lt;code&gt;increaseByDays&lt;/code&gt;；不修改date，返回一个新的对象，用&lt;code&gt;daysLater&lt;/code&gt;或&lt;code&gt;daysSince&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;用常量取代魔数，例外：常量是众所周知的，出现在很清晰的代码上。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;dailyPay&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;hourlyRate&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;double&lt;/span&gt; &lt;span class="n"&gt;circumference&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;radius&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;PI&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://particle128.com/posts/2014/12/cleanCode(5).html"&gt;Clean Code (5)&lt;/a&gt;里提到了一种解决时间耦合的方法。还有一种方法，用返回值和参数约束：先调用的方法的返回值，作为后调用的方法的参数。&lt;/li&gt;
+&lt;li&gt;封装边界条件，比如出现了两次的&lt;code&gt;level+1&lt;/code&gt;，可以用&lt;code&gt;nextLevel = level+1&lt;/code&gt;代替。&lt;/li&gt;
+&lt;li&gt;如果模块A与模块B合作，模块B与模块C合作，我们不希望A知道C的存在。换句话说，让直接合作者（本例中的B）提供所有的服务。否则，如果想在B和C之间插入一个新的模块Q，将需要大动干戈：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getB&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;getC&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;doSomething&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+&lt;span class="c1"&gt;// 应该是&lt;/span&gt;
+
+&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getB&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;doSomething&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;如果我们需要引入同一个模块的两个以上的类，用通配符，好处（1）简洁（2）不是强依赖，降低耦合&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;全书总结&lt;/h3&gt;
+&lt;p&gt;全书从代码层面和设计层面讲解了“简洁之道”，提到了很多我之前不知道的原则：SRP（单一职责原则）、OCP（打开闭合原则）、DRY（不要重复自己）、PLS（最少惊讶原则）...让我大开眼界。&lt;/p&gt;
+&lt;p&gt;一年前，写paper的时候，我把实验代码封装成一些类，用继承和组合关系来关联它们。在这个过程中，我经常遇到一个让我头疼的问题，一个方法到底应该放在哪里：派生类还是基类？这个类还是那个类？引用一句Clean Code中的话：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;One of the most important decisions a software developer can make is where to put code.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;clean code这本书里提到的一些坏味道（bad smell）和一些实践经验，给了我很好的指导。让我知道了哪些东西应该有（好的名字）、哪些东西不应该有（不言自明的注释）、代码应该有哪些功能、代码应该放在哪里（最少惊讶原则）。&lt;/p&gt;</summary><category term="cleanCode"></category></entry><entry><title>Clean Code (5)</title><link href="http://particle128.com/posts/2014/12/cleanCode(5).html" rel="alternate"></link><updated>2014-12-17T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-17:posts/2014/12/cleanCode(5).html</id><summary type="html">&lt;h3&gt;Chapter14 Successive Refinement&lt;/h3&gt;
 &lt;p&gt;本章通过一个例子（处理命令参数的工具类，它把它命名为Args），给我们展现了作者是如何一步一步重构代码的。这一章很赞，重构的步骤很有借鉴之处，代码非常可读。&lt;/p&gt;
 &lt;p&gt;引用一句：&lt;/p&gt;
 &lt;blockquote&gt;
