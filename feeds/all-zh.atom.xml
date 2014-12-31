@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-28T00:00:00+08:00</updated><entry><title>Clean Code (6)</title><link href="http://particle128.com/posts/2014/12/cleanCode(6).html" rel="alternate"></link><updated>2014-12-28T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-28:posts/2014/12/cleanCode(6).html</id><summary type="html">&lt;h3&gt;Chapter17 Smells and Heuristics&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-31T00:00:00+08:00</updated><entry><title>写在2014年的最后一天</title><link href="http://particle128.com/posts/2014/12/2014life.html" rel="alternate"></link><updated>2014-12-31T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-31:posts/2014/12/2014life.html</id><summary type="html">&lt;p&gt;今天是12.31，2014年的最后一天。崔师兄喊着实验室的人，一起去知语山吃饭。聚餐期间，我们继续保持着三句不离本行的特色，“黑”师兄、“黑”师弟，气氛非常好。&lt;/p&gt;
+&lt;p&gt;中间，我带领大家玩了一下“谁是卧底”，从分辨我们实验室的两大师兄，分辨Java和C++，到我们使用“谁是卧底”的安卓app，大家玩的不亦乐乎。有一次我是卧底，手里拿着“白富美”，大家手里的是“高富帅”，我在一轮还没说完的时候，就猜到了这个局面，之后，说了很多两者都一样的特质，比如“优越的生活条件”，“钱一般是从父母继承过来的”，等等…但是，xiaodong xu这货，没有啥证据就愣猜是我，还号召大家一起投我，明明其他人的说法中都有破绽，他还是坚持自己的想法。最终，我在硬撑了3轮（每一轮都竭尽全力地给自己辩护，找其他人的漏洞啊，容易吗我）之后，被他和他蛊惑了的群众投死了。事后才知道，他的确猜错了我的身份，以为我的底牌是“土豪”。&lt;/p&gt;
+&lt;p&gt;这一年感觉过得很丰富，很快乐，很精彩，值得回忆的事情很多。这表明，我虽然可以接受两点一线的艰苦求学生活，但更喜欢更加丰富和精彩的生活。不知道是因为我的心态变得更好了，还是我的性格变得更开朗了，还是我的确这一年遇到了太多开心的事情和需要感恩的人，简单回忆一下2014，满是温暖。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实习，遇到了人生导师+技术前辈+贵人——耗子哥，各种无节操开玩笑，和人生、技术的指导，让我受益良多。&lt;/li&gt;
+&lt;li&gt;实习，遇到了专业“技术达人”和业余“相声演员”——焦义师兄，让我见识到了真正的全栈工程师。&lt;/li&gt;
+&lt;li&gt;实习期间，和黄震、石博、小绿（到现在我还记不住他的名字）一起熬夜宵，回去路上侃大山，实在快活。&lt;/li&gt;
+&lt;li&gt;实习临走之前，被李廷请客吃了烧烤，第一次吃海贝类的烧烤，还有绝佳的馒头片，太赞了。&lt;/li&gt;
+&lt;li&gt;找工作期间，寄宿在王庚脚下的地下室招待所，生活的磨砺，和性格的磨砺。幸好有王庚在，要不然都无聊死了。&lt;/li&gt;
+&lt;li&gt;回学校后，继续找工作，去北京终面微软，去上海ac面摩根斯坦利，认识很多优秀和有趣的人。&lt;/li&gt;
+&lt;li&gt;找完工作，在学院看到一个一见倾心的妹子，哈哈，还在认识中。&lt;/li&gt;
+&lt;li&gt;找完工作，和实验室的一帮师弟师妹，偶尔一起聚餐、看电影、唱歌，真幸福！&lt;/li&gt;
+&lt;li&gt;明年1.8还要和实验室的人，外加室友，一起去哈尔滨，想想就兴奋啊，哇哈哈~~~&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我是幸运的，能在短暂人生旅途中的这一段，有这么一帮人，陪我度过。&lt;/p&gt;
+&lt;p&gt;刚刚查看了2013年的年终总结（没有放到网上），有些感触。突然意思到，当时只是一时兴起的写作，应该伴随我一生。回忆，是一件美好的东西，我需要记录下来生命中的点点滴滴，这是一笔财富。只不过，有些个人情感的东西，我暂时不想发布出来。说不定，等我年龄大了，就想公开了。&lt;/p&gt;
+&lt;p&gt;游完哈尔滨，写个游记，放到博客上；大年初一，写个总结，自己留着。&lt;/p&gt;
+&lt;p&gt;2014，再见；2015，我来了。&lt;/p&gt;</summary><category term="life"></category></entry><entry><title>Clean Code (6)</title><link href="http://particle128.com/posts/2014/12/cleanCode(6).html" rel="alternate"></link><updated>2014-12-28T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-28:posts/2014/12/cleanCode(6).html</id><summary type="html">&lt;h3&gt;Chapter17 Smells and Heuristics&lt;/h3&gt;
 &lt;p&gt;这一章，是前面描述的内容的总结，列举了一些“不简洁代码”的表现。简单记录一下。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;构建工程，应当只需要一条命令；测试工程，也应该只需要一条命令。&lt;/li&gt;
