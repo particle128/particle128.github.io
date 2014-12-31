@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>May your choices reflect your hopes, not your fears.</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 31 Dec 2014 00:00:00 +0800</lastBuildDate><item><title>写在2014年的最后一天</title><link>http://particle128.com/posts/2014/12/2014life.html</link><description>&lt;p&gt;今天是12.31，2014年的最后一天。崔师兄喊着实验室的人，一起去知语山吃饭。聚餐期间，我们继续保持着三句不离本行的特色，“黑”师兄、“黑”师弟，气氛非常好。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>May your choices reflect your hopes, not your fears.</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 31 Dec 2014 00:00:00 +0800</lastBuildDate><item><title>写在2014年的最后一天</title><link>http://particle128.com/posts/2014/12/2014-last-day.html</link><description>&lt;p&gt;今天是12.31，2014年的最后一天。崔师兄喊着实验室的人，一起去知语山吃饭。聚餐期间，我们继续保持着三句不离本行的特色，“黑”师兄、“黑”师弟，气氛非常好。&lt;/p&gt;
 &lt;p&gt;中间，我带领大家玩了一下“谁是卧底”，从分辨我们实验室的两大师兄，分辨Java和C++，到我们使用“谁是卧底”的安卓app，大家玩的不亦乐乎。有一次我是卧底，手里拿着“白富美”，大家手里的是“高富帅”，我在一轮还没说完的时候，就猜到了这个局面，之后，说了很多两者都一样的特质，比如“优越的生活条件”，“钱一般是从父母继承过来的”，等等…但是，xiaodong xu这货，没有啥证据就愣猜是我，还号召大家一起投我，明明其他人的说法中都有破绽，他还是坚持自己的想法。最终，我在硬撑了3轮（每一轮都竭尽全力地给自己辩护，找其他人的漏洞啊，容易吗我）之后，被他和他蛊惑了的群众投死了。事后才知道，他的确猜错了我的身份，以为我的底牌是“土豪”。&lt;/p&gt;
 &lt;p&gt;这一年感觉过得很丰富，很快乐，很精彩，值得回忆的事情很多。这表明，我虽然可以接受两点一线的艰苦求学生活，但更喜欢更加丰富和精彩的生活。不知道是因为我的心态变得更好了，还是我的性格变得更开朗了，还是我的确这一年遇到了太多开心的事情和需要感恩的人，简单回忆一下2014，满是温暖。&lt;/p&gt;
 &lt;ul&gt;
@@ -16,7 +16,7 @@
 &lt;p&gt;我是幸运的，能在短暂人生旅途中的这一段，有这么一帮人，陪我度过。&lt;/p&gt;
 &lt;p&gt;刚刚查看了2013年的年终总结（没有放到网上），有些感触。突然意思到，当时只是一时兴起的写作，应该伴随我一生。回忆，是一件美好的东西，我需要记录下来生命中的点点滴滴，这是一笔财富。只不过，有些个人情感的东西，我暂时不想发布出来。说不定，等我年龄大了，就想公开了。&lt;/p&gt;
 &lt;p&gt;游完哈尔滨，写个游记，放到博客上；大年初一，写个总结，自己留着。&lt;/p&gt;
-&lt;p&gt;2014，再见；2015，我来了。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Wed, 31 Dec 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-12-31:posts/2014/12/2014life.html</guid><category>life</category></item><item><title>Clean Code (6)</title><link>http://particle128.com/posts/2014/12/cleanCode(6).html</link><description>&lt;h3&gt;Chapter17 Smells and Heuristics&lt;/h3&gt;
+&lt;p&gt;2014，再见；2015，我来了。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Wed, 31 Dec 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-12-31:posts/2014/12/2014-last-day.html</guid><category>life</category></item><item><title>Clean Code (6)</title><link>http://particle128.com/posts/2014/12/cleanCode(6).html</link><description>&lt;h3&gt;Chapter17 Smells and Heuristics&lt;/h3&gt;
 &lt;p&gt;这一章，是前面描述的内容的总结，列举了一些“不简洁代码”的表现。简单记录一下。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;构建工程，应当只需要一条命令；测试工程，也应该只需要一条命令。&lt;/li&gt;
