@@ -5225,7 +5225,7 @@ PS：默认代码高亮部分不太喜欢，所以我进行了如下修改，把
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;使用Google站长工具，以便能被Google收录&lt;br /&gt;
-用谷歌账户登陆&lt;a href="www.google.com/webmasters/"&gt;Google Webmaster Tools&lt;/a&gt;，添加自己的站点，比如particle128.com，然后可以选择提交sitemap，或者替google手动抓取页面。  &lt;/p&gt;
+用谷歌账户登陆&lt;a href="https://www.google.com/webmasters/"&gt;Google Webmaster Tools&lt;/a&gt;，添加自己的站点，比如particle128.com，然后可以选择提交sitemap，或者替google手动抓取页面。  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;使用Baidu站长工具，以便能被Baidu收录&lt;br /&gt;
