@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/note.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-28T00:00:00+08:00</updated><entry><title>Clean Code (6)</title><link href="http://particle128.com/posts/2014/12/cleanCode(6).html" rel="alternate"></link><updated>2014-12-28T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-28:posts/2014/12/cleanCode(6).html</id><summary type="html">&lt;h3&gt;Chapter17 Smells and Heuristics&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/note.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-02T00:00:00+08:00</updated><entry><title>C专家编程-笔记(1)</title><link href="http://particle128.com/posts/2015/04/ExpertC(1).html" rel="alternate"></link><updated>2015-04-02T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-02:posts/2015/04/ExpertC(1).html</id><summary type="html">&lt;p&gt;这次写C专家编程的笔记，感觉每一章的联系性比较强，就不用一行一行的文字罗列了，尝试用Xmind的流程图和思维导图来呈现。&lt;/p&gt;
+&lt;h3&gt;第一章  C:穿越时空的迷雾&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="1-1" src="http://particle128.com/images/expert_c_1_1.png" /&gt;
+&lt;img alt="1-2" src="http://particle128.com/images/expert_c_1_2.png" /&gt;&lt;/p&gt;
+&lt;h3&gt;第二章  这不是Bug，而是语言特性&lt;/h3&gt;</summary><category term="ExpertC"></category></entry><entry><title>Clean Code (6)</title><link href="http://particle128.com/posts/2014/12/cleanCode(6).html" rel="alternate"></link><updated>2014-12-28T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-28:posts/2014/12/cleanCode(6).html</id><summary type="html">&lt;h3&gt;Chapter17 Smells and Heuristics&lt;/h3&gt;
 &lt;p&gt;这一章，是前面描述的内容的总结，列举了一些“不简洁代码”的表现。简单记录一下。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;构建工程，应当只需要一条命令；测试工程，也应该只需要一条命令。&lt;/li&gt;

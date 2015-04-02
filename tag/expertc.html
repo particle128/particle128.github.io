@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - distributed</title>
+  <title>particle128's Blog - ExpertC</title>
   <meta name="author" content="particle128">
 
 
@@ -60,71 +60,18 @@
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
+        <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </h1>
-      <p class="meta"><time datetime="2014-04-26T00:00:00" pubdate>2014-04-26</time></p>
+      <p class="meta"><time datetime="2015-04-02T00:00:00" pubdate>2015-04-02</time></p>
 </header>
 
-  <div class="entry-content"><h2>Chapter2 单机存储系统</h2>
-<h3>2.1硬件基础</h3>
-<h4>CPU架构</h4>
-<ul>
-<li>SMP（对称多处理）:经典的CPU架构，一个计算机上汇集了一组CPU（一个CPU往往包括不止一个核），对称工作、无主次或从属关系，共享相同的物理内存和总线。<br />
-  某些CPU还通过超线程技术（Hyper-Threading Technology），在一个核心上同时执行两个线程。  </li>
-<li>NUMA（非一致存储访问）:克服SMP中多CPU对总线资源的竞争，一个NUMA包括多个NUMA节点，一个NUMA节点就是一个SMP结构（n个CPU，1个内存）  </li>
-</ul>
-<h4>IO总线</h4>
-<p>Intel的主板，一般为南、北桥架构  </p>
-<ul>
-<li>北桥芯片：CPU，内存，高端SSD (高速IO)  </li>
-<li>南桥芯片：网卡，硬盘，中低端SSD  </li>
-</ul>
-<h4>网路拓扑</h4>
-<p>数据中心网络拓扑结构，主要分为  </p>
-<ul>
-<li>三层结构：核心层、汇聚层、接入层。一个接入层交换机下的服务器部署在一个机架内  </li>
-<li>三级CLOS网络：Google设计的扁平化拓扑结构（从wiki上看图，感觉挺复杂的）  </li>
-</ul>
-<p>传输时延 ...</p></div>
+  <div class="entry-content"><p>这次写C专家编程的笔记，感觉每一章的联系性比较强，就不用一行一行的文字罗列了，尝试用Xmind的流程图和思维导图来呈现。</p>
+<h3>第一章  C:穿越时空的迷雾</h3>
+<p><img alt="1-1" src="http://particle128.com/images/expert_c_1_1.png" />
+<img alt="1-2" src="http://particle128.com/images/expert_c_1_2.png" /></p>
+<h3>第二章  这不是Bug，而是语言特性</h3></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore2.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
-      </h1>
-      <p class="meta"><time datetime="2014-04-15T00:00:00" pubdate>2014-04-15</time></p>
-</header>
-
-  <div class="entry-content"><h2>Chapter1 概述</h2>
-<h3>分布式存储特征</h3>
-<ul>
-<li>可扩展：随着集群规模增大，整体性能表现为线性增长  </li>
-<li>低成本：构建在普通PC上，实现自动容错、自动负载均衡  </li>
-<li>高性能  </li>
-<li>易用：提供易用的外部接口，也具备完善的监控和运维工具  </li>
-</ul>
-<p>鸡汤：  </p>
-<blockquote>
-<p>一般来讲，工程师如果能够深入理解分布式存储系统，理解其他互联网后台架构不再会有任何困难。  </p>
-</blockquote>
-<h3>分布式存储分类</h3>
-<ul>
-<li>非结构化数据：文档、图片、视频等  </li>
-<li>结构化数据：数据库中的表  </li>
-<li>半结构化数据：HTML文档，模式结构和内容混在一起  </li>
-</ul>
-<h3>分布式存储系统分类</h3>
-<p>1、分布式文件系统<br />
-存储非结构化数据，可以用作分布式数据库或分布式表格系统的底层存储  </p>
-<ul>
-<li>存储BLOB，Facebook Haystack以及Taobao File System  </li>
-<li>存储大文件，Google File System，分布式表格系统Google Bigtable的基础  </li>
-<li>存储定长块，Amazon的Elastic Block Store，分布式数据库Amazon RDS的基础 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore1.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2015/04/ExpertC(1).html">Read On &crarr;</a>
   </footer>
   		</article>
 <div class="pagination">
@@ -136,10 +83,7 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
+          <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </li>
     </ul>
   </section>
