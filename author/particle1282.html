@@ -60,6 +60,25 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-05T00:00:00" pubdate>2014-12-05</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter1 Clean Code</h3>
+<p>通过一个“坏代码毁了一个初创公司”的例子，讲了messy code的危害，不禁让我想到VPC的第一版。然后，列举了多个名人对clean code的推崇和理解，这些名人包括C++之父、UML创始人、程序员修炼之道作者、wiki之父...</p>
+<h3>Chapter2 Meaningful Names</h3>
+<ul>
+<li>使用表明意义（intention-revealing）的名字，而不是简单的名字+注释。比如<code>elapsedTimeInDays</code></li>
+<li>避免误导信息（disinformation）。尽量少自己定义缩略形式，如果不是List别用<code>accountList</code>（用<code>accounts</code>,或<code>bunchOfAccounts</code>,或<code>accountGroup</code>），别用小写的l和大写的O</li>
+<li>做有意义的区分。避免用<code>a1,a2,..</code>来区分多个同类元素，避免用<code>a,an,the,data,info ...</code></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(1).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/10/msOnlineTest.html">微软校招在线测试</a>
       </h1>
       <p class="meta"><time datetime="2014-10-22T00:00:00" pubdate>2014-10-22</time></p>
@@ -275,32 +294,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <a rel="full-article" href="http://particle128.com/posts/2014/05/linux-thread.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/05/delete-core-dump.html">一场core dump引发的思考</a>
-      </h1>
-      <p class="meta"><time datetime="2014-05-19T00:00:00" pubdate>2014-05-19</time></p>
-</header>
-
-  <div class="entry-content"><h3>起因</h3>
-<p>上午在实现算法“找出最小的k个元素/找出第k大的元素”时，遇到了core dump。代码如下：  </p>
-<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;  </span>
-<span class="cp">#include &lt;iterator&gt;  </span>
-<span class="cp">#include &lt;algorithm&gt;  </span>
-<span class="cp">#include &lt;cstdlib&gt;  </span>
-
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>  
-
-<span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span><span class="kt">int</span> <span class="n">begin</span><span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">begin</span><span class="p">;</span>  
-    <span class="c1">//copy(arr+begin,arr+end+1,ostream_iterator&lt;int&gt;(cout,&quot;,&quot;));  </span>
-    <span class="c1">//cout&lt;&lt;endl&lt;&lt;&quot;begin:&quot;&lt;&lt;begin&lt;&lt;&quot;,end:&quot;&lt;&lt;end&lt;&lt;&quot;,mid ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/05/delete-core-dump.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1283.html">&larr; Older</a>
 
@@ -312,6 +305,9 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </li>
       <li class="post">
@@ -322,9 +318,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
       </li>
     </ul>
   </section>
@@ -341,7 +334,7 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
 
 
     <section>
