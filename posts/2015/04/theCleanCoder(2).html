@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>brief introduction of storm</title>
+  <title>The Clean Coder 笔记 (2)</title>
   <meta name="author" content="particle128">
 
 
@@ -59,90 +59,35 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">brief introduction of storm</h1>
-      <p class="meta"><time datetime="2014-08-25T00:00:00" pubdate>2014-08-25</time></p>
+      <h1 class="entry-title">The Clean Coder 笔记 (2)</h1>
+      <p class="meta"><time datetime="2015-04-03T00:00:00" pubdate>2015-04-03</time></p>
 </header>
 
-  <div class="entry-content"><p>I have used Storm for 3 months at my internship in Alibaba, and this article is a brief introduction of storm. Use English for fun, haha...</p>
-<h3>What is storm</h3>
-<p><a href="http://storm.incubator.apache.org/">Storm</a> is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.<br />
-Many large companies, including Twitter, Yahoo!, Alibaba and Baidu, have used Storm to do some realtime processing, such as realtime analytics of application logs, or DRPC. Twitter integrates storm with its other infrastructures, including database systems, the messaging infrastructure, and monitoring/altering system.<br />
-Typical use cases for Storm:  </p>
-<ul>
-<li>processing stream<br />
-  no need for intermediary queues -&gt; faster  </li>
-<li>continuous computation<br />
-  compute when data is available -&gt; realtime  </li>
-<li>distributed remote procedure call<br />
-  parallelize CPU-intensive operations -&gt; higher throughput (somewhat like pipelining)  </li>
-</ul>
-<p>By the way, Alibaba has developed a special version of Storm, called <a href="https://github.com/alibaba/jstorm">JStorm</a>, which ueses Java (quicker than Clojure) to rewrite the core module of Storm and makes some changes (optimizing ack mechanism, ...), achieving higher performance and more stability.  </p>
-<h3>Basic concepts of storm</h3>
-<h4>Stream</h4>
-<p>A <code>stream</code> is an unbounded sequence of data that is created and processed in parallel in a distributed fashion.<br />
-Streams are composed of <code>tuples</code>, which are the smallest units that can be emited from spout/bolt. And a tuple is constuited of 1 or more <code>fields</code>.<br />
-For example, <code>TestSpout</code> reads tweets from a MQ, and emits <code>(author, tweet, date)</code> to <code>TestBolt</code>. <code>(author, tweet, date)</code> is the tuple, and <code>author</code>, <code>tweet</code>, <code>date</code> are three fields of this tuple.  </p>
-<h4>Spout &amp; Bolt</h4>
-<p>The input stream of a Storm cluster is handled by a component called a <code>spout</code>. The spout passes the data to a component called a <code>bolt</code>, which transforms it in some way. A bolt either persists the data in some sort of storage, or passes it to some other bolt. You can imagine a Storm cluster as a chain of bolt components that each make some kind of transformation on the data exposed by the spout.  </p>
-<h4>Connection of spout/bolt</h4>
-<p>there are 8 grouping methods, which defines how the downstream bolt read from the upstream spout/bolt.<br />
-Common grouping method includes  </p>
-<ul>
-<li>Shuffle grouping<br />
-  Tuples are randomly distributed across the bolt’s tasks in a way such that each bolt is guaranteed to get an equal number of tuples.  </li>
-<li>Fields grouping<br />
-  The stream is partitioned by the fields specified in the grouping. For example, if the stream is grouped by the “user-id” field, tuples with the same “user-id” will always go to the same task, but tuples with different “user-id”’s may go to different tasks.  </li>
-<li>All grouping<br />
-  The stream is replicated across all the bolt’s tasks. Use this grouping with care.  </li>
-<li>Global grouping<br />
-  The entire stream goes to a single one of the bolt’s tasks. Specifically, it goes to the task with the lowest id.  </li>
-<li>Custom grouping<br />
-  You defines the grouping rule.  </li>
-</ul>
-<h4>Topology</h4>
-<p>The arrangement of all the components (spouts and bolts) and their connections is called a <code>topology</code>  </p>
-<h4>Nimbus &amp; Supervior</h4>
-<p>Since it's a distributed system, there are more than one machine (node) in the system's cluster.  </p>
-<ul>
-<li>master node<br />
-  runs <code>Nimbus</code> daemon, which is responsible for distributing code around the cluster, assigning tasks to each worker node, and monitoring for failures.  </li>
-<li>worker node<br />
-  runs <code>Supervisor</code> daemon, which consists of 1 or more worker processes and executes a portion of a topology (such as 1 spout and 2 bolts)  </li>
-<li>zookeeper node<br />
-  runs zookeeper, in which the states of Nimbus and Supervisor are stored  </li>
-</ul>
-<p>The illustration below shows the relationship among them<br />
-<img alt="image" src="http://particle128.com/images/storm1.png" />  </p>
-<h4>worker &amp; executor &amp; task</h4>
-<p>all the three concepts are inside the supervisor daemon, since the master node and the zk node are controlling nodes  </p>
-<ul>
-<li>worker (process)<br />
-  runs inside the supervisor daemon<br />
-  You can configure the number of workers across machines by <code>Config config = new Config(); config.setNumWorkers(3)</code>  </li>
-<li>executor (thread)<br />
-  runs inside the worker process<br />
-  You can configure the initial number of executors per component(bolt/spout) by <code>topologyBuilder.setBolt("test", new TestBolt(), 2)</code>  </li>
-<li>task (bolt/spout instance)<br />
-  runs inside the executor, 1 executor has 1 task by default<br />
-  You can configure the number of tasks per component by <code>topologyBuilder.setBolt("test", new TestBolt(), 2).setNumTasks(4)</code>  </li>
-</ul>
-<p>The following two illustrations show the relationship among them<br />
-<img alt="image" src="http://particle128.com/images/storm2.png" /><br />
-<img alt="image" src="http://particle128.com/images/storm3.png" />  </p>
-<p>What is the reason for have 2+ tasks per executor, see <a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism">here</a>  </p>
-<h2>References</h2>
-<p><a href="http://storm.incubator.apache.org/documentation">storm documentation</a><br />
-<a href="http://www.michael-noll.com/blog/2012/10/16/understanding-the-parallelism-of-a-storm-topology/">Understanding the Parallelism of a Storm Topology</a><br />
-<a href="http://stackoverflow.com/questions/17257448/what-is-the-task-in-twitter-storm-parallelism">What is the “task” in twitter Storm parallelism</a><br />
-<a href="http://shop.oreilly.com/product/0636920024835.do">Getting Started with Storm</a>  </p></div>
+  <div class="entry-content"><h3>Chapter4 Coding</h3>
+<blockquote>
+<p>Preparedness. <br />
+If you are tired or distracted, do not code. You'll only wind up redoing what you did. Instead, find a way to eliminate the distractions and settle your mind. </p>
+</blockquote>
+<p>累或者走神的时候，别写代码。先把糟糕的状态排除或者减轻了，再来写代码。</p>
+<blockquote>
+<p>3 AM Code. <br />
+I remember feeling so good about myself for the long hours I was working. I remember feeling dedicated. I remember thinking that working at 3 AM is what serious professionals do. How wrong I was! <br />
+That code came back to bite us over and over again.<br />
+We never had time to rewrite this wad (so we thought) but we always seemed to have time to add another wart or patch to work around it.  </p>
+</blockquote>
+<p>工作到凌晨3点，不是件值得标榜的事。写坏了代码，做一些补丁，似乎总有时间，但是重新写代码，却总是没有时间，这是件讽刺的事。重新写，精力消耗很大，还是一开始就不要把代码写坏。</p>
+<blockquote>
+<p>Flow Zone.<br />
+You will write more code in the Zone. The problem is that you lose some of the big picture while you are in the Zone, so you will likely make decisions that you will later have to go back and reverse.</p>
+</blockquote>
+<p>心流状态可以让你更加专注、提高产出，但是缺点是让你失去全局观，可能因此做出一些短视的决定。</p></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2014-08-25T00:00:00" pubdate>2014-08-25</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/storm.html">storm</a>
-    <a class="category" href="http://particle128.com/tag/trident.html">trident</a>
+<time datetime="2015-04-03T00:00:00" pubdate>2015-04-03</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>
   </span>
 </p>    </footer>
   </article>
@@ -208,9 +153,9 @@ Common grouping method includes  </p>
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2014/08/introduction-storm.html';
-          var disqus_url = 'http://particle128.com/posts/2014/08/introduction-storm.html';
-          var disqus_title = 'brief introduction of storm';
+          var disqus_identifier = '/posts/2015/04/theCleanCoder(2).html';
+          var disqus_url = 'http://particle128.com/posts/2015/04/theCleanCoder(2).html';
+          var disqus_title = 'The Clean Coder 笔记 (2)';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

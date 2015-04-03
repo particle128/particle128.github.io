@@ -60,6 +60,30 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-06T00:00:00" pubdate>2014-12-06</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter5 Formatting</h3>
+<ul>
+<li>你的代码可能随着版本的升级，逐渐被替换；但是你的代码风格/格式会被后继开发者一直传承下去。</li>
+<li>文件的长度：通常200行以内，最多500行</li>
+<li>C++类文件，通常遵循scissors rule，即上面是成员函数，下面是成员变量；java相反，上面是成员变量，下面是共有函数<br />
+根据Sun的<a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html">Code Convention for Java</a>，类中的成员的顺序如下：<br />
+1.static成员变量：public -&gt; protected -&gt; package -&gt; private<br />
+2.non-static成员变量：public -&gt; protected -&gt; package -&gt; private<br />
+3.构造函数<br />
+4.成员函数：按照语义顺序，而不是访问级别</li>
+<li>一行不超过120个字符，可以设置屏幕字符宽度为120，是否需要向右滚动屏幕是判断是否超过行限制的方法（Sun Java Convention规定是80个字符）</li>
+<li>操作符之间的空格：*和 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
       </h1>
       <p class="meta"><time datetime="2014-12-05T00:00:00" pubdate>2014-12-05</time></p>
@@ -269,31 +293,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <a rel="full-article" href="http://particle128.com/posts/2014/05/vdisk-one-question.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
-      </h1>
-      <p class="meta"><time datetime="2014-05-20T00:00:00" pubdate>2014-05-20</time></p>
-</header>
-
-  <div class="entry-content"><h3>线程的实质</h3>
-<p>gdb调试线程，在线程创建和退出的时候，会看到这样的字样  </p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">New</span> <span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)]</span>  
-<span class="p">...</span>  
-<span class="p">[</span><span class="n">Thread</span> <span class="mh">0xb799ab40</span> <span class="p">(</span><span class="n">LWP</span> <span class="mi">20528</span><span class="p">)</span> <span class="n">exited</span><span class="p">]</span>  
-</pre></div>
-
-
-<p>Thread后面的数字是线程id，但是后面出现的LWP是什么呢？  </p>
-<p>LWP(light weighted process)，即轻量级进程。它是进程，但是和普通进程的区别在于，子进程和父进程共享绝大多数地址空间和资源:  </p>
-<ul>
-<li>地址空间中，除了栈，其他段（text、data、bss、heap等）都是共享的。  </li>
-<li>资源中，除了tid、线程特定的信号屏蔽字、errno等少数几个，其余的（pid、ppid、pgid、sid、controlling terminal、uid、gid、open file descriptors、record locks ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/05/linux-thread.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
 
@@ -308,6 +307,9 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
       </li>
       <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </li>
       <li class="post">
@@ -315,9 +317,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
       </li>
     </ul>
   </section>
