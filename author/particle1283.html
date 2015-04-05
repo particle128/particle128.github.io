@@ -60,6 +60,26 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/05/vdisk-one-question.html">项目中一个诡异的问题</a>
+      </h1>
+      <p class="meta"><time datetime="2014-05-26T00:00:00" pubdate>2014-05-26</time></p>
+</header>
+
+  <div class="entry-content"><p>记录下今天在做虚拟磁盘过程中，遇到的一个问题。  </p>
+<h3>问题</h3>
+<p>因为没有找到合适的fat32格式文件系统的扩容工具（fatresize没有效果，parted3.1可以检测到分区但是没有resize功能，parted2.x有resize功能但是检测不到分区），只能暂时采用如下方法来进行“磁盘扩容”。（假设原磁盘test.img，大小为100M，要扩容到200M）  </p>
+<div class="highlight"><pre><span class="n">dd</span> <span class="k">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span> <span class="n">of</span><span class="o">=</span><span class="n">bigger</span><span class="p">.</span><span class="n">img</span> <span class="n">bs</span><span class="o">=</span><span class="mi">200</span><span class="n">M</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span>  
+<span class="n">mkdosfs</span> <span class="o">-</span><span class="n">F</span> <span class="mi">32</span> <span class="n">bigger</span><span class="p">.</span><span class="n">img</span>  
+<span class="n">mount</span> <span class="o">-</span><span class="n">o</span> <span class="n">iocharset</span><span class="o">=</span><span class="n">gb2312</span> <span class="n">test</span><span class="p">.</span><span class="n">img</span> <span class="o">/</span><span class="n">cdrom</span>  
+<span class="n">mount</span> <span class="o">-</span><span class="n">o</span> <span class="n">iocharset</span><span class="o">=</span><span class="n">gb2312</span> <span class="n">bigger</span><span class="p">.</span><span class="n">img</span> <span class="o">/</span><span class="n">mnt</span>  
+<span class="n">cp</span> <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">cdrom</span><span class="o">/*</span> <span class="o">/</span><span class="n">mnt ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/05/vdisk-one-question.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/05/linux-thread.html">linux中的线程的实质和实现</a>
       </h1>
       <p class="meta"><time datetime="2014-05-20T00:00:00" pubdate>2014-05-20</time></p>
@@ -300,29 +320,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2014/03/inserter.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
-      </h1>
-      <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
-</header>
-
-  <div class="entry-content"><h2>Column6 Perspective on performance</h2>
-<h3>Design Levels</h3>
-<ul>
-<li>
-<p>problem definition<br />
-Good specifications are quite important.<br />
-Good error recovery may make a compiler slightly slower, but it usually decreases its overall time by reducing the number of compilations.  </p>
-</li>
-<li>
-<p>system structure<br />
-Decomposition of a large system into modules is probably the single most important ...</p></li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/02/pp6.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1284.html">&larr; Older</a>
 
@@ -334,19 +331,19 @@ Decomposition of a large system into modules is probably the single most importa
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/2014-last-day.html">写在2014年的最后一天</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
       </li>
     </ul>
   </section>

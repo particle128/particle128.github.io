@@ -60,6 +60,29 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/02/pp6.html">Rereading Programming Pearls(6)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
+</header>
+
+  <div class="entry-content"><h2>Column6 Perspective on performance</h2>
+<h3>Design Levels</h3>
+<ul>
+<li>
+<p>problem definition<br />
+Good specifications are quite important.<br />
+Good error recovery may make a compiler slightly slower, but it usually decreases its overall time by reducing the number of compilations.  </p>
+</li>
+<li>
+<p>system structure<br />
+Decomposition of a large system into modules is probably the single most important ...</p></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/02/pp6.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
       </h1>
       <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
@@ -286,46 +309,6 @@ Used for estimating the growth of any exponential process.<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-12-02T00:00:00" pubdate>2013-12-02</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>Introduction</strong>  </p>
-<ul>
-<li>没有实现bool类型的编译器，替代方案：<br />
-(1)enum bool{false,true};<br />
-缺点：无法int赋值给bool变量<br />
-(2)typedef int bool;<br />
-const bool false=0;<br />
-const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </li>
-<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
-</ul>
-<p><strong>基础议题Basics</strong></p>
-<h2>Item1</h2>
-<ul>
-<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">//使用指针  </span>
-<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
-    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
-<span class="c1">//使用引用  </span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
-</pre></div>
-
-
-<h2>Item2</h2>
-<ul>
-<li>const_cast用于改变constnest和valatileness  </li>
-<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index5.html">&larr; Older</a>
 
@@ -337,19 +320,19 @@ const bool true=1;<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/2014-last-day.html">写在2014年的最后一天</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
       </li>
     </ul>
   </section>

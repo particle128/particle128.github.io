@@ -60,6 +60,39 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/04/distriStore2.html">大规模分布式存储系统-笔记（2）</a>
+      </h1>
+      <p class="meta"><time datetime="2014-04-26T00:00:00" pubdate>2014-04-26</time></p>
+</header>
+
+  <div class="entry-content"><h2>Chapter2 单机存储系统</h2>
+<h3>2.1硬件基础</h3>
+<h4>CPU架构</h4>
+<ul>
+<li>SMP（对称多处理）:经典的CPU架构，一个计算机上汇集了一组CPU（一个CPU往往包括不止一个核），对称工作、无主次或从属关系，共享相同的物理内存和总线。<br />
+  某些CPU还通过超线程技术（Hyper-Threading Technology），在一个核心上同时执行两个线程。  </li>
+<li>NUMA（非一致存储访问）:克服SMP中多CPU对总线资源的竞争，一个NUMA包括多个NUMA节点，一个NUMA节点就是一个SMP结构（n个CPU，1个内存）  </li>
+</ul>
+<h4>IO总线</h4>
+<p>Intel的主板，一般为南、北桥架构  </p>
+<ul>
+<li>北桥芯片：CPU，内存，高端SSD (高速IO)  </li>
+<li>南桥芯片：网卡，硬盘，中低端SSD  </li>
+</ul>
+<h4>网路拓扑</h4>
+<p>数据中心网络拓扑结构，主要分为  </p>
+<ul>
+<li>三层结构：核心层、汇聚层、接入层。一个接入层交换机下的服务器部署在一个机架内  </li>
+<li>三级CLOS网络：Google设计的扁平化拓扑结构（从wiki上看图，感觉挺复杂的）  </li>
+</ul>
+<p>传输时延 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore2.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
       </h1>
       <p class="meta"><time datetime="2014-04-15T00:00:00" pubdate>2014-04-15</time></p>
@@ -308,32 +341,6 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">MoreEffectiveC++(6)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-11-29T00:00:00" pubdate>2013-11-29</time></p>
-</header>
-
-  <div class="entry-content"><p><em>感受</em>：这一章几乎用了一天时间阅读和消化，面向对象设计思想很薄弱，对作者设计时考虑的全面性很是叹服，需要以后要多思考和实际参与设计来锻炼设计能力。  </p>
-<h2>Item31: 让函数根据一个以上的对象类型决定如何虚化</h2>
-<ul>
-<li>问题背景：<br />
-假设要设计一款游戏，SpaceShip、SpaceStation还有Asteroid继承自抽象基类GameObject，3个对象两两互相碰撞的情形各不相同。<br />
-需要定义一个碰撞函数，假设是processCollision(GameObject&amp; obj1,GameObject&amp; obj2)，能根据要碰撞的两个对象的类型决定碰撞行为(shipHitStation,stationHitShip等6种)。<br />
-因为游戏在版本更新中，可能不断增加新的GameObject子类，所以该方法要可以扩展。  </li>
-<li>虚函数调用动作被称为message dispatch(消息分派)，processCollision根据两个参数而虚化被成为double-dispatch(双重分派)，更一般的是multiple dispatch(多重分派)  </li>
-<li>解决方法：  </li>
-</ul>
-<p>1.double-RTTI（书中没提到）<br />
-直接在processCollision里对两个参数都进行RTTI，即调用typeid确定实际类型，借助if-else或switch结构，进行<code>static_cast</code>转型后，调用实际碰撞函数。<br />
-<strong>注意：因为typeid已经确定了对象的实际类型，用static_cast一定不会出错。如果不完全确定类型，用dynamic_cast转型，万一出错可以抛出异常。</strong><br />
-优点 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/category/note3.html">&larr; Older</a>
 
@@ -345,19 +352,19 @@ const bool true=1;<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
       </li>
     </ul>
   </section>

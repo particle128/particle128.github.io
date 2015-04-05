@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Python学习笔记-字符串</title>
+  <title>The Clean Coder 笔记 (3)</title>
   <meta name="author" content="particle128">
 
 
@@ -59,65 +59,76 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">Python学习笔记-字符串</h1>
-      <p class="meta"><time datetime="2013-09-22T00:00:00" pubdate>2013-09-22</time></p>
+      <h1 class="entry-title">The Clean Coder 笔记 (3)</h1>
+      <p class="meta"><time datetime="2015-04-05T00:00:00" pubdate>2015-04-05</time></p>
 </header>
 
-  <div class="entry-content"><p><strong>注意：str支持的操作，基本上unicode也支持。此外unicode还多两个函数unicode.isnumeric() unicode.isdecimal()</strong>  </p>
-<h3>（一） 具备的操作</h3>
-<p>str作为序列元素，包含其他序列共同的操作：<br />
-1. “hello” [not] in "hello world"<br />
-2. "hello" + " world"<br />
-3. 5*"hello" 或 “hello”*5<br />
-4. "hello"[3]  "hello"[1:2]  "hello"[1:2:2]<br />
-5. len("hello")  min("hello")  max("hello")<br />
-6. "hello".index('o')   "hello".count('l')  </p>
-<h3>（二） 不具备的操作</h3>
-<p>str同tuple一样，属于不可变序列。可变序列包括list和bytearray。因此str不具备可变序列的操作：<br />
-1. s[i] = x    s[i:j] = t 【t是任何可迭代对象】 s[i:j:k] = t 【t需要和s[i:j:k]有相同数量的元素】<br />
-2. del s[i:j]    del s[i:j:k]   s.remove(x) =&gt; del s[x]<br />
-3. s.insert(i, x)  s.append(x)  s.extend(t) 【t是任何可迭代对象】<br />
-4. s.reverse()    s.sort([cmp[, key[, reverse]]])<br />
-5. s.pop([i]) =&gt; x = s[i]; del s[i]; return x  </p>
-<h3>（三） 字符串方法</h3>
-<p>str.capitalize()第一个字母大写 str.title() 每一个单词首字母大写<br />
-str.count(sub[, start[, end]])<br />
-str.endswith(suffix[, start[, end]])返回True或False 同理str.startswith<br />
-str.find(sub[, start[, end]]) 找不到返回-1 同理str.rfind<br />
-str.index(sub[, start[, end]])找不到raise ValueError 同理str.rindex<br />
-str.format(*args, **kwargs) 同格式化字符串<br />
-islower isupper isspace isdigit isalpha isalnum<br />
-str.ljust(width[, fillchar])左对齐，可以选择填充字节，默认空格。 同理str.rjust，str.zfill(width)相当于str.rjust(width,'0')<br />
-str.lower() str.upper() str.swapcase()交换大小写<br />
-str.partition(sep) 划分 'what the fuck'.partition('the') =&gt; ('what ','the',' fuck') 同理rpartition<br />
-str.join(iterable) 把可迭代对象（比如序列）拼接成字符串，用str隔开每一个可迭代对象中的元素<br />
-str.translate(string.maketrans(from,to) [,deletechars]) 要么进行字母的替换，要么进行字母的删除（第一个参数为None），要么同时进行<br />
-str.strip([chars]) 默认去掉whitespace 同理str.lstrip str.rstrip <br />
-str.split([sep]) 默认whitespace作为分隔符  </p>
-<h3>（四） string方法</h3>
-<p>string.maketrans(from,to) 返回translation table（from中的字符被to中同一位置的字符替换），from和to长度要相同<br />
-string.capwords(s[,sep]) 比titile更加准确的首字母大写函数。先split([sep])，再capitalize()，再join()  </p>
-<h3>（五） 格式化字符串</h3>
-<div class="highlight"><pre><span class="s">&quot;</span><span class="si">%(language)s</span><span class="s"> has </span><span class="si">%(number)03d</span><span class="s"> quote types.&quot;</span>  <span class="o">%</span>  <span class="p">{</span><span class="s">&quot;language&quot;</span><span class="p">:</span> <span class="s">&quot;Python&quot;</span><span class="p">,</span> <span class="s">&quot;number&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
-</pre></div>
-
-
-<h3>（六）字符串常量</h3>
-<p>string.digits<br />
-string.hexdigits<br />
-string.octdigits<br />
-string.lowercase<br />
-string.uppercase<br />
-string.whitespace<br />
-string.punctuation  </p></div>
+  <div class="entry-content"><h3>Chapter6 Practicing</h3>
+<blockquote>
+<p>Turnaround Time. <br />
+Doing anything quickly requires practice. Spinning around the code/test loop quickly requires you to make very quick decisions. Making decisions quickly means being able to recognize a vast number of situations and problems and simply know that to do to address them.<br />
+Speed depends on practice. We choose a repertoire of problem/solution pairs and execute them over and over again until we know them cold.</p>
+</blockquote>
+<p>练习的目的就是让我们更加熟练，让一些操作成为肌肉记忆，做决定或做动作的时候不再需要思考。跟打羽毛球一样...</p>
+<blockquote>
+<p>Kata.<br />
+The goal is to make the perfected movements automatic and instinctive so that they are there when you need them.</p>
+</blockquote>
+<p>Kata是一种练习方式，通过这种练习，让一些操作凭直觉自动产生。</p>
+<blockquote>
+<p>Practice Ethics.<br />
+Since your practice time is your own time, you dont' have to use th same languages or platforms that you use with your employer.</p>
+</blockquote>
+<p>练习时候，用一下自己工作中不常用的语言。当自己工作中的语言已经很熟悉了，用用别的语言，让自己成为多面手。</p>
+<h3>Chapter7 Acceptance Testing</h3>
+<blockquote>
+<p>Premature Precision.<br />
+The problem is that things appear different on paper than they do in a working system. WHen the business actually sees what they specified running in a system, they realize that it wasn't what they wanted at all. Once they see the requirement actually running, they have a better idea of what they really want - and it's usually not what they are seeing.   </p>
+</blockquote>
+<p>过早的精确，往往是有害的。开发者想要精确的需求说明，以便进行时间估计。需求说明无论多么明确，最后还是会修改，因为说明里的需求和真正拿出来做出的东西，是有很大区别的。看到真正的效果，客户往往又觉得应该是另外一个样子。</p>
+<blockquote>
+<p>Acceptance Test.<br />
+We will define acceptance tests as tests written by a collaboration of the stakeholders and the programmers in order to define when a requirement is done.</p>
+</blockquote>
+<p>验收测试的定义。</p>
+<blockquote>
+<p>Accpetance Tests And Unit Tests.<br />
+Unit tests and acceptance tests are documents first, and tests second. Their primary purpose is to formally document the design, structure, and behavior of the system. The fact that they automatically verify the design, structure, and behavior that they specify is wildly useful, but the specification is their true purpose.</p>
+</blockquote>
+<p>测试的作用，首先是程序文档，其次才是测试代码。</p>
+<h3>Chapter9 Time Management</h3>
+<blockquote>
+<p>Meetings.<br />
+Professionals actively resist attending meetings that don't have an immediate and significant benefit.<br />
+Over the years I've developed a simple rule: When the meeting gets boring, leave.  </p>
+</blockquote>
+<p>尽量减少开会时间。</p>
+<blockquote>
+<p>Arguments, Disagreements.<br />
+Any argument that can't be settled in five minutes can't be settled by arguing. The reason it goes on so long is that there is no clear evidence supporting either side.<br />
+Some folks will be passive-aggressive. They'll agree just to end the argument, and then sabotage the result by refusing to engage in the solution. This is probably the worst kind of unprofessional behavior there is. Never, ever do this. If you agree, then you must engage.<br />
+How do you get the data you need to settle a disagreement? Sometimes you can run experiments, or do some simulation or modeling. But sometimes the best alternative is to simply filp a coin to choose one of the two paths in question.</p>
+</blockquote>
+<p>最不专业的做法就是同意某人的意见，以便结束争论，但之后却不按照同意的方法做。</p>
+<blockquote>
+<p>Priority Inversion.<br />
+Whatever the reason, you find ways to avoid doing the real work. You convince yourself that something else is more urgent, and you do that instead. This is called priority inversion.<br />
+Clearly this is unprofessional behavior. Professionals evaluate the priority of each task, disregarding their personal fears and desires, and execute those tasks in priority order.</p>
+</blockquote>
+<p>不要因为畏难而改变事情的优先级，这是不专业的表现。</p>
+<blockquote>
+<p>Messes.<br />
+At some point you realize that you made a wrong design choice when you started, and that your code doesn't scale well in the direction that the requirements are moving. This is the inflction point! You can still go back and fix the design. But you can also continue to go forward. Going back looks expensive because you'll have to rework the existing code, bug going back will never be easier than it it now.</p>
+</blockquote>
+<p>专业开发者会尽早察觉mess，并尽一切可能修改它，而不是将就着在mess上继续，因为这样最终会更加糟糕。<br />
+但是事事不绝对，facebook在发现php性能问题的时候，并没有重头推倒用java，因为担心这会至少影响几个月网站的更新。而是，继续用php做，同时投入研发了php转C++的工具——HipHop，使php继续用于网站开发，又不影响性能。</p></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2013-09-22T00:00:00" pubdate>2013-09-22</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/python.html">python</a>
-    <a class="category" href="http://particle128.com/tag/str.html">str</a>
+<time datetime="2015-04-05T00:00:00" pubdate>2015-04-05</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>
   </span>
 </p>    </footer>
   </article>
@@ -183,9 +194,9 @@ string.punctuation  </p></div>
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2013/09/python-str.html';
-          var disqus_url = 'http://particle128.com/posts/2013/09/python-str.html';
-          var disqus_title = 'Python学习笔记-字符串';
+          var disqus_identifier = '/posts/2015/04/theCleanCoder(3).html';
+          var disqus_url = 'http://particle128.com/posts/2015/04/theCleanCoder(3).html';
+          var disqus_title = 'The Clean Coder 笔记 (3)';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

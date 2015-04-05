@@ -60,6 +60,30 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 30: Understand the ins and outs of inlining.</h2>
+<p>1.inline（函数体代替函数调用）的好处：<br />
+（1）没有函数调用的开销，速度快。<br />
+（2）使编译器能对起进行outlined的函数所不具备的优化，因为上下文更明显了。<br />
+坏处：<br />
+（1）可能导致代码膨胀，如果inline函数内语句比较多的话。<br />
+（2）如果inline函数是程序库的一部分，对它的改动，需要使用者重新编译。（outline的话，直接链接即可，动态链接的话，使用者甚至不知道函数库的修改）<br />
+（3）大部分调试器不能调试inline函数。<br />
+2.inline是对编译器的申请，不是强制。<br />
+如下情况编译器”可能“拒绝inline（gcc -Winline会发出不能inline的警告，但是我尝试了递归和循环，没有发出警告）：<br />
+（1）函数太过复杂（包含递归或循环）。<br />
+（2）函数中调用virtual函数，因为多态是运行期行为，而inline是编译期行为 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
       </h1>
       <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
@@ -243,19 +267,19 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(5).html">Clean Code (5)</a>
       </li>
     </ul>
   </section>
