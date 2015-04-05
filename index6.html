@@ -60,6 +60,32 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/11/name-lookup.html">C++中名字查找</a>
+      </h1>
+      <p class="meta"><time datetime="2013-11-05T00:00:00" pubdate>2013-11-05</time></p>
+</header>
+
+  <div class="entry-content"><p>今天被C++的名字查找和using语句折磨了一天，记录下来最终的理解，还有一些未解的问题，以后有时间再研究。  </p>
+<h2>名字查找</h2>
+<p>这个<a href="http://blog.csdn.net/xtyyumi301/article/details/662639">链接</a>对我帮助很大，此外还参考了一些SO上的解答，和<a href="http://en.wikipedia.org/wiki/Argument-dependent_name_lookup">wiki</a><br />
+C++的名字查找(name lookup)，作为重载确定(overload resolution)的第一步，具有举足轻重的作用。很可能存在一个合适的函数，因为被内层作用域的同名变量或函数屏蔽，而不能被调用。但这仅仅是名字查找的一方面，因为名字查找包括两个方面：  </p>
+<ul>
+<li>常规查找（normal lookup）  </li>
+<li>实参决定的查找（argument-dependent lookup）  </li>
+</ul>
+<p>所有函数调用，都会进行常规查找；只有函数的实参包括 类类型对象 或 指向类类型对象的指针/引用 的时候，才会进行实参确定的查找。<br />
+分别解释如下：  </p>
+<ul>
+<li>normal lookup<br />
+从函数被调用的局部作用域开始，逐渐向上层寻找被调用的名字，一旦找到就停止向上寻找。此外，using语句可以将其他作用域的名字引用到当前作用域。  </li>
+<li>argument-dependent ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/11/name-lookup.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/11/headache.html">Headache</a>
       </h1>
       <p class="meta"><time datetime="2013-11-04T00:00:00" pubdate>2013-11-04</time></p>
@@ -287,28 +313,6 @@ json——json模块  </p>
     <a rel="full-article" href="http://particle128.com/posts/2013/10/python-configparser.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">C++提供的数据封装，只是访问控制，而不是信息隐藏</a>
-      </h1>
-      <p class="meta"><time datetime="2013-10-14T00:00:00" pubdate>2013-10-14</time></p>
-</header>
-
-  <div class="entry-content"><ul>
-<li>C++通过private，protected和public提供的encapsulation并不是information hiding，而是access specifier。因为C++中类的定义比如放在头文件中，所有private数据类型也都暴露在用户下了。  </li>
-<li>C#，Java中类的定义（private数据成员）在源文件里，因此用户如果要访问这个类，using 对应的namespace，只能接触到public成员，private里有什么根本无从知晓。<br />
-甚至C语言的struct，如果把实现放在源文件，也让结构体访问者无法得知其实现，只能通过一些API来访问。例子来自wiki百科<a href="http://en.wikipedia.org/wiki/Encapsulation_(object-oriented_programming)">Encapsulation词条</a>。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">// Header file &quot;api.h&quot;  </span>
-<span class="k">struct</span> <span class="n">Entity</span><span class="p">;</span> <span class="c1">// Opaque structure with hidden members  </span>
-<span class="c1">// API functions that operate on &#39;Entity&#39; objects  </span>
-<span class="k">extern</span> <span class="k">struct</span> <span class="n">Entity</span> <span class="o">*</span> <span class="nf">open_entity</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">);</span>  
-<span class="k">extern</span> <span class="kt">int ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/cpp-encapsulation.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index7.html">&larr; Older</a>
 
@@ -320,6 +324,9 @@ json——json模块  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
       <li class="post">
@@ -330,9 +337,6 @@ json——json模块  </p>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/2014-last-day.html">写在2014年的最后一天</a>
       </li>
     </ul>
   </section>

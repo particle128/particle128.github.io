@@ -60,6 +60,31 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><p>关于new和delete的东西，笔记不够详尽，因为新知识比较多，不太方便记录笔记。发现相关知识漏洞的时候，再去查看Cpp Primer和Effective Cpp相关章节。  </p>
+<h2>Item 49: Understand the behavior of the new-handler</h2>
+<p>1.<code>std::set_new_handler()</code>可以绑定一个<code>new_handler</code>（类型为<code>void (*)()</code>），即new获取不到所需内存时调用的客户定制函数。如果不设置函数，或设置null，直接抛出异常<code>std::bad_alloc</code>。<br />
+2.获取<code>new_handler</code>函数的方式：  </p>
+<div class="highlight"><pre><span class="n">handler</span><span class="o">=</span><span class="n">set_new_handler</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  
+<span class="n">set_new_handler</span><span class="p">(</span><span class="n">handler</span><span class="p">);</span>  
+</pre></div>
+
+
+<p>3.new_handler应该具备以下一种功能：<br />
+（1）让更多内存可被使用。否则::operator new会无限循环调用非空的new_handler。例如程序开始分配一个内存池，动态分配不到资源的时候释放一些资源出来。<br />
+（2）安装另一个可以释放更多内存的new_handler函数。<br />
+（3 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">Effective C++学习笔记(8)</a>
       </h1>
       <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
@@ -267,6 +292,9 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
       <li class="post">
@@ -277,9 +305,6 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
       </li>
     </ul>
   </section>
