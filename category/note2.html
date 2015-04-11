@@ -60,6 +60,30 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-06T00:00:00" pubdate>2014-12-06</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter5 Formatting</h3>
+<ul>
+<li>你的代码可能随着版本的升级，逐渐被替换；但是你的代码风格/格式会被后继开发者一直传承下去。</li>
+<li>文件的长度：通常200行以内，最多500行</li>
+<li>C++类文件，通常遵循scissors rule，即上面是成员函数，下面是成员变量；java相反，上面是成员变量，下面是共有函数<br />
+根据Sun的<a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html">Code Convention for Java</a>，类中的成员的顺序如下：<br />
+1.static成员变量：public -&gt; protected -&gt; package -&gt; private<br />
+2.non-static成员变量：public -&gt; protected -&gt; package -&gt; private<br />
+3.构造函数<br />
+4.成员函数：按照语义顺序，而不是访问级别</li>
+<li>一行不超过120个字符，可以设置屏幕字符宽度为120，是否需要向右滚动屏幕是判断是否超过行限制的方法（Sun Java Convention规定是80个字符）</li>
+<li>操作符之间的空格：*和 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/12/cleanCode(1).html">Clean Code (1)</a>
       </h1>
       <p class="meta"><time datetime="2014-12-05T00:00:00" pubdate>2014-12-05</time></p>
@@ -283,46 +307,6 @@ Used for estimating the growth of any exponential process.<br />
     <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">MoreEffectiveC++(1)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-12-02T00:00:00" pubdate>2013-12-02</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>Introduction</strong>  </p>
-<ul>
-<li>没有实现bool类型的编译器，替代方案：<br />
-(1)enum bool{false,true};<br />
-缺点：无法int赋值给bool变量<br />
-(2)typedef int bool;<br />
-const bool false=0;<br />
-const bool true=1;<br />
-缺点：无法重载bool和int参数的函数  </li>
-<li>C++中内存泄露，不一定只是new出的对象中的数据成员泄露了，还可能在构造函数(ctor)中创建了其他资源，也泄露了。   </li>
-</ul>
-<p><strong>基础议题Basics</strong></p>
-<h2>Item1</h2>
-<ul>
-<li>没有null reference，所以有时候使用引用可能比使用指针更有效率。  </li>
-</ul>
-<div class="highlight"><pre><span class="c1">//使用指针  </span>
-<span class="k">if</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>   
-    <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="n">pd</span><span class="p">;</span>  
-<span class="c1">//使用引用  </span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">rd</span>  
-</pre></div>
-
-
-<h2>Item2</h2>
-<ul>
-<li>const_cast用于改变constnest和valatileness  </li>
-<li>reinterpret_cast与编译器息息相关，不具备移植性。最常见用途：转换函数指针 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/category/note3.html">&larr; Older</a>
 
@@ -334,6 +318,9 @@ const bool true=1;<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2015/04/ExpertC(2).html">C专家编程-笔记(2)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
       </li>
       <li class="post">
@@ -344,9 +331,6 @@ const bool true=1;<br />
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </li>
     </ul>
   </section>

@@ -60,6 +60,27 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(4).html">Clean Code (4)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter12 Emergence</h3>
+<blockquote>
+<p>The majority of the cost of a software project is in long-term maintenance  </p>
+</blockquote>
+<p>解析极限编程：拥抱变化（Extreme Programming Explained: Embrace Change）里列举了“简单设计”的四原则，优先级依次降低：</p>
+<ol>
+<li>跑通所有的测试：单一原则的简洁代码，依赖更少的代码，<strong>更加可测</strong>。所以，测试功能的同时，也能确保程序逐渐符合“低耦合高内聚”的面向对象目标。此外，也能让我们更加大胆的重构。</li>
+<li>没有重复：提取重复的部分组成新的方法/新的类，用模板办法把公共的部分提升到抽象父类中</li>
+<li>有表达力：一个软件工程耗费最多时间的是长期的维护，所以，选好的名字、让方法和类尽可能小、写单元测试。有句话叫：想象你代码的维护者是一个精神狂暴症患者，并且他知道你家在哪儿 ...</li></ol></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(4).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
       </h1>
       <p class="meta"><time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time></p>
@@ -268,32 +289,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <a rel="full-article" href="http://particle128.com/posts/2014/07/storm-sum.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/06/git-cherry-pick.html">新技能get：git cherry-pick</a>
-      </h1>
-      <p class="meta"><time datetime="2014-06-24T00:00:00" pubdate>2014-06-24</time></p>
-</header>
-
-  <div class="entry-content"><h3>背景</h3>
-<p>形象化地表述就是：<br />
-今天在fork出的github库中提交了3次，一次是内容相关的（'content'），两次是对程序的修改（'change1','change2'），然后我就兴致勃勃地拿去pull request了。本以为就这样完事了，结果被师兄无情地打回来了...说弄成两个pull request，一个内容相关的，一个程序相关的。<br />
-在github的页面上摆弄了半天也没找到可以把当前分支拆开进行pull request的按钮，于是，虔诚地向师兄请教，师兄微微一笑，给了我几个关键字（'根部开分支','cherry-pick'）后，拂袖而去，留下无助的我，在风中凌乱着。。。  </p>
-<h3>问题</h3>
-<p>原来的git提交结构是这样的(假设'old','content'...这些是commit的代号):  </p>
-<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span>  
-</pre></div>
-
-
-<p>为了把content和change1,change2分开,我需要建立如下的结构  </p>
-<div class="highlight"><pre><span class="nl">master:</span> <span class="err">&#39;</span><span class="n">old</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">change1</span><span class="err">&#39;</span> <span class="o">-&gt;</span> <span class="err">&#39;</span> <span class="n">change2</span><span class="err">&#39;</span>  
-<span class="nl">cmd:</span>          <span class="o">-&gt;</span> <span class="err">&#39;</span><span class="n">content</span><span class="err">&#39;</span>  
-<span class="nl">develop ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/06/git-cherry-pick.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index3.html">&larr; Older</a>
 
@@ -305,6 +300,9 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2015/04/ExpertC(2).html">C专家编程-笔记(2)</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
       </li>
       <li class="post">
@@ -315,9 +313,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2015/04/ExpertC(1).html">C专家编程-笔记(1)</a>
       </li>
     </ul>
   </section>

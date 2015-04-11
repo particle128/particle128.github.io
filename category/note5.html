@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>The Clean Coder 笔记 (4)</title>
+  <title>particle128's Blog</title>
   <meta name="author" content="particle128">
 
 
@@ -56,44 +56,36 @@
 </ul></nav>
   <div id="main">
     <div id="content">
-<div>
-  <article class="hentry" role="article">
+<div class="blog-index">
+  		<article>
 <header>
-      <h1 class="entry-title">The Clean Coder 笔记 (4)</h1>
-      <p class="meta"><time datetime="2015-04-06T00:00:00" pubdate>2015-04-06</time></p>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
+      </h1>
+      <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
 </header>
 
-  <div class="entry-content"><h3>Chapter10 Estimation</h3>
-<blockquote>
-<p>The Law Of Large Numbers.<br />
-If you break up a large task into many smaller tasks and estimate them independently, the sum of the estimates of the small tasks will be more accurate than a single estimate of the larger task. The reason for this increase in accurary is that the errors in the small tasks tend to integrate out.</p>
-</blockquote>
-<p>把一个大任务分成一些小任务，分别估计，然后计算估计的总和，作为大任务的估计。</p>
-<h3>Chapter13 Teams and Projects</h3>
-<blockquote>
-<p>It makes no sense to tell a programmer to devote half their time to project A and the rest of their time to Project B.  </p>
-<p>Teams are harder to build than projects. Therefore, it is better to form persistent teams that move together from one project to the next and can take on more than one project at a time.</p>
-</blockquote>
-<h3>Appendix A Tooling</h3>
-<blockquote>
-<p>There was day when I was known as a vi 'god', but those days are long gone. I use vi from time to time if I need to do a quick edit of a text file. But the amount of true coding I have done in vi in the last 10 years is vanishingly small.</p>
-</blockquote></div>
-    <footer>
-<p class="meta">
-  <span class="byline author vcard">
-    Posted by <span class="fn">particle128</span>
-  </span>
-<time datetime="2015-04-06T00:00:00" pubdate>2015-04-06</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>
-  </span>
-</p>    </footer>
-  </article>
+  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
+<h3>1、各种消息机制的使用场合</h3>
+<p>终端输出来显示一些信息：print()<br />
+报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
+logging.debug()用来诊断错误<br />
+发布一个警告：logging.warning()或warnings.warn()<br />
+报告一个错误：raise an exception<br />
+不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  </p>
+<p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
+<p>level由低到高依次是：<br />
+DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
+<h3>2 ...</h3></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+<div class="pagination">
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
-  </section>
-</div>
+      <a class="next" href="http://particle128.com/category/note4.html">Newer &rarr;</a>
+  <br />
+</div></div>
 <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
@@ -150,9 +142,6 @@ If you break up a large task into many smaller tasks and estimate them independe
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2015/04/theCleanCoder(4).html';
-          var disqus_url = 'http://particle128.com/posts/2015/04/theCleanCoder(4).html';
-          var disqus_title = 'The Clean Coder 笔记 (4)';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
