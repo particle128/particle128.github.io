@@ -142,7 +142,20 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
 <h3>第二章  这不是Bug，而是语言特性</h3>
 <p><img alt="2-1" src="http://particle128.com/images/expert_c_2_1.png" /></p>
 <h3>第三章  分析C语言的声明</h3>
-<p><img alt="3-1" src="http://particle128.com/images/expert_c_3_1.png" /></p></div>
+<p><img alt="3-1" src="http://particle128.com/images/expert_c_3_1.png" /></p>
+<h3>第四章  令人震惊的事实：数组和指针并不相同</h3>
+<p>数组/指针在不同源文件中的定义和声明，应该形式一样。</p>
+<p>一个源文件下定义的数组int a[10]，在另一个源文件下声明，必须使用extern int a[]形式；<br />
+一个源文件下定义的指针<code>int *a</code>，在另一个源文件下声明，必须使用<code>extern int *a</code>形式。  </p>
+<p>原因：同样一条语句<code>a[0] = 1;</code>，编译器对于a是数组和a是指针的处理方式不同。</p>
+<p>假设我们定义了</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</pre></div>
+
+
+<p>并且a在符号表中的内容为：</p>
+<div class="highlight"><pre><span class="n">var_name</span> <span class="o">|</span> <span class="n">var_address</span>
+<span class="n">a ...</span></pre></div></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2015/04/ExpertC(1).html">Read On &crarr;</a>
   </footer>

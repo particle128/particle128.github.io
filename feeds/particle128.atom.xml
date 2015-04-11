@@ -223,7 +223,30 @@ Something unexpected might happen, and that's life.&lt;/p&gt;
 &lt;h3&gt;第二章  这不是Bug，而是语言特性&lt;/h3&gt;
 &lt;p&gt;&lt;img alt="2-1" src="http://particle128.com/images/expert_c_2_1.png" /&gt;&lt;/p&gt;
 &lt;h3&gt;第三章  分析C语言的声明&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="3-1" src="http://particle128.com/images/expert_c_3_1.png" /&gt;&lt;/p&gt;</summary><category term="ExpertC"></category></entry><entry><title>写在2014年的最后一天</title><link href="http://particle128.com/posts/2014/12/2014-last-day.html" rel="alternate"></link><updated>2014-12-31T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-31:posts/2014/12/2014-last-day.html</id><summary type="html">&lt;p&gt;今天是12.31，2014年的最后一天。崔师兄喊着实验室的人，一起去知语山吃饭。聚餐期间，我们继续保持着三句不离本行的特色，“黑”师兄、“黑”师弟，气氛非常好。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="3-1" src="http://particle128.com/images/expert_c_3_1.png" /&gt;&lt;/p&gt;
+&lt;h3&gt;第四章  令人震惊的事实：数组和指针并不相同&lt;/h3&gt;
+&lt;p&gt;数组/指针在不同源文件中的定义和声明，应该形式一样。&lt;/p&gt;
+&lt;p&gt;一个源文件下定义的数组int a[10]，在另一个源文件下声明，必须使用extern int a[]形式；&lt;br /&gt;
+一个源文件下定义的指针&lt;code&gt;int *a&lt;/code&gt;，在另一个源文件下声明，必须使用&lt;code&gt;extern int *a&lt;/code&gt;形式。  &lt;/p&gt;
+&lt;p&gt;原因：同样一条语句&lt;code&gt;a[0] = 1;&lt;/code&gt;，编译器对于a是数组和a是指针的处理方式不同。&lt;/p&gt;
+&lt;p&gt;假设我们定义了&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;并且a在符号表中的内容为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;var_name&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;var_address&lt;/span&gt;
+&lt;span class="n"&gt;a&lt;/span&gt;        &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;123456&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在外部用两种不同方式声明：&lt;/p&gt;
+&lt;h4&gt;extern int a[]; a[1] = 1;&lt;/h4&gt;
+&lt;p&gt;a是外部变量的声明，不分配空间，编译时用Undefined符号代替。&lt;br /&gt;
+链接时，查找符号表，找到a，把符号表中a的地址123456当做数组首地址，把1赋给内存单元(123456+4)&lt;/p&gt;
+&lt;h4&gt;extern int *a; a[1] = 1;&lt;/h4&gt;
+&lt;p&gt;a是外部变量的声明，不分配空间，编译时用Undefined符号代替。&lt;br /&gt;
+连接时，查找符号表，找到a，把符号表中a的地址123456当做指针地址，取(123456)内存单元中的内容，假设是654321，把该数值当做数组的首地址，然后把1赋给内存单元(654321+4)。&lt;/p&gt;</summary><category term="ExpertC"></category></entry><entry><title>写在2014年的最后一天</title><link href="http://particle128.com/posts/2014/12/2014-last-day.html" rel="alternate"></link><updated>2014-12-31T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-31:posts/2014/12/2014-last-day.html</id><summary type="html">&lt;p&gt;今天是12.31，2014年的最后一天。崔师兄喊着实验室的人，一起去知语山吃饭。聚餐期间，我们继续保持着三句不离本行的特色，“黑”师兄、“黑”师弟，气氛非常好。&lt;/p&gt;
 &lt;p&gt;中间，我带领大家玩了一下“谁是卧底”，从分辨我们实验室的两大师兄，分辨Java和C++，到我们使用“谁是卧底”的安卓app，大家玩的不亦乐乎。有一次我是卧底，手里拿着“白富美”，大家手里的是“高富帅”，我在一轮还没说完的时候，就猜到了这个局面，之后，说了很多两者都一样的特质，比如“优越的生活条件”，“钱一般是从父母继承过来的”，等等…但是，xiaodong xu这货，没有啥证据就愣猜是我，还号召大家一起投我，明明其他人的说法中都有破绽，他还是坚持自己的想法。最终，我在硬撑了3轮（每一轮都竭尽全力地给自己辩护，找其他人的漏洞啊，容易吗我）之后，被他和他蛊惑了的群众投死了。事后才知道，他的确猜错了我的身份，以为我的底牌是“土豪”。&lt;/p&gt;
 &lt;p&gt;这一年感觉过得很丰富，很快乐，很精彩，值得回忆的事情很多。这表明，我虽然可以接受两点一线的艰苦求学生活，但更喜欢更加丰富和精彩的生活。不知道是因为我的心态变得更好了，还是我的性格变得更开朗了，还是我的确这一年遇到了太多开心的事情和需要感恩的人，简单回忆一下2014，满是温暖。&lt;/p&gt;
 &lt;ul&gt;
