@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>C++11专题：constexpr类型</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>May your choices reflect your hopes, not your fears.</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://particle128.com/archives.html">archives</a></li>
+    <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    <li><a href="http://particle128.com/category/note.html">note</a></li>
+    <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">C++11专题：constexpr类型</h1>
+      <p class="meta"><time datetime="2015-04-15T00:00:00" pubdate>2015-04-15</time></p>
+</header>
+
+  <div class="entry-content"><p>代码是最好的文档，所以，本系列主要在代码中讲解。</p>
+<h3>背景</h3>
+<p>C++中的const变量，包括编译时常量（compile-time constants）和运行时常量（runtime constants）。其中，编译时常量又叫常量表达式（constant expression），只有初始化式也是常量表达式的const变量才是常量表达式。例如：</p>
+<div class="highlight"><pre><span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">);</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+</pre></div>
+
+
+<p>const变量不一定是常量表达式，所以，const变量不一定能用在一些需要常量表达式的地方，比如：</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">fun</span><span class="p">()</span> <span class="p">{</span><span class="k">return</span> <span class="mi">0</span><span class="p">;}</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">fun</span><span class="p">();</span> <span class="c1">// 非常量表达式，后面的(1)~(4)均编译出错</span>
+<span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="n">n</span><span class="p">];</span> <span class="c1">// （1）初始化数组大小，标准不支持，但是g++支持</span>
+<span class="kt">int</span> <span class="n">test</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="k">switch</span> <span class="p">(</span><span class="n">test</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">n</span>: <span class="k">break</span><span class="p">;</span> <span class="c1">// （2）case表达式</span>
+    <span class="nl">default:</span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">enum</span> <span class="n">xx</span><span class="p">{</span><span class="n">a</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">};</span> <span class="c1">// （3）枚举类型初始化</span>
+<span class="n">template</span> <span class="o">&lt;</span><span class="n">class</span> <span class="n">T</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span> <span class="n">class</span> <span class="n">Base</span><span class="p">{};</span>
+<span class="n">Base</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="n">n</span><span class="o">&gt;</span> <span class="n">base</span><span class="p">;</span> <span class="c1">// （4）模板非类型参数的实例化</span>
+</pre></div>
+
+
+<h3>意义</h3>
+<p>有时候，我们想定义一个常量表达式，但是不好判断初始化式（const变量组成的表达式）是不是常量表达式，只能把初始化式中的const变量都<em>追踪</em>一遍，因为可能编译过程非常耗时，不能轻易编译。因此，C++11增加了常量表达式类型（constexpr类型）。这样，只要我们确保初始化式完全由字面常量和constexpr常量构成，就可以确定初始化是常量表达式，而不用对初始化式中的每个变量进行追踪。</p>
+<div class="highlight"><pre><span class="c1">// c++11之前</span>
+<span class="k">const</span> <span class="k">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mh">10</span><span class="p">;</span>  <span class="c1">//若 const int a = 10 + fun()则x不是</span>
+<span class="k">const</span> <span class="k">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mh">5</span><span class="p">;</span>
+<span class="k">const</span> <span class="k">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mh">12</span><span class="p">;</span>
+<span class="k">const</span> <span class="k">int</span> <span class="n">d</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mh">13</span><span class="p">;</span>
+<span class="k">const</span> <span class="k">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">;</span> <span class="c1">//需要追踪a，b，c，d才能搞清楚x是不是常量表达式</span>
+<span class="k">int</span> <span class="n">arr</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+<span class="c1">// c++11</span>
+<span class="n">constexpr</span> <span class="k">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mh">10</span><span class="p">;</span>
+<span class="n">constexpr</span> <span class="k">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mh">5</span><span class="p">;</span>
+<span class="n">constexpr</span> <span class="k">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mh">12</span><span class="p">;</span>
+<span class="n">constexpr</span> <span class="k">int</span> <span class="n">d</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mh">13</span><span class="p">;</span>
+<span class="n">constexpr</span> <span class="k">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">;</span> <span class="c1">//确保c和d是constexpr即可</span>
+<span class="k">int</span> <span class="n">arr</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+</pre></div>
+
+
+<h3>用法</h3>
+<p>constexpr只能修饰算术/指针/引用类型，用法如下：</p>
+<div class="highlight"><pre><span class="c1">// constexpr指针/引用指向的变量只能是全局变量或静态变量，编译时地址已知(data段)。</span>
+<span class="n">char</span> <span class="n">c1</span><span class="p">;</span>
+<span class="n">constexpr</span> <span class="n">char</span> <span class="n">c2</span> <span class="o">=</span> <span class="mh">10</span><span class="p">;</span>
+
+<span class="k">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">static</span> <span class="n">char</span> <span class="n">c3</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">constexpr</span> <span class="n">char</span> <span class="n">c4</span> <span class="o">=</span> <span class="mh">10</span><span class="p">;</span>
+
+    <span class="n">constexpr</span> <span class="k">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mh">10</span><span class="p">;</span> <span class="c1">// 所有算术类型，包括bool,short...</span>
+
+    <span class="n">constexpr</span> <span class="n">char</span> <span class="o">*</span><span class="n">y</span>  <span class="o">=</span> <span class="o">&amp;</span><span class="n">c1</span><span class="p">;</span> <span class="c1">// 指针类型，const修饰指针，而不是char</span>
+    <span class="n">constexpr</span> <span class="k">const</span> <span class="n">char</span> <span class="o">*</span> <span class="n">z</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">c2</span><span class="p">;</span>
+    <span class="n">constexpr</span> <span class="n">char</span> <span class="o">*</span><span class="n">y1</span>  <span class="o">=</span> <span class="o">&amp;</span><span class="n">c3</span><span class="p">;</span> 
+    <span class="n">constexpr</span> <span class="k">const</span> <span class="n">char</span> <span class="o">*</span> <span class="n">z1</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">c4</span><span class="p">;</span>
+
+    <span class="n">constexpr</span> <span class="n">char</span> <span class="o">&amp;</span><span class="n">ry</span>  <span class="o">=</span> <span class="n">c1</span><span class="p">;</span> <span class="c1">// 引用类型</span>
+    <span class="n">constexpr</span> <span class="k">const</span> <span class="n">char</span> <span class="o">&amp;</span><span class="n">rz</span>  <span class="o">=</span> <span class="n">c2</span><span class="p">;</span> 
+    <span class="n">constexpr</span> <span class="n">char</span> <span class="o">&amp;</span><span class="n">ry1</span> <span class="o">=</span> <span class="n">c3</span><span class="p">;</span>
+    <span class="n">constexpr</span> <span class="k">const</span> <span class="n">char</span> <span class="o">&amp;</span><span class="n">rz1</span> <span class="o">=</span> <span class="n">c4</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mh">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+<time datetime="2015-04-15T00:00:00" pubdate>2015-04-15</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/c11.html">c++11</a>
+  </span>
+</p>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/ExpertC(2).html">C专家编程-笔记(2)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/c11.html">c++11</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://docs.getpelican.com" target="_blank">Pelicon</a></li>
+            <li><a href="http://www.google.com/webmasters" target="_blank">Google webmaster</a></li>
+            <li><a href="https://disqus.com" target="_blank">Disqus</a></li>
+            <li><a href="https://www.dnspod.cn/Domain" target="_blank">DNSPod</a></li>
+            <li><a href="https://www.godaddy.com" target="_blank">Godaddy</a></li>
+            <li><a href="http://www.goyouhuima.com" target="_blank">Godaddy优惠活动</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+          var disqus_identifier = '/posts/2015/04/constexpr.html';
+          var disqus_url = 'http://particle128.com/posts/2015/04/constexpr.html';
+          var disqus_title = 'C++11专题：constexpr类型';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

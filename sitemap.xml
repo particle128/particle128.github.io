@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/index.html</loc>
-<lastmod>2015-04-15T19:54:25-00:00</lastmod>
+<lastmod>2015-04-15T22:37:58-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/archives.html</loc>
-<lastmod>2015-04-15T19:54:25-00:00</lastmod>
+<lastmod>2015-04-15T22:37:58-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/tags.html</loc>
-<lastmod>2015-04-15T19:54:25-00:00</lastmod>
+<lastmod>2015-04-15T22:37:58-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/categories.html</loc>
-<lastmod>2015-04-15T19:54:25-00:00</lastmod>
+<lastmod>2015-04-15T22:37:58-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -43,6 +43,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <lastmod>2014-12-17T14:53:45-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
+</url>
+
+<url>
+<loc>http://particle128.com/posts/2015/04/constexpr.html</loc>
+<lastmod>2015-04-15T00:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -607,7 +614,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/category/note.html</loc>
-<lastmod>2015-04-11T00:00:00-00:00</lastmod>
+<lastmod>2015-04-15T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -767,6 +774,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://particle128.com/tag/spinlock.html</loc>
+<lastmod>2014-04-02T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://particle128.com/tag/headache.html</loc>
 <lastmod>2013-11-04T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -858,8 +872,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://particle128.com/tag/spinlock.html</loc>
-<lastmod>2014-04-02T00:00:00-00:00</lastmod>
+<loc>http://particle128.com/tag/c11.html</loc>
+<lastmod>2015-04-15T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -957,7 +971,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/author/particle128.html</loc>
-<lastmod>2015-04-11T00:00:00-00:00</lastmod>
+<lastmod>2015-04-15T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
