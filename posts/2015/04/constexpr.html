@@ -107,16 +107,33 @@
 
 <h3>用法</h3>
 <p>constexpr只能修饰字面值类型（literal type，即算术/指针/引用类型），用常量表达式或constexpr函数返回值初始化，用法如下：</p>
-<div class="highlight"><pre><span class="c1">// constexpr指针/引用指向的变量只能是全局变量或静态变量，编译时地址已知(data段)。</span>
+<div class="highlight"><pre><span class="c1">// 字面类 要求</span>
+<span class="c1">// 1) 是聚集类(aggregate class：所有成员都是public，没有构造函数、类内初始化、基类、虚函数)</span>
+<span class="c1">// 2) 不是聚集类，但是满足如下4个条件</span>
+<span class="c1">// (1) 成员都是字面类型</span>
+<span class="c1">// (2) 至少包含一个constexpr构造函数（函数体为空）</span>
+<span class="c1">// (3) 若含有类内初始化，内建类型成员用constexpr初始化，类类型用constexpr构造函数初始化</span>
+<span class="c1">// (4) 使用默认析构函数</span>
+<span class="k">class</span> <span class="n">Base</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="n">constexpr</span> <span class="n">Base</span><span class="p">(</span><span class="k">int</span> <span class="n">a</span><span class="p">,</span> <span class="k">int</span> <span class="n">b</span><span class="p">)</span><span class="o">:</span><span class="n">a</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">b</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">{}</span>
+        <span class="n">constexpr</span> <span class="k">int</span> <span class="n">geta</span><span class="p">()</span> <span class="p">{</span><span class="k">return</span> <span class="n">a</span><span class="p">;}</span>
+        <span class="n">constexpr</span> <span class="k">int</span> <span class="n">getb</span><span class="p">()</span> <span class="p">{</span><span class="k">return</span> <span class="n">b</span><span class="p">;}</span>
+    <span class="nl">private:</span>
+        <span class="k">int</span> <span class="n">a</span><span class="p">;</span>
+        <span class="k">int</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// constexpr函数 要求</span>
+<span class="c1">// (1) 参数和返回值都是字面值类型（算术、指针和引用类型，或字面类类型）</span>
+<span class="c1">// (2) 函数体只有一条执行语句，即return语句</span>
+<span class="n">constexpr</span> <span class="k">int</span> <span class="n">fun</span> <span class="p">(</span><span class="k">int</span> <span class="n">num</span><span class="p">,</span> <span class="n">Base</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">return</span> <span class="n">num</span> <span class="o">+</span> <span class="n">b</span><span class="p">.</span><span class="n">geta</span><span class="p">()</span> <span class="o">+</span> <span class="n">b</span><span class="p">.</span><span class="n">getb</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// constexpr指针/引用指向的变量只能是全局变量或静态变量，编译时地址已知(data段)。</span>
 <span class="n">char</span> <span class="n">c1</span><span class="p">;</span>
 <span class="n">constexpr</span> <span class="n">char</span> <span class="n">c2</span> <span class="o">=</span> <span class="mh">10</span><span class="p">;</span>
-
-<span class="c1">// constexpr函数要求</span>
-<span class="c1">// (1) 参数和返回值都是字面值类型（算术、指针和引用类型）</span>
-<span class="c1">// (2) 函数体只有一条执行语句，即return语句</span>
-<span class="n">constexpr</span> <span class="k">int</span> <span class="n">fun</span> <span class="p">(</span><span class="k">int</span> <span class="n">start</span><span class="p">,</span> <span class="k">int</span> <span class="n">num</span><span class="p">)</span> <span class="p">{</span> 
-    <span class="k">return</span> <span class="n">start</span> <span class="o">+</span> <span class="n">num</span><span class="o">*</span><span class="n">start</span><span class="p">;</span>
-<span class="p">}</span>
 
 <span class="k">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">static</span> <span class="n">char</span> <span class="n">c3</span><span class="p">;</span>
@@ -136,7 +153,8 @@
     <span class="n">constexpr</span> <span class="k">const</span> <span class="n">char</span> <span class="o">&amp;</span><span class="n">rz1</span> <span class="o">=</span> <span class="n">c4</span><span class="p">;</span>
 
     <span class="c1">// 2. 用constexpr函数返回值初始化（必须满足constexpr函数的参数都是常量表达式）</span>
-    <span class="n">constexpr</span> <span class="k">int</span> <span class="n">f</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="mh">10</span><span class="p">,</span><span class="mh">5</span><span class="p">);</span>
+    <span class="n">constexpr</span> <span class="n">Base</span> <span class="n">b</span><span class="p">(</span><span class="mh">1</span><span class="p">,</span><span class="mh">2</span><span class="p">);</span>
+    <span class="n">constexpr</span> <span class="k">int</span> <span class="n">f</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="mh">10</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
 
     <span class="c1">// int i=10, j=5; constexpr int f1 = fun(i, i); // 用非常量表达式调用constexpr函数，返回结果也不是常量表达式</span>
 
