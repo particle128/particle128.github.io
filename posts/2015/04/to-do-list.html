@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>数据库的分库和分表</title>
+  <title>To do list</title>
   <meta name="author" content="particle128">
 
 
@@ -59,75 +59,26 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">数据库的分库和分表</h1>
-      <p class="meta"><time datetime="2014-06-23T00:00:00" pubdate>2014-06-23</time></p>
+      <h1 class="entry-title">To do list</h1>
+      <p class="meta"><time datetime="2015-04-23T00:00:00" pubdate>2015-04-23</time></p>
 </header>
 
-  <div class="entry-content"><h2>一、分表</h2>
-<h3>水平分表</h3>
-<h4>1、背景</h4>
-<p>当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。<br />
-以InnoDB的B+树索引为例，记录多的时候，B+树高度更大。  </p>
-<ul>
-<li>查询：层数多，每次查询需要访问的结点就多，速度就慢。</li>
-<li>更新：当某个叶子结点达到容量极限的时候，再次插入应该落入该结点的元素，需要增加叶子结点，并且更新上层索引，极端情况下需要更新每一层索引，因此层数多也会导致速度慢。</li>
-</ul>
-<p>除此之外，还有写入表时锁的问题，数据表太大，一个写入操作可能阻塞后续的读取别的位置的读操作。</p>
-<h4>2、概念</h4>
-<p>把usr表分成usr_1, usr_2, usr_3...，每个表的结构都和原表一样，各包括原表的一部分数据。比如usr_1包括id从0到9999，usr_2包括id从10000到19999。</p>
-<h4>3、意义</h4>
-<p>提高数据的查询和更新效率（索引结构变小，锁住的数据量变少）</p>
-<h3>垂直分表</h3>
-<h4>1、背景</h4>
-<p>当一张表，有些字段经常被查询不常更新，另外一些字段经常被更新的时候，这张表的效率是不高的。</p>
-<h4>2、概念</h4>
-<p>根据数据的活跃度，把一张表进行分离，比如usr表分成usr_static_info,usr_dynamic_info，分别保存冷数据和活跃数据。<br />
-首先存储引擎的使用不同，冷数据使用MyIsam 可以有更好的查询效率。活跃数据，可以使用Innodb ,可以有更好的更新速度。 <br />
-其次，对冷数据进行更多的从库配置，因为更多的操作时查询，这样来加快查询速度。对热数据，可以相对有更多的主库的横向分表处理。<br />
-其实，对于一些特殊的活跃数据，也可以考虑使用memcache ,redis之类的缓存，等累计到一定量再去更新数据库，或者mongodb 一类的nosql 数据库。  </p>
-<h4>3、意义</h4>
-<p>提高数据的查询和更新效率（对活跃数据和冷数据的分别存储和优化，提高活跃数据的更新效率，和冷数据的查询效率）</p>
-<h2>二、分库</h2>
-<h3>1、背景</h3>
-<p>对于一个大型的互联网应用，每天几十亿的PV会对单机数据库造成了相当高的负载，对于系统的稳定性和扩展性造成了极大的问题。</p>
-<h3>2、概念</h3>
-<p>为了克服单机的性能瓶颈，增加一个数据库主机，把原数据库DB1中的一些表，挪到另一个数据库DB2中，从而让查询语句分开访问不同的主机。<br />
-重要的是对业务要细化，分库时候要想清楚各个模块业务之间的交互情况，避免将来写程序时出现过多的跨库操作（开销很大）。 </p>
-<h3>3、意义</h3>
-<p>减少了单机的访问压力。</p>
-<h2>三、分库+分表</h2>
-<h3>1、背景</h3>
-<p>单表记录巨多，访问量巨大，单纯的分表克服不了访问压力，单纯的分库又不适用于单表的情况，就需要采用：分库+分表。</p>
-<h3>2、概念</h3>
-<p>分库+分表，把usr表分成DB1.usr, DB2.usr, ... 等。每个数据库中对应的同名表，保存了原来usr表的部分数据。</p>
-<h3>3、意义</h3>
-<ul>
-<li>减少单机访问压力</li>
-<li>提高查询和更新效率</li>
-</ul>
-<h3>4、原则</h3>
-<h4>(1) 以user_id为区分</h4>
-<p>1～1000的对应DB1，1001～2000的对应DB2，以此类推<br />
-优点：可部分迁移<br />
-缺点：数据分布不均  </p>
-<h4>(2) 对user_id进行hash取模分</h4>
-<p>对user_id进行hash（或者如果user_id是数值型的话直接使用user_id 的值也可），然后用一个特定的数字，比如应用中需要将一个数据库切分成4个数据库的话，我们就用4这个数字对user_id的hash值进行取模运算，也 就是user_id%4,这样的话每次运算就有四种可能：结果为1的时候对应DB1；结果为2的时候对应DB2；结果为3的时候对应DB3；结果为0的时 候对应DB4，这样一来就非常均匀的将数据分配到4个DB中。<br />
-优点：数据分布均匀<br />
-缺点：数据迁移的时候麻烦，不能按照机器性能分摊数据  </p>
-<h4>(3) 在认证库中保存数据库配置</h4>
-<p>就是建立一个DB，这个DB单独保存user_id到DB的映射关系，每次访问数据库的时候都要先查询一次这个数据库，以得到具体的DB信息，然后才能进行我们需要的查询操作。<br />
-优点：灵活性强，一对一关系<br />
-缺点：每次查询之前都要多一次查询，性能大打折扣  </p>
-<h3>参考链接</h3>
-<p><a href="http://zhengdl126.iteye.com/blog/419850">数据库水平切分的实现原理解析－－－分库，分表，主从，集群，负载均衡器</a><br />
-<a href="http://my.oschina.net/cmcm/blog/175104">mysql分库分表的一些技巧</a></p></div>
+  <div class="entry-content"><p>好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！</p>
+<h3>4-24(Friday)</h3>
+<ol>
+<li>C++11 10个特性 (3~4h)</li>
+<li>Intellij Idea和Tomcat搭配，Head First JSP&amp;Servlet一章 (3h)</li>
+<li>知乎关注的问题 (0.5h)</li>
+<li>~~幸福公开课第一课，做笔记 (1.5h)~~</li>
+</ol>
+<h3>4-25(Saturday)</h3></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2014-06-23T00:00:00" pubdate>2014-06-23</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/database.html">database</a>
+<time datetime="2015-04-23T00:00:00" pubdate>2015-04-23</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/life.html">life</a>
   </span>
 </p>    </footer>
   </article>
@@ -193,9 +144,9 @@
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2014/06/database-shard.html';
-          var disqus_url = 'http://particle128.com/posts/2014/06/database-shard.html';
-          var disqus_title = '数据库的分库和分表';
+          var disqus_identifier = '/posts/2015/04/to-do-list.html';
+          var disqus_url = 'http://particle128.com/posts/2015/04/to-do-list.html';
+          var disqus_title = 'To do list';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

@@ -60,6 +60,27 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2015/04/to-do-list.html">To do list</a>
+      </h1>
+      <p class="meta"><time datetime="2015-04-23T00:00:00" pubdate>2015-04-23</time></p>
+</header>
+
+  <div class="entry-content"><p>好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！</p>
+<h3>4-24(Friday)</h3>
+<ol>
+<li>C++11 10个特性 (3~4h)</li>
+<li>Intellij Idea和Tomcat搭配，Head First JSP&amp;Servlet一章 (3h)</li>
+<li>知乎关注的问题 (0.5h)</li>
+<li>~~幸福公开课第一课，做笔记 (1.5h)~~</li>
+</ol>
+<h3>4-25(Saturday)</h3></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2015/04/to-do-list.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
       </h1>
       <p class="meta"><time datetime="2015-04-15T00:00:00" pubdate>2015-04-15</time></p>
@@ -240,32 +261,6 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
     <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(6).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
-      </h1>
-      <p class="meta"><time datetime="2014-12-19T00:00:00" pubdate>2014-12-19</time></p>
-</header>
-
-  <div class="entry-content"><p>给实验室的师弟们科普一下gitignore的用法</p>
-<h3>gitignore是干嘛的</h3>
-<p>当我们不想让git上传/管理特定于本地开发环境的文件时，我们可以添加这些东西到git工程根目录下的.gitignore文件中。当新增的文件匹配上了.gitignore中的一个模式，git会忽略该文件，即<code>git status</code>不会提示他们处于untracked状态，之后的<code>git add .</code>也不会添加该文件，除非你强制添加，即<code>git add -f .</code>。</p>
-<p>gitignore使用的通配符，和shell里的通配符几乎是一样的。<br />
-一点除外：在被/隔开的表达式中出现的*，只匹配所有非/的字符，也就是不能通配目录。</p>
-<h3>gitignore的位置</h3>
-<p>有三处：</p>
-<ul>
-<li>git管理的工程目录下的.gitignore： 项目所有成员的环境下都需要排除的文件</li>
-<li>git管理的工程目录下的.git/info/exclude：某个开发者，在某个工程，需要排除的文件</li>
-<li>~/.gitconfig：某个开发者，所有工程中，要排除的文件（比如~后缀的临时文件）</li>
-</ul>
-<h3>例子</h3>
-<p>我尽量在下面的例子中涵盖了gitignore的所有功能 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/12/gitignore.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1282.html">&larr; Older</a>
 
@@ -275,6 +270,9 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/to-do-list.html">To do list</a>
+      </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
       </li>
@@ -286,9 +284,6 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
       </li>
     </ul>
   </section>

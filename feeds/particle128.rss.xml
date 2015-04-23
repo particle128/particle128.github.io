@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>May your choices reflect your hopes, not your fears.</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 15 Apr 2015 00:00:00 +0800</lastBuildDate><item><title>C++11专题：constexpr类型</title><link>http://particle128.com/posts/2015/04/constexpr.html</link><description>&lt;p&gt;代码是最好的文档，所以，本系列主要在代码中讲解。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>particle128's Blog</title><link>http://particle128.com/</link><description>May your choices reflect your hopes, not your fears.</description><atom:link href="http://particle128.com/feeds/particle128.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 23 Apr 2015 00:00:00 +0800</lastBuildDate><item><title>To do list</title><link>http://particle128.com/posts/2015/04/to-do-list.html</link><description>&lt;p&gt;好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！&lt;/p&gt;
+&lt;h3&gt;4-24(Friday)&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;C++11 10个特性 (3~4h)&lt;/li&gt;
+&lt;li&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/li&gt;
+&lt;li&gt;知乎关注的问题 (0.5h)&lt;/li&gt;
+&lt;li&gt;~~幸福公开课第一课，做笔记 (1.5h)~~&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;4-25(Saturday)&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Thu, 23 Apr 2015 00:00:00 +0800</pubDate><guid>tag:particle128.com,2015-04-23:posts/2015/04/to-do-list.html</guid><category>life</category></item><item><title>C++11专题：constexpr类型</title><link>http://particle128.com/posts/2015/04/constexpr.html</link><description>&lt;p&gt;代码是最好的文档，所以，本系列主要在代码中讲解。&lt;/p&gt;
 &lt;h3&gt;背景&lt;/h3&gt;
 &lt;p&gt;C++中的const变量，包括编译时常量（compile-time constants）和运行时常量（runtime constants）。其中，编译时常量又叫常量表达式（constant expression），只有初始化式也是常量表达式的const变量才是常量表达式。例如：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
@@ -2195,15 +2203,7 @@ A:我感觉，因为log文件总是需要的（转储时，数据库失败恢复
 &lt;ul&gt;
 &lt;li&gt;标准：SQL语言标准化工作很好  &lt;/li&gt;
 &lt;li&gt;运维：关系数据库有成熟的运维工具和大量运维人员  &lt;/li&gt;
-&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 26 Apr 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-04-26:posts/2014/04/distriStore2.html</guid><category>distributed</category><category>storage</category></item><item><title>To do list</title><link>http://particle128.com/posts/2014/04/to-do-list.html</link><description>&lt;p&gt;好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！&lt;/p&gt;
-&lt;h3&gt;4-24(Friday)&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;C++11 10个特性 (3~4h)&lt;/li&gt;
-&lt;li&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/li&gt;
-&lt;li&gt;知乎关注的问题 (0.5h)&lt;/li&gt;
-&lt;li&gt;~~幸福公开课第一课，做笔记 (1.5h)~~&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3&gt;4-25(Saturday)&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Wed, 23 Apr 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-04-23:posts/2014/04/to-do-list.html</guid><category>life</category></item><item><title>大规模分布式存储系统-笔记（1）</title><link>http://particle128.com/posts/2014/04/distriStore1.html</link><description>&lt;h2&gt;Chapter1 概述&lt;/h2&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 26 Apr 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-04-26:posts/2014/04/distriStore2.html</guid><category>distributed</category><category>storage</category></item><item><title>大规模分布式存储系统-笔记（1）</title><link>http://particle128.com/posts/2014/04/distriStore1.html</link><description>&lt;h2&gt;Chapter1 概述&lt;/h2&gt;
 &lt;h3&gt;分布式存储特征&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;可扩展：随着集群规模增大，整体性能表现为线性增长  &lt;/li&gt;
