@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/life.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-23T00:00:00+08:00</updated><entry><title>To do list</title><link href="http://particle128.com/posts/2015/04/to-do-list.html" rel="alternate"></link><updated>2015-04-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-23:posts/2015/04/to-do-list.html</id><summary type="html">&lt;p&gt;好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！&lt;/p&gt;
 &lt;h3&gt;4-24(Friday)&lt;/h3&gt;
-&lt;p&gt;~~ceshi~~&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;ceshi&lt;/s&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;C++11 10个特性 (3~4h)&lt;/li&gt;
 &lt;li&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/li&gt;
 &lt;li&gt;知乎关注的问题 (0.5h)&lt;/li&gt;
-&lt;li&gt;~~幸福公开课第一课，做笔记 (1.5h)~~&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;幸福公开课第一课，做笔记 (1.5h)&lt;/s&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;4-25(Saturday)&lt;/h3&gt;</summary><category term="life"></category></entry><entry><title>写在2014年的最后一天</title><link href="http://particle128.com/posts/2014/12/2014-last-day.html" rel="alternate"></link><updated>2014-12-31T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-31:posts/2014/12/2014-last-day.html</id><summary type="html">&lt;p&gt;今天是12.31，2014年的最后一天。崔师兄喊着实验室的人，一起去知语山吃饭。聚餐期间，我们继续保持着三句不离本行的特色，“黑”师兄、“黑”师弟，气氛非常好。&lt;/p&gt;
 &lt;p&gt;中间，我带领大家玩了一下“谁是卧底”，从分辨我们实验室的两大师兄，分辨Java和C++，到我们使用“谁是卧底”的安卓app，大家玩的不亦乐乎。有一次我是卧底，手里拿着“白富美”，大家手里的是“高富帅”，我在一轮还没说完的时候，就猜到了这个局面，之后，说了很多两者都一样的特质，比如“优越的生活条件”，“钱一般是从父母继承过来的”，等等…但是，xiaodong xu这货，没有啥证据就愣猜是我，还号召大家一起投我，明明其他人的说法中都有破绽，他还是坚持自己的想法。最终，我在硬撑了3轮（每一轮都竭尽全力地给自己辩护，找其他人的漏洞啊，容易吗我）之后，被他和他蛊惑了的群众投死了。事后才知道，他的确猜错了我的身份，以为我的底牌是“土豪”。&lt;/p&gt;
