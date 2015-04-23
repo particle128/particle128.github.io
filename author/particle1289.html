@@ -7,8 +7,8 @@
   <title>particle128's Blog - Articles by particle128</title>
   <meta name="author" content="particle128">
 
-    
-  
+
+
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
@@ -30,10 +30,11 @@
 <body>
   <header role="banner"><hgroup>
   <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
-  </hgroup></header>
+    <h2>May your choices reflect your hopes, not your fears.</h2>
+</hgroup></header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
   <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
-  </ul>
+</ul>
 
 <!-- TODO: add search here
 <form action="" method="get">
@@ -45,153 +46,97 @@
 -->
 
 <ul class="main-navigation">
-      <li><a href="http://particle128.com/archives.html">archives</a></li>
-      <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
-      <li><a href="http://particle128.com/category/linux.html">linux</a></li>
-      <li><a href="http://particle128.com/category/python.html">python</a></li>
-      <li><a href="http://particle128.com/category/others.html">others</a></li>
-      <li><a href="http://particle128.com/category/life.html">life</a></li>
-              <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
-          <li><a href="http://particle128.com/pages/search.html">Search</a></li>
-        <!-- TODO: add categories here? -->
-  </ul></nav>
+    <li><a href="http://particle128.com/archives.html">archives</a></li>
+    <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    <li><a href="http://particle128.com/category/note.html">note</a></li>
+    <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
-    	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-port.html">Bargain Snatcher:linux到windows的移植问题</a>
+<div class="blog-index">
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/09/androidSMS.html">android小工具-失败短信重新发送</a>
       </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
+      <p class="meta"><time datetime="2013-09-03T00:00:00" pubdate>2013-09-03</time></p>
 </header>
 
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>步骤</h2>
-<p>0.登陆windows系统  </p>
-<p>1.安装python2.7<br />
-google上搜索exe安装包安装之。  </p>
-<p>2.安装pip<br />
-参考：http://www.pip-installer.org/en/latest/installing.html<br />
-下载setuptools源码tar.gz ——&gt; 解压后执行python path/of/the/setuptools/setup.py install<br />
-——&gt;下载get-pip.py ——&gt;执行python get-pip.py  </p>
-<p>3.用pip安装需要的扩展包：selenium<br />
-D:\Python27\Scripts\pip install -U selenium  </p>
-<p>4.安装py2exe<br />
-下载地址：http://sourceforge ...</p></div>
+  <div class="entry-content"><h3>由来</h3>
+<p>开学伊始，更换手机卡，群发260条短信，后察觉不对。只有一开始的100条左右的短信发送成功了，后面的短信都失败了。上网一查，是联通卡的一种限制，1h最多发送100条短信，超过就误认为你是在发送垃圾短信，自动锁住短信功能，发不出去任何短信了。<br />
+第二天经过10010报修，恢复短信功能。但是要一个一个的找哪些发送失败了，然后就只给那些人发送短信又不现实，因为有260个人失败了。。。给所有人都发一遍又觉得有点扰民。。。相关软件在安卓系统又找不到。。。干脆自己搞一个吧。  </p>
+<h3>实现</h3>
+<p>代码如下：  </p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kt">void</span> <span class="nf">ResendSms</span><span class="o">()</span>  
+<span class="o">{</span>  
+    <span class="c1">//发件箱  </span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">SMS_URI_SEND</span> <span class="o">=</span> <span class="s">&quot;content://sms/sent&quot;</span><span class="o">;</span>  
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">message</span><span class="o">=</span><span class="s">&quot;因故手机换号，原号废弃，敬请惠存新号xxxxxxxxxxx，带来的不便敬请谅解。 署名&quot;</span><span class="o">;</span>  
+
+    <span class="n">StringBuilder</span> <span class="n">smsBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>  
+
+    <span class="k">try</span><span class="o">{</span>  
+        <span class="n">ContentResolver</span> <span class="n">cr</span> <span class="o">=</span> <span class="n">getContentResolver</span><span class="o">();</span>  
+        <span class="n">String ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-port.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2013/09/androidSMS.html">Read On &crarr;</a>
   </footer>
   		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/12/vipshop-tech.html">Bargain Snatcher:技术问题</a>
-      </h1>
-          <p class="meta"><time datetime="2013-12-01T00:00:00" pubdate>2013-12-01</time></p>
-</header>
+<div class="pagination">
 
-  <div class="entry-content"><p>源码参见<a href="https://github.com/particle128/vipshop-buy">particle128的github</a>  </p>
-<h2>环境:</h2>
-<p>下载selenium chrome driver：<br />
-<a href="https://code.google.com/p/chromedriver/downloads/list">url</a><br />
-安装selenium ：<code>pip install -U selenium</code>  </p>
-<h2>难点：</h2>
-<p>1.不同操作系统、不同网络状况、不同计算机内存情况，对一个页面的加载速度是不同的，用同一个时间来设置超时太不灵活，设置短了，某些机器可能加载不到东西就退出了；设置长了，可能浪费了一些等待的时间。<br />
-因此，采用标准超时时间每次超时+1的策略，然后把特定于某个机器的超时时间保存与配置文件内！<br />
-2.有些页面在给定的门限（比如2）次超时刷新后仍然加载不上的话，就直接跳过。  </p>
-<h2>遇到的问题和总结：</h2>
-<ul>
-<li>不输入回车直接读入键盘操作，因此需要设置终端输入no buffer模式  </li>
-</ul>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>  
-<span class="kn">import</span> <span class="nn">termios</span>  
-
-<span class="k">try</span><span class="p">:</span>  
-     <span class="c"># 命令行不缓冲直接读入，linux版本  </span>
-     <span class="n">fd</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>  
-     <span class="n">old</span> <span class="o">=</span> <span class="n">termios</span><span class="o">.</span><span class="n">tcgetattr ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/12/vipshop-tech.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  		<article>
-    		<header>
-          <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">程序员的自我修养 笔记</a>
-      </h1>
-          <p class="meta"><time datetime="2013-10-14T00:00:00" pubdate>2013-10-14</time></p>
-</header>
-
-  <div class="entry-content"><h2>Chapter 2</h2>
-<p>所谓“编译”（gcc 1.cpp），实际上包括预处理，编译，汇编，链接。<br />
-gcc命令实际是后台程序的包装，包装了cc1预处理，as汇编，ld链接器<br />
-[1]预处理   主要处理预处理指令（#开头的），主要工作如下：<br />
-宏展开; 头文件插入 ; 删除注释 ； 添加行号和文件标识 。 <br />
-gcc -E 1.cpp -o 1.i             阅读.i文件，可以查看宏展开是否正确<br />
-[2]编译  把源文件生成汇编代码 (调用cc1)<br />
-gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/10/ziwoxiuyang.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  	  	<div class="pagination">
-  
-            <a class="next" href="http://particle128.com/author/particle1288.html">Newer &rarr;</a>
-        <br />
-</div>  </div>
-      <aside class="sidebar">
+      <a class="next" href="http://particle128.com/author/particle1288.html">Newer &rarr;</a>
+  <br />
+</div></div>
+<aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">Effective C++学习笔记(10)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/ExpertC(2).html">C专家编程-笔记(2)</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">Effective C++学习笔记(11)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">Effective C++学习笔记(12)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
-            <li class="post">
-          <a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">Effective C++学习笔记(2)</a>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
       </li>
-          </ul>
+    </ul>
   </section>
-    <section>
+  <section>
       
     <h1>Categories</h1>
     <ul id="recent_posts">
-              <li><a href="http://particle128.com/category/cpp.html">cpp</a></li>
-              <li><a href="http://particle128.com/category/life.html">life</a></li>
-              <li><a href="http://particle128.com/category/linux.html">linux</a></li>
-              <li><a href="http://particle128.com/category/others.html">others</a></li>
-              <li><a href="http://particle128.com/category/python.html">python</a></li>
-          </ul>
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
   </section>
-   
+ 
 
   <section>
   <h1>Tags</h1>
-      <a href="http://particle128.com/tag/load.html">load</a>,      <a href="http://particle128.com/tag/pelican.html">pelican</a>,      <a href="http://particle128.com/tag/core-dump.html">core dump</a>,      <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,      <a href="http://particle128.com/tag/linux.html">linux</a>,      <a href="http://particle128.com/tag/conversion.html">conversion</a>,      <a href="http://particle128.com/tag/goal.html">goal</a>,      <a href="http://particle128.com/tag/selenium.html">selenium</a>,      <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,      <a href="http://particle128.com/tag/blog.html">blog</a>,      <a href="http://particle128.com/tag/stl.html">STL</a>,      <a href="http://particle128.com/tag/health.html">health</a>,      <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,      <a href="http://particle128.com/tag/dns.html">dns</a>,      <a href="http://particle128.com/tag/headache.html">headache</a>,      <a href="http://particle128.com/tag/map.html">map</a>,      <a href="http://particle128.com/tag/python.html">python</a>,      <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,      <a href="http://particle128.com/tag/link.html">link</a>,      <a href="http://particle128.com/tag/user.html">user</a>,      <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,      <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,      <a href="http://particle128.com/tag/logging.html">logging</a>,      <a href="http://particle128.com/tag/thought.html">thought</a>,      <a href="http://particle128.com/tag/str.html">str</a>,      <a href="http://particle128.com/tag/cpp.html">cpp</a>,      <a href="http://particle128.com/tag/py2exe.html">py2exe</a>    </section>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/c11.html">c++11</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
 
-    
+
     <section>
-        <h1>Social</h2>
-        <ul>
-            <li><a href="http://particle128.com/" type="application/rss+xml" rel="alternate">RSS</a></li>
-                    <li><a href="https://github.com/particle128" target="_blank">github</a></li>
-                </ul>
-    </section>
-      <section>
         <h1>Blogroll</h2>
         <ul>
-                    <li><a href="http://www.boost.org/" target="_blank">Boost</a></li>
-                    <li><a href="http://python.org" target="_blank">Python</a></li>
-                </ul>
+            <li><a href="http://docs.getpelican.com" target="_blank">Pelicon</a></li>
+            <li><a href="http://www.google.com/webmasters" target="_blank">Google webmaster</a></li>
+            <li><a href="https://disqus.com" target="_blank">Disqus</a></li>
+            <li><a href="https://www.dnspod.cn/Domain" target="_blank">DNSPod</a></li>
+            <li><a href="https://www.godaddy.com" target="_blank">Godaddy</a></li>
+            <li><a href="http://www.goyouhuima.com" target="_blank">Godaddy优惠活动</a></li>
+        </ul>
     </section>
 </aside>    </div>
   </div>
@@ -199,9 +144,9 @@ gcc -S 1.i -o 1.s   或直接gcc -S 1.cpp -o ...</p></div>
   Copyright &copy; 2013 - particle128 -
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
-  	<script type="text/javascript">
+	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-      	  (function() {
+	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
 	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);

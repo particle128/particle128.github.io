@@ -279,6 +279,27 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/04/to-do-list.html">To do list</a>
+      </h1>
+      <p class="meta"><time datetime="2014-04-23T00:00:00" pubdate>2014-04-23</time></p>
+</header>
+
+  <div class="entry-content"><p>好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！</p>
+<h3>4-24(Friday)</h3>
+<ol>
+<li>C++11 10个特性 (3~4h)</li>
+<li>Intellij Idea和Tomcat搭配，Head First JSP&amp;Servlet一章 (3h)</li>
+<li>知乎关注的问题 (0.5h)</li>
+<li>~~幸福公开课第一课，做笔记 (1.5h)~~</li>
+</ol>
+<h3>4-25(Saturday)</h3></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/04/to-do-list.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/04/distriStore1.html">大规模分布式存储系统-笔记（1）</a>
       </h1>
       <p class="meta"><time datetime="2014-04-15T00:00:00" pubdate>2014-04-15</time></p>
@@ -311,24 +332,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
 <li>存储定长块，Amazon的Elastic Block Store，分布式数据库Amazon RDS的基础 ...</li></ul></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2014/04/distriStore1.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/04/spinlock.html">初识自旋锁spinlock</a>
-      </h1>
-      <p class="meta"><time datetime="2014-04-02T00:00:00" pubdate>2014-04-02</time></p>
-</header>
-
-  <div class="entry-content"><h3>起因</h3>
-<p>虚拟磁盘的项目中，使用了互斥锁(mutex)来控制任务队列的访问。但是mutex开销过大，让线程池的效果大打折扣，于是发现了spinlock的存在。  </p>
-<h3>概念</h3>
-<p>来自<a href="http://en.wikipedia.org/wiki/Spinlock">wiki</a>的定义：  </p>
-<blockquote>
-<p>In software engineering, a spinlock is a lock which causes a thread trying to acquire it to simply wait in a loop ("spin") while repeatedly checking if the lock is available. Since the thread remains active but is ...</p></blockquote></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/04/spinlock.html">Read On &crarr;</a>
   </footer>
   		</article>
 <div class="pagination">

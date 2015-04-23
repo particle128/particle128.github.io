@@ -2195,7 +2195,15 @@ A:我感觉，因为log文件总是需要的（转储时，数据库失败恢复
 &lt;ul&gt;
 &lt;li&gt;标准：SQL语言标准化工作很好  &lt;/li&gt;
 &lt;li&gt;运维：关系数据库有成熟的运维工具和大量运维人员  &lt;/li&gt;
-&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 26 Apr 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-04-26:posts/2014/04/distriStore2.html</guid><category>distributed</category><category>storage</category></item><item><title>大规模分布式存储系统-笔记（1）</title><link>http://particle128.com/posts/2014/04/distriStore1.html</link><description>&lt;h2&gt;Chapter1 概述&lt;/h2&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Sat, 26 Apr 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-04-26:posts/2014/04/distriStore2.html</guid><category>distributed</category><category>storage</category></item><item><title>To do list</title><link>http://particle128.com/posts/2014/04/to-do-list.html</link><description>&lt;p&gt;好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！&lt;/p&gt;
+&lt;h3&gt;4-24(Friday)&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;C++11 10个特性 (3~4h)&lt;/li&gt;
+&lt;li&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/li&gt;
+&lt;li&gt;知乎关注的问题 (0.5h)&lt;/li&gt;
+&lt;li&gt;~~幸福公开课第一课，做笔记 (1.5h)~~&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;4-25(Saturday)&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">particle128</dc:creator><pubDate>Wed, 23 Apr 2014 00:00:00 +0800</pubDate><guid>tag:particle128.com,2014-04-23:posts/2014/04/to-do-list.html</guid><category>life</category></item><item><title>大规模分布式存储系统-笔记（1）</title><link>http://particle128.com/posts/2014/04/distriStore1.html</link><description>&lt;h2&gt;Chapter1 概述&lt;/h2&gt;
 &lt;h3&gt;分布式存储特征&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;可扩展：随着集群规模增大，整体性能表现为线性增长  &lt;/li&gt;
