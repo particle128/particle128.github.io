@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-23T00:00:00+08:00</updated><entry><title>To do list</title><link href="http://particle128.com/posts/2015/04/to-do-list.html" rel="alternate"></link><updated>2015-04-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-23:posts/2015/04/to-do-list.html</id><summary type="html">&lt;p&gt;好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！&lt;/p&gt;
 &lt;h3&gt;4-24(Friday)&lt;/h3&gt;
+&lt;p&gt;~~ceshi~~&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;C++11 10个特性 (3~4h)&lt;/li&gt;
 &lt;li&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/li&gt;
