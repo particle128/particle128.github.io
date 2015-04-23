@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-23T00:00:00+08:00</updated><entry><title>To do list</title><link href="http://particle128.com/posts/2015/04/to-do-list.html" rel="alternate"></link><updated>2015-04-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-23:posts/2015/04/to-do-list.html</id><summary type="html">&lt;p&gt;好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！&lt;/p&gt;
 &lt;h3&gt;4-24(Friday)&lt;/h3&gt;
-&lt;p&gt;&lt;s&gt;ceshi&lt;/s&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;C++11 10个特性 (3~4h)&lt;/li&gt;
 &lt;li&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/li&gt;
 &lt;li&gt;知乎关注的问题 (0.5h)&lt;/li&gt;
-&lt;li&gt;&lt;s&gt;幸福公开课第一课，做笔记 (1.5h)&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;幸福公开课第一课，做笔记 (1.5h)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;4-25(Saturday)&lt;/h3&gt;</summary><category term="life"></category></entry><entry><title>C++11专题：constexpr类型</title><link href="http://particle128.com/posts/2015/04/constexpr.html" rel="alternate"></link><updated>2015-04-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-15:posts/2015/04/constexpr.html</id><summary type="html">&lt;p&gt;代码是最好的文档，所以，本系列主要在代码中讲解。&lt;/p&gt;
 &lt;h3&gt;背景&lt;/h3&gt;
