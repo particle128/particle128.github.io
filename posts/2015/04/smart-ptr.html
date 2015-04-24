@@ -60,7 +60,7 @@
   <article class="hentry" role="article">
 <header>
       <h1 class="entry-title">C++11专题：智能指针</h1>
-      <p class="meta"><time datetime="2015-04-24T21:59:40" pubdate>2015-04-24</time></p>
+      <p class="meta"><time datetime="2015-04-24T22:01:38" pubdate>2015-04-24</time></p>
 </header>
 
   <div class="entry-content"><h2>背景</h2>
@@ -72,7 +72,7 @@
 </ol>
 <p>而且，这些问题，很难调试，比如你delete了一个指针之后，堆上的同一块区域后来又被分配出去，那么你下次delete可能没有运行时错误，但是堆上的空闲链表却被你破坏了，之后的程序可能出现非常诡异的问题。</p>
 <h2>意义</h2>
-<p>智能指针，如果<em>使用得当</em>，可以防止以上三个问题，因为delete操作交给析构函数来进行(问题1、2)，并且析构之后的智能指针被自动置nullptr(问题3)。另外，通过不同类型的智能指针，可以实现普通指针不能实现的额外好处，比如共享资源(<code>shared_ptr</code>)、专用资源(<code>unique_ptr</code>)等。</p>
+<p>智能指针，如果<em>使用得当</em>，可以防止以上三个问题，因为delete操作交给析构函数来进行(问题1、2)，并且析构之后的智能指针被自动置null(问题3)。另外，通过不同类型的智能指针，可以实现普通指针不能实现的额外好处，比如共享资源(<code>shared_ptr</code>)、专用资源(<code>unique_ptr</code>)等。</p>
 <p>这里说的<em>使用得当</em>是指，按照惯例来使用智能指针：</p>
 <ol>
 <li>不要用同一个内建指针初始化或reset多个智能指针</li>
@@ -83,127 +83,127 @@
 <h2>用法</h2>
 <h3>shared_ptr</h3>
 <p>共享资源，带引用计数</p>
-<div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">memory</span><span class="o">&gt;</span>
-<span class="vi">#include</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> 
-<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
+<div class="highlight"><pre><span class="cp">#include &lt;memory&gt;</span>
+<span class="cp">#include &lt;string&gt; </span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 
-<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">auto</span> <span class="n">del</span> <span class="o">=</span> <span class="err">[</span><span class="cp">]</span> (string *ele) {delete ele;};
-    // construct
-    shared_ptr<span class="nt">&lt;string&gt;</span> p1;
-    shared_ptr<span class="nt">&lt;string&gt;</span> p2(new string);
-    shared_ptr<span class="nt">&lt;string&gt;</span> pd1(new string, del); // 此处不能用auto,auto只能推导复制构造!
-    // copy construct
-    shared_ptr<span class="nt">&lt;string&gt;</span> p4(p2);
-    shared_ptr<span class="nt">&lt;string&gt;</span> p5 = make_shared<span class="nt">&lt;string&gt;</span>(&quot;1&quot;);
-    auto p6 = make_shared<span class="nt">&lt;string&gt;</span>();
-    auto p7(p6);
-    // assign
-    p1 = p2;
-    // reset：用内建指针初始化和reset的格式一致
-    p1.reset();
-    p1.reset(new string);
-    p1.reset(new string, del);
-    // unique
-    if (!p1.unique()) { /*if the string pointed by p1 has other references*/
-        p1.reset(new string(*p1));
-    }
-    *p1 += &quot;1&quot;; /*change the string refered by p1*/
-    // swap
-    swap(p1,p2);
-    p1.swap(p2);
-    // * -&gt;
-    int size = p1-&gt;size();
-    string s = *p1;
-    // get
-    string *ps = p1.get();
-    // use_count
-    int n = p1.use_count();
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">del</span> <span class="o">=</span> <span class="p">[]</span> <span class="p">(</span><span class="n">string</span> <span class="o">*</span><span class="n">ele</span><span class="p">)</span> <span class="p">{</span><span class="k">delete</span> <span class="n">ele</span><span class="p">;};</span>
+    <span class="c1">// construct</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p1</span><span class="p">;</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p2</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">);</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">pd1</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">,</span> <span class="n">del</span><span class="p">);</span> <span class="c1">// 此处不能用auto,auto只能推导复制构造!</span>
+    <span class="c1">// copy construct</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p4</span><span class="p">(</span><span class="n">p2</span><span class="p">);</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p5</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">p6</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">p7</span><span class="p">(</span><span class="n">p6</span><span class="p">);</span>
+    <span class="c1">// assign</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">p2</span><span class="p">;</span>
+    <span class="c1">// reset：用内建指针初始化和reset的格式一致</span>
+    <span class="n">p1</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+    <span class="n">p1</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">);</span>
+    <span class="n">p1</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">,</span> <span class="n">del</span><span class="p">);</span>
+    <span class="c1">// unique</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">p1</span><span class="p">.</span><span class="n">unique</span><span class="p">())</span> <span class="p">{</span> <span class="cm">/*if the string pointed by p1 has other references*/</span>
+        <span class="n">p1</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">(</span><span class="o">*</span><span class="n">p1</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="o">*</span><span class="n">p1</span> <span class="o">+=</span> <span class="s">&quot;1&quot;</span><span class="p">;</span> <span class="cm">/*change the string refered by p1*/</span>
+    <span class="c1">// swap</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">);</span>
+    <span class="n">p1</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">p2</span><span class="p">);</span>
+    <span class="c1">// * -&gt;</span>
+    <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">p1</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">();</span>
+    <span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="o">*</span><span class="n">p1</span><span class="p">;</span>
+    <span class="c1">// get</span>
+    <span class="n">string</span> <span class="o">*</span><span class="n">ps</span> <span class="o">=</span> <span class="n">p1</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+    <span class="c1">// use_count</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">p1</span><span class="p">.</span><span class="n">use_count</span><span class="p">();</span>
 
-    return 0;
-}
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <h3>unique_ptr</h3>
 <p>专用资源，资源只能被一个指针引用</p>
-<div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">memory</span><span class="o">&gt;</span>
-<span class="vi">#include</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> 
-<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
+<div class="highlight"><pre><span class="cp">#include &lt;memory&gt;</span>
+<span class="cp">#include &lt;string&gt; </span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 
-<span class="kt">string</span> <span class="nx">deref</span><span class="p">(</span><span class="nx">unique_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">p</span><span class="p">)</span>
-        <span class="k">return</span> <span class="o">*</span><span class="nx">p</span><span class="p">;</span>
+<span class="n">string</span> <span class="nf">deref</span><span class="p">(</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
     <span class="k">else</span>
-        <span class="k">return</span> <span class="kt">string</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">string</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="nx">unique_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">clone</span><span class="p">(</span><span class="kt">string</span> <span class="nb">s</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">unique_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">(</span><span class="nb">new</span> <span class="kt">string</span><span class="p">(</span><span class="nb">s</span><span class="p">));</span>
+<span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">clone</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">(</span><span class="n">s</span><span class="p">));</span>
 <span class="p">}</span>
 
-<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">auto</span> <span class="n">del</span> <span class="o">=</span> <span class="err">[</span><span class="cp">]</span> (string *ele) {delete ele;};
-    // construct
-    unique_ptr<span class="nt">&lt;string&gt;</span> p1;
-    unique_ptr<span class="nt">&lt;string&gt;</span> p2(new string);
-    unique_ptr<span class="nt">&lt;string</span><span class="err">,</span> <span class="na">decltype</span><span class="err">(</span><span class="na">del</span><span class="err">)</span><span class="nt">&gt;</span> pd1(new string, del); 
-    // reset：用内建指针初始化和reset的格式一致
-    p1.reset();
-    p1.reset(new string);
-    // swap
-    swap(p1,p2);
-    p1.swap(p2);
-    // * -&gt;
-    int size = p1-&gt;size();
-    string s = *p1;
-    // get
-    string *ps = p1.get();
-    // release
-    unique_ptr<span class="nt">&lt;string&gt;</span> p3(p1.release());
-    p2.reset(p1.release()); // p1 release之后指向nullptr
-    p1 = nullptr;
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">del</span> <span class="o">=</span> <span class="p">[]</span> <span class="p">(</span><span class="n">string</span> <span class="o">*</span><span class="n">ele</span><span class="p">)</span> <span class="p">{</span><span class="k">delete</span> <span class="n">ele</span><span class="p">;};</span>
+    <span class="c1">// construct</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p1</span><span class="p">;</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p2</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">);</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">decltype</span><span class="p">(</span><span class="n">del</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">pd1</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">,</span> <span class="n">del</span><span class="p">);</span> 
+    <span class="c1">// reset：用内建指针初始化和reset的格式一致</span>
+    <span class="n">p1</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+    <span class="n">p1</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">);</span>
+    <span class="c1">// swap</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">);</span>
+    <span class="n">p1</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">p2</span><span class="p">);</span>
+    <span class="c1">// * -&gt;</span>
+    <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">p1</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">();</span>
+    <span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="o">*</span><span class="n">p1</span><span class="p">;</span>
+    <span class="c1">// get</span>
+    <span class="n">string</span> <span class="o">*</span><span class="n">ps</span> <span class="o">=</span> <span class="n">p1</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+    <span class="c1">// release</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p3</span><span class="p">(</span><span class="n">p1</span><span class="p">.</span><span class="n">release</span><span class="p">());</span>
+    <span class="n">p2</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">p1</span><span class="p">.</span><span class="n">release</span><span class="p">());</span> <span class="c1">// p1 release之后指向nullptr</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">nullptr</span><span class="p">;</span>
 
-    // 一般情况下，unique_ptr不能拷贝构造和赋值
-    // 只有一个例外：当unique_ptr马上要被析构的时候
-    unique_ptr<span class="nt">&lt;string&gt;</span> ptr1 = clone(string(&quot;123&quot;)); // 最常见用法：函数返回
-    string res = deref(unique_ptr<span class="nt">&lt;string&gt;</span>(new string(&quot;123&quot;))); // string res1 = deref(p1); //不行
-    auto ptr2((unique_ptr<span class="nt">&lt;string&gt;</span>())); // auto ptr2(p1); //不行
-    ptr1 = unique_ptr<span class="nt">&lt;string&gt;</span>(); // ptr1 = p1; // 不行
+    <span class="c1">// 一般情况下，unique_ptr不能拷贝构造和赋值</span>
+    <span class="c1">// 只有一个例外：当unique_ptr马上要被析构的时候</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">ptr1</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;123&quot;</span><span class="p">));</span> <span class="c1">// 最常见用法：函数返回</span>
+    <span class="n">string</span> <span class="n">res</span> <span class="o">=</span> <span class="n">deref</span><span class="p">(</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;123&quot;</span><span class="p">)));</span> <span class="c1">// string res1 = deref(p1); //不行</span>
+    <span class="k">auto</span> <span class="nf">ptr2</span><span class="p">((</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">()));</span> <span class="c1">// auto ptr2(p1); //不行</span>
+    <span class="n">ptr1</span> <span class="o">=</span> <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">();</span> <span class="c1">// ptr1 = p1; // 不行</span>
 
-    return 0;
-}
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <h3>weak_ptr</h3>
 <p>指向共享资源的指针，但是不增加引用计数</p>
-<div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">memory</span><span class="o">&gt;</span>
-<span class="vi">#include</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span>
-<span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">iostream</span><span class="o">&gt;</span>
-<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
+<div class="highlight"><pre><span class="cp">#include &lt;memory&gt;</span>
+<span class="cp">#include &lt;string&gt;</span>
+<span class="cp">#include &lt;iostream&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 
 
-<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">shared_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">sp</span><span class="p">(</span><span class="nb">new</span> <span class="kt">string</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">));</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;123&quot;</span><span class="p">));</span>
     <span class="c1">// construct</span>
-    <span class="nx">weak_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">p1</span><span class="p">;</span>
-    <span class="nx">weak_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">p2</span><span class="p">(</span><span class="nx">sp</span><span class="p">);</span>
+    <span class="n">weak_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p1</span><span class="p">;</span>
+    <span class="n">weak_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p2</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
     <span class="c1">// copy construct</span>
-    <span class="nx">weak_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">p3</span><span class="p">(</span><span class="nx">p1</span><span class="p">);</span>
-    <span class="nx">weak_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="n">p4</span> <span class="o">=</span> <span class="nx">p1</span><span class="p">;</span>
+    <span class="n">weak_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p3</span><span class="p">(</span><span class="n">p1</span><span class="p">);</span>
+    <span class="n">weak_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p4</span> <span class="o">=</span> <span class="n">p1</span><span class="p">;</span>
     <span class="c1">// assign</span>
-    <span class="n">p3</span> <span class="o">=</span> <span class="nx">p1</span><span class="p">;</span>
-    <span class="n">p3</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">;</span>
+    <span class="n">p3</span> <span class="o">=</span> <span class="n">p1</span><span class="p">;</span>
+    <span class="n">p3</span> <span class="o">=</span> <span class="n">sp</span><span class="p">;</span>
     <span class="c1">// reset</span>
-    <span class="nx">p3.reset</span><span class="p">();</span>
+    <span class="n">p3</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
     <span class="c1">// use_count</span>
-    <span class="nx">int</span> <span class="n">n</span> <span class="o">=</span> <span class="nx">p2.use_count</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">p2</span><span class="p">.</span><span class="n">use_count</span><span class="p">();</span>
     <span class="c1">// expired</span>
-    <span class="nx">bool</span> <span class="n">expire</span> <span class="o">=</span> <span class="nx">p2.expired</span><span class="p">();</span> <span class="c1">// use_count() == 0 时返回true</span>
+    <span class="kt">bool</span> <span class="n">expire</span> <span class="o">=</span> <span class="n">p2</span><span class="p">.</span><span class="n">expired</span><span class="p">();</span> <span class="c1">// use_count() == 0 时返回true</span>
     <span class="c1">// lock</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">shared_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="n">sp1</span> <span class="o">=</span> <span class="nx">p2.lock</span><span class="p">())</span> <span class="p">{</span>
-        <span class="nx">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="nx">sp1</span> <span class="o">&lt;&lt;</span> <span class="nx">endl</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">sp1</span> <span class="o">=</span> <span class="n">p2</span><span class="p">.</span><span class="n">lock</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">sp1</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
@@ -213,7 +213,7 @@
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2015-04-24T21:59:40" pubdate>2015-04-24</time>  <span class="categories">
+<time datetime="2015-04-24T22:01:38" pubdate>2015-04-24</time>  <span class="categories">
     <a class="category" href="http://particle128.com/tag/c11.html">c++11</a>
   </span>
 </p>    </footer>

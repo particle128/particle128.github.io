@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/note.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-24T21:59:40+08:00</updated><entry><title>C++11专题：智能指针</title><link href="http://particle128.com/posts/2015/04/smart-ptr.html" rel="alternate"></link><updated>2015-04-24T21:59:40+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-24:posts/2015/04/smart-ptr.html</id><summary type="html">&lt;h2&gt;背景&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/note.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-24T22:01:38+08:00</updated><entry><title>C++11专题：智能指针</title><link href="http://particle128.com/posts/2015/04/smart-ptr.html" rel="alternate"></link><updated>2015-04-24T22:01:38+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-24:posts/2015/04/smart-ptr.html</id><summary type="html">&lt;h2&gt;背景&lt;/h2&gt;
 &lt;p&gt;C++从C语言那里引入了指针类型，即所谓内建指针（built-in pointer）。传统的动态内存分配和释放(new &amp;amp; delete)也都是基于指针的，容易出如下问题：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;忘记delete，内存/资源泄露&lt;/li&gt;
@@ -8,7 +8,7 @@
 &lt;/ol&gt;
 &lt;p&gt;而且，这些问题，很难调试，比如你delete了一个指针之后，堆上的同一块区域后来又被分配出去，那么你下次delete可能没有运行时错误，但是堆上的空闲链表却被你破坏了，之后的程序可能出现非常诡异的问题。&lt;/p&gt;
 &lt;h2&gt;意义&lt;/h2&gt;
-&lt;p&gt;智能指针，如果&lt;em&gt;使用得当&lt;/em&gt;，可以防止以上三个问题，因为delete操作交给析构函数来进行(问题1、2)，并且析构之后的智能指针被自动置nullptr(问题3)。另外，通过不同类型的智能指针，可以实现普通指针不能实现的额外好处，比如共享资源(&lt;code&gt;shared_ptr&lt;/code&gt;)、专用资源(&lt;code&gt;unique_ptr&lt;/code&gt;)等。&lt;/p&gt;
+&lt;p&gt;智能指针，如果&lt;em&gt;使用得当&lt;/em&gt;，可以防止以上三个问题，因为delete操作交给析构函数来进行(问题1、2)，并且析构之后的智能指针被自动置null(问题3)。另外，通过不同类型的智能指针，可以实现普通指针不能实现的额外好处，比如共享资源(&lt;code&gt;shared_ptr&lt;/code&gt;)、专用资源(&lt;code&gt;unique_ptr&lt;/code&gt;)等。&lt;/p&gt;
 &lt;p&gt;这里说的&lt;em&gt;使用得当&lt;/em&gt;是指，按照惯例来使用智能指针：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;不要用同一个内建指针初始化或reset多个智能指针&lt;/li&gt;
@@ -19,127 +19,127 @@
 &lt;h2&gt;用法&lt;/h2&gt;
 &lt;h3&gt;shared_ptr&lt;/h3&gt;
 &lt;p&gt;共享资源，带引用计数&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;memory&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; 
-&lt;span class="nx"&gt;using&lt;/span&gt; &lt;span class="nx"&gt;namespace&lt;/span&gt; &lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include &amp;lt;memory&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;string&amp;gt; &lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="nx"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; (string *ele) {delete ele;};
-    // construct
-    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p1;
-    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p2(new string);
-    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; pd1(new string, del); // 此处不能用auto,auto只能推导复制构造!
-    // copy construct
-    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p4(p2);
-    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p5 = make_shared&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;(&amp;quot;1&amp;quot;);
-    auto p6 = make_shared&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;();
-    auto p7(p6);
-    // assign
-    p1 = p2;
-    // reset：用内建指针初始化和reset的格式一致
-    p1.reset();
-    p1.reset(new string);
-    p1.reset(new string, del);
-    // unique
-    if (!p1.unique()) { /*if the string pointed by p1 has other references*/
-        p1.reset(new string(*p1));
-    }
-    *p1 += &amp;quot;1&amp;quot;; /*change the string refered by p1*/
-    // swap
-    swap(p1,p2);
-    p1.swap(p2);
-    // * -&amp;gt;
-    int size = p1-&amp;gt;size();
-    string s = *p1;
-    // get
-    string *ps = p1.get();
-    // use_count
-    int n = p1.use_count();
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ele&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;ele&lt;/span&gt;&lt;span class="p"&gt;;};&lt;/span&gt;
+    &lt;span class="c1"&gt;// construct&lt;/span&gt;
+    &lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pd1&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// 此处不能用auto,auto只能推导复制构造!&lt;/span&gt;
+    &lt;span class="c1"&gt;// copy construct&lt;/span&gt;
+    &lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p4&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p5&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;make_shared&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;p6&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;make_shared&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;p7&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p6&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;// assign&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="c1"&gt;// reset：用内建指针初始化和reset的格式一致&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;// unique&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="cm"&gt;/*if the string pointed by p1 has other references*/&lt;/span&gt;
+        &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="cm"&gt;/*change the string refered by p1*/&lt;/span&gt;
+    &lt;span class="c1"&gt;// swap&lt;/span&gt;
+    &lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;// * -&amp;gt;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="c1"&gt;// get&lt;/span&gt;
+    &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ps&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="c1"&gt;// use_count&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;use_count&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 
-    return 0;
-}
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;unique_ptr&lt;/h3&gt;
 &lt;p&gt;专用资源，资源只能被一个指针引用&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;memory&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; 
-&lt;span class="nx"&gt;using&lt;/span&gt; &lt;span class="nx"&gt;namespace&lt;/span&gt; &lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include &amp;lt;memory&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;string&amp;gt; &lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-&lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="nx"&gt;deref&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="nf"&gt;deref&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;else&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;span class="nx"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;clone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;new&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="nx"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; (string *ele) {delete ele;};
-    // construct
-    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p1;
-    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p2(new string);
-    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;decltype&lt;/span&gt;&lt;span class="err"&gt;(&lt;/span&gt;&lt;span class="na"&gt;del&lt;/span&gt;&lt;span class="err"&gt;)&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; pd1(new string, del); 
-    // reset：用内建指针初始化和reset的格式一致
-    p1.reset();
-    p1.reset(new string);
-    // swap
-    swap(p1,p2);
-    p1.swap(p2);
-    // * -&amp;gt;
-    int size = p1-&amp;gt;size();
-    string s = *p1;
-    // get
-    string *ps = p1.get();
-    // release
-    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p3(p1.release());
-    p2.reset(p1.release()); // p1 release之后指向nullptr
-    p1 = nullptr;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ele&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;ele&lt;/span&gt;&lt;span class="p"&gt;;};&lt;/span&gt;
+    &lt;span class="c1"&gt;// construct&lt;/span&gt;
+    &lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;del&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pd1&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; 
+    &lt;span class="c1"&gt;// reset：用内建指针初始化和reset的格式一致&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;// swap&lt;/span&gt;
+    &lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;swap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;// * -&amp;gt;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="c1"&gt;// get&lt;/span&gt;
+    &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ps&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="c1"&gt;// release&lt;/span&gt;
+    &lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p3&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;release&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
+    &lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;release&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt; &lt;span class="c1"&gt;// p1 release之后指向nullptr&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-    // 一般情况下，unique_ptr不能拷贝构造和赋值
-    // 只有一个例外：当unique_ptr马上要被析构的时候
-    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; ptr1 = clone(string(&amp;quot;123&amp;quot;)); // 最常见用法：函数返回
-    string res = deref(unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;(new string(&amp;quot;123&amp;quot;))); // string res1 = deref(p1); //不行
-    auto ptr2((unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;())); // auto ptr2(p1); //不行
-    ptr1 = unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;(); // ptr1 = p1; // 不行
+    &lt;span class="c1"&gt;// 一般情况下，unique_ptr不能拷贝构造和赋值&lt;/span&gt;
+    &lt;span class="c1"&gt;// 只有一个例外：当unique_ptr马上要被析构的时候&lt;/span&gt;
+    &lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;ptr1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;123&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt; &lt;span class="c1"&gt;// 最常见用法：函数返回&lt;/span&gt;
+    &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;deref&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;123&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)));&lt;/span&gt; &lt;span class="c1"&gt;// string res1 = deref(p1); //不行&lt;/span&gt;
+    &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="nf"&gt;ptr2&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;()));&lt;/span&gt; &lt;span class="c1"&gt;// auto ptr2(p1); //不行&lt;/span&gt;
+    &lt;span class="n"&gt;ptr1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// ptr1 = p1; // 不行&lt;/span&gt;
 
-    return 0;
-}
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;weak_ptr&lt;/h3&gt;
 &lt;p&gt;指向共享资源的指针，但是不增加引用计数&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;memory&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;iostream&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="nx"&gt;using&lt;/span&gt; &lt;span class="nx"&gt;namespace&lt;/span&gt; &lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include &amp;lt;memory&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;string&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;iostream&amp;gt;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
 
-&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="nx"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;new&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;123&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;123&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
     &lt;span class="c1"&gt;// construct&lt;/span&gt;
-    &lt;span class="nx"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="nx"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
     &lt;span class="c1"&gt;// copy construct&lt;/span&gt;
-    &lt;span class="nx"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;p3&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="nx"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p4&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p3&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p4&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="c1"&gt;// assign&lt;/span&gt;
-    &lt;span class="n"&gt;p3&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="n"&gt;p3&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;p3&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;p3&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="c1"&gt;// reset&lt;/span&gt;
-    &lt;span class="nx"&gt;p3.reset&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="n"&gt;p3&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
     &lt;span class="c1"&gt;// use_count&lt;/span&gt;
-    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p2.use_count&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;use_count&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
     &lt;span class="c1"&gt;// expired&lt;/span&gt;
-    &lt;span class="nx"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;expire&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p2.expired&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// use_count() == 0 时返回true&lt;/span&gt;
+    &lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;expire&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;expired&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// use_count() == 0 时返回true&lt;/span&gt;
     &lt;span class="c1"&gt;// lock&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p2.lock&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nx"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;sp1&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lock&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;sp1&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
@@ -161,7 +161,7 @@
     &lt;span class="nl"&gt;default:&lt;/span&gt;&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="n"&gt;xx&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt; &lt;span class="c1"&gt;// （3）枚举类型初始化&lt;/span&gt;
-&lt;span class="n"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;{};&lt;/span&gt;
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;T&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;{};&lt;/span&gt;
 &lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// （4）模板非类型参数的实例化&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -169,19 +169,19 @@
 &lt;h2&gt;意义&lt;/h2&gt;
 &lt;p&gt;有时候，我们想定义一个常量表达式，但是不好判断初始化式（const变量组成的表达式）是不是常量表达式，只能把初始化式中的const变量都&lt;em&gt;追踪&lt;/em&gt;一遍，因为可能编译过程非常耗时，不能轻易编译。因此，C++11增加了常量表达式类型（constexpr类型）。这样，只要我们确保初始化式完全由字面常量和constexpr常量构成，就可以确定初始化是常量表达式，而不用对初始化式中的每个变量进行追踪。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// c++11之前&lt;/span&gt;
-&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;//若 const int a = 10 + fun()则x不是&lt;/span&gt;
-&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mh"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;12&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mh"&gt;13&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//需要追踪a，b，c，d才能搞清楚x是不是常量表达式&lt;/span&gt;
-&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;//若 const int a = 10 + fun()则x不是&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;13&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//需要追踪a，b，c，d才能搞清楚x是不是常量表达式&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
 &lt;span class="c1"&gt;// c++11&lt;/span&gt;
-&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mh"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;12&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mh"&gt;13&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//确保c和d是constexpr即可&lt;/span&gt;
-&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;13&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//确保c和d是constexpr即可&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -194,51 +194,51 @@
 &lt;span class="c1"&gt;// (2) 至少包含一个constexpr构造函数（函数体为空）&lt;/span&gt;
 &lt;span class="c1"&gt;// (3) 若含有类内初始化，内建类型成员用constexpr初始化，类类型用constexpr构造函数初始化&lt;/span&gt;
 &lt;span class="c1"&gt;// (4) 使用默认析构函数&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Base&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="nl"&gt;public:&lt;/span&gt;
-        &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
-        &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;geta&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
-        &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;getb&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
+        &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
+        &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;geta&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
+        &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;getb&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
     &lt;span class="nl"&gt;private:&lt;/span&gt;
-        &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;};&lt;/span&gt;
 
 &lt;span class="c1"&gt;// constexpr函数 要求&lt;/span&gt;
 &lt;span class="c1"&gt;// (1) 参数和返回值都是字面值类型（算术、指针和引用类型，或字面类类型）&lt;/span&gt;
 &lt;span class="c1"&gt;// (2) 函数体只有一条执行语句，即return语句&lt;/span&gt;
-&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;fun&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;fun&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;geta&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getb&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
 &lt;span class="c1"&gt;// constexpr指针/引用指向的变量只能是全局变量或静态变量，编译时地址已知(data段)。&lt;/span&gt;
-&lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-&lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c4&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c4&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
     &lt;span class="c1"&gt;// 1. 用常量表达式初始化&lt;/span&gt;
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// (1) 算术类型，包括bool,short,int,double...&lt;/span&gt;
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// (1) 算术类型，包括bool,short,int,double...&lt;/span&gt;
 
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// (2) 指针类型，const修饰指针，而不是char&lt;/span&gt;
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;y1&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;z1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// (2) 指针类型，const修饰指针，而不是char&lt;/span&gt;
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;y1&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;z1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;c4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;ry&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// (3) 引用类型&lt;/span&gt;
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rz&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;ry1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rz1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;ry&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// (3) 引用类型&lt;/span&gt;
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rz&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;ry1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rz1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
     &lt;span class="c1"&gt;// 2. 用constexpr函数返回值初始化（必须满足constexpr函数的参数都是常量表达式）&lt;/span&gt;
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mh"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 
     &lt;span class="c1"&gt;// int i=10, j=5; constexpr int f1 = fun(i, i); // 用非常量表达式调用constexpr函数，返回结果也不是常量表达式&lt;/span&gt;
 
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mh"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</summary><category term="c++11"></category></entry><entry><title>C专家编程-笔记(2)</title><link href="http://particle128.com/posts/2015/04/ExpertC(2).html" rel="alternate"></link><updated>2015-04-11T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-11:posts/2015/04/ExpertC(2).html</id><summary type="html">&lt;h3&gt;第五章  对链接的思考&lt;/h3&gt;
 &lt;p&gt;&lt;img alt="5-1" src="http://particle128.com/images/expert_c_5_1.png" /&gt;&lt;/p&gt;
