@@ -64,7 +64,7 @@
 </header>
 
   <div class="entry-content"><p>代码是最好的文档，所以，本系列主要在代码中讲解。</p>
-<h3>背景</h3>
+<h2>背景</h2>
 <p>C++中的const变量，包括编译时常量（compile-time constants）和运行时常量（runtime constants）。其中，编译时常量又叫常量表达式（constant expression），只有初始化式也是常量表达式的const变量才是常量表达式。例如：</p>
 <div class="highlight"><pre><span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">);</span>
 <span class="k">const</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
@@ -86,7 +86,7 @@
 </pre></div>
 
 
-<h3>意义</h3>
+<h2>意义</h2>
 <p>有时候，我们想定义一个常量表达式，但是不好判断初始化式（const变量组成的表达式）是不是常量表达式，只能把初始化式中的const变量都<em>追踪</em>一遍，因为可能编译过程非常耗时，不能轻易编译。因此，C++11增加了常量表达式类型（constexpr类型）。这样，只要我们确保初始化式完全由字面常量和constexpr常量构成，就可以确定初始化是常量表达式，而不用对初始化式中的每个变量进行追踪。</p>
 <div class="highlight"><pre><span class="c1">// c++11之前</span>
 <span class="k">const</span> <span class="k">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mh">10</span><span class="p">;</span>  <span class="c1">//若 const int a = 10 + fun()则x不是</span>
@@ -105,7 +105,7 @@
 </pre></div>
 
 
-<h3>用法</h3>
+<h2>用法</h2>
 <p>constexpr只能修饰字面值类型（literal type，即算术/指针/引用类型），用常量表达式或constexpr函数返回值初始化，用法如下：</p>
 <div class="highlight"><pre><span class="c1">// 字面类 要求</span>
 <span class="c1">// 1) 是聚集类(aggregate class：所有成员都是public，没有构造函数、类内初始化、基类、虚函数)</span>
@@ -182,6 +182,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2015/04/to-do-list.html">To do list</a>
       </li>
       <li class="post">
@@ -192,9 +195,6 @@
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
     </ul>
   </section>

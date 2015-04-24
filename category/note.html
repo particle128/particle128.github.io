@@ -60,13 +60,39 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
+      </h1>
+      <p class="meta"><time datetime="2015-04-24T21:59:40" pubdate>2015-04-24</time></p>
+</header>
+
+  <div class="entry-content"><h2>背景</h2>
+<p>C++从C语言那里引入了指针类型，即所谓内建指针（built-in pointer）。传统的动态内存分配和释放(new &amp; delete)也都是基于指针的，容易出如下问题：</p>
+<ol>
+<li>忘记delete，内存/资源泄露</li>
+<li>两次delete同一个指针，未定义</li>
+<li>delete之后的指针继续使用，未定义</li>
+</ol>
+<p>而且，这些问题，很难调试，比如你delete了一个指针之后，堆上的同一块区域后来又被分配出去，那么你下次delete可能没有运行时错误，但是堆上的空闲链表却被你破坏了，之后的程序可能出现非常诡异的问题。</p>
+<h2>意义</h2>
+<p>智能指针，如果<em>使用得当</em>，可以防止以上三个问题，因为delete操作交给析构函数来进行(问题1、2)，并且析构之后的智能指针被自动置nullptr(问题3)。另外，通过不同类型的智能指针，可以实现普通指针不能实现的额外好处，比如共享资源(<code>shared_ptr</code>)、专用资源(<code>unique_ptr</code>)等。</p>
+<p>这里说的<em>使用得当</em>是指，按照惯例来使用智能指针：</p>
+<ol>
+<li>不要用同一个内建指针初始化或reset多个智能指针</li>
+<li>不要delete ...</li></ol></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2015/04/smart-ptr.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
       </h1>
       <p class="meta"><time datetime="2015-04-15T00:00:00" pubdate>2015-04-15</time></p>
 </header>
 
   <div class="entry-content"><p>代码是最好的文档，所以，本系列主要在代码中讲解。</p>
-<h3>背景</h3>
+<h2>背景</h2>
 <p>C++中的const变量，包括编译时常量（compile-time constants）和运行时常量（runtime constants）。其中，编译时常量又叫常量表达式（constant expression），只有初始化式也是常量表达式的const变量才是常量表达式。例如：</p>
 <div class="highlight"><pre><span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">);</span>
 <span class="k">const</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
@@ -248,27 +274,6 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
     <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(5).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/12/cleanCode(4).html">Clean Code (4)</a>
-      </h1>
-      <p class="meta"><time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time></p>
-</header>
-
-  <div class="entry-content"><h3>Chapter12 Emergence</h3>
-<blockquote>
-<p>The majority of the cost of a software project is in long-term maintenance  </p>
-</blockquote>
-<p>解析极限编程：拥抱变化（Extreme Programming Explained: Embrace Change）里列举了“简单设计”的四原则，优先级依次降低：</p>
-<ol>
-<li>跑通所有的测试：单一原则的简洁代码，依赖更少的代码，<strong>更加可测</strong>。所以，测试功能的同时，也能确保程序逐渐符合“低耦合高内聚”的面向对象目标。此外，也能让我们更加大胆的重构。</li>
-<li>没有重复：提取重复的部分组成新的方法/新的类，用模板办法把公共的部分提升到抽象父类中</li>
-<li>有表达力：一个软件工程耗费最多时间的是长期的维护，所以，选好的名字、让方法和类尽可能小、写单元测试。有句话叫：想象你代码的维护者是一个精神狂暴症患者，并且他知道你家在哪儿 ...</li></ol></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(4).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/category/note2.html">&larr; Older</a>
 
@@ -278,6 +283,9 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
+      </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
       </li>
@@ -289,9 +297,6 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
       </li>
     </ul>
   </section>

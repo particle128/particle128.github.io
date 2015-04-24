@@ -1,14 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-23T00:00:00+08:00</updated><entry><title>To do list</title><link href="http://particle128.com/posts/2015/04/to-do-list.html" rel="alternate"></link><updated>2015-04-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-23:posts/2015/04/to-do-list.html</id><summary type="html">&lt;p&gt;好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-24T21:59:40+08:00</updated><entry><title>C++11专题：智能指针</title><link href="http://particle128.com/posts/2015/04/smart-ptr.html" rel="alternate"></link><updated>2015-04-24T21:59:40+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-24:posts/2015/04/smart-ptr.html</id><summary type="html">&lt;h2&gt;背景&lt;/h2&gt;
+&lt;p&gt;C++从C语言那里引入了指针类型，即所谓内建指针（built-in pointer）。传统的动态内存分配和释放(new &amp;amp; delete)也都是基于指针的，容易出如下问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;忘记delete，内存/资源泄露&lt;/li&gt;
+&lt;li&gt;两次delete同一个指针，未定义&lt;/li&gt;
+&lt;li&gt;delete之后的指针继续使用，未定义&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;而且，这些问题，很难调试，比如你delete了一个指针之后，堆上的同一块区域后来又被分配出去，那么你下次delete可能没有运行时错误，但是堆上的空闲链表却被你破坏了，之后的程序可能出现非常诡异的问题。&lt;/p&gt;
+&lt;h2&gt;意义&lt;/h2&gt;
+&lt;p&gt;智能指针，如果&lt;em&gt;使用得当&lt;/em&gt;，可以防止以上三个问题，因为delete操作交给析构函数来进行(问题1、2)，并且析构之后的智能指针被自动置nullptr(问题3)。另外，通过不同类型的智能指针，可以实现普通指针不能实现的额外好处，比如共享资源(&lt;code&gt;shared_ptr&lt;/code&gt;)、专用资源(&lt;code&gt;unique_ptr&lt;/code&gt;)等。&lt;/p&gt;
+&lt;p&gt;这里说的&lt;em&gt;使用得当&lt;/em&gt;是指，按照惯例来使用智能指针：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;不要用同一个内建指针初始化或reset多个智能指针&lt;/li&gt;
+&lt;li&gt;不要delete get()返回的指针&lt;/li&gt;
+&lt;li&gt;不要用get()返回的指针初始化或reset另一个智能指针&lt;/li&gt;
+&lt;li&gt;get()返回的指针，在智能指针所指对象被释放后，就不能使用了。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;用法&lt;/h2&gt;
+&lt;h3&gt;shared_ptr&lt;/h3&gt;
+&lt;p&gt;共享资源，带引用计数&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;memory&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; 
+&lt;span class="nx"&gt;using&lt;/span&gt; &lt;span class="nx"&gt;namespace&lt;/span&gt; &lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; (string *ele) {delete ele;};
+    // construct
+    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p1;
+    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p2(new string);
+    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; pd1(new string, del); // 此处不能用auto,auto只能推导复制构造!
+    // copy construct
+    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p4(p2);
+    shared_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p5 = make_shared&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;(&amp;quot;1&amp;quot;);
+    auto p6 = make_shared&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;();
+    auto p7(p6);
+    // assign
+    p1 = p2;
+    // reset：用内建指针初始化和reset的格式一致
+    p1.reset();
+    p1.reset(new string);
+    p1.reset(new string, del);
+    // unique
+    if (!p1.unique()) { /*if the string pointed by p1 has other references*/
+        p1.reset(new string(*p1));
+    }
+    *p1 += &amp;quot;1&amp;quot;; /*change the string refered by p1*/
+    // swap
+    swap(p1,p2);
+    p1.swap(p2);
+    // * -&amp;gt;
+    int size = p1-&amp;gt;size();
+    string s = *p1;
+    // get
+    string *ps = p1.get();
+    // use_count
+    int n = p1.use_count();
+
+    return 0;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;unique_ptr&lt;/h3&gt;
+&lt;p&gt;专用资源，资源只能被一个指针引用&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;memory&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; 
+&lt;span class="nx"&gt;using&lt;/span&gt; &lt;span class="nx"&gt;namespace&lt;/span&gt; &lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="nx"&gt;deref&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nx"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;clone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;new&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;s&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;[&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; (string *ele) {delete ele;};
+    // construct
+    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p1;
+    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p2(new string);
+    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt; &lt;span class="na"&gt;decltype&lt;/span&gt;&lt;span class="err"&gt;(&lt;/span&gt;&lt;span class="na"&gt;del&lt;/span&gt;&lt;span class="err"&gt;)&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; pd1(new string, del); 
+    // reset：用内建指针初始化和reset的格式一致
+    p1.reset();
+    p1.reset(new string);
+    // swap
+    swap(p1,p2);
+    p1.swap(p2);
+    // * -&amp;gt;
+    int size = p1-&amp;gt;size();
+    string s = *p1;
+    // get
+    string *ps = p1.get();
+    // release
+    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; p3(p1.release());
+    p2.reset(p1.release()); // p1 release之后指向nullptr
+    p1 = nullptr;
+
+    // 一般情况下，unique_ptr不能拷贝构造和赋值
+    // 只有一个例外：当unique_ptr马上要被析构的时候
+    unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt; ptr1 = clone(string(&amp;quot;123&amp;quot;)); // 最常见用法：函数返回
+    string res = deref(unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;(new string(&amp;quot;123&amp;quot;))); // string res1 = deref(p1); //不行
+    auto ptr2((unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;())); // auto ptr2(p1); //不行
+    ptr1 = unique_ptr&lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;(); // ptr1 = p1; // 不行
+
+    return 0;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;weak_ptr&lt;/h3&gt;
+&lt;p&gt;指向共享资源的指针，但是不增加引用计数&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;memory&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;iostream&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nx"&gt;using&lt;/span&gt; &lt;span class="nx"&gt;namespace&lt;/span&gt; &lt;span class="nx"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+
+&lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;new&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;123&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+    &lt;span class="c1"&gt;// construct&lt;/span&gt;
+    &lt;span class="nx"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;p2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;// copy construct&lt;/span&gt;
+    &lt;span class="nx"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nx"&gt;p3&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="nx"&gt;weak_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;p4&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="c1"&gt;// assign&lt;/span&gt;
+    &lt;span class="n"&gt;p3&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;p3&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;sp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="c1"&gt;// reset&lt;/span&gt;
+    &lt;span class="nx"&gt;p3.reset&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="c1"&gt;// use_count&lt;/span&gt;
+    &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p2.use_count&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="c1"&gt;// expired&lt;/span&gt;
+    &lt;span class="nx"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;expire&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p2.expired&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// use_count() == 0 时返回true&lt;/span&gt;
+    &lt;span class="c1"&gt;// lock&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sp1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;p2.lock&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nx"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;sp1&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="c++11"></category></entry><entry><title>To do list</title><link href="http://particle128.com/posts/2015/04/to-do-list.html" rel="alternate"></link><updated>2015-04-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-23:posts/2015/04/to-do-list.html</id><summary type="html">&lt;p&gt;好多书想看，好多课程想学，好多领域想涉入，每天却还是被焦虑、畏难所困扰，现在开始在blog写to-do-list监督自己！&lt;/p&gt;
+&lt;h3&gt;next&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;sublime text&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;4-25(Saturday)&lt;/h3&gt;
 &lt;h3&gt;4-24(Friday)&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;C++11 10个特性 (3~4h)&lt;/li&gt;
 &lt;li&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/li&gt;
 &lt;li&gt;知乎关注的问题 (0.5h)&lt;/li&gt;
 &lt;li&gt;幸福公开课第一课，做笔记 (1.5h)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;4-25(Saturday)&lt;/h3&gt;</summary><category term="life"></category></entry><entry><title>C++11专题：constexpr类型</title><link href="http://particle128.com/posts/2015/04/constexpr.html" rel="alternate"></link><updated>2015-04-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-15:posts/2015/04/constexpr.html</id><summary type="html">&lt;p&gt;代码是最好的文档，所以，本系列主要在代码中讲解。&lt;/p&gt;
-&lt;h3&gt;背景&lt;/h3&gt;
+&lt;/ul&gt;</summary><category term="life"></category></entry><entry><title>C++11专题：constexpr类型</title><link href="http://particle128.com/posts/2015/04/constexpr.html" rel="alternate"></link><updated>2015-04-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-15:posts/2015/04/constexpr.html</id><summary type="html">&lt;p&gt;代码是最好的文档，所以，本系列主要在代码中讲解。&lt;/p&gt;
+&lt;h2&gt;背景&lt;/h2&gt;
 &lt;p&gt;C++中的const变量，包括编译时常量（compile-time constants）和运行时常量（runtime constants）。其中，编译时常量又叫常量表达式（constant expression），只有初始化式也是常量表达式的const变量才是常量表达式。例如：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -30,7 +179,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3&gt;意义&lt;/h3&gt;
+&lt;h2&gt;意义&lt;/h2&gt;
 &lt;p&gt;有时候，我们想定义一个常量表达式，但是不好判断初始化式（const变量组成的表达式）是不是常量表达式，只能把初始化式中的const变量都&lt;em&gt;追踪&lt;/em&gt;一遍，因为可能编译过程非常耗时，不能轻易编译。因此，C++11增加了常量表达式类型（constexpr类型）。这样，只要我们确保初始化式完全由字面常量和constexpr常量构成，就可以确定初始化是常量表达式，而不用对初始化式中的每个变量进行追踪。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// c++11之前&lt;/span&gt;
 &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;//若 const int a = 10 + fun()则x不是&lt;/span&gt;
@@ -49,7 +198,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3&gt;用法&lt;/h3&gt;
+&lt;h2&gt;用法&lt;/h2&gt;
 &lt;p&gt;constexpr只能修饰字面值类型（literal type，即算术/指针/引用类型），用常量表达式或constexpr函数返回值初始化，用法如下：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// 字面类 要求&lt;/span&gt;
 &lt;span class="c1"&gt;// 1) 是聚集类(aggregate class：所有成员都是public，没有构造函数、类内初始化、基类、虚函数)&lt;/span&gt;

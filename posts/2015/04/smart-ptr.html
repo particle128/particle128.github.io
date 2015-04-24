@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>C++11专题：智能指针</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.com/favicon.png" rel="icon">
+  <link href="http://particle128.com/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.com/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.com/theme/js/ender.js"></script>
+  <script src="http://particle128.com/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.com/">particle128's Blog</a></h1>
+    <h2>May your choices reflect your hopes, not your fears.</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.com/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://particle128.com/archives.html">archives</a></li>
+    <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    <li><a href="http://particle128.com/category/note.html">note</a></li>
+    <li><a href="http://particle128.com/category/life.html">life</a></li>
+      <li><a href="http://particle128.com/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.com/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">C++11专题：智能指针</h1>
+      <p class="meta"><time datetime="2015-04-24T21:59:40" pubdate>2015-04-24</time></p>
+</header>
+
+  <div class="entry-content"><h2>背景</h2>
+<p>C++从C语言那里引入了指针类型，即所谓内建指针（built-in pointer）。传统的动态内存分配和释放(new &amp; delete)也都是基于指针的，容易出如下问题：</p>
+<ol>
+<li>忘记delete，内存/资源泄露</li>
+<li>两次delete同一个指针，未定义</li>
+<li>delete之后的指针继续使用，未定义</li>
+</ol>
+<p>而且，这些问题，很难调试，比如你delete了一个指针之后，堆上的同一块区域后来又被分配出去，那么你下次delete可能没有运行时错误，但是堆上的空闲链表却被你破坏了，之后的程序可能出现非常诡异的问题。</p>
+<h2>意义</h2>
+<p>智能指针，如果<em>使用得当</em>，可以防止以上三个问题，因为delete操作交给析构函数来进行(问题1、2)，并且析构之后的智能指针被自动置nullptr(问题3)。另外，通过不同类型的智能指针，可以实现普通指针不能实现的额外好处，比如共享资源(<code>shared_ptr</code>)、专用资源(<code>unique_ptr</code>)等。</p>
+<p>这里说的<em>使用得当</em>是指，按照惯例来使用智能指针：</p>
+<ol>
+<li>不要用同一个内建指针初始化或reset多个智能指针</li>
+<li>不要delete get()返回的指针</li>
+<li>不要用get()返回的指针初始化或reset另一个智能指针</li>
+<li>get()返回的指针，在智能指针所指对象被释放后，就不能使用了。</li>
+</ol>
+<h2>用法</h2>
+<h3>shared_ptr</h3>
+<p>共享资源，带引用计数</p>
+<div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">memory</span><span class="o">&gt;</span>
+<span class="vi">#include</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> 
+<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
+
+<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">auto</span> <span class="n">del</span> <span class="o">=</span> <span class="err">[</span><span class="cp">]</span> (string *ele) {delete ele;};
+    // construct
+    shared_ptr<span class="nt">&lt;string&gt;</span> p1;
+    shared_ptr<span class="nt">&lt;string&gt;</span> p2(new string);
+    shared_ptr<span class="nt">&lt;string&gt;</span> pd1(new string, del); // 此处不能用auto,auto只能推导复制构造!
+    // copy construct
+    shared_ptr<span class="nt">&lt;string&gt;</span> p4(p2);
+    shared_ptr<span class="nt">&lt;string&gt;</span> p5 = make_shared<span class="nt">&lt;string&gt;</span>(&quot;1&quot;);
+    auto p6 = make_shared<span class="nt">&lt;string&gt;</span>();
+    auto p7(p6);
+    // assign
+    p1 = p2;
+    // reset：用内建指针初始化和reset的格式一致
+    p1.reset();
+    p1.reset(new string);
+    p1.reset(new string, del);
+    // unique
+    if (!p1.unique()) { /*if the string pointed by p1 has other references*/
+        p1.reset(new string(*p1));
+    }
+    *p1 += &quot;1&quot;; /*change the string refered by p1*/
+    // swap
+    swap(p1,p2);
+    p1.swap(p2);
+    // * -&gt;
+    int size = p1-&gt;size();
+    string s = *p1;
+    // get
+    string *ps = p1.get();
+    // use_count
+    int n = p1.use_count();
+
+    return 0;
+}
+</pre></div>
+
+
+<h3>unique_ptr</h3>
+<p>专用资源，资源只能被一个指针引用</p>
+<div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">memory</span><span class="o">&gt;</span>
+<span class="vi">#include</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> 
+<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
+
+<span class="kt">string</span> <span class="nx">deref</span><span class="p">(</span><span class="nx">unique_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">*</span><span class="nx">p</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="kt">string</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="nx">unique_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">clone</span><span class="p">(</span><span class="kt">string</span> <span class="nb">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">unique_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">(</span><span class="nb">new</span> <span class="kt">string</span><span class="p">(</span><span class="nb">s</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">auto</span> <span class="n">del</span> <span class="o">=</span> <span class="err">[</span><span class="cp">]</span> (string *ele) {delete ele;};
+    // construct
+    unique_ptr<span class="nt">&lt;string&gt;</span> p1;
+    unique_ptr<span class="nt">&lt;string&gt;</span> p2(new string);
+    unique_ptr<span class="nt">&lt;string</span><span class="err">,</span> <span class="na">decltype</span><span class="err">(</span><span class="na">del</span><span class="err">)</span><span class="nt">&gt;</span> pd1(new string, del); 
+    // reset：用内建指针初始化和reset的格式一致
+    p1.reset();
+    p1.reset(new string);
+    // swap
+    swap(p1,p2);
+    p1.swap(p2);
+    // * -&gt;
+    int size = p1-&gt;size();
+    string s = *p1;
+    // get
+    string *ps = p1.get();
+    // release
+    unique_ptr<span class="nt">&lt;string&gt;</span> p3(p1.release());
+    p2.reset(p1.release()); // p1 release之后指向nullptr
+    p1 = nullptr;
+
+    // 一般情况下，unique_ptr不能拷贝构造和赋值
+    // 只有一个例外：当unique_ptr马上要被析构的时候
+    unique_ptr<span class="nt">&lt;string&gt;</span> ptr1 = clone(string(&quot;123&quot;)); // 最常见用法：函数返回
+    string res = deref(unique_ptr<span class="nt">&lt;string&gt;</span>(new string(&quot;123&quot;))); // string res1 = deref(p1); //不行
+    auto ptr2((unique_ptr<span class="nt">&lt;string&gt;</span>())); // auto ptr2(p1); //不行
+    ptr1 = unique_ptr<span class="nt">&lt;string&gt;</span>(); // ptr1 = p1; // 不行
+
+    return 0;
+}
+</pre></div>
+
+
+<h3>weak_ptr</h3>
+<p>指向共享资源的指针，但是不增加引用计数</p>
+<div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">memory</span><span class="o">&gt;</span>
+<span class="vi">#include</span> <span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span>
+<span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">iostream</span><span class="o">&gt;</span>
+<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
+
+
+<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">shared_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">sp</span><span class="p">(</span><span class="nb">new</span> <span class="kt">string</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">));</span>
+    <span class="c1">// construct</span>
+    <span class="nx">weak_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">p1</span><span class="p">;</span>
+    <span class="nx">weak_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">p2</span><span class="p">(</span><span class="nx">sp</span><span class="p">);</span>
+    <span class="c1">// copy construct</span>
+    <span class="nx">weak_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">p3</span><span class="p">(</span><span class="nx">p1</span><span class="p">);</span>
+    <span class="nx">weak_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="n">p4</span> <span class="o">=</span> <span class="nx">p1</span><span class="p">;</span>
+    <span class="c1">// assign</span>
+    <span class="n">p3</span> <span class="o">=</span> <span class="nx">p1</span><span class="p">;</span>
+    <span class="n">p3</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">;</span>
+    <span class="c1">// reset</span>
+    <span class="nx">p3.reset</span><span class="p">();</span>
+    <span class="c1">// use_count</span>
+    <span class="nx">int</span> <span class="n">n</span> <span class="o">=</span> <span class="nx">p2.use_count</span><span class="p">();</span>
+    <span class="c1">// expired</span>
+    <span class="nx">bool</span> <span class="n">expire</span> <span class="o">=</span> <span class="nx">p2.expired</span><span class="p">();</span> <span class="c1">// use_count() == 0 时返回true</span>
+    <span class="c1">// lock</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">shared_ptr</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="n">sp1</span> <span class="o">=</span> <span class="nx">p2.lock</span><span class="p">())</span> <span class="p">{</span>
+        <span class="nx">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="nx">sp1</span> <span class="o">&lt;&lt;</span> <span class="nx">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+<time datetime="2015-04-24T21:59:40" pubdate>2015-04-24</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/c11.html">c++11</a>
+  </span>
+</p>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/to-do-list.html">To do list</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/ExpertC(2).html">C专家编程-笔记(2)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.com/category/life.html">life</a></li>
+        <li><a href="http://particle128.com/category/note.html">note</a></li>
+        <li><a href="http://particle128.com/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/c11.html">c++11</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://docs.getpelican.com" target="_blank">Pelicon</a></li>
+            <li><a href="http://www.google.com/webmasters" target="_blank">Google webmaster</a></li>
+            <li><a href="https://disqus.com" target="_blank">Disqus</a></li>
+            <li><a href="https://www.dnspod.cn/Domain" target="_blank">DNSPod</a></li>
+            <li><a href="https://www.godaddy.com" target="_blank">Godaddy</a></li>
+            <li><a href="http://www.goyouhuima.com" target="_blank">Godaddy优惠活动</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+          var disqus_identifier = '/posts/2015/04/smart-ptr.html';
+          var disqus_url = 'http://particle128.com/posts/2015/04/smart-ptr.html';
+          var disqus_title = 'C++11专题：智能指针';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>
