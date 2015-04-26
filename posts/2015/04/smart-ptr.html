@@ -60,7 +60,7 @@
   <article class="hentry" role="article">
 <header>
       <h1 class="entry-title">C++11专题：智能指针</h1>
-      <p class="meta"><time datetime="2015-04-24T22:01:38" pubdate>2015-04-24</time></p>
+      <p class="meta"><time datetime="2015-04-24T00:00:00" pubdate>2015-04-24</time></p>
 </header>
 
   <div class="entry-content"><h2>背景</h2>
@@ -120,6 +120,12 @@
     <span class="c1">// use_count</span>
     <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">p1</span><span class="p">.</span><span class="n">use_count</span><span class="p">();</span>
 
+    <span class="c1">// dynamic arrays</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">pp</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="p">[](</span><span class="n">string</span> <span class="o">*</span><span class="n">ps</span><span class="p">){</span><span class="k">delete</span> <span class="p">[]</span><span class="n">ps</span><span class="p">;});</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="o">*</span><span class="p">(</span><span class="n">pp</span><span class="p">.</span><span class="n">get</span><span class="p">()</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+
+
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
@@ -171,6 +177,11 @@
     <span class="k">auto</span> <span class="nf">ptr2</span><span class="p">((</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">()));</span> <span class="c1">// auto ptr2(p1); //不行</span>
     <span class="n">ptr1</span> <span class="o">=</span> <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">();</span> <span class="c1">// ptr1 = p1; // 不行</span>
 
+    <span class="c1">// dynamic arrays</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="p">[]</span><span class="o">&gt;</span> <span class="n">pp</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">[</span><span class="mi">10</span><span class="p">]);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">pp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
@@ -213,7 +224,7 @@
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2015-04-24T22:01:38" pubdate>2015-04-24</time>  <span class="categories">
+<time datetime="2015-04-24T00:00:00" pubdate>2015-04-24</time>  <span class="categories">
     <a class="category" href="http://particle128.com/tag/c11.html">c++11</a>
   </span>
 </p>    </footer>

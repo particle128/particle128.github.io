@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/particle128.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-24T22:01:38+08:00</updated><entry><title>C++11专题：智能指针</title><link href="http://particle128.com/posts/2015/04/smart-ptr.html" rel="alternate"></link><updated>2015-04-24T22:01:38+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-24:posts/2015/04/smart-ptr.html</id><summary type="html">&lt;h2&gt;背景&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/particle128.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-24T00:00:00+08:00</updated><entry><title>C++11专题：智能指针</title><link href="http://particle128.com/posts/2015/04/smart-ptr.html" rel="alternate"></link><updated>2015-04-24T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-24:posts/2015/04/smart-ptr.html</id><summary type="html">&lt;h2&gt;背景&lt;/h2&gt;
 &lt;p&gt;C++从C语言那里引入了指针类型，即所谓内建指针（built-in pointer）。传统的动态内存分配和释放(new &amp;amp; delete)也都是基于指针的，容易出如下问题：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;忘记delete，内存/资源泄露&lt;/li&gt;
@@ -56,6 +56,12 @@
     &lt;span class="c1"&gt;// use_count&lt;/span&gt;
     &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;use_count&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 
+    &lt;span class="c1"&gt;// dynamic arrays&lt;/span&gt;
+    &lt;span class="n"&gt;shared_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ps&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;&lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="n"&gt;ps&lt;/span&gt;&lt;span class="p"&gt;;});&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;to_string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -107,6 +113,11 @@
     &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="nf"&gt;ptr2&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;()));&lt;/span&gt; &lt;span class="c1"&gt;// auto ptr2(p1); //不行&lt;/span&gt;
     &lt;span class="n"&gt;ptr1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// ptr1 = p1; // 不行&lt;/span&gt;
 
+    &lt;span class="c1"&gt;// dynamic arrays&lt;/span&gt;
+    &lt;span class="n"&gt;unique_ptr&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;pp&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;to_string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -149,18 +160,23 @@
 &lt;li&gt;sublime text&lt;/li&gt;
 &lt;li&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;4-25(Saturday)&lt;/h3&gt;
+&lt;h3&gt;4-26(Sunday)&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;C++11 6个特性 (2.5h)&lt;/li&gt;
-&lt;li&gt;Head First JSP&amp;amp;Servlet 一章 (3h)&lt;/li&gt;
-&lt;li&gt;幸福公开课第一课，做笔记 (1.5h)&lt;/li&gt;
+&lt;li&gt;C++11 7 (2.5h)&lt;/li&gt;
+&lt;li&gt;Servlet 1 (2.5h)&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3&gt;4-25(Saturday)&lt;/h3&gt;
+&lt;p&gt;&lt;s&gt;
+&lt;em&gt; C++11 6个特性 (2.5h)
+&lt;/em&gt; Head First JSP&amp;amp;Servlet 一章 (3h)
+* 一节幸福公开课，做笔记 (1.5h)
+&lt;/s&gt;&lt;/p&gt;
 &lt;h3&gt;4-24(Friday)&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;C++11 10个特性 (3~4h)
 &lt;s&gt;&lt;/li&gt;
 &lt;li&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/li&gt;
-&lt;li&gt;幸福公开课第一课，做笔记 (1.5h)
+&lt;li&gt;一节幸福公开课，做笔记 (1.5h)
 &lt;/s&gt;&lt;/li&gt;
 &lt;/ul&gt;</summary><category term="life"></category></entry><entry><title>C++11专题：constexpr类型</title><link href="http://particle128.com/posts/2015/04/constexpr.html" rel="alternate"></link><updated>2015-04-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-15:posts/2015/04/constexpr.html</id><summary type="html">&lt;p&gt;代码是最好的文档，所以，本系列主要在代码中讲解。&lt;/p&gt;
 &lt;h2&gt;背景&lt;/h2&gt;
