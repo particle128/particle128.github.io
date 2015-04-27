@@ -166,26 +166,20 @@
 &lt;/ul&gt;
 &lt;h3&gt;4-26(Sunday)&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;C++11 7 (2.5h)
-&lt;s&gt;&lt;/li&gt;
-&lt;li&gt;Open Course (1.5h)
-&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;C++11 7 (2.5h)&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;Open Course (1.5h)&lt;/s&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;4-25(Saturday)&lt;/h3&gt;
-&lt;p&gt;&lt;s&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;C++11 6个特性 (2.5h)&lt;/li&gt;
-&lt;li&gt;Head First JSP&amp;amp;Servlet 一章 (3h)&lt;/li&gt;
-&lt;li&gt;一节幸福公开课，做笔记 (1.5h)
-&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;C++11 6个特性 (2.5h)&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;Head First JSP&amp;amp;Servlet 一章 (3h)&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;一节幸福公开课，做笔记 (1.5h)&lt;/s&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;4-24(Friday)&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;C++11 10个特性 (3~4h)
-&lt;s&gt;&lt;/li&gt;
-&lt;li&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/li&gt;
-&lt;li&gt;一节幸福公开课，做笔记 (1.5h)
-&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;C++11 10个特性 (3~4h)&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;Intellij Idea和Tomcat搭配，Head First JSP&amp;amp;Servlet一章 (3h)&lt;/s&gt;&lt;/li&gt;
+&lt;li&gt;&lt;s&gt;一节幸福公开课，做笔记 (1.5h)&lt;/s&gt;&lt;/li&gt;
 &lt;/ul&gt;</summary><category term="life"></category></entry><entry><title>C++11专题：constexpr类型</title><link href="http://particle128.com/posts/2015/04/constexpr.html" rel="alternate"></link><updated>2015-04-15T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-15:posts/2015/04/constexpr.html</id><summary type="html">&lt;p&gt;代码是最好的文档，所以，本系列主要在代码中讲解。&lt;/p&gt;
 &lt;h2&gt;背景&lt;/h2&gt;
 &lt;p&gt;C++中的const变量，包括编译时常量（compile-time constants）和运行时常量（runtime constants）。其中，编译时常量又叫常量表达式（constant expression），只有初始化式也是常量表达式的const变量才是常量表达式。例如：&lt;/p&gt;
