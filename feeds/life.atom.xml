@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/life.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-23T00:00:00+08:00</updated><entry><title>To do list</title><link href="http://particle128.com/posts/2015/04/to-do-list.html" rel="alternate"></link><updated>2015-04-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-23:posts/2015/04/to-do-list.html</id><summary type="html">&lt;h3&gt;next&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/life.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-23T00:00:00+08:00</updated><entry><title>To do list</title><link href="http://particle128.com/posts/2015/04/to-do-list.html" rel="alternate"></link><updated>2015-04-23T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-23:posts/2015/04/to-do-list.html</id><summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Take risks in the stretch zone, to gain higher level of happiness.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;next&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;sublime text&lt;/li&gt;
 &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;4-30(Thursday)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;C++11 10 (3h)&lt;/li&gt;
+&lt;li&gt;Servlet 2 (4h)&lt;/li&gt;
+&lt;li&gt;pull-up 30&lt;/li&gt;
+&lt;li&gt;OpenCourse (1.5h)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;4-29(Wednesday)&lt;/h3&gt;
 &lt;ul&gt;
