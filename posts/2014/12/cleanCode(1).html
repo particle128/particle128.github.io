@@ -93,7 +93,7 @@
 <li>函数不要有副作用（side effect），比如改变成员变量，改变全局变量，改变参数，等。如需改变，写在名字上，或拆成两个函数</li>
 <li>不要值-结果参数，容易让人迷惑，需要再去看函数原型——double-take(再看一眼)</li>
 <li>优先使用异常，而不是错误码，防止混合错误处理逻辑和正常逻辑，进而导致代码不清晰。把可能出现异常的语句放到一个函数中，单独定义一个，仅仅包含try-catch-finally的函数，调用前面的函数——错误处理和正常逻辑分开。</li>
-<li>用异常层次结构，而不是错误码（error class/enum，其他类需要import），解决<code>dependency magnet</code>，即增加新的异常/错误时，不需要重新编译和部署</li>
+<li>用异常层次结构，而不是错误码（error class/enum），解决<code>dependency magnet</code>，即增加新的异常/错误时，不需要重新编译和部署</li>
 <li>一开始先写出长的、复杂的、有重复的、随意命名的函数，之后再按照本章的方法拆分和提炼。</li>
 </ul>
 <p>总结：</p>
@@ -115,7 +115,7 @@
 
 <ul>
 <li>加注释的时机：<br />
-1.版权声明(<code>all rights reserved</code>)
+1.版权声明(<code>all rights reserved</code>)<br />
 2.提供信息<br />
 3.解释意图<br />
 4.澄清意思<br />
