@@ -642,7 +642,7 @@ Something unexpected might happen, and that's life.&lt;/p&gt;
 
 
 &lt;ul&gt;
-&lt;li&gt;尽可能不用选择器参数（selector argument）。因为这样的方法，往往需要加注释，用来说明每种选项对应代码部分的意义。应当拆成几个方法，方法名就自我解释了。&lt;/li&gt;
+&lt;li&gt;尽可能不用选择器参数（selector argument，即boolean类型的选项参数）。因为这样的方法，往往需要加注释，用来说明每种选项对应代码部分的意义。应当拆成几个方法，方法名就自我解释了。&lt;/li&gt;
 &lt;li&gt;连续的长表达式，匈牙利标记法（Hungarian notation，用变量类型的缩写作为变量名的开头），魔数，都会让作者的意图很难理解。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;m_otCalc&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
@@ -695,7 +695,8 @@ Something unexpected might happen, and that's life.&lt;/p&gt;
 
 
 &lt;ul&gt;
-&lt;li&gt;如果我们需要引入同一个模块的两个以上的类，用通配符，好处（1）简洁（2）不是强依赖，降低耦合&lt;/li&gt;
+&lt;li&gt;如果我们需要引入同一个模块的两个以上的类，用通配符，好处（1）简洁（2）不是强依赖，降低耦合。 &lt;br /&gt;
+（其实，现在借助于Intellij等现代IDE，不太需要这一规则了：import语句自动折叠、智能删除和重命名）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;全书总结&lt;/h3&gt;
 &lt;p&gt;全书从代码层面和设计层面讲解了“简洁之道”，提到了很多我之前不知道的原则：SRP（单一职责原则）、OCP（打开闭合原则）、DRY（不要重复自己）、PLS（最少惊讶原则）...让我大开眼界。&lt;/p&gt;
@@ -815,13 +816,12 @@ Something unexpected might happen, and that's life.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;解决隐藏的时间耦合（hidden temporal coupling），防止程序员不经意间因为调换执行顺序，导致不易发现的bug。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;findCommonPrefix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// change prefixIndex&lt;/span&gt;
-&lt;span class="nx"&gt;findCommonSuffix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// use the prefixIndex that was assigned by the previous function&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="nx"&gt;findCommonPrefix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// change prefixIndex&lt;/span&gt;
+&lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="nx"&gt;findCommonSuffix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;// use the prefixIndex that was assigned by the previous function&lt;/span&gt;
 
 &lt;span class="c1"&gt;// 改成&lt;/span&gt;
 
-&lt;span class="nx"&gt;findCommonPrefixAndSuffix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-
+&lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="nx"&gt;findCommonPrefix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 &lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="nx"&gt;findCommonPrefixAndSuffix&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// 去掉了findCommonSuffix()，把先后顺序硬编码进该函数中&lt;/span&gt;
     &lt;span class="nx"&gt;findCommonPrefix&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
     &lt;span class="c1"&gt;// the content of previous findCommonSuffix()&lt;/span&gt;

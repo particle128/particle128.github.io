@@ -111,13 +111,12 @@
 <ul>
 <li>解决隐藏的时间耦合（hidden temporal coupling），防止程序员不经意间因为调换执行顺序，导致不易发现的bug。</li>
 </ul>
-<div class="highlight"><pre><span class="nx">findCommonPrefix</span><span class="p">();</span> <span class="c1">// change prefixIndex</span>
-<span class="nx">findCommonSuffix</span><span class="p">();</span> <span class="c1">// use the prefixIndex that was assigned by the previous function</span>
+<div class="highlight"><pre><span class="k">void</span> <span class="nx">findCommonPrefix</span><span class="p">();</span> <span class="c1">// change prefixIndex</span>
+<span class="k">void</span> <span class="nx">findCommonSuffix</span><span class="p">();</span> <span class="c1">// use the prefixIndex that was assigned by the previous function</span>
 
 <span class="c1">// 改成</span>
 
-<span class="nx">findCommonPrefixAndSuffix</span><span class="p">();</span>
-
+<span class="k">void</span> <span class="nx">findCommonPrefix</span><span class="p">();</span>
 <span class="k">void</span> <span class="nx">findCommonPrefixAndSuffix</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// 去掉了findCommonSuffix()，把先后顺序硬编码进该函数中</span>
     <span class="nx">findCommonPrefix</span><span class="p">();</span>
     <span class="c1">// the content of previous findCommonSuffix()</span>
