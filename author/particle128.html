@@ -86,54 +86,6 @@
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2015/04/to-do-list.html">To do list</a>
-      </h1>
-      <p class="meta"><time datetime="2015-04-23T00:00:00" pubdate>2015-04-23</time></p>
-</header>
-
-  <div class="entry-content"><blockquote>
-<p>Take risks in the stretch zone, to gain higher level of happiness.</p>
-</blockquote>
-<h3>next</h3>
-<ul>
-<li><s>sublime text</s></li>
-<li>leanring-how-to-learn</li>
-<li>shortcutfoo.com</li>
-<li>oauth</li>
-</ul>
-<h3>5-26 (Tuesday)</h3>
-<ul>
-<li>ppt/paper modification over</li>
-</ul>
-<p>extra:</p>
-<ul>
-<li>pratice ppt twice</li>
-</ul>
-<h3>5-25 (Monday)</h3>
-<ul>
-<li><s>ppt done</s></li>
-<li><s>preparation</s></li>
-</ul>
-<h3>5-24 (Sunday)</h3>
-<p>average case:</p>
-<ul>
-<li>ppt almost done</li>
-</ul>
-<p>worst case:</p>
-<ul>
-<li>ppt half-done</li>
-</ul>
-<p>extra:</p>
-<ul>
-<li>review notes</li>
-<li>project storage ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2015/04/to-do-list.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
       </h1>
       <p class="meta"><time datetime="2015-04-15T00:00:00" pubdate>2015-04-15</time></p>
@@ -292,6 +244,28 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
     <a rel="full-article" href="http://particle128.com/posts/2014/12/2014-last-day.html">Read On &crarr;</a>
   </footer>
   		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-28T00:00:00" pubdate>2014-12-28</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter17 Smells and Heuristics</h3>
+<p>这一章，是前面描述的内容的总结，列举了一些“不简洁代码”的表现。简单记录一下。</p>
+<ul>
+<li>构建工程，应当只需要一条命令；测试工程，也应该只需要一条命令。</li>
+<li>注释掉的代码，没有被调用的代码，不用担心，直接删掉就行。版本控制器会帮你管理。</li>
+<li>最小惊讶原则：你实现的函数，应当具有其他程序员凭直觉认定的，你这个函数应当具有的功能。比如<code>StringToDay</code>函数，应当将字符串"Monday"转化成enum Day类型的对象，并且，支持缩写（"Mon"）、不区分大小写（"monday"）。如果没有实现某些感觉上显而易见的功能，使用该函数的程序员就需要去看代码或文档。</li>
+<li>最重要的原则之一：去重复。不单单是代码的重复，还包括<br />
+1.大段的if/else或switch/case结构，用多态和抽象工场代替<br />
+2.相似的算法，用模板方法模式或策略模式代替</li>
+<li>将概念进行分层抽象 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(6).html">Read On &crarr;</a>
+  </footer>
+  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1282.html">&larr; Older</a>
 
@@ -305,9 +279,6 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
           <a href="http://particle128.com/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
       </li>
       <li class="post">
-          <a href="http://particle128.com/posts/2015/04/to-do-list.html">To do list</a>
-      </li>
-      <li class="post">
           <a href="http://particle128.com/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
       </li>
       <li class="post">
@@ -315,6 +286,9 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
     </ul>
   </section>
