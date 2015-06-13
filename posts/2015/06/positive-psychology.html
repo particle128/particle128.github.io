@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>SSL总结</title>
+  <title>哈佛大学幸福公开课总结</title>
   <meta name="author" content="particle128">
 
 
@@ -59,49 +59,23 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">SSL总结</h1>
-      <p class="meta"><time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time></p>
+      <h1 class="entry-title">哈佛大学幸福公开课总结</h1>
+      <p class="meta"><time datetime="2015-06-17T00:00:00" pubdate>2015-06-17</time></p>
 </header>
 
-  <div class="entry-content"><p>TLS是SSL的升级版，最新版本分别是TLS1.2和SSL3.0，基本过程差不多，只是TLS额外增加了一些防止攻击的方法，还有替换了一些加密算法（比如MD5-SHA-1替换为SHA-256等）.  </p>
-<h2>特点</h2>
-<p>用RSA分发密钥；用双方商定的对称加密算法加密通信。  </p>
-<h2>使用SSL，服务器和客户端需要首先进行握手（handshake）</h2>
-<p>【1】客户端发送自己SSL通信相关的一些信息（版本号、密码设置等）给服务器<br />
-【2】服务器发送自己SSL通信相关的一些信息，还有自己的证书给客户端<br />
-【3】客户端用各个CA的公钥一一试验解密证书（被某个CA的私钥加密了），取出证书中的公钥和所有者信息，如果所有者信息正是欲通信的对端，用得到的公钥加密（1）客户端选取的pre-master secret（2）客户端的证书（3）客户端私钥加密后的一段会话信息（前面握手过程中产生的数据），发送给服务器。同时，客户端进行一系列操作由pre-master secret生成master secret，进而再产生session key，作为对称加密密钥。<br />
-【4】服务器用自己的私钥解密后，验证客户端证书，用证书中的公钥解密客户端私钥加密后的数据，从而验证了客户端的身份。由客户端发送过来的pre-master secret生成master secret，再生成session key。<br />
-》》之后的通信用session key进行对称加密。<br />
-【5】客户端用对称密钥加密数据，告诉服务器握手过程结束<br />
-【6】服务器用对称密钥加密数据，告诉客户端握手过程结束  </p>
-<p>下面这个图显示了双方如何进行通信，该例中客户端不需要证书。从图中可以看出，总共有5次客户端与服务器之间的通信。</p>
-<p><img alt="image" src="http://particle128.com/images/ssl.gif" />  </p>
-<h2>补充</h2>
-<p>[0] 对称加密中，公钥和私钥都可以进行加密，另外一个进行解密。<br />
-公钥是可以发给别人的，私钥是永远留在自己本地的。<br />
-公钥加密，最常见，提供加密功能。因为私钥只有对端才有，所以其他人截获了也无法打开，保密功能实现。<br />
-私钥加密，主要用在证书上，提供数字签名功能。如果自己能用公钥解密一个文件，说明该文件一定被私钥加密的，所以一定来自对端，第三方不能伪造，签名功能实现。  </p>
-<p>[1] 证书certificate，在cryptography中全名是public key certificate，又叫digital certificate。<br />
-公钥和公钥所有者一些信息被绑定在证书中，同时证书被CA（certificate authority证书颁发机构）进行了数字签名（也就是用私钥进行加密了）。PKI（public key infrastructure）公钥基础设施方案中，CA是可信的，所以CA的数字签名保证公钥所有者的真实身份。<br />
-证书的意义是：作为公钥的载体，让公钥可以在不加密的信道传输，而不用担心被伪造。  </p>
-<p>[2] 客户端可以不提供证书，这样仅仅保证对端是可信的服务器，而服务器无法确定客户端的身份。<br />
-无论哪种情况，都可以保证客户端和服务器之间的通信是加密的。  </p>
-<p>[3] 过程剖析<br />
-1、2两步通信不加密，用来传递服务器证书；<br />
-第3步通信公钥加密，用来传递pre-master secret（对称密钥的雏形）和客户端证书；<br />
-5、6两步以及之后的通信对称加密。<br />
-【1~3】构成3次握手，【5~6】构成2次挥手  </p>
-<p>[4] 身份认证<br />
-客户端的身份是【4】时确定的，解开证书确定公钥是可信的，解开签名确定对端有私钥，身份确定。<br />
-服务器的身份是【6】时确定的，客户端解开证书确定公钥是可信的，服务器用session key加密说明其已经获得了pre-master，必有私钥，身份确定。<br />
-其实，如果服务器在【2】时也传递自己签名的数据过去的话，自己的身份可以提前确定。但是提前确定对后面的步骤没有影响，所以省略传递这个数据，更加节省握手过程中的流量。  </p></div>
+  <div class="entry-content"><p>留个坑，下周三填</p>
+<ul>
+<li>自己一些病症的表现-&gt;病因（完美主义，高依赖性自尊），对应哪几课</li>
+<li>怎么克服</li>
+<li>对我帮助比较大的一些东西的总结和推荐</li>
+</ul></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2014-01-26T00:00:00" pubdate>2014-01-26</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/ssl.html">ssl</a>
+<time datetime="2015-06-17T00:00:00" pubdate>2015-06-17</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/life.html">life</a>
   </span>
 </p>    </footer>
   </article>
@@ -167,9 +141,9 @@
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2014/01/ssl.html';
-          var disqus_url = 'http://particle128.com/posts/2014/01/ssl.html';
-          var disqus_title = 'SSL总结';
+          var disqus_identifier = '/posts/2015/06/positive-psychology.html';
+          var disqus_url = 'http://particle128.com/posts/2015/06/positive-psychology.html';
+          var disqus_title = '哈佛大学幸福公开课总结';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

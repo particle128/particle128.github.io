@@ -60,6 +60,25 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Effective C++学习笔记(9)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-10-13T00:00:00" pubdate>2013-10-13</time></p>
+</header>
+
+  <div class="entry-content"><h2>Item 32: Make sure public inheritance models "is-a"</h2>
+<p>1.C++OOP最重要的规则是：公有继承模型，建模的是‘is-a’关系，基类有的特性派生类一定具有。<br />
+2.没有通用的设计，有些地方看似很合理的设计，在一些情形下却不能使用：<br />
+企鹅是鸟，但是鸟可以飞；正方形是矩形，但是矩形可以在不改变宽的情况下修改高<br />
+3.修改”企鹅-&gt;鸟“设计：<br />
+（1）class Bird; class Penguin :public Bird; class FlyingBird: public Bird; //在Bird里不定义fly()，在FlyingBird里定义<br />
+（2）class Bird; class Penguin :public Bird; //在Bird里定义fly ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">Effective C++学习笔记(7)</a>
       </h1>
       <p class="meta"><time datetime="2013-10-12T00:00:00" pubdate>2013-10-12</time></p>
@@ -280,30 +299,6 @@ chmod a+r aa.txt
     <a rel="full-article" href="http://particle128.com/posts/2013/09/linux_user.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
-      </h1>
-      <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
-</header>
-
-  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
-<h3>1、各种消息机制的使用场合</h3>
-<p>终端输出来显示一些信息：print()<br />
-报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
-logging.debug()用来诊断错误<br />
-发布一个警告：logging.warning()或warnings.warn()<br />
-报告一个错误：raise an exception<br />
-不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  </p>
-<p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
-<p>level由低到高依次是：<br />
-DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
-<h3>2 ...</h3></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/index9.html">&larr; Older</a>
 
@@ -315,6 +310,9 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2015/06/positive-psychology.html">哈佛大学幸福公开课总结</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
       </li>
       <li class="post">
@@ -325,9 +323,6 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
     </ul>
   </section>

@@ -60,6 +60,28 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-28T00:00:00" pubdate>2014-12-28</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter17 Smells and Heuristics</h3>
+<p>这一章，是前面描述的内容的总结，列举了一些“不简洁代码”的表现。简单记录一下。</p>
+<ul>
+<li>构建工程，应当只需要一条命令；测试工程，也应该只需要一条命令。</li>
+<li>注释掉的代码，没有被调用的代码，不用担心，直接删掉就行。版本控制器会帮你管理。</li>
+<li>最小惊讶原则：你实现的函数，应当具有其他程序员凭直觉认定的，你这个函数应当具有的功能。比如<code>StringToDay</code>函数，应当将字符串"Monday"转化成enum Day类型的对象，并且，支持缩写（"Mon"）、不区分大小写（"monday"）。如果没有实现某些感觉上显而易见的功能，使用该函数的程序员就需要去看代码或文档。</li>
+<li>最重要的原则之一：去重复。不单单是代码的重复，还包括<br />
+1.大段的if/else或switch/case结构，用多态和抽象工场代替<br />
+2.相似的算法，用模板方法模式或策略模式代替</li>
+<li>将概念进行分层抽象 ...</li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(6).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/12/gitignore.html">科普一下gitignore</a>
       </h1>
       <p class="meta"><time datetime="2014-12-19T00:00:00" pubdate>2014-12-19</time></p>
@@ -263,34 +285,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2014/10/unp.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/09/MySQL-bug.html">MySQL存储过程中变量名不能和列名相同</a>
-      </h1>
-      <p class="meta"><time datetime="2014-09-30T00:00:00" pubdate>2014-09-30</time></p>
-</header>
-
-  <div class="entry-content"><p>鞍山项目，追到北京来折磨我了。</p>
-<h3>问题</h3>
-<p>专家评审部分，需要提交意见和各个指标的分数，<em>有一个</em>专家评审的意见保存在了数据库，但是分数没有保存进去。  </p>
-<p>评审专家系统里，打分的表格是前端js动态绘制的。专家提交打分情况的时候，把分数保存在HiddenField里上传服务端。因为不知道客户浏览器的情况，推测:  </p>
-<ol>
-<li>表格没有绘制成功。js绘制表格的语句不被浏览器支持，所以客户端直接看不到打分表格。</li>
-<li>分数没有提交成功。因为HiddenField实质是type="hidden"的input标签元素，它可以随表单一起提交给服务器。或许那个专家用的浏览器不支持hidden input标签。</li>
-</ol>
-<p>解决办法就是在服务器端对HiddenField提交上来的数据，进行检测，如果发现为空或者不合法，就提示用户换浏览器尝试。最初代码中没有检测数据为空，是因为前端写了js代码，保证分数都填写完毕才会提交表单。但是如果遇到推测的第2种情况，就会检测不出来。</p>
-<h3>修改数据库</h3>
-<p>代码改完，并没有万事大吉。因为数据库丢数据了，需要手动订正。</p>
-<p>大约1、2年前用过存储过程，不过太久远了，又去<a href="http://dev.mysql.com">MySQL官网</a>上浏览了一下相关文档。写的过程中遇到了些问题，简单记录下。</p>
-<p>代码如下：  </p>
-<div class="highlight"><pre><span class="n">delimiter</span> <span class="c1">//</span>
-
-<span class="n">CREATE</span> <span class="n">PROCEDURE ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/09/MySQL-bug.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1283.html">&larr; Older</a>
 
@@ -302,6 +296,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2015/06/positive-psychology.html">哈佛大学幸福公开课总结</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
       </li>
       <li class="post">
@@ -312,9 +309,6 @@
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
     </ul>
   </section>
