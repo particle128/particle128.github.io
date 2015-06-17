@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-06-17T00:00:00+08:00</updated><entry><title>哈佛大学幸福公开课总结</title><link href="http://particle128.com/posts/2015/06/positive-psychology.html" rel="alternate"></link><updated>2015-06-17T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-06-17:posts/2015/06/positive-psychology.html</id><summary type="html">&lt;p&gt;留个坑，下周三填&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;自己一些病症的表现-&amp;gt;病因（完美主义，高依赖性自尊），对应哪几课&lt;/li&gt;
-&lt;li&gt;怎么克服&lt;/li&gt;
-&lt;li&gt;对我帮助比较大的一些东西的总结和推荐&lt;/li&gt;
-&lt;/ul&gt;</summary><category term="life"></category></entry><entry><title>C++11专题：智能指针</title><link href="http://particle128.com/posts/2015/04/smart-ptr.html" rel="alternate"></link><updated>2015-04-24T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-24:posts/2015/04/smart-ptr.html</id><summary type="html">&lt;h2&gt;背景&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2015-04-24T00:00:00+08:00</updated><entry><title>C++11专题：智能指针</title><link href="http://particle128.com/posts/2015/04/smart-ptr.html" rel="alternate"></link><updated>2015-04-24T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-24:posts/2015/04/smart-ptr.html</id><summary type="html">&lt;h2&gt;背景&lt;/h2&gt;
 &lt;p&gt;C++从C语言那里引入了指针类型，即所谓内建指针（built-in pointer）。传统的动态内存分配和释放(new &amp;amp; delete)也都是基于指针的，容易出如下问题：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;忘记delete，内存/资源泄露&lt;/li&gt;
