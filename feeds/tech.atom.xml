@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/tech.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2014-12-19T00:00:00+08:00</updated><entry><title>科普一下gitignore</title><link href="http://particle128.com/posts/2014/12/gitignore.html" rel="alternate"></link><updated>2014-12-19T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-19:posts/2014/12/gitignore.html</id><summary type="html">&lt;p&gt;给实验室的师弟们科普一下gitignore的用法&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/tech.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2016-01-07T00:00:00+08:00</updated><entry><title>Azure上基于windows server 2012搭建L2TP/IPSec VPN</title><link href="http://particle128.com/posts/2016/01/vpn.html" rel="alternate"></link><updated>2016-01-07T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2016-01-07:posts/2016/01/vpn.html</id><summary type="html">&lt;p&gt;终于把vpn搭好了，中间走了很多弯路，记录一下搭建的所有步骤。&lt;/p&gt;
+&lt;h3&gt;步骤&lt;/h3&gt;
+&lt;p&gt;用Onenote记的笔记，因为图比较多，就不转到markdown上来了，附上共享出来的onenote的地址。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;amp;id=documents&amp;amp;resid=229E9E4ADD8A415E!1300&amp;amp;app=OneNote&amp;amp;&amp;amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FAzure%7C005a316b-c447-4c43-9283-07f828daefa9%2F%29"&gt;Azure环境部署&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;amp;id=documents&amp;amp;resid=229E9E4ADD8A415E!1300&amp;amp;app=OneNote&amp;amp;&amp;amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FWindows%20Server%7Cc4c8f5f8-d532-4dfa-8298-6283567ae966%2F%29"&gt;Windows server配置&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;amp;id=documents&amp;amp;resid=229E9E4ADD8A415E!1300&amp;amp;app=OneNote&amp;amp;&amp;amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FWindows10%7Cdd29cfcc-b516-41a6-8782-76ca6e6c927a%2F%29"&gt;windows10客户端配置&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;amp;id=documents&amp;amp;resid=229E9E4ADD8A415E!1300&amp;amp;app=OneNote&amp;amp;&amp;amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FMac%7Cbfead260-239f-4e84-bb13-e47e48107fb2%2F%29"&gt;mac客户端配置&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;amp;id=documents&amp;amp;resid=229E9E4ADD8A415E!1300&amp;amp;app=OneNote&amp;amp;&amp;amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FAndroid%7C7ddd566c-e948-4ce6-b416-c0ef81a11c3f%2F%29"&gt;android客户端配置&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;注意&lt;/h3&gt;
+&lt;p&gt;不用专门设置防火墙，包括windows server和客户端的。&lt;/p&gt;
+&lt;h3&gt;参考&lt;/h3&gt;
+&lt;p&gt;英文版教程（我没有采用里面的方法生成证书，而是用的共享密码机制pre shared key）&lt;/p&gt;
+&lt;p&gt;http://blogs.msdn.com/b/lighthouse/archive/2013/07/30/how-deploy-sstp-and-l2tp-vpn-in-windows-azure-windows-server-2012.aspx&lt;/p&gt;
+&lt;p&gt;中文版教程（里面没有设置NAT，缺了这一步会导致连上VPN但没法正常访问页面，给分配了和server同样的ip）&lt;/p&gt;
+&lt;p&gt;http://www.68idc.cn/help/jiabenmake/qita/20141112128394.html
+http://www.68idc.cn/help/jiabenmake/qita/20141112128393.html
+http://www.68idc.cn/help/jiabenmake/qita/20141112128395.html
+http://www.68idc.cn/help/jiabenmake/qita/20141112128396.html&lt;/p&gt;</summary><category term="vpn"></category></entry><entry><title>科普一下gitignore</title><link href="http://particle128.com/posts/2014/12/gitignore.html" rel="alternate"></link><updated>2014-12-19T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-19:posts/2014/12/gitignore.html</id><summary type="html">&lt;p&gt;给实验室的师弟们科普一下gitignore的用法&lt;/p&gt;
 &lt;h3&gt;gitignore是干嘛的&lt;/h3&gt;
 &lt;p&gt;当我们不想让git上传/管理特定于本地开发环境的文件时，我们可以添加这些东西到git工程根目录下的.gitignore文件中。当新增的文件匹配上了.gitignore中的一个模式，git会忽略该文件，即&lt;code&gt;git status&lt;/code&gt;不会提示他们处于untracked状态，之后的&lt;code&gt;git add .&lt;/code&gt;也不会添加该文件，除非你强制添加，即&lt;code&gt;git add -f .&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;gitignore使用的通配符，和shell里的通配符几乎是一样的。&lt;br /&gt;
@@ -2636,7 +2655,7 @@ passwd
 第二天经过10010报修，恢复短信功能。但是要一个一个的找哪些发送失败了，然后就只给那些人发送短信又不现实，因为有260个人失败了。。。给所有人都发一遍又觉得有点扰民。。。相关软件在安卓系统又找不到。。。干脆自己搞一个吧。  &lt;/p&gt;
 &lt;h3&gt;实现&lt;/h3&gt;
 &lt;p&gt;代码如下：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;ResendSms&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt;  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;ResendSms&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt;
 &lt;span class="o"&gt;{&lt;/span&gt;  
     &lt;span class="c1"&gt;//发件箱  &lt;/span&gt;
     &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;SMS_URI_SEND&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;content://sms/sent&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;  

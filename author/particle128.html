@@ -60,6 +60,36 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
+      </h1>
+      <p class="meta"><time datetime="2016-01-07T00:00:00" pubdate>2016-01-07</time></p>
+</header>
+
+  <div class="entry-content"><p>终于把vpn搭好了，中间走了很多弯路，记录一下搭建的所有步骤。</p>
+<h3>步骤</h3>
+<p>用Onenote记的笔记，因为图比较多，就不转到markdown上来了，附上共享出来的onenote的地址。</p>
+<ol>
+<li><a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;id=documents&amp;resid=229E9E4ADD8A415E!1300&amp;app=OneNote&amp;&amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FAzure%7C005a316b-c447-4c43-9283-07f828daefa9%2F%29">Azure环境部署</a></li>
+<li><a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;id=documents&amp;resid=229E9E4ADD8A415E!1300&amp;app=OneNote&amp;&amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FWindows%20Server%7Cc4c8f5f8-d532-4dfa-8298-6283567ae966%2F%29">Windows server配置</a></li>
+<li><a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;id=documents&amp;resid=229E9E4ADD8A415E!1300&amp;app=OneNote&amp;&amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FWindows10%7Cdd29cfcc-b516-41a6-8782-76ca6e6c927a%2F%29">windows10客户端配置</a></li>
+<li><a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;id=documents&amp;resid=229E9E4ADD8A415E!1300&amp;app=OneNote&amp;&amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FMac%7Cbfead260-239f-4e84-bb13-e47e48107fb2%2F%29">mac客户端配置</a></li>
+<li><a href="https://onedrive.live.com/edit.aspx?cid=229e9e4add8a415e&amp;id=documents&amp;resid=229E9E4ADD8A415E!1300&amp;app=OneNote&amp;&amp;wd=target%28%2F%2FSetup%20VPN%20on%20Azure.one%7C%2FAndroid%7C7ddd566c-e948-4ce6-b416-c0ef81a11c3f%2F%29">android客户端配置</a></li>
+</ol>
+<h3>注意</h3>
+<p>不用专门设置防火墙，包括windows server和客户端的。</p>
+<h3>参考</h3>
+<p>英文版教程（我没有采用里面的方法生成证书，而是用的共享密码机制pre shared key）</p>
+<p>http://blogs.msdn.com/b/lighthouse/archive/2013/07/30/how-deploy-sstp-and-l2tp-vpn-in-windows-azure-windows-server-2012.aspx</p>
+<p>中文版教程（里面没有设置NAT，缺了这一步会导致连上VPN但没法正常访问页面，给分配了和server同样的ip）</p>
+<p>http://www.68idc.cn/help/jiabenmake/qita/20141112128394.html
+http ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2016/01/vpn.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
       </h1>
       <p class="meta"><time datetime="2015-04-24T00:00:00" pubdate>2015-04-24</time></p>
@@ -244,28 +274,6 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
     <a rel="full-article" href="http://particle128.com/posts/2014/12/2014-last-day.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
-      </h1>
-      <p class="meta"><time datetime="2014-12-28T00:00:00" pubdate>2014-12-28</time></p>
-</header>
-
-  <div class="entry-content"><h3>Chapter17 Smells and Heuristics</h3>
-<p>这一章，是前面描述的内容的总结，列举了一些“不简洁代码”的表现。简单记录一下。</p>
-<ul>
-<li>构建工程，应当只需要一条命令；测试工程，也应该只需要一条命令。</li>
-<li>注释掉的代码，没有被调用的代码，不用担心，直接删掉就行。版本控制器会帮你管理。</li>
-<li>最小惊讶原则：你实现的函数，应当具有其他程序员凭直觉认定的，你这个函数应当具有的功能。比如<code>StringToDay</code>函数，应当将字符串"Monday"转化成enum Day类型的对象，并且，支持缩写（"Mon"）、不区分大小写（"monday"）。如果没有实现某些感觉上显而易见的功能，使用该函数的程序员就需要去看代码或文档。</li>
-<li>最重要的原则之一：去重复。不单单是代码的重复，还包括<br />
-1.大段的if/else或switch/case结构，用多态和抽象工场代替<br />
-2.相似的算法，用模板方法模式或策略模式代替</li>
-<li>将概念进行分层抽象 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/12/cleanCode(6).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1282.html">&larr; Older</a>
 
@@ -275,6 +283,9 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.com/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
+      </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
       </li>
@@ -286,9 +297,6 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
       </li>
     </ul>
   </section>
@@ -305,7 +313,7 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/c11.html">c++11</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/vpn.html">vpn</a>,    <a href="http://particle128.com/tag/c11.html">c++11</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
 
 
     <section>
