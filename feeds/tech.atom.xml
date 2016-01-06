@@ -19,10 +19,10 @@
 &lt;ul&gt;
 &lt;li&gt;中文版教程（里面没有设置NAT，缺了这一步会导致连上VPN但没法正常访问页面，给分配了和server同样的ip）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128394.html"&gt;Windows server 2012 搭建VPN图文教程（一）&lt;/a&gt;
-&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128393.html"&gt;Windows server 2012 搭建VPN图文教程（二）&lt;/a&gt;
-&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128395.html"&gt;Windows server 2012 搭建VPN图文教程（三）&lt;/a&gt;
-&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128396.html"&gt;Windows server 2012 搭建VPN图文教程（四）&lt;/a&gt;&lt;/p&gt;</summary><category term="vpn"></category></entry><entry><title>科普一下gitignore</title><link href="http://particle128.com/posts/2014/12/gitignore.html" rel="alternate"></link><updated>2014-12-19T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-19:posts/2014/12/gitignore.html</id><summary type="html">&lt;p&gt;给实验室的师弟们科普一下gitignore的用法&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128394.html"&gt;Windows server 2012 搭建VPN图文教程（一）&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128393.html"&gt;Windows server 2012 搭建VPN图文教程（二）&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128395.html"&gt;Windows server 2012 搭建VPN图文教程（三）&lt;/a&gt;&lt;br /&gt;
+&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128396.html"&gt;Windows server 2012 搭建VPN图文教程（四）&lt;/a&gt;  &lt;/p&gt;</summary><category term="vpn"></category></entry><entry><title>科普一下gitignore</title><link href="http://particle128.com/posts/2014/12/gitignore.html" rel="alternate"></link><updated>2014-12-19T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2014-12-19:posts/2014/12/gitignore.html</id><summary type="html">&lt;p&gt;给实验室的师弟们科普一下gitignore的用法&lt;/p&gt;
 &lt;h3&gt;gitignore是干嘛的&lt;/h3&gt;
 &lt;p&gt;当我们不想让git上传/管理特定于本地开发环境的文件时，我们可以添加这些东西到git工程根目录下的.gitignore文件中。当新增的文件匹配上了.gitignore中的一个模式，git会忽略该文件，即&lt;code&gt;git status&lt;/code&gt;不会提示他们处于untracked状态，之后的&lt;code&gt;git add .&lt;/code&gt;也不会添加该文件，除非你强制添加，即&lt;code&gt;git add -f .&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;gitignore使用的通配符，和shell里的通配符几乎是一样的。&lt;br /&gt;
