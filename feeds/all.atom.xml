@@ -12,13 +12,17 @@
 &lt;h3&gt;注意&lt;/h3&gt;
 &lt;p&gt;不用专门设置防火墙，包括windows server和客户端的。&lt;/p&gt;
 &lt;h3&gt;参考&lt;/h3&gt;
-&lt;p&gt;英文版教程（我没有采用里面的方法生成证书，而是用的共享密码机制pre shared key）&lt;/p&gt;
-&lt;p&gt;http://blogs.msdn.com/b/lighthouse/archive/2013/07/30/how-deploy-sstp-and-l2tp-vpn-in-windows-azure-windows-server-2012.aspx&lt;/p&gt;
-&lt;p&gt;中文版教程（里面没有设置NAT，缺了这一步会导致连上VPN但没法正常访问页面，给分配了和server同样的ip）&lt;/p&gt;
-&lt;p&gt;http://www.68idc.cn/help/jiabenmake/qita/20141112128394.html
-http://www.68idc.cn/help/jiabenmake/qita/20141112128393.html
-http://www.68idc.cn/help/jiabenmake/qita/20141112128395.html
-http://www.68idc.cn/help/jiabenmake/qita/20141112128396.html&lt;/p&gt;</summary><category term="vpn"></category></entry><entry><title>C++11专题：智能指针</title><link href="http://particle128.com/posts/2015/04/smart-ptr.html" rel="alternate"></link><updated>2015-04-24T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-24:posts/2015/04/smart-ptr.html</id><summary type="html">&lt;h2&gt;背景&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;英文版教程（我没有采用里面的方法生成证书，而是用的共享密码机制pre shared key）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="http://blogs.msdn.com/b/lighthouse/archive/2013/07/30/how-deploy-sstp-and-l2tp-vpn-in-windows-azure-windows-server-2012.aspx"&gt;How to Deploy SSTP and L2TP VPN in Windows Azure (Windows Server 2012)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;中文版教程（里面没有设置NAT，缺了这一步会导致连上VPN但没法正常访问页面，给分配了和server同样的ip）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128394.html"&gt;Windows server 2012 搭建VPN图文教程（一）&lt;/a&gt;
+&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128393.html"&gt;Windows server 2012 搭建VPN图文教程（二）&lt;/a&gt;
+&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128395.html"&gt;Windows server 2012 搭建VPN图文教程（三）&lt;/a&gt;
+&lt;a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128396.html"&gt;Windows server 2012 搭建VPN图文教程（四）&lt;/a&gt;&lt;/p&gt;</summary><category term="vpn"></category></entry><entry><title>C++11专题：智能指针</title><link href="http://particle128.com/posts/2015/04/smart-ptr.html" rel="alternate"></link><updated>2015-04-24T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2015-04-24:posts/2015/04/smart-ptr.html</id><summary type="html">&lt;h2&gt;背景&lt;/h2&gt;
 &lt;p&gt;C++从C语言那里引入了指针类型，即所谓内建指针（built-in pointer）。传统的动态内存分配和释放(new &amp;amp; delete)也都是基于指针的，容易出如下问题：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;忘记delete，内存/资源泄露&lt;/li&gt;
