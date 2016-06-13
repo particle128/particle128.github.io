@@ -60,6 +60,20 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2014/12/2014-last-day.html">写在2014年的最后一天</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-31T00:00:00" pubdate>2014-12-31</time></p>
+</header>
+
+  <div class="entry-content"><p>今天是12.31，2014年的最后一天。崔师兄喊着实验室的人，一起去知语山吃饭。聚餐期间，我们继续保持着三句不离本行的特色，“黑”师兄、“黑”师弟，气氛非常好。</p>
+<p>中间，我带领大家玩了一下“谁是卧底”，从分辨我们实验室的两大师兄，分辨Java和C++，到我们使用“谁是卧底”的安卓app，大家玩的不亦乐乎。有一次我是卧底，手里拿着“白富美”，大家手里的是“高富帅”，我在一轮还没说完的时候，就猜到了这个局面，之后，说了很多两者都一样的特质，比如“优越的生活条件”，“钱一般是从父母继承过来的”，等等…但是，xiaodong xu这货，没有啥证据就愣猜是我，还号召大家一起投我，明明其他人的说法中都有破绽，他还是坚持自己的想法。最终，我在硬撑了3轮（每一轮都竭尽全力地给自己辩护，找其他人的漏洞啊，容易吗我）之后，被他和他蛊惑了的群众投死了。事后才知道，他的确猜错了我的身份 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2014/12/2014-last-day.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2014/12/cleanCode(6).html">Clean Code (6)</a>
       </h1>
       <p class="meta"><time datetime="2014-12-28T00:00:00" pubdate>2014-12-28</time></p>
@@ -261,30 +275,6 @@
     <a rel="full-article" href="http://particle128.com/posts/2014/10/msOnlineTest.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2014/10/unp.html">UNP部分知识小结</a>
-      </h1>
-      <p class="meta"><time datetime="2014-10-14T00:00:00" pubdate>2014-10-14</time></p>
-</header>
-
-  <div class="entry-content"><p>找工作期间，复习了一遍Unix Network Programming，对部分知识进行一下总结。</p>
-<h3>基础</h3>
-<p>编写基于网络通信的程序，就是网络编程。通信的发起方是客户，响应客户的是服务器，比如浏览器是客户（发出GET，POST等请求给服务器），web server是服务器。  </p>
-<p>套接字对是一个四元组，（local ip, local port, remote ip, remote port），通过这一四元组，唯一确定了网络通信的两端（两个进程），ip地址确定主机，端口确定进程。  </p>
-<p>TCP比UDP复杂，体现在TCP两端维护状态机（11个状态），UDP则不需要。</p>
-<p>UDP中，客户用socket创建套接字之后，就可以用sendto和recvfrom和服务器通信了。</p>
-<p>TCP客户存在一种套接字：主动套接字。基本调用序列：</p>
-<ul>
-<li>socket 创建套接字，默认是主动套接字</li>
-<li>connect  指定套接字对的远端ip和端口，分配套接字发送和接收缓冲区。向服务器套接字地址发起连接，进入SYN_SENT，返回时进入ESTABLISED。</li>
-</ul>
-<p>TCP服务器存在两种套接字：被动套接字 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2014/10/unp.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.com/author/particle1283.html">&larr; Older</a>
 
@@ -296,6 +286,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2016/06/new-start.html">新的开始</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
       </li>
       <li class="post">
@@ -306,9 +299,6 @@
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2015/04/ExpertC(2).html">C专家编程-笔记(2)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
       </li>
     </ul>
   </section>
@@ -325,7 +315,7 @@
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/vpn.html">vpn</a>,    <a href="http://particle128.com/tag/c11.html">c++11</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/start.html">start</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/vpn.html">vpn</a>,    <a href="http://particle128.com/tag/c11.html">c++11</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
 
 
     <section>

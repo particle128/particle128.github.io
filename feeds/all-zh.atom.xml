@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2016-01-07T00:00:00+08:00</updated><entry><title>Azure上基于windows server 2012搭建L2TP/IPSec VPN</title><link href="http://particle128.com/posts/2016/01/vpn.html" rel="alternate"></link><updated>2016-01-07T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2016-01-07:posts/2016/01/vpn.html</id><summary type="html">&lt;p&gt;终于把vpn搭好了，中间走了很多弯路，记录一下搭建的所有步骤。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>particle128's Blog</title><link href="http://particle128.com/" rel="alternate"></link><link href="http://particle128.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://particle128.com/</id><updated>2016-06-13T00:00:00+08:00</updated><entry><title>新的开始</title><link href="http://particle128.com/posts/2016/06/new-start.html" rel="alternate"></link><updated>2016-06-13T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2016-06-13:posts/2016/06/new-start.html</id><summary type="html">&lt;blockquote&gt;
+&lt;p&gt;It is not true that people stop pursuing dreams because they grow old, they grow old because they stop pursuing dreams.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I don't want my life to be a mess, but it's somewhat the real situation. I must fight. Come on!!!&lt;/p&gt;
+&lt;p&gt;After 1 year's silence, I will go on to update this blog. Professional programmer will not only learn work related knowledge. Nearly 20 hours of their week are dedicated to out-of-work study or practice. So, from now on, this blog will present how my 20 extra hours per week are used.&lt;/p&gt;
+&lt;p&gt;I must update the plan and practice on Sunday evening.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Week 1 (June 13 ~ June 19)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Plan (20h)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;5h "This is search engine"&lt;/li&gt;
+&lt;li&gt;3h 2 blogs about this book&lt;/li&gt;
+&lt;li&gt;12h Learn Spark by reading online documentation and practice locally&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Practice (must be 20h)&lt;/p&gt;
+&lt;p&gt;*&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Week 2&lt;/strong&gt;&lt;/p&gt;</summary><category term="start"></category></entry><entry><title>Azure上基于windows server 2012搭建L2TP/IPSec VPN</title><link href="http://particle128.com/posts/2016/01/vpn.html" rel="alternate"></link><updated>2016-01-07T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.com,2016-01-07:posts/2016/01/vpn.html</id><summary type="html">&lt;p&gt;终于把vpn搭好了，中间走了很多弯路，记录一下搭建的所有步骤。&lt;/p&gt;
 &lt;h3&gt;步骤&lt;/h3&gt;
 &lt;p&gt;用Onenote记的笔记，因为图比较多，就不转到markdown上来了，附上共享出来的onenote的地址。&lt;/p&gt;
 &lt;ol&gt;
