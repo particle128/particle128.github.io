@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/index.html</loc>
-<lastmod>2016-06-25T21:44:30-00:00</lastmod>
+<lastmod>2016-06-26T19:16:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/archives.html</loc>
-<lastmod>2016-06-25T21:44:30-00:00</lastmod>
+<lastmod>2016-06-26T19:16:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/tags.html</loc>
-<lastmod>2016-06-25T21:44:30-00:00</lastmod>
+<lastmod>2016-06-26T19:16:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.com/categories.html</loc>
-<lastmod>2016-06-25T21:44:30-00:00</lastmod>
+<lastmod>2016-06-26T19:16:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -43,6 +43,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <lastmod>2014-12-17T14:53:45-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
+</url>
+
+<url>
+<loc>http://particle128.com/posts/2016/06/index-compression.html</loc>
+<lastmod>2016-06-26T00:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -635,7 +642,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/category/note.html</loc>
-<lastmod>2015-04-24T00:00:00-00:00</lastmod>
+<lastmod>2016-06-26T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -697,6 +704,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://particle128.com/tag/reentrant.html</loc>
+<lastmod>2014-05-05T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://particle128.com/tag/linux.html</loc>
 <lastmod>2014-10-14T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -753,8 +767,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://particle128.com/tag/reentrant.html</loc>
-<lastmod>2014-05-05T00:00:00-00:00</lastmod>
+<loc>http://particle128.com/tag/searchengine.html</loc>
+<lastmod>2016-06-26T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1006,7 +1020,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.com/author/particle128.html</loc>
-<lastmod>2016-06-13T00:00:00-00:00</lastmod>
+<lastmod>2016-06-26T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
