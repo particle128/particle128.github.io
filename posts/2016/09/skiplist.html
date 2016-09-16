@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>EffectiveC++笔记汇总</title>
+  <title>跳表Skiplist</title>
   <meta name="author" content="particle128">
 
 
@@ -59,30 +59,63 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">EffectiveC++笔记汇总</h1>
-      <p class="meta"><time datetime="2013-10-31T00:00:00" pubdate>2013-10-31</time></p>
+      <h1 class="entry-title">跳表Skiplist</h1>
+      <p class="meta"><time datetime="2016-09-16T00:00:00" pubdate>2016-09-16</time></p>
 </header>
 
-  <div class="entry-content"><p>笔记汇总：  </p>
-<p><a href="http://particle128.com/posts/2013/10/EffectiveCpp(1).html">EffectiveC++(1)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(2).html">EffectiveC++(2)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(3).html">EffectiveC++(3)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(4).html">EffectiveC++(4)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(5).html">EffectiveC++(5)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(6).html">EffectiveC++(6)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(7).html">EffectiveC++(7)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(8).html">EffectiveC++(8)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(9).html">EffectiveC++(9)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(10).html">EffectiveC++(10)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(11).html">EffectiveC++(11)</a><br />
-<a href="http://particle128.com/posts/2013/10/EffectiveCpp(12).html">EffectiveC++(12)</a>  </p></div>
+  <div class="entry-content"><h3>简介</h3>
+<p>Skiplist是一种可以替代平衡二叉树的数据结构，比一般平衡二叉树性能好(和优化的平衡二叉树性能相当)，广泛用于各种key-value store或开源搜索引擎中（leveldb, lucence...），特点:</p>
+<ul>
+<li>插入、删除、查找的平均时间复杂度是O(logn)，跟平衡二叉树一样</li>
+<li>插入、删除、查找的最坏时间复杂度是O(n)，概率很低</li>
+<li>平均空间复杂度是O(n)，跟平衡二叉树一样</li>
+<li>最坏空间复杂度是O(nlogn)，概率很低</li>
+<li>比平衡二叉树(B树, 红黑树)实现简单</li>
+</ul>
+<h3>原理和实现</h3>
+<p>为什么skiplist的高度/层数很大概率是logn，查找复杂度是O(logn)
+<a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/readings/l12_skiplists.pdf">Lecture Notes on Skip Lists</a></p>
+<p>插入、删除、查找实现<br />
+<a href="http://www.cnblogs.com/xuqiang/archive/2011/05/22/2053516.html">跳表SkipList</a></p>
+<p>实例（4分支的随机函数，即新插入的节点有1/4的概率有2层，1/16的概率有3层...）<br />
+<a href="http://blog.csdn.net/tankles/article/details/7663540">levelDB源码skiplist</a></p>
+<p>维基百科的描述
+<a href="https://en.wikipedia.org/wiki/Skip_list">Skip list</a></p>
+<h3>平均情况和最坏情况</h3>
+<p>插入、删除、查找复杂度O(logn)</p>
+<div class="highlight"><pre><span class="mi">0</span>                                    <span class="o">-&gt;</span> <span class="n">NIL</span>
+<span class="mi">0</span>                <span class="o">-&gt;</span> <span class="mi">4</span>                <span class="o">-&gt;</span> <span class="n">NIL</span>
+<span class="mi">0</span>      <span class="o">-&gt;</span> <span class="mi">2</span>      <span class="o">-&gt;</span> <span class="mi">4</span>      <span class="o">-&gt;</span> <span class="mi">6</span>      <span class="o">-&gt;</span> <span class="n">NIL</span>
+<span class="mi">0</span> <span class="o">-&gt;</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">-&gt;</span> <span class="mi">3</span> <span class="o">-&gt;</span> <span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">5</span> <span class="o">-&gt;</span> <span class="mi">6</span> <span class="o">-&gt;</span> <span class="mi">7</span> <span class="o">-&gt;</span> <span class="n">NIL</span>
+</pre></div>
+
+
+<p>上图属于理想情况，类似于满二叉树，高度是O(logn)，每一层只比较一个元素，所以查找复杂度也是O(logn)</p>
+<p>插入、删除、查找复杂度O(n)</p>
+<div class="highlight"><pre><span class="mi">0</span> <span class="o">-&gt;</span> <span class="mi">1</span>                               <span class="o">-&gt;</span> <span class="n">NIL</span>
+<span class="mi">0</span> <span class="o">-&gt;</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">-&gt;</span> <span class="mi">3</span>                     <span class="o">-&gt;</span> <span class="n">NIL</span>
+<span class="mi">0</span> <span class="o">-&gt;</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">-&gt;</span> <span class="mi">3</span> <span class="o">-&gt;</span> <span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">5</span>           <span class="o">-&gt;</span> <span class="n">NIL</span>
+<span class="mi">0</span> <span class="o">-&gt;</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">-&gt;</span> <span class="mi">3</span> <span class="o">-&gt;</span> <span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">5</span> <span class="o">-&gt;</span> <span class="mi">6</span> <span class="o">-&gt;</span> <span class="mi">7</span> <span class="o">-&gt;</span> <span class="n">NIL</span>
+</pre></div>
+
+
+<p>上图等同于一个冗余的链表，高层的链表并没有给线性查找带来好处，复杂度是O(n)</p>
+<p>空间复杂度O(nlogn)</p>
+<div class="highlight"><pre><span class="mi">0</span>                <span class="o">-&gt;</span> <span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">5</span> <span class="o">-&gt;</span> <span class="mi">6</span> <span class="o">-&gt;</span> <span class="mi">7</span> <span class="o">-&gt;</span> <span class="mi">8</span> <span class="o">-&gt;</span> <span class="mi">9</span> <span class="p">...</span> <span class="o">-&gt;</span> <span class="n">NIL</span>
+<span class="mi">0</span>           <span class="o">-&gt;</span> <span class="mi">3</span> <span class="o">-&gt;</span> <span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">5</span> <span class="o">-&gt;</span> <span class="mi">6</span> <span class="o">-&gt;</span> <span class="mi">7</span> <span class="o">-&gt;</span> <span class="mi">8</span> <span class="o">-&gt;</span> <span class="mi">9</span> <span class="p">...</span> <span class="o">-&gt;</span> <span class="n">NIL</span>
+<span class="mi">0</span>      <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">-&gt;</span> <span class="mi">3</span> <span class="o">-&gt;</span> <span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">5</span> <span class="o">-&gt;</span> <span class="mi">6</span> <span class="o">-&gt;</span> <span class="mi">7</span> <span class="o">-&gt;</span> <span class="mi">8</span> <span class="o">-&gt;</span> <span class="mi">9</span> <span class="p">...</span> <span class="o">-&gt;</span> <span class="n">NIL</span>
+<span class="mi">0</span> <span class="o">-&gt;</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">-&gt;</span> <span class="mi">3</span> <span class="o">-&gt;</span> <span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">5</span> <span class="o">-&gt;</span> <span class="mi">6</span> <span class="o">-&gt;</span> <span class="mi">7</span> <span class="o">-&gt;</span> <span class="mi">8</span> <span class="o">-&gt;</span> <span class="mi">9</span> <span class="p">...</span> <span class="o">-&gt;</span> <span class="n">NIL</span>
+</pre></div>
+
+
+<p>点背的时候，可能随机函数随出来的skiplist是这样的...绝大部分元素的层高是MaxLevelNumber，即logn，即空间复杂度是O(nlogn)</p></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
     Posted by <span class="fn">particle128</span>
   </span>
-<time datetime="2013-10-31T00:00:00" pubdate>2013-10-31</time>  <span class="categories">
-    <a class="category" href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>
+<time datetime="2016-09-16T00:00:00" pubdate>2016-09-16</time>  <span class="categories">
+    <a class="category" href="http://particle128.com/tag/skiplist.html">skiplist</a>
   </span>
 </p>    </footer>
   </article>
@@ -148,9 +181,9 @@
 </p></footer>
 	<script type="text/javascript">
 	  var disqus_shortname = 'particle128';
-          var disqus_identifier = '/posts/2013/10/EffectiveCpp.html';
-          var disqus_url = 'http://particle128.com/posts/2013/10/EffectiveCpp.html';
-          var disqus_title = 'EffectiveC++笔记汇总';
+          var disqus_identifier = '/posts/2016/09/skiplist.html';
+          var disqus_url = 'http://particle128.com/posts/2016/09/skiplist.html';
+          var disqus_title = '跳表Skiplist';
 	  (function() {
 	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';

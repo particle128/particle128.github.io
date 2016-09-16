@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>particle128's Blog - logging</title>
+  <title>particle128's Blog - skiplist</title>
   <meta name="author" content="particle128">
 
 
@@ -60,25 +60,29 @@
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
+        <a href="http://particle128.com/posts/2016/09/skiplist.html">跳表Skiplist</a>
       </h1>
-      <p class="meta"><time datetime="2013-09-08T00:00:00" pubdate>2013-09-08</time></p>
+      <p class="meta"><time datetime="2016-09-16T00:00:00" pubdate>2016-09-16</time></p>
 </header>
 
-  <div class="entry-content"><h4>Logging is a means of tracking events that happen when some software runs.</h4>
-<h3>1、各种消息机制的使用场合</h3>
-<p>终端输出来显示一些信息：print()<br />
-报告软件常规运行中出现的一些事件，比如状态变化或错误调查：logging.info()，<br />
-logging.debug()用来诊断错误<br />
-发布一个警告：logging.warning()或warnings.warn()<br />
-报告一个错误：raise an exception<br />
-不抛出异常的出错：logging.error(), logging.exception(), logging.critical()  </p>
-<p>logging有一个属性叫level或severity，只有不低于它的事件才会被捕捉。</p>
-<p>level由低到高依次是：<br />
-DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
-<h3>2 ...</h3></div>
+  <div class="entry-content"><h3>简介</h3>
+<p>Skiplist是一种可以替代平衡二叉树的数据结构，比一般平衡二叉树性能好(和优化的平衡二叉树性能相当)，广泛用于各种key-value store或开源搜索引擎中（leveldb, lucence...），特点:</p>
+<ul>
+<li>插入、删除、查找的平均时间复杂度是O(logn)，跟平衡二叉树一样</li>
+<li>插入、删除、查找的最坏时间复杂度是O(n)，概率很低</li>
+<li>平均空间复杂度是O(n)，跟平衡二叉树一样</li>
+<li>最坏空间复杂度是O(nlogn)，概率很低</li>
+<li>比平衡二叉树(B树, 红黑树)实现简单</li>
+</ul>
+<h3>原理和实现</h3>
+<p>为什么skiplist的高度/层数很大概率是logn，查找复杂度是O(logn)
+<a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/readings/l12_skiplists.pdf">Lecture Notes on Skip Lists</a></p>
+<p>插入、删除、查找实现<br />
+<a href="http://www.cnblogs.com/xuqiang/archive/2011/05/22/2053516.html">跳表SkipList</a></p>
+<p>实例（4分支的随机函数，即新插入的节点有1/4的概率有2层，1/16的概率有3层...）<br />
+<a href="http://blog.csdn.net/tankles/article/details/7663540">levelDB源码skiplist ...</a></p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2013/09/python-logging.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.com/posts/2016/09/skiplist.html">Read On &crarr;</a>
   </footer>
   		</article>
 <div class="pagination">
@@ -90,7 +94,7 @@ DEBUG，INFO，WARNING（默认等级），ERROR，CRITICAL  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://particle128.com/posts/2013/09/python-logging.html">Python学习笔记-logging模块</a>
+          <a href="http://particle128.com/posts/2016/09/skiplist.html">跳表Skiplist</a>
       </li>
     </ul>
   </section>
