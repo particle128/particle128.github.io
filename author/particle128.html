@@ -60,6 +60,28 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.com/posts/2017/05/windbg_extension.html">用js给windbg写扩展</a>
+      </h1>
+      <p class="meta"><time datetime="2017-05-28T00:00:00" pubdate>2017-05-28</time></p>
+</header>
+
+  <div class="entry-content"><h3>前言</h3>
+<p>windbg是windows下结合命令行和简单图形界面的调试工具，号称最强大的windows下debugging工具。</p>
+<p>使用windbg的好处是，体量小，免安装，能体验到类似gdb这种用命令来控制debugging的快感(geek style)，而且功能比visual studio多一些，支持自定义的第三方扩展命令。不过我在使用了半年左右后，感觉缺点也是比较明显的。一个是打第一个断点的时候经常卡住很长时间(几分钟)，因为要加载pdb里面的符号等信息；一个是输错命令，往往需要解析很长时间才出错返回，没办法中止；最后一点是，这东西用的人少，除了MSDN的官方文档，SO或者技术博客上很难找到资料，所以遇到问题只能自己摸索着解决。</p>
+<p>最近使用过程中，对于总要自己添加源码路径颇感厌烦，于是研究了一下如何写windbg的扩展，从而自动化这一过程。</p>
+<p>写windbg的插件/扩展，有多种方式，</p>
+<ol>
+<li>C++就有3种框架可以选择。DbgEng，EngExtCpp，WdbgExts。我尝试过WdbgExts，开发环境的构建相对繁琐，容易出错。</li>
+<li>javascript是新增的一种方式，目前支持的功能还不及上面C++的版本，但是对于我的需求足够了。好处是，容易上手和一边开发一边调试。</li>
+</ol>
+<p>本文讲解基于js的windbg扩展。注意，该功能过新，windbg的正式版都还没这个功能 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.com/posts/2017/05/windbg_extension.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.com/posts/2016/09/skiplist.html">跳表Skiplist</a>
       </h1>
       <p class="meta"><time datetime="2016-09-16T00:00:00" pubdate>2016-09-16</time></p>
@@ -103,28 +125,6 @@
 <p>The basic principle is "Trade time for space". All ...</p></div>
   <footer>
     <a rel="full-article" href="http://particle128.com/posts/2016/06/index-compression.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.com/posts/2016/06/new-start.html">第二象限记录</a>
-      </h1>
-      <p class="meta"><time datetime="2016-06-13T00:00:00" pubdate>2016-06-13</time></p>
-</header>
-
-  <div class="entry-content"><blockquote>
-<p>It is not true that people stop pursuing dreams because they grow old, they grow old because they stop pursuing dreams.
-成功的人每天都会挤出做第二象限事情的时间，而不是疲于应付第一象限的任务。老赵、轮子、皓哥、bolian，都是如此。</p>
-</blockquote>
-<h2>Sep5~Sep11</h2>
-<p>Plan </p>
-<ol>
-<li>Spark based SpaceUsageCollector (10 hours)</li>
-<li>LockFree, SkipList, RPC &amp; callback (10 hours)</li>
-</ol></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.com/posts/2016/06/new-start.html">Read On &crarr;</a>
   </footer>
   		</article>
   		<article>
@@ -295,13 +295,13 @@ I remember feeling so good about myself for the long ...</p></blockquote></div>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.com/posts/2017/05/windbg_extension.html">用js给windbg写扩展</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.com/posts/2016/09/skiplist.html">跳表Skiplist</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2016/06/index-compression.html">Index compression</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.com/posts/2016/06/new-start.html">第二象限记录</a>
       </li>
       <li class="post">
           <a href="http://particle128.com/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
@@ -324,7 +324,7 @@ I remember feeling so good about myself for the long ...</p></blockquote></div>
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/start.html">start</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/vpn.html">vpn</a>,    <a href="http://particle128.com/tag/c11.html">c++11</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
+    <a href="http://particle128.com/tag/load.html">load</a>,    <a href="http://particle128.com/tag/pelican.html">pelican</a>,    <a href="http://particle128.com/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.com/tag/windbg_extension.html">windbg_extension</a>,    <a href="http://particle128.com/tag/selenium.html">selenium</a>,    <a href="http://particle128.com/tag/distributed.html">distributed</a>,    <a href="http://particle128.com/tag/mysql.html">MySQL</a>,    <a href="http://particle128.com/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.com/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.com/tag/linux.html">linux</a>,    <a href="http://particle128.com/tag/select.html">select</a>,    <a href="http://particle128.com/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.com/tag/conversion.html">conversion</a>,    <a href="http://particle128.com/tag/git.html">git</a>,    <a href="http://particle128.com/tag/core-dump.html">core dump</a>,    <a href="http://particle128.com/tag/lwp.html">lwp</a>,    <a href="http://particle128.com/tag/storage.html">storage</a>,    <a href="http://particle128.com/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.com/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.com/tag/blog.html">blog</a>,    <a href="http://particle128.com/tag/health.html">health</a>,    <a href="http://particle128.com/tag/storm.html">storm</a>,    <a href="http://particle128.com/tag/android.html">android</a>,    <a href="http://particle128.com/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.com/tag/headache.html">headache</a>,    <a href="http://particle128.com/tag/map.html">map</a>,    <a href="http://particle128.com/tag/life.html">life</a>,    <a href="http://particle128.com/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.com/tag/finance.html">finance</a>,    <a href="http://particle128.com/tag/python.html">python</a>,    <a href="http://particle128.com/tag/trident.html">trident</a>,    <a href="http://particle128.com/tag/ssl.html">ssl</a>,    <a href="http://particle128.com/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.com/tag/link.html">link</a>,    <a href="http://particle128.com/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.com/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.com/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.com/tag/vpn.html">vpn</a>,    <a href="http://particle128.com/tag/c11.html">c++11</a>,    <a href="http://particle128.com/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.com/tag/goal.html">goal</a>,    <a href="http://particle128.com/tag/logging.html">logging</a>,    <a href="http://particle128.com/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.com/tag/thread.html">thread</a>,    <a href="http://particle128.com/tag/database.html">database</a>,    <a href="http://particle128.com/tag/stl.html">STL</a>,    <a href="http://particle128.com/tag/thought.html">thought</a>,    <a href="http://particle128.com/tag/vector.html">vector</a>,    <a href="http://particle128.com/tag/str.html">str</a>,    <a href="http://particle128.com/tag/cpp.html">cpp</a>,    <a href="http://particle128.com/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.com/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.com/tag/user.html">user</a>  </section>
 
 
     <section>
