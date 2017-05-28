@@ -71,7 +71,17 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;使用该扩展:&lt;/p&gt;
+&lt;p&gt;使用步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;把autoload.js放到windbg\x64\winext\下，从x64目录下启动windbg.exe&lt;/li&gt;
+&lt;li&gt;加载jsprovider &lt;code&gt;.load jsprovider.dll&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;加载autoload.js，可以通过相对路径&lt;code&gt;.scriptload winext\autoload.js&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;查看一下是否加载成功&lt;code&gt;.scriptlist&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;给你要调用的扩展里的函数，即&lt;code&gt;autoLoad()&lt;/code&gt;创建一个别名&lt;code&gt;src&lt;/code&gt;方便使用，&lt;code&gt;as src dx @$scriptContents.autoLoad()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;执行&lt;code&gt;src&lt;/code&gt;即可调用autoload.js里的autoLoad()函数。然后就可以愉快的切换栈帧而不用手动添加源码路径了&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可以把2~5步放到初始化文件里，启动windbg的时候用-c参数指定执行，然后启动起来后，直接就可以使用src命令了。&lt;/p&gt;
+&lt;p&gt;具体如下：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;083&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;load&lt;/span&gt; &lt;span class="n"&gt;jsprovider&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dll&lt;/span&gt;
 &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;083&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;scriptload&lt;/span&gt; &lt;span class="n"&gt;winext&lt;/span&gt;&lt;span class="o"&gt;\&lt;/span&gt;&lt;span class="n"&gt;autoload&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;js&lt;/span&gt;
 &lt;span class="o"&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;AutoLoad&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;initilized&lt;/span&gt;
@@ -110,7 +120,6 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;之后就可以愉快的切换栈帧了。&lt;/p&gt;
 &lt;h3&gt;参考&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff551059(v=vs.85).aspx"&gt;https://msdn.microsoft.com/en-us/library/windows/hardware/ff551059(v=vs.85).aspx&lt;/a&gt;&lt;/li&gt;

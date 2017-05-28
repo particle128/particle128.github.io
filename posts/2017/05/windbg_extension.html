@@ -135,7 +135,17 @@
 </pre></div>
 
 
-<p>使用该扩展:</p>
+<p>使用步骤：</p>
+<ol>
+<li>把autoload.js放到windbg\x64\winext\下，从x64目录下启动windbg.exe</li>
+<li>加载jsprovider <code>.load jsprovider.dll</code></li>
+<li>加载autoload.js，可以通过相对路径<code>.scriptload winext\autoload.js</code></li>
+<li>查看一下是否加载成功<code>.scriptlist</code></li>
+<li>给你要调用的扩展里的函数，即<code>autoLoad()</code>创建一个别名<code>src</code>方便使用，<code>as src dx @$scriptContents.autoLoad()</code></li>
+<li>执行<code>src</code>即可调用autoload.js里的autoLoad()函数。然后就可以愉快的切换栈帧而不用手动添加源码路径了</li>
+</ol>
+<p>可以把2~5步放到初始化文件里，启动windbg的时候用-c参数指定执行，然后启动起来后，直接就可以使用src命令了。</p>
+<p>具体如下：</p>
 <div class="highlight"><pre><span class="mi">0</span><span class="o">:</span><span class="mi">083</span><span class="o">&gt;</span> <span class="o">.</span><span class="na">load</span> <span class="n">jsprovider</span><span class="o">.</span><span class="na">dll</span>
 <span class="mi">0</span><span class="o">:</span><span class="mi">083</span><span class="o">&gt;</span> <span class="o">.</span><span class="na">scriptload</span> <span class="n">winext</span><span class="o">\</span><span class="n">autoload</span><span class="o">.</span><span class="na">js</span>
 <span class="o">&lt;&lt;&lt;</span><span class="n">AutoLoad</span><span class="o">&gt;&gt;&gt;</span> <span class="n">initilized</span>
@@ -174,7 +184,6 @@
 </pre></div>
 
 
-<p>之后就可以愉快的切换栈帧了。</p>
 <h3>参考</h3>
 <ul>
 <li><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff551059(v=vs.85).aspx">https://msdn.microsoft.com/en-us/library/windows/hardware/ff551059(v=vs.85).aspx</a></li>
