@@ -4,1036 +4,1036 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitem
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-<loc>http://particle128.com/index.html</loc>
-<lastmod>2017-05-28T10:36:00-00:00</lastmod>
+<loc>http://particle128.cn/index.html</loc>
+<lastmod>2017-07-18T23:29:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/archives.html</loc>
-<lastmod>2017-05-28T10:36:00-00:00</lastmod>
+<loc>http://particle128.cn/archives.html</loc>
+<lastmod>2017-07-18T23:29:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tags.html</loc>
-<lastmod>2017-05-28T10:36:00-00:00</lastmod>
+<loc>http://particle128.cn/tags.html</loc>
+<lastmod>2017-07-18T23:29:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/categories.html</loc>
-<lastmod>2017-05-28T10:36:00-00:00</lastmod>
+<loc>http://particle128.cn/categories.html</loc>
+<lastmod>2017-07-18T23:29:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/pages/aboutme.html</loc>
+<loc>http://particle128.cn/pages/aboutme.html</loc>
 <lastmod>2014-12-17T18:07:12-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/pages/search.html</loc>
+<loc>http://particle128.cn/pages/search.html</loc>
 <lastmod>2014-12-17T14:53:45-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2017/05/windbg_extension.html</loc>
+<loc>http://particle128.cn/posts/2017/05/windbg_extension.html</loc>
 <lastmod>2017-05-28T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2016/09/skiplist.html</loc>
+<loc>http://particle128.cn/posts/2016/09/skiplist.html</loc>
 <lastmod>2016-09-16T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2016/06/index-compression.html</loc>
+<loc>http://particle128.cn/posts/2016/06/index-compression.html</loc>
 <lastmod>2016-06-26T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2016/01/vpn.html</loc>
+<loc>http://particle128.cn/posts/2016/01/vpn.html</loc>
 <lastmod>2016-01-07T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2015/04/smart-ptr.html</loc>
+<loc>http://particle128.cn/posts/2015/04/smart-ptr.html</loc>
 <lastmod>2015-04-24T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2015/04/constexpr.html</loc>
+<loc>http://particle128.cn/posts/2015/04/constexpr.html</loc>
 <lastmod>2015-04-15T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2015/04/ExpertC(2).html</loc>
+<loc>http://particle128.cn/posts/2015/04/ExpertC(2).html</loc>
 <lastmod>2015-04-11T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2015/04/theCleanCoder(4).html</loc>
+<loc>http://particle128.cn/posts/2015/04/theCleanCoder(4).html</loc>
 <lastmod>2015-04-06T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2015/04/theCleanCoder(3).html</loc>
+<loc>http://particle128.cn/posts/2015/04/theCleanCoder(3).html</loc>
 <lastmod>2015-04-05T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2015/04/theCleanCoder(2).html</loc>
+<loc>http://particle128.cn/posts/2015/04/theCleanCoder(2).html</loc>
 <lastmod>2015-04-04T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2015/04/theCleanCoder(1).html</loc>
+<loc>http://particle128.cn/posts/2015/04/theCleanCoder(1).html</loc>
 <lastmod>2015-04-03T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2015/04/ExpertC(1).html</loc>
+<loc>http://particle128.cn/posts/2015/04/ExpertC(1).html</loc>
 <lastmod>2015-04-02T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/12/2014-last-day.html</loc>
+<loc>http://particle128.cn/posts/2014/12/2014-last-day.html</loc>
 <lastmod>2014-12-31T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/12/cleanCode(6).html</loc>
+<loc>http://particle128.cn/posts/2014/12/cleanCode(6).html</loc>
 <lastmod>2014-12-28T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/12/gitignore.html</loc>
+<loc>http://particle128.cn/posts/2014/12/gitignore.html</loc>
 <lastmod>2014-12-19T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/12/cleanCode(5).html</loc>
+<loc>http://particle128.cn/posts/2014/12/cleanCode(5).html</loc>
 <lastmod>2014-12-17T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/12/cleanCode(4).html</loc>
+<loc>http://particle128.cn/posts/2014/12/cleanCode(4).html</loc>
 <lastmod>2014-12-13T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/12/git-server.html</loc>
+<loc>http://particle128.cn/posts/2014/12/git-server.html</loc>
 <lastmod>2014-12-13T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/12/cleanCode(3).html</loc>
+<loc>http://particle128.cn/posts/2014/12/cleanCode(3).html</loc>
 <lastmod>2014-12-09T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/12/cleanCode(2).html</loc>
+<loc>http://particle128.cn/posts/2014/12/cleanCode(2).html</loc>
 <lastmod>2014-12-06T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/12/cleanCode(1).html</loc>
+<loc>http://particle128.cn/posts/2014/12/cleanCode(1).html</loc>
 <lastmod>2014-12-05T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/10/msOnlineTest.html</loc>
+<loc>http://particle128.cn/posts/2014/10/msOnlineTest.html</loc>
 <lastmod>2014-10-22T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/10/unp.html</loc>
+<loc>http://particle128.cn/posts/2014/10/unp.html</loc>
 <lastmod>2014-10-14T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/09/MySQL-bug.html</loc>
+<loc>http://particle128.cn/posts/2014/09/MySQL-bug.html</loc>
 <lastmod>2014-09-30T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/08/introduction-storm.html</loc>
+<loc>http://particle128.cn/posts/2014/08/introduction-storm.html</loc>
 <lastmod>2014-08-25T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/07/storm-sum.html</loc>
+<loc>http://particle128.cn/posts/2014/07/storm-sum.html</loc>
 <lastmod>2014-07-29T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/06/git-cherry-pick.html</loc>
+<loc>http://particle128.cn/posts/2014/06/git-cherry-pick.html</loc>
 <lastmod>2014-06-24T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/06/database-shard.html</loc>
+<loc>http://particle128.cn/posts/2014/06/database-shard.html</loc>
 <lastmod>2014-06-23T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/05/vdisk-one-question.html</loc>
+<loc>http://particle128.cn/posts/2014/05/vdisk-one-question.html</loc>
 <lastmod>2014-05-26T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/05/linux-thread.html</loc>
+<loc>http://particle128.cn/posts/2014/05/linux-thread.html</loc>
 <lastmod>2014-05-20T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/05/delete-core-dump.html</loc>
+<loc>http://particle128.cn/posts/2014/05/delete-core-dump.html</loc>
 <lastmod>2014-05-19T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/05/reentrant.html</loc>
+<loc>http://particle128.cn/posts/2014/05/reentrant.html</loc>
 <lastmod>2014-05-05T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/04/distriStore2.html</loc>
+<loc>http://particle128.cn/posts/2014/04/distriStore2.html</loc>
 <lastmod>2014-04-26T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/04/distriStore1.html</loc>
+<loc>http://particle128.cn/posts/2014/04/distriStore1.html</loc>
 <lastmod>2014-04-15T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/04/spinlock.html</loc>
+<loc>http://particle128.cn/posts/2014/04/spinlock.html</loc>
 <lastmod>2014-04-02T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/03/selectFear.html</loc>
+<loc>http://particle128.cn/posts/2014/03/selectFear.html</loc>
 <lastmod>2014-03-20T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/03/vipshop.html</loc>
+<loc>http://particle128.cn/posts/2014/03/vipshop.html</loc>
 <lastmod>2014-03-10T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/03/inserter.html</loc>
+<loc>http://particle128.cn/posts/2014/03/inserter.html</loc>
 <lastmod>2014-03-08T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/02/pp6.html</loc>
+<loc>http://particle128.cn/posts/2014/02/pp6.html</loc>
 <lastmod>2014-02-20T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/02/pp7.html</loc>
+<loc>http://particle128.cn/posts/2014/02/pp7.html</loc>
 <lastmod>2014-02-20T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/02/richdad.html</loc>
+<loc>http://particle128.cn/posts/2014/02/richdad.html</loc>
 <lastmod>2014-02-17T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2014/01/ssl.html</loc>
+<loc>http://particle128.cn/posts/2014/01/ssl.html</loc>
 <lastmod>2014-01-26T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/selenium.html</loc>
+<loc>http://particle128.cn/posts/2013/12/selenium.html</loc>
 <lastmod>2013-12-28T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/map-operator.html</loc>
+<loc>http://particle128.cn/posts/2013/12/map-operator.html</loc>
 <lastmod>2013-12-18T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/MoreEffectiveCpp(4).html</loc>
+<loc>http://particle128.cn/posts/2013/12/MoreEffectiveCpp(4).html</loc>
 <lastmod>2013-12-14T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/MoreEffectiveCpp(5).html</loc>
+<loc>http://particle128.cn/posts/2013/12/MoreEffectiveCpp(5).html</loc>
 <lastmod>2013-12-14T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/MoreEffectiveCpp(3).html</loc>
+<loc>http://particle128.cn/posts/2013/12/MoreEffectiveCpp(3).html</loc>
 <lastmod>2013-12-06T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/MoreEffectiveCpp(2).html</loc>
+<loc>http://particle128.cn/posts/2013/12/MoreEffectiveCpp(2).html</loc>
 <lastmod>2013-12-03T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/MoreEffectiveCpp(1).html</loc>
+<loc>http://particle128.cn/posts/2013/12/MoreEffectiveCpp(1).html</loc>
 <lastmod>2013-12-02T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/MoreEffectiveCpp(7).html</loc>
+<loc>http://particle128.cn/posts/2013/12/MoreEffectiveCpp(7).html</loc>
 <lastmod>2013-12-01T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/qunar.html</loc>
+<loc>http://particle128.cn/posts/2013/12/qunar.html</loc>
 <lastmod>2013-12-01T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/some-thought.html</loc>
+<loc>http://particle128.cn/posts/2013/12/some-thought.html</loc>
 <lastmod>2013-12-01T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/vipshop-intro.html</loc>
+<loc>http://particle128.cn/posts/2013/12/vipshop-intro.html</loc>
 <lastmod>2013-12-01T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/vipshop-port.html</loc>
+<loc>http://particle128.cn/posts/2013/12/vipshop-port.html</loc>
 <lastmod>2013-12-01T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/12/vipshop-tech.html</loc>
+<loc>http://particle128.cn/posts/2013/12/vipshop-tech.html</loc>
 <lastmod>2013-12-01T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/11/MoreEffectiveCpp(6).html</loc>
+<loc>http://particle128.cn/posts/2013/11/MoreEffectiveCpp(6).html</loc>
 <lastmod>2013-11-29T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/11/pointer-to-member-func.html</loc>
+<loc>http://particle128.cn/posts/2013/11/pointer-to-member-func.html</loc>
 <lastmod>2013-11-28T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/11/name-lookup.html</loc>
+<loc>http://particle128.cn/posts/2013/11/name-lookup.html</loc>
 <lastmod>2013-11-05T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/11/headache.html</loc>
+<loc>http://particle128.cn/posts/2013/11/headache.html</loc>
 <lastmod>2013-11-04T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/11/Overwrite-Overload.html</loc>
+<loc>http://particle128.cn/posts/2013/11/Overwrite-Overload.html</loc>
 <lastmod>2013-11-02T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp.html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp.html</loc>
 <lastmod>2013-10-31T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(2).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(2).html</loc>
 <lastmod>2013-10-18T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(1).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(1).html</loc>
 <lastmod>2013-10-15T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/core-dump.html</loc>
+<loc>http://particle128.cn/posts/2013/10/core-dump.html</loc>
 <lastmod>2013-10-15T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/inter-convert.html</loc>
+<loc>http://particle128.cn/posts/2013/10/inter-convert.html</loc>
 <lastmod>2013-10-15T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/py-subprocess.html</loc>
+<loc>http://particle128.cn/posts/2013/10/py-subprocess.html</loc>
 <lastmod>2013-10-15T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/python-configparser.html</loc>
+<loc>http://particle128.cn/posts/2013/10/python-configparser.html</loc>
 <lastmod>2013-10-15T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/cpp-encapsulation.html</loc>
+<loc>http://particle128.cn/posts/2013/10/cpp-encapsulation.html</loc>
 <lastmod>2013-10-14T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/ziwoxiuyang.html</loc>
+<loc>http://particle128.cn/posts/2013/10/ziwoxiuyang.html</loc>
 <lastmod>2013-10-14T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(10).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(10).html</loc>
 <lastmod>2013-10-13T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(11).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(11).html</loc>
 <lastmod>2013-10-13T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(12).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(12).html</loc>
 <lastmod>2013-10-13T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(8).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(8).html</loc>
 <lastmod>2013-10-13T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(9).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(9).html</loc>
 <lastmod>2013-10-13T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(7).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(7).html</loc>
 <lastmod>2013-10-12T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(5).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(5).html</loc>
 <lastmod>2013-10-11T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(6).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(6).html</loc>
 <lastmod>2013-10-10T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(3).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(3).html</loc>
 <lastmod>2013-10-04T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/10/EffectiveCpp(4).html</loc>
+<loc>http://particle128.cn/posts/2013/10/EffectiveCpp(4).html</loc>
 <lastmod>2013-10-04T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/09/python-str.html</loc>
+<loc>http://particle128.cn/posts/2013/09/python-str.html</loc>
 <lastmod>2013-09-22T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/09/blog-build.html</loc>
+<loc>http://particle128.cn/posts/2013/09/blog-build.html</loc>
 <lastmod>2013-09-20T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/09/authority.html</loc>
+<loc>http://particle128.cn/posts/2013/09/authority.html</loc>
 <lastmod>2013-09-08T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/09/linux_user.html</loc>
+<loc>http://particle128.cn/posts/2013/09/linux_user.html</loc>
 <lastmod>2013-09-08T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/09/python-logging.html</loc>
+<loc>http://particle128.cn/posts/2013/09/python-logging.html</loc>
 <lastmod>2013-09-08T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/posts/2013/09/androidSMS.html</loc>
+<loc>http://particle128.cn/posts/2013/09/androidSMS.html</loc>
 <lastmod>2013-09-03T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/category/life.html</loc>
+<loc>http://particle128.cn/category/life.html</loc>
 <lastmod>2014-12-31T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/category/note.html</loc>
+<loc>http://particle128.cn/category/note.html</loc>
 <lastmod>2016-06-26T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/category/tech.html</loc>
+<loc>http://particle128.cn/category/tech.html</loc>
 <lastmod>2017-05-28T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/load.html</loc>
+<loc>http://particle128.cn/tag/load.html</loc>
 <lastmod>2013-10-14T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/pelican.html</loc>
+<loc>http://particle128.cn/tag/pelican.html</loc>
 <lastmod>2013-09-20T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/expertc.html</loc>
+<loc>http://particle128.cn/tag/expertc.html</loc>
 <lastmod>2015-04-11T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/windbg_extension.html</loc>
+<loc>http://particle128.cn/tag/windbg_extension.html</loc>
 <lastmod>2017-05-28T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/selenium.html</loc>
+<loc>http://particle128.cn/tag/selenium.html</loc>
 <lastmod>2014-03-10T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/distributed.html</loc>
+<loc>http://particle128.cn/tag/distributed.html</loc>
 <lastmod>2014-04-26T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/mysql.html</loc>
+<loc>http://particle128.cn/tag/mysql.html</loc>
 <lastmod>2014-09-30T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/subprocess.html</loc>
+<loc>http://particle128.cn/tag/subprocess.html</loc>
 <lastmod>2013-10-15T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/reentrant.html</loc>
+<loc>http://particle128.cn/tag/reentrant.html</loc>
 <lastmod>2014-05-05T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/linux.html</loc>
+<loc>http://particle128.cn/tag/linux.html</loc>
 <lastmod>2014-10-14T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/select.html</loc>
+<loc>http://particle128.cn/tag/select.html</loc>
 <lastmod>2014-03-20T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/configparser.html</loc>
+<loc>http://particle128.cn/tag/configparser.html</loc>
 <lastmod>2013-10-15T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/conversion.html</loc>
+<loc>http://particle128.cn/tag/conversion.html</loc>
 <lastmod>2013-10-15T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/git.html</loc>
+<loc>http://particle128.cn/tag/git.html</loc>
 <lastmod>2014-12-19T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/core-dump.html</loc>
+<loc>http://particle128.cn/tag/core-dump.html</loc>
 <lastmod>2013-10-15T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/lwp.html</loc>
+<loc>http://particle128.cn/tag/lwp.html</loc>
 <lastmod>2014-05-20T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/storage.html</loc>
+<loc>http://particle128.cn/tag/storage.html</loc>
 <lastmod>2014-04-26T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/searchengine.html</loc>
+<loc>http://particle128.cn/tag/searchengine.html</loc>
 <lastmod>2016-06-26T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/name-lookup.html</loc>
+<loc>http://particle128.cn/tag/name-lookup.html</loc>
 <lastmod>2013-11-05T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/blog.html</loc>
+<loc>http://particle128.cn/tag/blog.html</loc>
 <lastmod>2013-09-20T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/health.html</loc>
+<loc>http://particle128.cn/tag/health.html</loc>
 <lastmod>2013-11-04T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/storm.html</loc>
+<loc>http://particle128.cn/tag/storm.html</loc>
 <lastmod>2014-08-25T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/android.html</loc>
+<loc>http://particle128.cn/tag/android.html</loc>
 <lastmod>2013-09-03T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/spinlock.html</loc>
+<loc>http://particle128.cn/tag/spinlock.html</loc>
 <lastmod>2014-04-02T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/headache.html</loc>
+<loc>http://particle128.cn/tag/headache.html</loc>
 <lastmod>2013-11-04T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/map.html</loc>
+<loc>http://particle128.cn/tag/map.html</loc>
 <lastmod>2013-12-18T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/life.html</loc>
+<loc>http://particle128.cn/tag/life.html</loc>
 <lastmod>2014-12-31T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/multi-thread.html</loc>
+<loc>http://particle128.cn/tag/multi-thread.html</loc>
 <lastmod>2014-04-02T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/finance.html</loc>
+<loc>http://particle128.cn/tag/finance.html</loc>
 <lastmod>2014-02-17T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/python.html</loc>
+<loc>http://particle128.cn/tag/python.html</loc>
 <lastmod>2014-03-10T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/trident.html</loc>
+<loc>http://particle128.cn/tag/trident.html</loc>
 <lastmod>2014-08-25T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/ssl.html</loc>
+<loc>http://particle128.cn/tag/ssl.html</loc>
 <lastmod>2014-01-26T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/effectivecpp.html</loc>
+<loc>http://particle128.cn/tag/effectivecpp.html</loc>
 <lastmod>2013-10-31T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/link.html</loc>
+<loc>http://particle128.cn/tag/link.html</loc>
 <lastmod>2013-10-14T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/moreeffectivecpp.html</loc>
+<loc>http://particle128.cn/tag/moreeffectivecpp.html</loc>
 <lastmod>2013-12-14T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/cleancode.html</loc>
+<loc>http://particle128.cn/tag/cleancode.html</loc>
 <lastmod>2014-12-28T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/thecleancoder.html</loc>
+<loc>http://particle128.cn/tag/thecleancoder.html</loc>
 <lastmod>2015-04-06T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/vpn.html</loc>
+<loc>http://particle128.cn/tag/vpn.html</loc>
 <lastmod>2016-01-07T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/c11.html</loc>
+<loc>http://particle128.cn/tag/c11.html</loc>
 <lastmod>2015-04-24T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/encapsulation.html</loc>
+<loc>http://particle128.cn/tag/encapsulation.html</loc>
 <lastmod>2013-10-14T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/goal.html</loc>
+<loc>http://particle128.cn/tag/goal.html</loc>
 <lastmod>2013-12-01T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/logging.html</loc>
+<loc>http://particle128.cn/tag/logging.html</loc>
 <lastmod>2013-09-08T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/algorithm.html</loc>
+<loc>http://particle128.cn/tag/algorithm.html</loc>
 <lastmod>2014-10-22T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/thread.html</loc>
+<loc>http://particle128.cn/tag/thread.html</loc>
 <lastmod>2014-05-20T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/database.html</loc>
+<loc>http://particle128.cn/tag/database.html</loc>
 <lastmod>2014-06-23T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/stl.html</loc>
+<loc>http://particle128.cn/tag/stl.html</loc>
 <lastmod>2013-12-18T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/thought.html</loc>
+<loc>http://particle128.cn/tag/thought.html</loc>
 <lastmod>2013-12-01T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/vector.html</loc>
+<loc>http://particle128.cn/tag/vector.html</loc>
 <lastmod>2014-03-08T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/str.html</loc>
+<loc>http://particle128.cn/tag/str.html</loc>
 <lastmod>2013-09-22T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/cpp.html</loc>
+<loc>http://particle128.cn/tag/cpp.html</loc>
 <lastmod>2014-03-08T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/py2exe.html</loc>
+<loc>http://particle128.cn/tag/py2exe.html</loc>
 <lastmod>2013-12-01T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/skiplist.html</loc>
+<loc>http://particle128.cn/tag/skiplist.html</loc>
 <lastmod>2016-09-16T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/tag/user.html</loc>
+<loc>http://particle128.cn/tag/user.html</loc>
 <lastmod>2013-09-08T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://particle128.com/author/particle128.html</loc>
+<loc>http://particle128.cn/author/particle128.html</loc>
 <lastmod>2017-05-28T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
