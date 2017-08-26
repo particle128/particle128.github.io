@@ -60,6 +60,48 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.cn/posts/2014/02/pp7.html">Rereading Programming Pearls(7)</a>
+      </h1>
+      <p class="meta"><time datetime="2014-02-20T00:00:00" pubdate>2014-02-20</time></p>
+</header>
+
+  <div class="entry-content"><h2>Column 7 The back of the envelope</h2>
+<h3>rules of thumb</h3>
+<ul>
+<li>
+<p>rule of 72<br />
+Used for estimating the growth of any exponential process.<br />
+<em>Assume that you invest a sum of money for y years at an interest rate of r percent per year. The financial version of the rule says that ...</em></p></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.cn/posts/2014/02/pp7.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.cn/posts/2013/12/MoreEffectiveCpp(4).html">MoreEffectiveC++(4)</a>
+      </h1>
+      <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
+</header>
+
+  <div class="entry-content"><p><strong>技术Techniques,Idioms,Patterns</strong>  </p>
+<h2>Item25 构造函数、非成员函数的虚化</h2>
+<ul>
+<li>这一条目所指的“虚化”，并不是C++语法意义上的虚化，而是“动态调用”的意思。  </li>
+<li>3种语义上的虚化：<br />
+1.虚构造函数<br />
+根据输入（磁盘、网络、终端），可产生不同类型的对象，保存于<code>list&lt;Base*&gt;</code>中<br />
+2.虚拷贝构造函数<br />
+定义虚函数clone，返回一个指针，指向调用者副本（<code>return new TextBlock(*this);</code>），复制构造函数通过基类指针调用不同的clone<br />
+3.虚非成员函数<br />
+定义虚函数print，参数和返回值都是ostream&amp;，定义非成员函数<code>inline ostream&amp; operator&lt;&lt;(ostream&amp; s,const Base&amp; c){return c ...</code></li></ul></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.cn/posts/2013/12/MoreEffectiveCpp(4).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.cn/posts/2013/12/MoreEffectiveCpp(5).html">MoreEffectiveC++(5)</a>
       </h1>
       <p class="meta"><time datetime="2013-12-14T00:00:00" pubdate>2013-12-14</time></p>
@@ -276,48 +318,6 @@ const bool true=1;<br />
     <a rel="full-article" href="http://particle128.cn/posts/2013/10/EffectiveCpp(2).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2013/10/EffectiveCpp(1).html">Effective C++学习笔记(1)</a>
-      </h1>
-      <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>【补充概念】</strong><br />
-<strong>类型安全</strong>：<br />
-<em>MSDN上的权威解释</em>：类型安全，意味着每个变量、函数参数和函数返回值存储到可接受的数据，并且，涉及不同类型的值“的操作有意义”和不导致数据丢失、位组合的解释不正确或内存损坏。<br />
-<em>简单理解</em>：编译器会帮助程序员检查程序中是否使用了合适的类型，即如果程序员使用了不正确的类型，编译器会报错，而不会把错误留到运行时。<br />
-printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
-(1) printf("The meaning of life is %s",42);  》》》类型安全的cout<br />
-(2) SomeClass a;AnotherClass b;<br />
-   memcpy((void<em>)&amp;a,(void</em>)&amp;b,sizeof(b)); 》》》类型安全的copy constructor<br />
-(3) #define max(a,b) ((a ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2013/10/EffectiveCpp(1).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2013/10/py-subprocess.html">Python学习笔记-subprocess模块</a>
-      </h1>
-      <p class="meta"><time datetime="2013-10-15T00:00:00" pubdate>2013-10-15</time></p>
-</header>
-
-  <div class="entry-content"><p><strong>subprocess是python的一个内置模块，用来产生子进程，和子进程通过pipe通信。</strong>  </p>
-<h3>3个便捷函数</h3>
-<p>如果仅仅想要调用一个子进程完成一个任务，不需要父进程与其通信，并且等待子进程退出的话，选择便捷函数。  </p>
-<div class="highlight"><pre><span class="c"># 返回returncode，0成功，非0出错。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
-<span class="c"># 返回0或引发CalledProcessError异常。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
-<span class="c"># 返回0或引发CalledProcessError异常。不同于`check_all`的唯一一点是，异常的output属性是子进程的输出，`check_all`引发的异常的output属性则是None。因为子进程的output被放到异常对象的output里，所以参数没有stdout。  </span>
-<span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">None ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2013/10/py-subprocess.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.cn/category/note4.html">&larr; Older</a>
 
@@ -329,6 +329,12 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.cn/posts/2017/04/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2017/03/EffectiveModernCpp.html">Effective Modern C++回顾总结笔记</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
       </li>
       <li class="post">
@@ -336,12 +342,6 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
       </li>
       <li class="post">
           <a href="http://particle128.cn/posts/2015/04/constexpr.html">C++11专题：constexpr类型</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.cn/posts/2015/04/ExpertC(2).html">C专家编程-笔记(2)</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.cn/posts/2015/04/theCleanCoder(4).html">The Clean Coder 笔记 (4)</a>
       </li>
     </ul>
   </section>
@@ -358,7 +358,7 @@ printf，memcpy，#define 宏定义函数就不是类型安全的。<br />
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.cn/tag/load.html">load</a>,    <a href="http://particle128.cn/tag/pelican.html">pelican</a>,    <a href="http://particle128.cn/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.cn/tag/windbg_extension.html">windbg_extension</a>,    <a href="http://particle128.cn/tag/selenium.html">selenium</a>,    <a href="http://particle128.cn/tag/distributed.html">distributed</a>,    <a href="http://particle128.cn/tag/mysql.html">MySQL</a>,    <a href="http://particle128.cn/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.cn/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.cn/tag/linux.html">linux</a>,    <a href="http://particle128.cn/tag/select.html">select</a>,    <a href="http://particle128.cn/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.cn/tag/conversion.html">conversion</a>,    <a href="http://particle128.cn/tag/git.html">git</a>,    <a href="http://particle128.cn/tag/core-dump.html">core dump</a>,    <a href="http://particle128.cn/tag/lwp.html">lwp</a>,    <a href="http://particle128.cn/tag/storage.html">storage</a>,    <a href="http://particle128.cn/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.cn/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.cn/tag/blog.html">blog</a>,    <a href="http://particle128.cn/tag/health.html">health</a>,    <a href="http://particle128.cn/tag/storm.html">storm</a>,    <a href="http://particle128.cn/tag/android.html">android</a>,    <a href="http://particle128.cn/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.cn/tag/headache.html">headache</a>,    <a href="http://particle128.cn/tag/map.html">map</a>,    <a href="http://particle128.cn/tag/life.html">life</a>,    <a href="http://particle128.cn/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.cn/tag/finance.html">finance</a>,    <a href="http://particle128.cn/tag/python.html">python</a>,    <a href="http://particle128.cn/tag/trident.html">trident</a>,    <a href="http://particle128.cn/tag/ssl.html">ssl</a>,    <a href="http://particle128.cn/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.cn/tag/link.html">link</a>,    <a href="http://particle128.cn/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.cn/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.cn/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.cn/tag/vpn.html">vpn</a>,    <a href="http://particle128.cn/tag/c11.html">c++11</a>,    <a href="http://particle128.cn/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.cn/tag/goal.html">goal</a>,    <a href="http://particle128.cn/tag/logging.html">logging</a>,    <a href="http://particle128.cn/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.cn/tag/thread.html">thread</a>,    <a href="http://particle128.cn/tag/database.html">database</a>,    <a href="http://particle128.cn/tag/stl.html">STL</a>,    <a href="http://particle128.cn/tag/thought.html">thought</a>,    <a href="http://particle128.cn/tag/vector.html">vector</a>,    <a href="http://particle128.cn/tag/str.html">str</a>,    <a href="http://particle128.cn/tag/cpp.html">cpp</a>,    <a href="http://particle128.cn/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.cn/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.cn/tag/user.html">user</a>  </section>
+    <a href="http://particle128.cn/tag/load.html">load</a>,    <a href="http://particle128.cn/tag/pelican.html">pelican</a>,    <a href="http://particle128.cn/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.cn/tag/windbg_extension.html">windbg_extension</a>,    <a href="http://particle128.cn/tag/selenium.html">selenium</a>,    <a href="http://particle128.cn/tag/distributed.html">distributed</a>,    <a href="http://particle128.cn/tag/mysql.html">MySQL</a>,    <a href="http://particle128.cn/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.cn/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.cn/tag/linux.html">linux</a>,    <a href="http://particle128.cn/tag/select.html">select</a>,    <a href="http://particle128.cn/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.cn/tag/conversion.html">conversion</a>,    <a href="http://particle128.cn/tag/git.html">git</a>,    <a href="http://particle128.cn/tag/core-dump.html">core dump</a>,    <a href="http://particle128.cn/tag/lwp.html">lwp</a>,    <a href="http://particle128.cn/tag/storage.html">storage</a>,    <a href="http://particle128.cn/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.cn/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.cn/tag/blog.html">blog</a>,    <a href="http://particle128.cn/tag/designpattern.html">DesignPattern</a>,    <a href="http://particle128.cn/tag/health.html">health</a>,    <a href="http://particle128.cn/tag/storm.html">storm</a>,    <a href="http://particle128.cn/tag/android.html">android</a>,    <a href="http://particle128.cn/tag/effectivemoderncpp.html">EffectiveModernCpp</a>,    <a href="http://particle128.cn/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.cn/tag/headache.html">headache</a>,    <a href="http://particle128.cn/tag/map.html">map</a>,    <a href="http://particle128.cn/tag/life.html">life</a>,    <a href="http://particle128.cn/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.cn/tag/finance.html">finance</a>,    <a href="http://particle128.cn/tag/python.html">python</a>,    <a href="http://particle128.cn/tag/trident.html">trident</a>,    <a href="http://particle128.cn/tag/ssl.html">ssl</a>,    <a href="http://particle128.cn/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.cn/tag/link.html">link</a>,    <a href="http://particle128.cn/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.cn/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.cn/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.cn/tag/vpn.html">vpn</a>,    <a href="http://particle128.cn/tag/c11.html">c++11</a>,    <a href="http://particle128.cn/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.cn/tag/goal.html">goal</a>,    <a href="http://particle128.cn/tag/logging.html">logging</a>,    <a href="http://particle128.cn/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.cn/tag/thread.html">thread</a>,    <a href="http://particle128.cn/tag/database.html">database</a>,    <a href="http://particle128.cn/tag/stl.html">STL</a>,    <a href="http://particle128.cn/tag/thought.html">thought</a>,    <a href="http://particle128.cn/tag/vector.html">vector</a>,    <a href="http://particle128.cn/tag/str.html">str</a>,    <a href="http://particle128.cn/tag/cpp.html">cpp</a>,    <a href="http://particle128.cn/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.cn/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.cn/tag/user.html">user</a>  </section>
 
 
     <section>

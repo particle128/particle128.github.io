@@ -60,6 +60,44 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.cn/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
+      </h1>
+      <p class="meta"><time datetime="2015-04-05T00:00:00" pubdate>2015-04-05</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter6 Practicing</h3>
+<blockquote>
+<p>Turnaround Time. <br />
+Doing anything quickly requires practice. Spinning around the code/test loop quickly requires you to make very quick decisions. Making decisions quickly means being able to recognize a vast number of situations and problems and simply know that to do to address them.<br />
+Speed depends on ...</p></blockquote></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.cn/posts/2015/04/theCleanCoder(3).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.cn/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
+      </h1>
+      <p class="meta"><time datetime="2015-04-04T00:00:00" pubdate>2015-04-04</time></p>
+</header>
+
+  <div class="entry-content"><h3>Chapter4 Coding</h3>
+<blockquote>
+<p>Preparedness. <br />
+If you are tired or distracted, do not code. You'll only wind up redoing what you did. Instead, find a way to eliminate the distractions and settle your mind. </p>
+</blockquote>
+<p>累或者走神的时候，别写代码。先把糟糕的状态排除或者减轻了，再来写代码。</p>
+<blockquote>
+<p>3 AM Code. <br />
+I remember feeling so good about myself for the long ...</p></blockquote></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.cn/posts/2015/04/theCleanCoder(2).html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.cn/posts/2015/04/theCleanCoder(1).html">The Clean Coder 笔记 (1)</a>
       </h1>
       <p class="meta"><time datetime="2015-04-03T00:00:00" pubdate>2015-04-03</time></p>
@@ -232,60 +270,6 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
     <a rel="full-article" href="http://particle128.cn/posts/2014/12/git-server.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
-      </h1>
-      <p class="meta"><time datetime="2014-12-09T00:00:00" pubdate>2014-12-09</time></p>
-</header>
-
-  <div class="entry-content"><h3>Chapter8 Boundaries</h3>
-<p>边界指的是第三方库和应用程序的边界。</p>
-<p>用包裹类，或适配器模式，来封装第三方代码（third-party code），可以：</p>
-<ol>
-<li>限制第三方代码的功能</li>
-<li>提供更一致和好用的接口</li>
-<li>减少受第三方代码改变带来的影响</li>
-</ol>
-<p>经常出现匪夷所思的bug，可能是由于第三方库导致的。所以，在使用之前应该做一个Learning Test（一遍学习文档，一遍写单元测试），确保我们需要的功能它都能正确提供。Learning Test好处：</p>
-<ol>
-<li>帮助学习文档</li>
-<li>确保得到如期的结果，避免以后bug不知道从哪儿来</li>
-<li>第三方库版本更新后，继续用它测试是否符合预期（很多时候我们都不及时更新第三方库，因为我们怕更新后带来新的问题)</li>
-</ol>
-<h3>Chapter9 Unit Tests</h3>
-<ul>
-<li>TDD（Test Driven Development）的三法则：写了失败的UT再写成产代码；一旦可以保证生产代码失败，就停止写UT；一旦生产代码通过了UT，就停止写生产代码。这样一轮循环大约30s。</li>
-<li>测试代码和生产代码一样重要，也要简洁、可读。因为如果一开始测试代码标准不高，随着生产代码的演化，阅读和修改单元测试的成本会非常高，高到一定程度 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2014/12/cleanCode(3).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2014/12/cleanCode(2).html">Clean Code (2)</a>
-      </h1>
-      <p class="meta"><time datetime="2014-12-06T00:00:00" pubdate>2014-12-06</time></p>
-</header>
-
-  <div class="entry-content"><h3>Chapter5 Formatting</h3>
-<ul>
-<li>你的代码可能随着版本的升级，逐渐被替换；但是你的代码风格/格式会被后继开发者一直传承下去。</li>
-<li>文件的长度：通常200行以内，最多500行</li>
-<li>C++类文件，通常遵循scissors rule，即上面是成员函数，下面是成员变量；java相反，上面是成员变量，下面是公有函数<br />
-根据Sun的<a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html">Code Convention for Java</a>，类中的成员的顺序如下：<br />
-1.static成员变量：public -&gt; protected -&gt; package -&gt; private<br />
-2.non-static成员变量：public -&gt; protected -&gt; package -&gt; private<br />
-3.构造函数<br />
-4.成员函数：按照语义顺序，而不是访问级别</li>
-<li>一行不超过120个字符，可以设置屏幕字符宽度为120，是否需要向右滚动屏幕是判断是否超过行限制的方法（Sun Java Convention规定是80个字符）</li>
-<li>操作符之间的空格：*和 ...</li></ul></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2014/12/cleanCode(2).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.cn/index3.html">&larr; Older</a>
 
@@ -300,16 +284,16 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
           <a href="http://particle128.cn/posts/2017/05/windbg_extension.html">用js给windbg写扩展</a>
       </li>
       <li class="post">
+          <a href="http://particle128.cn/posts/2017/04/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2017/03/EffectiveModernCpp.html">Effective Modern C++回顾总结笔记</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.cn/posts/2016/09/skiplist.html">跳表Skiplist</a>
       </li>
       <li class="post">
           <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.cn/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.cn/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
       </li>
     </ul>
   </section>
@@ -326,7 +310,7 @@ Some folks use QA as the bug catchers. They send them code that they haven't tho
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.cn/tag/load.html">load</a>,    <a href="http://particle128.cn/tag/pelican.html">pelican</a>,    <a href="http://particle128.cn/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.cn/tag/windbg_extension.html">windbg_extension</a>,    <a href="http://particle128.cn/tag/selenium.html">selenium</a>,    <a href="http://particle128.cn/tag/distributed.html">distributed</a>,    <a href="http://particle128.cn/tag/mysql.html">MySQL</a>,    <a href="http://particle128.cn/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.cn/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.cn/tag/linux.html">linux</a>,    <a href="http://particle128.cn/tag/select.html">select</a>,    <a href="http://particle128.cn/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.cn/tag/conversion.html">conversion</a>,    <a href="http://particle128.cn/tag/git.html">git</a>,    <a href="http://particle128.cn/tag/core-dump.html">core dump</a>,    <a href="http://particle128.cn/tag/lwp.html">lwp</a>,    <a href="http://particle128.cn/tag/storage.html">storage</a>,    <a href="http://particle128.cn/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.cn/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.cn/tag/blog.html">blog</a>,    <a href="http://particle128.cn/tag/health.html">health</a>,    <a href="http://particle128.cn/tag/storm.html">storm</a>,    <a href="http://particle128.cn/tag/android.html">android</a>,    <a href="http://particle128.cn/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.cn/tag/headache.html">headache</a>,    <a href="http://particle128.cn/tag/map.html">map</a>,    <a href="http://particle128.cn/tag/life.html">life</a>,    <a href="http://particle128.cn/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.cn/tag/finance.html">finance</a>,    <a href="http://particle128.cn/tag/python.html">python</a>,    <a href="http://particle128.cn/tag/trident.html">trident</a>,    <a href="http://particle128.cn/tag/ssl.html">ssl</a>,    <a href="http://particle128.cn/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.cn/tag/link.html">link</a>,    <a href="http://particle128.cn/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.cn/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.cn/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.cn/tag/vpn.html">vpn</a>,    <a href="http://particle128.cn/tag/c11.html">c++11</a>,    <a href="http://particle128.cn/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.cn/tag/goal.html">goal</a>,    <a href="http://particle128.cn/tag/logging.html">logging</a>,    <a href="http://particle128.cn/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.cn/tag/thread.html">thread</a>,    <a href="http://particle128.cn/tag/database.html">database</a>,    <a href="http://particle128.cn/tag/stl.html">STL</a>,    <a href="http://particle128.cn/tag/thought.html">thought</a>,    <a href="http://particle128.cn/tag/vector.html">vector</a>,    <a href="http://particle128.cn/tag/str.html">str</a>,    <a href="http://particle128.cn/tag/cpp.html">cpp</a>,    <a href="http://particle128.cn/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.cn/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.cn/tag/user.html">user</a>  </section>
+    <a href="http://particle128.cn/tag/load.html">load</a>,    <a href="http://particle128.cn/tag/pelican.html">pelican</a>,    <a href="http://particle128.cn/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.cn/tag/windbg_extension.html">windbg_extension</a>,    <a href="http://particle128.cn/tag/selenium.html">selenium</a>,    <a href="http://particle128.cn/tag/distributed.html">distributed</a>,    <a href="http://particle128.cn/tag/mysql.html">MySQL</a>,    <a href="http://particle128.cn/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.cn/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.cn/tag/linux.html">linux</a>,    <a href="http://particle128.cn/tag/select.html">select</a>,    <a href="http://particle128.cn/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.cn/tag/conversion.html">conversion</a>,    <a href="http://particle128.cn/tag/git.html">git</a>,    <a href="http://particle128.cn/tag/core-dump.html">core dump</a>,    <a href="http://particle128.cn/tag/lwp.html">lwp</a>,    <a href="http://particle128.cn/tag/storage.html">storage</a>,    <a href="http://particle128.cn/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.cn/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.cn/tag/blog.html">blog</a>,    <a href="http://particle128.cn/tag/designpattern.html">DesignPattern</a>,    <a href="http://particle128.cn/tag/health.html">health</a>,    <a href="http://particle128.cn/tag/storm.html">storm</a>,    <a href="http://particle128.cn/tag/android.html">android</a>,    <a href="http://particle128.cn/tag/effectivemoderncpp.html">EffectiveModernCpp</a>,    <a href="http://particle128.cn/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.cn/tag/headache.html">headache</a>,    <a href="http://particle128.cn/tag/map.html">map</a>,    <a href="http://particle128.cn/tag/life.html">life</a>,    <a href="http://particle128.cn/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.cn/tag/finance.html">finance</a>,    <a href="http://particle128.cn/tag/python.html">python</a>,    <a href="http://particle128.cn/tag/trident.html">trident</a>,    <a href="http://particle128.cn/tag/ssl.html">ssl</a>,    <a href="http://particle128.cn/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.cn/tag/link.html">link</a>,    <a href="http://particle128.cn/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.cn/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.cn/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.cn/tag/vpn.html">vpn</a>,    <a href="http://particle128.cn/tag/c11.html">c++11</a>,    <a href="http://particle128.cn/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.cn/tag/goal.html">goal</a>,    <a href="http://particle128.cn/tag/logging.html">logging</a>,    <a href="http://particle128.cn/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.cn/tag/thread.html">thread</a>,    <a href="http://particle128.cn/tag/database.html">database</a>,    <a href="http://particle128.cn/tag/stl.html">STL</a>,    <a href="http://particle128.cn/tag/thought.html">thought</a>,    <a href="http://particle128.cn/tag/vector.html">vector</a>,    <a href="http://particle128.cn/tag/str.html">str</a>,    <a href="http://particle128.cn/tag/cpp.html">cpp</a>,    <a href="http://particle128.cn/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.cn/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.cn/tag/user.html">user</a>  </section>
 
 
     <section>

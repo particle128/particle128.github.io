@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Effective Modern C++回顾总结笔记</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.cn/favicon.png" rel="icon">
+  <link href="http://particle128.cn/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.cn/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.cn/theme/js/ender.js"></script>
+  <script src="http://particle128.cn/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.cn/">particle128's Blog</a></h1>
+    <h2>May your choices reflect your hopes, not your fears.</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.cn/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://particle128.cn/archives.html">archives</a></li>
+    <li><a href="http://particle128.cn/category/tech.html">tech</a></li>
+    <li><a href="http://particle128.cn/category/note.html">note</a></li>
+    <li><a href="http://particle128.cn/category/life.html">life</a></li>
+      <li><a href="http://particle128.cn/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.cn/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">Effective Modern C++回顾总结笔记</h1>
+      <p class="meta"><time datetime="2017-03-02T00:00:00" pubdate>2017-03-02</time></p>
+</header>
+
+  <div class="entry-content"><p>插播一段最近看书的心得:<br />
+对于第一遍看完，感觉书里面信息量挺大，不能完全吸收或者吸收起来有点困难的，要在适当的时机看第二遍以及第三遍。<br />
+第一遍不要记笔记，因为以当时的理解程度，记笔记需要重新梳理一遍，而且要记得东西很多，所以非常花时间，直接重复看也容易造成疲劳和厌倦，影响吸收效率。<br />
+隔一段时间后，第二遍看。这时候，每一节看之前，先不打开书，回忆这一节介绍的东西，主要回答what和why。然后，想不出来的，带着疑虑去看书。这一遍，对于回忆不起来的，或者感觉很精辟的，可以记一下简单的笔记。<br />
+当然，对于熟悉的领域，看一遍的时候，也可以按照看第二遍的方法。  </p>
+<h2>Chapter 1 Deducing Types</h2>
+<h3>Item 1: Understand template type deduction.</h3>
+<p>三种情况：<code>T, T&amp;&amp;, T&amp; / T*</code>。注意const和volatile能不能带进推倒的类型。<br />
+array/fun 会转换成 pointer。</p>
+<h3>Item 2: Understand auto type deduction.</h3>
+<p>auto跟模板类型推断一样，除了一点：可以把{...}理解为<code>initializer_list&lt;&gt;</code></p>
+<h3>Item 3: Understand decltype.</h3>
+<p>主要用在模板类/函数里，根据某个模板类型的参数/表达式，来创建同类型的变量或返回值。</p>
+<h3>Item 4: Know how to view deduced types.</h3>
+<p>decltype(x)传入未定义的模板类，typeid(x).name()。</p>
+<h2>Chapter 2 auto</h2>
+<h3>Item 5: Prefer auto to explicit type declarations.</h3>
+<p>用auto变量存lambda比用function&lt;&gt;更快/省内存。</p>
+<h3>Item 6: Be aware of the typed initializer idiom.</h3>
+<p>有时候代理类会让auto推导的类型，不是我们所想的。比如<code>Sum&lt;Matrix, Matrix&gt;</code>是 Matrix operator+的返回值，可以这样处理：
+<code>auto s = static_cast&lt;Matrix&gt;(m1+m2+m3)</code></p>
+<h2>Chapter 3 From C++98 to C++11 and C++14</h2>
+<h3>Item 7: Distinguish () and {} when creating objects.</h3>
+<p>{}直接类初始化式，可用在各处。</p>
+<h3>Item 8: Prefer nullptr to 0 and NULL.</h3>
+<p>重载会匹配<code>void*</code> / <code>Widget*</code> 而不是int；模板推导也更正确。</p>
+<h3>Item 9: Prefer alias declarations to typedefs.</h3>
+<p>支持模板化。</p>
+<h3>Item 10: Prefer scoped enums to unscoped enums.</h3>
+<p>不污染外部，强类型而不是int，不需要特殊处理就能声明。</p>
+<h3>Item 11: Prefer deleted functions to private undefined ones.</h3>
+<p>更简单且不会被成员/友员看到，还可以用在类外，禁用某些类型转换，禁用某些模板实例化。
+想要让一个类不可拷贝，有两种方式，更推荐第一种，因为看见类名的第一行就知道这个类不可拷贝了，而不用下去找拷贝构造函数和拷贝操作符。C++下noncopyable的实现也是用的delete。</p>
+<ol>
+<li><code>class A: boost::noncopyable</code></li>
+<li><code>class A {A(const A&amp;) = delete; A&amp; operator=(const A&amp;) = delete;};</code></li>
+</ol>
+<h3>Item 12: Declare overriding functions override.</h3>
+<p>确保你确定override了而不是定义了另一个同名但不完全一样的函数。</p>
+<h3>Item 13: Prefer const_iterators to iterators.</h3>
+<p>限制权限。</p>
+<h3>Item 14: Use constexpr whenever possible.</h3>
+<p>编译时常量的使用范围更广。</p>
+<h3>Item 15: Make const member functions thread-safe.</h3>
+<p>const函数里修改mutable成员，如果不加锁可能就不thread-safe了。但是调用者可能会默认const成员都是thread-safe的，所以最好在const实现里做成thread-safe的。</p>
+<h3>Item 16: Declare functions noexcept whenever possible.</h3>
+<p>更适用于类库。</p>
+<h3>Item 17: Consider pass by value for cheap-to-move parameters that are</h3>
+<p>always copied.  </p>
+<p>然而还是const T&amp;更快。</p>
+<h3>Item 18: Consider emplacement instead of insertion.</h3>
+<p>理论上，有时候效率类似（外面已经构造好对象了），有时候更快（少构造一次对象）。</p>
+<h3>Item 19: Understand special member function generation.</h3>
+<p>规则很复杂，不用记，用的时候再来查阅吧。</p>
+<h2>Chapter 4 Smart Pointers</h2>
+<h3>Item 20: Use std::unique_ptr for exclusive-ownership resource management.</h3>
+<h3>Item 21: Use std::shared_ptr for shared-ownership resource management.</h3>
+<h3>Item 22: Use std::weak_ptr for std::shared_ptr-like pointers that can dangle.</h3>
+<h3>Item 23: Prefer std::make_unique and std::make_shared to direct use of new.</h3>
+<h3>Item 24: When using the Pimpl Idiom, define special member functions in the implementation file.</h3>
+<p>unique_ptr</p>
+<ol>
+<li>除非有自定义的deleter(lambda除外)，否则和raw pointer占用一样大小的内存</li>
+<li>常用于：tree structure，Factory method，Pimpl</li>
+<li>可支持数组但不常用，宁用std::array  / std::vector</li>
+</ol>
+<p>shared_ptr</p>
+<ol>
+<li>占raw pointer / unique_ptr 2倍大小，一个指针指向实际对象，一个指针指向control block</li>
+<li>control block里有：ref count, weak count, virtual ptr (大部分实现), [allocator], [deleter]</li>
+<li>继承自<code>std::enable_shared_from_this</code>的类可以安全的在类成员函数里把this传给某个shared_ptr</li>
+</ol>
+<p>weak_ptr</p>
+<ol>
+<li>占用空间/开销 = shared_ptr</li>
+<li>常用于：caching, observer, 打破shared_ptr环（otherwise, leak)  </li>
+</ol>
+<h2>Chapter 5 Rvalue References, Move Semantics, and Perfect Forwarding</h2>
+<h3>Item 25: Understand std::move and std::forward.</h3>
+<p>forward用在模板里，把universal ref对应的参数的实际类型（保持左右值属性）传递给其他函数。</p>
+<h3>Item 26: Distinguish universal references from rvalue references.</h3>
+<p>universal ref或叫forward ref，条件是：存在类型推导，且格式严格为T&amp;&amp;或auto&amp;&amp;。</p>
+<h3>Item 27: Use std::move on rvalue references, std::forward on universal references.</h3>
+<p>编译器可以保证，局部变量（包括值类型参数）被return时，要么直接在外面构造（RVO），要么move出去。</p>
+<h3>Item 28: Avoid overloading on universal references.</h3>
+<p>推导成完全匹配，优先级最高。</p>
+<h3>Item 29: Familiarize yourself with alternatives to overloading on universal references.</h3>
+<h3>Item 30: Understand reference collapsing.</h3>
+<h3>Item 31: Assume that move operations are not present, not cheap, and not used.</h3>
+<p>not present: 编译器没自动生成（比如你定义了自己的拷贝构造函数）或delete掉了。
+not cheap: std::array或SSO的string。
+not used: 没noexcept的move构造不能用在container.push_back里。</p>
+<h3>Item 32: Familiarize yourself with perfect forwarding failure cases.</h3>
+<h2>Chapter 6 Lambda Expressions</h2>
+<h3>Item 33: Avoid default capture modes.</h3>
+<p>防止引入了没注意的成员。</p>
+<h3>Item 34: Use init capture to move objects into closures.</h3>
+<h3>Item 35: Use decltype on auto&amp;&amp; parameters to std::forward them.</h3>
+<h3>Item 36: Prefer lambdas to std::bind.</h3>
+<p>表达力更强，可读性更强。</p></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+<time datetime="2017-03-02T00:00:00" pubdate>2017-03-02</time>  <span class="categories">
+    <a class="category" href="http://particle128.cn/tag/cpp.html">cpp</a>
+    <a class="category" href="http://particle128.cn/tag/effectivemoderncpp.html">EffectiveModernCpp</a>
+  </span>
+</p>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.cn/posts/2017/05/windbg_extension.html">用js给windbg写扩展</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2017/04/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2017/03/EffectiveModernCpp.html">Effective Modern C++回顾总结笔记</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2016/09/skiplist.html">跳表Skiplist</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.cn/category/life.html">life</a></li>
+        <li><a href="http://particle128.cn/category/note.html">note</a></li>
+        <li><a href="http://particle128.cn/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.cn/tag/load.html">load</a>,    <a href="http://particle128.cn/tag/pelican.html">pelican</a>,    <a href="http://particle128.cn/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.cn/tag/windbg_extension.html">windbg_extension</a>,    <a href="http://particle128.cn/tag/selenium.html">selenium</a>,    <a href="http://particle128.cn/tag/distributed.html">distributed</a>,    <a href="http://particle128.cn/tag/mysql.html">MySQL</a>,    <a href="http://particle128.cn/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.cn/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.cn/tag/linux.html">linux</a>,    <a href="http://particle128.cn/tag/select.html">select</a>,    <a href="http://particle128.cn/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.cn/tag/conversion.html">conversion</a>,    <a href="http://particle128.cn/tag/git.html">git</a>,    <a href="http://particle128.cn/tag/core-dump.html">core dump</a>,    <a href="http://particle128.cn/tag/lwp.html">lwp</a>,    <a href="http://particle128.cn/tag/storage.html">storage</a>,    <a href="http://particle128.cn/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.cn/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.cn/tag/blog.html">blog</a>,    <a href="http://particle128.cn/tag/designpattern.html">DesignPattern</a>,    <a href="http://particle128.cn/tag/health.html">health</a>,    <a href="http://particle128.cn/tag/storm.html">storm</a>,    <a href="http://particle128.cn/tag/android.html">android</a>,    <a href="http://particle128.cn/tag/effectivemoderncpp.html">EffectiveModernCpp</a>,    <a href="http://particle128.cn/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.cn/tag/headache.html">headache</a>,    <a href="http://particle128.cn/tag/map.html">map</a>,    <a href="http://particle128.cn/tag/life.html">life</a>,    <a href="http://particle128.cn/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.cn/tag/finance.html">finance</a>,    <a href="http://particle128.cn/tag/python.html">python</a>,    <a href="http://particle128.cn/tag/trident.html">trident</a>,    <a href="http://particle128.cn/tag/ssl.html">ssl</a>,    <a href="http://particle128.cn/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.cn/tag/link.html">link</a>,    <a href="http://particle128.cn/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.cn/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.cn/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.cn/tag/vpn.html">vpn</a>,    <a href="http://particle128.cn/tag/c11.html">c++11</a>,    <a href="http://particle128.cn/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.cn/tag/goal.html">goal</a>,    <a href="http://particle128.cn/tag/logging.html">logging</a>,    <a href="http://particle128.cn/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.cn/tag/thread.html">thread</a>,    <a href="http://particle128.cn/tag/database.html">database</a>,    <a href="http://particle128.cn/tag/stl.html">STL</a>,    <a href="http://particle128.cn/tag/thought.html">thought</a>,    <a href="http://particle128.cn/tag/vector.html">vector</a>,    <a href="http://particle128.cn/tag/str.html">str</a>,    <a href="http://particle128.cn/tag/cpp.html">cpp</a>,    <a href="http://particle128.cn/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.cn/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.cn/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://docs.getpelican.com" target="_blank">Pelicon</a></li>
+            <li><a href="http://www.google.com/webmasters" target="_blank">Google webmaster</a></li>
+            <li><a href="https://disqus.com" target="_blank">Disqus</a></li>
+            <li><a href="https://www.dnspod.cn/Domain" target="_blank">DNSPod</a></li>
+            <li><a href="https://www.godaddy.com" target="_blank">Godaddy</a></li>
+            <li><a href="http://www.goyouhuima.com" target="_blank">Godaddy优惠活动</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+          var disqus_identifier = '/posts/2017/03/EffectiveModernCpp.html';
+          var disqus_url = 'http://particle128.cn/posts/2017/03/EffectiveModernCpp.html';
+          var disqus_title = 'Effective Modern C++回顾总结笔记';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

@@ -82,6 +82,50 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.cn/posts/2017/04/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
+      </h1>
+      <p class="meta"><time datetime="2017-04-10T00:00:00" pubdate>2017-04-10</time></p>
+</header>
+
+  <div class="entry-content"><h2>原则</h2>
+<ul>
+<li>针对接口编程，而不是针对实现编程  </li>
+</ul>
+<p>Example: DLAlgo类有个成员是LexicologicalSort对象，里面好多方法都使用了这个对象，这个对象也被一个GetSort()方法返回到外面。考虑对它进行修改（用LengthSort），和扩充（多支持一种Sort方法），会遇到什么问题？如果这个类的成员是Sort对象（抽象接口的对象）呢？  </p>
+<ul>
+<li>优先使用对象组合，而不是类继承  </li>
+</ul>
+<p>原因：<br />
+1. 优先继承的话，会让继承树膨胀，可维护性变差。特别是有两种以上附加属性的时候，比如CompressAndAsciiStream.<br />
+2. 继承会破坏封装，增加耦合，复用的时候可能发现基类的某些东西和它不适用，故只能修改基类和它的其他派生类。比如Person本来有GetAge()方法，它最初的两个派生类(Student和Teacher)没有任何问题。这个时候，我突然想用Alien继承自Person了，因为除了GetAge之外，Person的成员Alien都需要。但是因为GetAge()不适用，需要同时修改Person，student和teacher，把Person的GetAge()挪到Student和Teacher里面。这就导致很多代码的修改。如果用组合，Alien包含一个Person成员，它只要不把Person的GetAge()暴露出来就可以了 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.cn/posts/2017/04/design-pattern.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.cn/posts/2017/03/EffectiveModernCpp.html">Effective Modern C++回顾总结笔记</a>
+      </h1>
+      <p class="meta"><time datetime="2017-03-02T00:00:00" pubdate>2017-03-02</time></p>
+</header>
+
+  <div class="entry-content"><p>插播一段最近看书的心得:<br />
+对于第一遍看完，感觉书里面信息量挺大，不能完全吸收或者吸收起来有点困难的，要在适当的时机看第二遍以及第三遍。<br />
+第一遍不要记笔记，因为以当时的理解程度，记笔记需要重新梳理一遍，而且要记得东西很多，所以非常花时间，直接重复看也容易造成疲劳和厌倦，影响吸收效率。<br />
+隔一段时间后，第二遍看。这时候，每一节看之前，先不打开书，回忆这一节介绍的东西，主要回答what和why。然后，想不出来的，带着疑虑去看书。这一遍，对于回忆不起来的，或者感觉很精辟的，可以记一下简单的笔记。<br />
+当然，对于熟悉的领域，看一遍的时候，也可以按照看第二遍的方法。  </p>
+<h2>Chapter 1 Deducing Types</h2>
+<h3>Item 1: Understand template type deduction.</h3>
+<p>三种情况：<code>T, T&amp;&amp;, T&amp; / T*</code>。注意const和volatile能不能带进推倒的类型。<br />
+array/fun 会转换成 pointer ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.cn/posts/2017/03/EffectiveModernCpp.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.cn/posts/2016/09/skiplist.html">跳表Skiplist</a>
       </h1>
       <p class="meta"><time datetime="2016-09-16T00:00:00" pubdate>2016-09-16</time></p>
@@ -247,44 +291,6 @@ If you break up a large task into many smaller tasks and estimate them independe
     <a rel="full-article" href="http://particle128.cn/posts/2015/04/theCleanCoder(4).html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2015/04/theCleanCoder(3).html">The Clean Coder 笔记 (3)</a>
-      </h1>
-      <p class="meta"><time datetime="2015-04-05T00:00:00" pubdate>2015-04-05</time></p>
-</header>
-
-  <div class="entry-content"><h3>Chapter6 Practicing</h3>
-<blockquote>
-<p>Turnaround Time. <br />
-Doing anything quickly requires practice. Spinning around the code/test loop quickly requires you to make very quick decisions. Making decisions quickly means being able to recognize a vast number of situations and problems and simply know that to do to address them.<br />
-Speed depends on ...</p></blockquote></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2015/04/theCleanCoder(3).html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2015/04/theCleanCoder(2).html">The Clean Coder 笔记 (2)</a>
-      </h1>
-      <p class="meta"><time datetime="2015-04-04T00:00:00" pubdate>2015-04-04</time></p>
-</header>
-
-  <div class="entry-content"><h3>Chapter4 Coding</h3>
-<blockquote>
-<p>Preparedness. <br />
-If you are tired or distracted, do not code. You'll only wind up redoing what you did. Instead, find a way to eliminate the distractions and settle your mind. </p>
-</blockquote>
-<p>累或者走神的时候，别写代码。先把糟糕的状态排除或者减轻了，再来写代码。</p>
-<blockquote>
-<p>3 AM Code. <br />
-I remember feeling so good about myself for the long ...</p></blockquote></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2015/04/theCleanCoder(2).html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.cn/index2.html">&larr; Older</a>
 
@@ -298,16 +304,16 @@ I remember feeling so good about myself for the long ...</p></blockquote></div>
           <a href="http://particle128.cn/posts/2017/05/windbg_extension.html">用js给windbg写扩展</a>
       </li>
       <li class="post">
+          <a href="http://particle128.cn/posts/2017/04/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2017/03/EffectiveModernCpp.html">Effective Modern C++回顾总结笔记</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.cn/posts/2016/09/skiplist.html">跳表Skiplist</a>
       </li>
       <li class="post">
           <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.cn/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.cn/posts/2015/04/smart-ptr.html">C++11专题：智能指针</a>
       </li>
     </ul>
   </section>
@@ -324,7 +330,7 @@ I remember feeling so good about myself for the long ...</p></blockquote></div>
 
   <section>
   <h1>Tags</h1>
-    <a href="http://particle128.cn/tag/load.html">load</a>,    <a href="http://particle128.cn/tag/pelican.html">pelican</a>,    <a href="http://particle128.cn/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.cn/tag/windbg_extension.html">windbg_extension</a>,    <a href="http://particle128.cn/tag/selenium.html">selenium</a>,    <a href="http://particle128.cn/tag/distributed.html">distributed</a>,    <a href="http://particle128.cn/tag/mysql.html">MySQL</a>,    <a href="http://particle128.cn/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.cn/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.cn/tag/linux.html">linux</a>,    <a href="http://particle128.cn/tag/select.html">select</a>,    <a href="http://particle128.cn/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.cn/tag/conversion.html">conversion</a>,    <a href="http://particle128.cn/tag/git.html">git</a>,    <a href="http://particle128.cn/tag/core-dump.html">core dump</a>,    <a href="http://particle128.cn/tag/lwp.html">lwp</a>,    <a href="http://particle128.cn/tag/storage.html">storage</a>,    <a href="http://particle128.cn/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.cn/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.cn/tag/blog.html">blog</a>,    <a href="http://particle128.cn/tag/health.html">health</a>,    <a href="http://particle128.cn/tag/storm.html">storm</a>,    <a href="http://particle128.cn/tag/android.html">android</a>,    <a href="http://particle128.cn/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.cn/tag/headache.html">headache</a>,    <a href="http://particle128.cn/tag/map.html">map</a>,    <a href="http://particle128.cn/tag/life.html">life</a>,    <a href="http://particle128.cn/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.cn/tag/finance.html">finance</a>,    <a href="http://particle128.cn/tag/python.html">python</a>,    <a href="http://particle128.cn/tag/trident.html">trident</a>,    <a href="http://particle128.cn/tag/ssl.html">ssl</a>,    <a href="http://particle128.cn/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.cn/tag/link.html">link</a>,    <a href="http://particle128.cn/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.cn/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.cn/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.cn/tag/vpn.html">vpn</a>,    <a href="http://particle128.cn/tag/c11.html">c++11</a>,    <a href="http://particle128.cn/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.cn/tag/goal.html">goal</a>,    <a href="http://particle128.cn/tag/logging.html">logging</a>,    <a href="http://particle128.cn/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.cn/tag/thread.html">thread</a>,    <a href="http://particle128.cn/tag/database.html">database</a>,    <a href="http://particle128.cn/tag/stl.html">STL</a>,    <a href="http://particle128.cn/tag/thought.html">thought</a>,    <a href="http://particle128.cn/tag/vector.html">vector</a>,    <a href="http://particle128.cn/tag/str.html">str</a>,    <a href="http://particle128.cn/tag/cpp.html">cpp</a>,    <a href="http://particle128.cn/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.cn/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.cn/tag/user.html">user</a>  </section>
+    <a href="http://particle128.cn/tag/load.html">load</a>,    <a href="http://particle128.cn/tag/pelican.html">pelican</a>,    <a href="http://particle128.cn/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.cn/tag/windbg_extension.html">windbg_extension</a>,    <a href="http://particle128.cn/tag/selenium.html">selenium</a>,    <a href="http://particle128.cn/tag/distributed.html">distributed</a>,    <a href="http://particle128.cn/tag/mysql.html">MySQL</a>,    <a href="http://particle128.cn/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.cn/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.cn/tag/linux.html">linux</a>,    <a href="http://particle128.cn/tag/select.html">select</a>,    <a href="http://particle128.cn/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.cn/tag/conversion.html">conversion</a>,    <a href="http://particle128.cn/tag/git.html">git</a>,    <a href="http://particle128.cn/tag/core-dump.html">core dump</a>,    <a href="http://particle128.cn/tag/lwp.html">lwp</a>,    <a href="http://particle128.cn/tag/storage.html">storage</a>,    <a href="http://particle128.cn/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.cn/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.cn/tag/blog.html">blog</a>,    <a href="http://particle128.cn/tag/designpattern.html">DesignPattern</a>,    <a href="http://particle128.cn/tag/health.html">health</a>,    <a href="http://particle128.cn/tag/storm.html">storm</a>,    <a href="http://particle128.cn/tag/android.html">android</a>,    <a href="http://particle128.cn/tag/effectivemoderncpp.html">EffectiveModernCpp</a>,    <a href="http://particle128.cn/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.cn/tag/headache.html">headache</a>,    <a href="http://particle128.cn/tag/map.html">map</a>,    <a href="http://particle128.cn/tag/life.html">life</a>,    <a href="http://particle128.cn/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.cn/tag/finance.html">finance</a>,    <a href="http://particle128.cn/tag/python.html">python</a>,    <a href="http://particle128.cn/tag/trident.html">trident</a>,    <a href="http://particle128.cn/tag/ssl.html">ssl</a>,    <a href="http://particle128.cn/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.cn/tag/link.html">link</a>,    <a href="http://particle128.cn/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.cn/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.cn/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.cn/tag/vpn.html">vpn</a>,    <a href="http://particle128.cn/tag/c11.html">c++11</a>,    <a href="http://particle128.cn/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.cn/tag/goal.html">goal</a>,    <a href="http://particle128.cn/tag/logging.html">logging</a>,    <a href="http://particle128.cn/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.cn/tag/thread.html">thread</a>,    <a href="http://particle128.cn/tag/database.html">database</a>,    <a href="http://particle128.cn/tag/stl.html">STL</a>,    <a href="http://particle128.cn/tag/thought.html">thought</a>,    <a href="http://particle128.cn/tag/vector.html">vector</a>,    <a href="http://particle128.cn/tag/str.html">str</a>,    <a href="http://particle128.cn/tag/cpp.html">cpp</a>,    <a href="http://particle128.cn/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.cn/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.cn/tag/user.html">user</a>  </section>
 
 
     <section>

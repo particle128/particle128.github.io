@@ -5,35 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.cn/index.html</loc>
-<lastmod>2017-07-18T23:29:58-00:00</lastmod>
+<lastmod>2017-08-26T23:23:22-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.cn/archives.html</loc>
-<lastmod>2017-07-18T23:29:58-00:00</lastmod>
+<lastmod>2017-08-26T23:23:22-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.cn/tags.html</loc>
-<lastmod>2017-07-18T23:29:58-00:00</lastmod>
+<lastmod>2017-08-26T23:23:22-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.cn/categories.html</loc>
-<lastmod>2017-07-18T23:29:58-00:00</lastmod>
+<lastmod>2017-08-26T23:23:22-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://particle128.cn/pages/aboutme.html</loc>
-<lastmod>2014-12-17T18:07:12-00:00</lastmod>
+<lastmod>2017-08-26T21:43:51-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
 </url>
@@ -48,6 +48,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://particle128.cn/posts/2017/05/windbg_extension.html</loc>
 <lastmod>2017-05-28T00:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://particle128.cn/posts/2017/04/design-pattern.html</loc>
+<lastmod>2017-04-10T00:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://particle128.cn/posts/2017/03/EffectiveModernCpp.html</loc>
+<lastmod>2017-03-02T00:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
@@ -649,7 +663,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.cn/category/note.html</loc>
-<lastmod>2016-06-26T00:00:00-00:00</lastmod>
+<lastmod>2017-04-10T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -802,6 +816,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://particle128.cn/tag/designpattern.html</loc>
+<lastmod>2017-04-10T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://particle128.cn/tag/health.html</loc>
 <lastmod>2013-11-04T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -818,6 +839,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://particle128.cn/tag/android.html</loc>
 <lastmod>2013-09-03T00:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://particle128.cn/tag/effectivemoderncpp.html</loc>
+<lastmod>2017-03-02T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1006,7 +1034,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://particle128.cn/tag/cpp.html</loc>
-<lastmod>2014-03-08T00:00:00-00:00</lastmod>
+<lastmod>2017-03-02T00:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
