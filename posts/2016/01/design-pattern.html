@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>设计模式-可复用面向对象软件的基础</title>
+  <meta name="author" content="particle128">
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="http://particle128.cn/favicon.png" rel="icon">
+  <link href="http://particle128.cn/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+  <script src="http://particle128.cn/theme/js/modernizr-2.0.js"></script>
+  <script src="http://particle128.cn/theme/js/ender.js"></script>
+  <script src="http://particle128.cn/theme/js/octopress.js" type="text/javascript"></script>
+
+  <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://particle128.cn/">particle128's Blog</a></h1>
+    <h2>May your choices reflect your hopes, not your fears.</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://particle128.cn/" rel="subscribe-rss">RSS</a></li>
+</ul>
+
+<!-- TODO: add search here
+<form action="" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://particle128.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+-->
+
+<ul class="main-navigation">
+    <li><a href="http://particle128.cn/archives.html">archives</a></li>
+    <li><a href="http://particle128.cn/category/tech.html">tech</a></li>
+    <li><a href="http://particle128.cn/category/note.html">note</a></li>
+    <li><a href="http://particle128.cn/category/life.html">life</a></li>
+      <li><a href="http://particle128.cn/pages/aboutme.html">About me</a></li>
+      <li><a href="http://particle128.cn/pages/search.html">Search</a></li>
+    <!-- TODO: add categories here? -->
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">设计模式-可复用面向对象软件的基础</h1>
+      <p class="meta"><time datetime="2016-01-05T00:00:00" pubdate>2016-01-05</time></p>
+</header>
+
+  <div class="entry-content"><h2>原则</h2>
+<ul>
+<li>针对接口编程，而不是针对实现编程  </li>
+</ul>
+<p>Example: DLAlgo类有个成员是LexicologicalSort对象，里面好多方法都使用了这个对象，这个对象也被一个GetSort()方法返回到外面。考虑对它进行修改（用LengthSort），和扩充（多支持一种Sort方法），会遇到什么问题？如果这个类的成员是Sort对象（抽象接口的对象）呢？  </p>
+<ul>
+<li>优先使用对象组合，而不是类继承  </li>
+</ul>
+<p>原因：<br />
+1. 优先继承的话，会让继承树膨胀，可维护性变差。特别是有两种以上附加属性的时候，比如CompressAndAsciiStream.<br />
+2. 继承会破坏封装，增加耦合，复用的时候可能发现基类的某些东西和它不适用，故只能修改基类和它的其他派生类。比如Person本来有GetAge()方法，它最初的两个派生类(Student和Teacher)没有任何问题。这个时候，我突然想用Alien继承自Person了，因为除了GetAge之外，Person的成员Alien都需要。但是因为GetAge()不适用，需要同时修改Person，student和teacher，把Person的GetAge()挪到Student和Teacher里面。这就导致很多代码的修改。如果用组合，Alien包含一个Person成员，它只要不把Person的GetAge()暴露出来就可以了，而Teacher和Student会暴露出来。<br />
+3. 组合更加灵活，可以在运行期给一个子类型绑定不同的父类型（Worker绑定Person和Machine)  </p>
+<h2>选择继承还是组合的考虑</h2>
+<p>is-a还是has-a的关系？<br />
+typeA所有暴露的方法，typeB都要暴露吗？  </p>
+<h2>Open/Closed Principle</h2>
+<p>software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification  </p>
+<p>Inherit from abstract class, or concrete base class  </p>
+<h2>23种设计模式</h2>
+<p>下面设计模式目的，都是单独属于他们的，共同的还有：易于扩展、易于修改、松耦合。  </p>
+<h3>Singleton</h3>
+<p>目的：实现在程序生存期只有一个实例的类<br />
+例如：  </p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Singleton</span>  
+<span class="p">{</span>  
+<span class="nl">public:</span>  
+<span class="k">static</span> <span class="n">Singleton</span> <span class="o">*</span><span class="n">Instance</span><span class="p">(</span><span class="kt">int</span> <span class="n">arg</span><span class="p">)</span>  
+<span class="p">{</span>  
+<span class="k">if</span> <span class="p">(</span><span class="n">_instance</span> <span class="o">==</span> <span class="n">nullptr</span><span class="p">)</span>  
+     <span class="n">_instance</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Singleton</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>  
+<span class="k">return</span> <span class="n">_instance</span><span class="p">;</span>  
+<span class="p">}</span>  
+<span class="nl">protected:</span>  
+<span class="n">Singleton</span><span class="p">(</span><span class="kt">int</span> <span class="n">arg</span><span class="p">);</span>  
+<span class="nl">private:</span>  
+<span class="k">static</span> <span class="n">Singleton</span> <span class="o">*</span> <span class="n">_instance</span><span class="p">;</span>  
+<span class="p">}</span>  
+</pre></div>
+
+
+<h3>Adapter</h3>
+<p>目的：调整类的接口/方法原型，适应客户程序的需求。<br />
+例如：通过增加adapter可以对客户程序屏幕类库的变动，或者使接口更加好用（提供各种缺省值，或者增加一些更好用的接口）。  </p>
+<h3>Proxy</h3>
+<p>目的：给类增加一些特殊的、对客户程序透明的功能<br />
+例如：<br />
+1. lazy evaluation：imageproxy类包含image对象，初始化imageproxy这个类的时候，并不真正初始化image(开销很大)，而是在调用Draw()的时候才初始化它。<br />
+2. remote call：rpc库的proxy可能在你sendrequest时，把你的对象编码成一种格式，再发出去。<br />
+3. smart reference：智能指针在你复制共享指针的时候，做了引用计数，以便自动帮你释放掉。<br />
+4. access protection：某些类在你访问一些功能的时候，检查你的权限。<br />
+5. copy-on-write：当你复制某些对象的时候，引用计数+1，真正写这个对象的时候，复制一份出来并且引用计数-1。  </p>
+<h3>Strategy</h3>
+<p>目的：把不同的方法放到不同的strategy类里，在客户类里，根据实际的strategy类型，调用相应的方法(strategy-&gt;Prepare(), stategy-&gt;Process()...)。Context包含了一个Strategy抽象基类的对象，是“用组合替代继承和面向接口而不是实现”这一原则的最典型的应用。这种方法，替代了继承，替代了if-else结构。  </p>
+<h3>Decorator</h3>
+<p>目的：给一个类添加一系列额外功能的时候，不能直接写到原来的类里面，因为Open/Closed Principle；用继承会变成一团糟，因为额外功能多余两个，而且可能重复组合。decorator来解决这个问题。<br />
+例子：<br />
+Stream, FileStream, MemStream，DecoratorStream，CompressStream, AsciiStream<br />
+CompressAsciiCompressFileStream -&gt;<br />
+new CompressStream(new AsciiStream(new CompressStream(new FileStream("path/to/file"))));  </p>
+<h3>Observer</h3>
+<p>目的：一个类的状态变动的时候，希望立即通知到所有关心者。<br />
+例子：MVC中，controller可能改动model（数据库内容），这个改动通过调用for (ob: observers) {ob.Update();}来通知给所有的关心者（view1和view2)，以便实时显示出来这种变化。<br />
+例子：DigitalClock和OriginalClock都有依赖于TickTimer，TickTimer每秒修改一次它的sec成员，这个时候Notify所有clock，clock的Update程序读取TickTimer的sec，然后显示出来。  </p>
+<h3>Flyweight</h3>
+<p>目的：通过共享对象来节省内存<br />
+例子：文档编辑器，可以经过如下演化：<br />
+1. 每个字符都有一个对象，字符对象里含有这个字符的颜色、字体信息。new Character(new Font("Romain"), new Color("red"))。<br />
+优点：绘制文档的时候简单了，迭代每个字符，用字符自带的字体和颜色对象（里面存了一些信息，比如RGB等）进行绘制<br />
+缺点：大量重复对象，占用太大内存<br />
+2. 每个字符都有一个对象，但是它所引用的字符颜色、字体信息，是来自一个共享对象池的，字符对象里只包含指向这个对象的指针/索引即可，这个对象池按需创建，不会浪费。<br />
+优点：节省了大量Font和Color对象<br />
+缺点：每个字符对象需要多个指针/索引，也占用很大内存<br />
+3. 把所有字符放在一个链表里，把相邻的share相同Font的字符拼在一起管理，形成Font B-tree，Color也类似形成Color B-tree。插入/删除/更改文档的时候，最多更新三个结构。<br />
+优点：节省了大量指针/索引的开销。<br />
+缺点：实现复杂了一些，效率比之前低一些。  </p>
+<h3>Bridge</h3>
+<p>目的：分离接口和实现。单接口单实现就是Pimp（隐藏细节、减少编译时间），可以顺便做了Adapter和Agent（修改/添加接口，增加隐藏功能）。多接口多实现类似于Strategy。  </p>
+<h3>Factory Method &amp; Abstract Factory</h3>
+<p>目的：用单独的类来封装一个或多个工厂方法，帮助用户隔绝具体类。如果一个抽象工厂类包含多个产品时，该方法还能提供一定的配套特性，限制用户随便组合产品。<br />
+例子：<br />
+1. 考虑1个工厂方法的工厂类，用参数来识别创建不同产品。<br />
+假设有三种产品Product1，Product2，Product3，继承自接口Product。用户需要使用这个product。为了不让用户接触到这么些具体的product，因为product可能变化很多（增加，或修改），只通过接口来访问，就需要某个地方new一个具体的product。工厂类就负责干这个事儿。他知道product1、2、3，它可以根据用户给一个参数来选择用哪个product。<br />
+这样，产品增加或修改的时候，工厂类肯定要修改和重新编译，但是用户不需要，因为factory的接口没变。<br />
+2. 考虑1个工厂方法的工厂类，用继承来创建不同产品。<br />
+Product1有一个Product1Factory，Product2有一个Product2Factory...这样，client需要product2的时候，需要ProductFactory::Instance()-&gt;CreateProduct()来访问。增加新的product，就要增加新的工厂类，客户端需要知道新的类。但是，即使这样，也是有好处的：修改product2，不需要用户重新编译。<br />
+BTW：对于C++，可以用模板来代替每次新增product都要新增一个工厂类的尴尬。  </p>
+<h3>Composite</h3>
+<p>目的：让客户代码以相同的方式来对待组合类和普通类。<br />
+例子：<br />
+ISR，ISRAnd, ISROr  </p></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">particle128</span>
+  </span>
+<time datetime="2016-01-05T00:00:00" pubdate>2016-01-05</time>  <span class="categories">
+    <a class="category" href="http://particle128.cn/tag/designpattern.html">DesignPattern</a>
+  </span>
+</p>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://particle128.cn/posts/2017/05/windbg_extension.html">用js给windbg写扩展</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2017/03/EffectiveModernCpp.html">Effective Modern C++回顾总结笔记</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2016/09/skiplist.html">跳表Skiplist</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
+      </li>
+      <li class="post">
+          <a href="http://particle128.cn/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://particle128.cn/category/life.html">life</a></li>
+        <li><a href="http://particle128.cn/category/note.html">note</a></li>
+        <li><a href="http://particle128.cn/category/tech.html">tech</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://particle128.cn/tag/load.html">load</a>,    <a href="http://particle128.cn/tag/pelican.html">pelican</a>,    <a href="http://particle128.cn/tag/expertc.html">ExpertC</a>,    <a href="http://particle128.cn/tag/windbg_extension.html">windbg_extension</a>,    <a href="http://particle128.cn/tag/selenium.html">selenium</a>,    <a href="http://particle128.cn/tag/distributed.html">distributed</a>,    <a href="http://particle128.cn/tag/mysql.html">MySQL</a>,    <a href="http://particle128.cn/tag/subprocess.html">subprocess</a>,    <a href="http://particle128.cn/tag/reentrant.html">reentrant</a>,    <a href="http://particle128.cn/tag/linux.html">linux</a>,    <a href="http://particle128.cn/tag/select.html">select</a>,    <a href="http://particle128.cn/tag/configparser.html">ConfigParser</a>,    <a href="http://particle128.cn/tag/conversion.html">conversion</a>,    <a href="http://particle128.cn/tag/git.html">git</a>,    <a href="http://particle128.cn/tag/core-dump.html">core dump</a>,    <a href="http://particle128.cn/tag/lwp.html">lwp</a>,    <a href="http://particle128.cn/tag/storage.html">storage</a>,    <a href="http://particle128.cn/tag/searchengine.html">searchengine</a>,    <a href="http://particle128.cn/tag/name-lookup.html">name-lookup</a>,    <a href="http://particle128.cn/tag/blog.html">blog</a>,    <a href="http://particle128.cn/tag/designpattern.html">DesignPattern</a>,    <a href="http://particle128.cn/tag/health.html">health</a>,    <a href="http://particle128.cn/tag/storm.html">storm</a>,    <a href="http://particle128.cn/tag/android.html">android</a>,    <a href="http://particle128.cn/tag/effectivemoderncpp.html">EffectiveModernCpp</a>,    <a href="http://particle128.cn/tag/spinlock.html">spinlock</a>,    <a href="http://particle128.cn/tag/headache.html">headache</a>,    <a href="http://particle128.cn/tag/map.html">map</a>,    <a href="http://particle128.cn/tag/life.html">life</a>,    <a href="http://particle128.cn/tag/multi-thread.html">multi-thread</a>,    <a href="http://particle128.cn/tag/finance.html">finance</a>,    <a href="http://particle128.cn/tag/python.html">python</a>,    <a href="http://particle128.cn/tag/trident.html">trident</a>,    <a href="http://particle128.cn/tag/ssl.html">ssl</a>,    <a href="http://particle128.cn/tag/effectivecpp.html">EffectiveCpp</a>,    <a href="http://particle128.cn/tag/link.html">link</a>,    <a href="http://particle128.cn/tag/moreeffectivecpp.html">MoreEffectiveCpp</a>,    <a href="http://particle128.cn/tag/cleancode.html">cleanCode</a>,    <a href="http://particle128.cn/tag/thecleancoder.html">theCleanCoder</a>,    <a href="http://particle128.cn/tag/vpn.html">vpn</a>,    <a href="http://particle128.cn/tag/c11.html">c++11</a>,    <a href="http://particle128.cn/tag/encapsulation.html">encapsulation</a>,    <a href="http://particle128.cn/tag/goal.html">goal</a>,    <a href="http://particle128.cn/tag/logging.html">logging</a>,    <a href="http://particle128.cn/tag/algorithm.html">algorithm</a>,    <a href="http://particle128.cn/tag/thread.html">thread</a>,    <a href="http://particle128.cn/tag/database.html">database</a>,    <a href="http://particle128.cn/tag/stl.html">STL</a>,    <a href="http://particle128.cn/tag/thought.html">thought</a>,    <a href="http://particle128.cn/tag/vector.html">vector</a>,    <a href="http://particle128.cn/tag/str.html">str</a>,    <a href="http://particle128.cn/tag/cpp.html">cpp</a>,    <a href="http://particle128.cn/tag/py2exe.html">py2exe</a>,    <a href="http://particle128.cn/tag/skiplist.html">skiplist</a>,    <a href="http://particle128.cn/tag/user.html">user</a>  </section>
+
+
+    <section>
+        <h1>Blogroll</h2>
+        <ul>
+            <li><a href="http://docs.getpelican.com" target="_blank">Pelicon</a></li>
+            <li><a href="http://www.google.com/webmasters" target="_blank">Google webmaster</a></li>
+            <li><a href="https://disqus.com" target="_blank">Disqus</a></li>
+            <li><a href="https://www.dnspod.cn/Domain" target="_blank">DNSPod</a></li>
+            <li><a href="https://www.godaddy.com" target="_blank">Godaddy</a></li>
+            <li><a href="http://www.goyouhuima.com" target="_blank">Godaddy优惠活动</a></li>
+        </ul>
+    </section>
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - particle128 -
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+	<script type="text/javascript">
+	  var disqus_shortname = 'particle128';
+          var disqus_identifier = '/posts/2016/01/design-pattern.html';
+          var disqus_url = 'http://particle128.cn/posts/2016/01/design-pattern.html';
+          var disqus_title = '设计模式-可复用面向对象软件的基础';
+	  (function() {
+	    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	   })();
+	</script>
+</body>
+</html>

@@ -131,29 +131,6 @@ array/fun 会转换成 pointer ...</p></div>
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2016/08/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
-      </h1>
-      <p class="meta"><time datetime="2016-08-10T00:00:00" pubdate>2016-08-10</time></p>
-</header>
-
-  <div class="entry-content"><h2>原则</h2>
-<ul>
-<li>针对接口编程，而不是针对实现编程  </li>
-</ul>
-<p>Example: DLAlgo类有个成员是LexicologicalSort对象，里面好多方法都使用了这个对象，这个对象也被一个GetSort()方法返回到外面。考虑对它进行修改（用LengthSort），和扩充（多支持一种Sort方法），会遇到什么问题？如果这个类的成员是Sort对象（抽象接口的对象）呢？  </p>
-<ul>
-<li>优先使用对象组合，而不是类继承  </li>
-</ul>
-<p>原因：<br />
-1. 优先继承的话，会让继承树膨胀，可维护性变差。特别是有两种以上附加属性的时候，比如CompressAndAsciiStream.<br />
-2. 继承会破坏封装，增加耦合，复用的时候可能发现基类的某些东西和它不适用，故只能修改基类和它的其他派生类。比如Person本来有GetAge()方法，它最初的两个派生类(Student和Teacher)没有任何问题。这个时候，我突然想用Alien继承自Person了，因为除了GetAge之外，Person的成员Alien都需要。但是因为GetAge()不适用，需要同时修改Person，student和teacher，把Person的GetAge()挪到Student和Teacher里面。这就导致很多代码的修改。如果用组合，Alien包含一个Person成员，它只要不把Person的GetAge()暴露出来就可以了 ...</p></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2016/08/design-pattern.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
         <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
       </h1>
       <p class="meta"><time datetime="2016-06-26T00:00:00" pubdate>2016-06-26</time></p>
@@ -203,6 +180,29 @@ array/fun 会转换成 pointer ...</p></div>
 <a href="http://www.68idc.cn/help/jiabenmake/qita/20141112128393.html">Windows server 2012 搭建VPN图文教程 ...</a></p></div>
   <footer>
     <a rel="full-article" href="http://particle128.cn/posts/2016/01/vpn.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://particle128.cn/posts/2016/01/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
+      </h1>
+      <p class="meta"><time datetime="2016-01-05T00:00:00" pubdate>2016-01-05</time></p>
+</header>
+
+  <div class="entry-content"><h2>原则</h2>
+<ul>
+<li>针对接口编程，而不是针对实现编程  </li>
+</ul>
+<p>Example: DLAlgo类有个成员是LexicologicalSort对象，里面好多方法都使用了这个对象，这个对象也被一个GetSort()方法返回到外面。考虑对它进行修改（用LengthSort），和扩充（多支持一种Sort方法），会遇到什么问题？如果这个类的成员是Sort对象（抽象接口的对象）呢？  </p>
+<ul>
+<li>优先使用对象组合，而不是类继承  </li>
+</ul>
+<p>原因：<br />
+1. 优先继承的话，会让继承树膨胀，可维护性变差。特别是有两种以上附加属性的时候，比如CompressAndAsciiStream.<br />
+2. 继承会破坏封装，增加耦合，复用的时候可能发现基类的某些东西和它不适用，故只能修改基类和它的其他派生类。比如Person本来有GetAge()方法，它最初的两个派生类(Student和Teacher)没有任何问题。这个时候，我突然想用Alien继承自Person了，因为除了GetAge之外，Person的成员Alien都需要。但是因为GetAge()不适用，需要同时修改Person，student和teacher，把Person的GetAge()挪到Student和Teacher里面。这就导致很多代码的修改。如果用组合，Alien包含一个Person成员，它只要不把Person的GetAge()暴露出来就可以了 ...</p></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.cn/posts/2016/01/design-pattern.html">Read On &crarr;</a>
   </footer>
   		</article>
   		<article>
@@ -310,10 +310,10 @@ If you break up a large task into many smaller tasks and estimate them independe
           <a href="http://particle128.cn/posts/2016/09/skiplist.html">跳表Skiplist</a>
       </li>
       <li class="post">
-          <a href="http://particle128.cn/posts/2016/08/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
+          <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
       </li>
       <li class="post">
-          <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
+          <a href="http://particle128.cn/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
       </li>
     </ul>
   </section>
