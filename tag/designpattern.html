@@ -60,9 +60,9 @@
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2017/04/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
+        <a href="http://particle128.cn/posts/2016/08/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
       </h1>
-      <p class="meta"><time datetime="2017-04-10T00:00:00" pubdate>2017-04-10</time></p>
+      <p class="meta"><time datetime="2016-08-10T00:00:00" pubdate>2016-08-10</time></p>
 </header>
 
   <div class="entry-content"><h2>原则</h2>
@@ -77,7 +77,7 @@
 1. 优先继承的话，会让继承树膨胀，可维护性变差。特别是有两种以上附加属性的时候，比如CompressAndAsciiStream.<br />
 2. 继承会破坏封装，增加耦合，复用的时候可能发现基类的某些东西和它不适用，故只能修改基类和它的其他派生类。比如Person本来有GetAge()方法，它最初的两个派生类(Student和Teacher)没有任何问题。这个时候，我突然想用Alien继承自Person了，因为除了GetAge之外，Person的成员Alien都需要。但是因为GetAge()不适用，需要同时修改Person，student和teacher，把Person的GetAge()挪到Student和Teacher里面。这就导致很多代码的修改。如果用组合，Alien包含一个Person成员，它只要不把Person的GetAge()暴露出来就可以了 ...</p></div>
   <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2017/04/design-pattern.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://particle128.cn/posts/2016/08/design-pattern.html">Read On &crarr;</a>
   </footer>
   		</article>
 <div class="pagination">
@@ -89,7 +89,7 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://particle128.cn/posts/2017/04/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
+          <a href="http://particle128.cn/posts/2016/08/design-pattern.html">设计模式-可复用面向对象软件的基础</a>
       </li>
     </ul>
   </section>
