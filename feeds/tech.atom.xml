@@ -124,7 +124,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff551059(v=vs.85).aspx"&gt;https://msdn.microsoft.com/en-us/library/windows/hardware/ff551059(v=vs.85).aspx&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</summary><category term="windbg_extension"></category></entry><entry><title>跳表Skiplist</title><link href="http://particle128.cn/posts/2016/09/skiplist.html" rel="alternate"></link><updated>2016-09-16T00:00:00+08:00</updated><author><name>particle128</name></author><id>tag:particle128.cn,2016-09-16:posts/2016/09/skiplist.html</id><summary type="html">&lt;h3&gt;简介&lt;/h3&gt;
-&lt;p&gt;Skiplist是一种可以替代平衡二叉树的数据结构，比一般平衡二叉树性能好(和优化的平衡二叉树性能相当)，广泛用于各种key-value store或开源搜索引擎中（leveldb, lucence...），特点:&lt;/p&gt;
+&lt;p&gt;Skiplist是一种可以替代平衡二叉树的数据结构，比一般平衡二叉树性能好(和优化的平衡二叉树性能相当)，广泛用于各种key-value store(leveldb)或搜索引擎中（lucence, bing...），特点:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;插入、删除、查找的平均时间复杂度是O(logn)，跟平衡二叉树一样&lt;/li&gt;
 &lt;li&gt;插入、删除、查找的最坏时间复杂度是O(n)，概率很低&lt;/li&gt;
