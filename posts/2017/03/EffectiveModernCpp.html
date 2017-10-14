@@ -77,7 +77,8 @@ array/fun 会转换成 pointer。</p>
 <h3>Item 3: Understand decltype.</h3>
 <p>主要用在模板类/函数里，根据某个模板类型的参数/表达式，来创建同类型的变量或返回值。</p>
 <h3>Item 4: Know how to view deduced types.</h3>
-<p>decltype(x)传入未定义的模板类，typeid(x).name()。</p>
+<p>decltype(x)传入只声明未定义的模板类，<code>template&lt;typename T&gt; class Temp; Temp&lt;decltype(x)&gt; temp;</code> <br />
+用typeid，例如<code>typeid(x).name()</code></p>
 <h2>Chapter 2 auto</h2>
 <h3>Item 5: Prefer auto to explicit type declarations.</h3>
 <p>用auto变量存lambda比用function&lt;&gt;更快/省内存。</p>
