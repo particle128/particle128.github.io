@@ -60,6 +60,27 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.cn/posts/2014/12/git-server.html">使用Smart HTTP的git服务器搭建过程</a>
+      </h1>
+      <p class="meta"><time datetime="2014-12-13T00:00:00" pubdate>2014-12-13</time></p>
+</header>
+
+  <div class="entry-content"><p>刚接手了老师的一个安卓项目，考虑到实验室闲置了一台PC，决定把这个pc配置成git服务器，用来进行版本控制。以为是分分钟钟的事儿呢，结果用了一整天才搞定。被网上残缺不全的新旧教程整懵了，决定自己写一个。</p>
+<h3>协议选择</h3>
+<p>git可以使用五种网络协议进行通信：</p>
+<ol>
+<li>Local：团队成员用不同账户登录同一台电脑，或者共享一个挂载的NFS<br />
+语法：<code>git clone /opt/git/project.git</code> 或 <code>git clone file:///opt/git/project.git</code><br />
+前者根据是否在同一个文件系统，选择硬链接或拷贝。后者类似网络传输，效率稍低。</li>
+<li>SSH：最常用的方式，使用简单，方便搭建，加密传输+访问认证<br />
+语法：<code>git clone ssh://user@server/project.git</code> 或 <code>git clone user ...</code></li></ol></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.cn/posts/2014/12/git-server.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.cn/posts/2014/12/cleanCode(3).html">Clean Code (3)</a>
       </h1>
       <p class="meta"><time datetime="2014-12-09T00:00:00" pubdate>2014-12-09</time></p>
@@ -273,36 +294,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <a rel="full-article" href="http://particle128.cn/posts/2014/06/git-cherry-pick.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2014/06/database-shard.html">数据库的分库和分表</a>
-      </h1>
-      <p class="meta"><time datetime="2014-06-23T00:00:00" pubdate>2014-06-23</time></p>
-</header>
-
-  <div class="entry-content"><h2>一、分表</h2>
-<h3>水平分表</h3>
-<h4>1、背景</h4>
-<p>当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。<br />
-以InnoDB的B+树索引为例，记录多的时候，B+树高度更大。  </p>
-<ul>
-<li>查询：层数多，每次查询需要访问的结点就多，速度就慢。</li>
-<li>更新：当某个叶子结点达到容量极限的时候，再次插入应该落入该结点的元素，需要增加叶子结点，并且更新上层索引，极端情况下需要更新每一层索引，因此层数多也会导致速度慢。</li>
-</ul>
-<p>除此之外，还有写入表时锁的问题，数据表太大，一个写入操作可能阻塞后续的读取别的位置的读操作。</p>
-<h4>2、概念</h4>
-<p>把usr表分成usr_1, usr_2, usr_3...，每个表的结构都和原表一样，各包括原表的一部分数据。比如usr_1包括id从0到9999，usr_2包括id从10000到19999。</p>
-<h4>3、意义</h4>
-<p>提高数据的查询和更新效率（索引结构变小，锁住的数据量变少）</p>
-<h3>垂直分表</h3>
-<h4>1、背景</h4>
-<p>当一张表，有些字段经常被查询不常更新，另外一些字段经常被更新的时候，这张表的效率是不高的。</p>
-<h4>2 ...</h4></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2014/06/database-shard.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.cn/author/particle1284.html">&larr; Older</a>
 
@@ -314,6 +305,9 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.cn/posts/2018/09/self-control.html">《自控力》- 笔记</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.cn/posts/2017/05/windbg_extension.html">用js给windbg写扩展</a>
       </li>
       <li class="post">
@@ -324,9 +318,6 @@ builder.setBolt("word-counter", new WordCounter(), 3).directGrouping("spout");  
       </li>
       <li class="post">
           <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.cn/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
       </li>
     </ul>
   </section>

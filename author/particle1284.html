@@ -60,6 +60,36 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="http://particle128.cn/posts/2014/06/database-shard.html">数据库的分库和分表</a>
+      </h1>
+      <p class="meta"><time datetime="2014-06-23T00:00:00" pubdate>2014-06-23</time></p>
+</header>
+
+  <div class="entry-content"><h2>一、分表</h2>
+<h3>水平分表</h3>
+<h4>1、背景</h4>
+<p>当一张表的数据记录太多的时候，索引结构会膨胀，因此对该表的查询和更新的时间会延长。<br />
+以InnoDB的B+树索引为例，记录多的时候，B+树高度更大。  </p>
+<ul>
+<li>查询：层数多，每次查询需要访问的结点就多，速度就慢。</li>
+<li>更新：当某个叶子结点达到容量极限的时候，再次插入应该落入该结点的元素，需要增加叶子结点，并且更新上层索引，极端情况下需要更新每一层索引，因此层数多也会导致速度慢。</li>
+</ul>
+<p>除此之外，还有写入表时锁的问题，数据表太大，一个写入操作可能阻塞后续的读取别的位置的读操作。</p>
+<h4>2、概念</h4>
+<p>把usr表分成usr_1, usr_2, usr_3...，每个表的结构都和原表一样，各包括原表的一部分数据。比如usr_1包括id从0到9999，usr_2包括id从10000到19999。</p>
+<h4>3、意义</h4>
+<p>提高数据的查询和更新效率（索引结构变小，锁住的数据量变少）</p>
+<h3>垂直分表</h3>
+<h4>1、背景</h4>
+<p>当一张表，有些字段经常被查询不常更新，另外一些字段经常被更新的时候，这张表的效率是不高的。</p>
+<h4>2 ...</h4></div>
+  <footer>
+    <a rel="full-article" href="http://particle128.cn/posts/2014/06/database-shard.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="http://particle128.cn/posts/2014/05/vdisk-one-question.html">项目中一个诡异的问题</a>
       </h1>
       <p class="meta"><time datetime="2014-05-26T00:00:00" pubdate>2014-05-26</time></p>
@@ -293,33 +323,6 @@
     <a rel="full-article" href="http://particle128.cn/posts/2014/03/vipshop.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://particle128.cn/posts/2014/03/inserter.html">vector的安插语义</a>
-      </h1>
-      <p class="meta"><time datetime="2014-03-08T00:00:00" pubdate>2014-03-08</time></p>
-</header>
-
-  <div class="entry-content"><p>今天做Online Judge的时候，遇到一个问题如下：  </p>
-<div class="highlight"><pre><span class="c1">//把A和B两个有序数组合并到A里，A空间足够大  </span>
-<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">;</span>  
-<span class="n">temp</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">);</span>  
-<span class="n">std</span><span class="o">::</span><span class="n">merge</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">A</span><span class="o">+</span><span class="n">m</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">B</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span>  
-<span class="n">std</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span><span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">temp</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="n">A</span><span class="p">);</span>  
-</pre></div>
-
-
-<p>结果显示A并没有变.  </p>
-<p>稍微考虑了一下，修改第一版如下：  </p>
-<div class="highlight"><pre><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">;</span>  
-<span class="n">temp</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">);</span>  
-<span class="n">std</span><span class="o">::</span><span class="n">merge</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">A</span><span class="o">+</span><span class="n">m</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">B</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="o">&amp;</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>  
-<span class="n">std ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://particle128.cn/posts/2014/03/inserter.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="http://particle128.cn/author/particle1285.html">&larr; Older</a>
 
@@ -331,6 +334,9 @@
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="http://particle128.cn/posts/2018/09/self-control.html">《自控力》- 笔记</a>
+      </li>
+      <li class="post">
           <a href="http://particle128.cn/posts/2017/05/windbg_extension.html">用js给windbg写扩展</a>
       </li>
       <li class="post">
@@ -341,9 +347,6 @@
       </li>
       <li class="post">
           <a href="http://particle128.cn/posts/2016/06/index-compression.html">Index compression</a>
-      </li>
-      <li class="post">
-          <a href="http://particle128.cn/posts/2016/01/vpn.html">Azure上基于windows server 2012搭建L2TP/IPSec VPN</a>
       </li>
     </ul>
   </section>
